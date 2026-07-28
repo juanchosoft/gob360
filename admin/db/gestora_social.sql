@@ -1,0 +1,1 @@
+ALTER TABLE `tbl_gestora` ADD `foto1` VARCHAR(255) NULL AFTER `inversion`, ADD `foto2` VARCHAR(255) NULL AFTER `foto1`, ADD `foto3` VARCHAR(255) NULL AFTER `foto2`, ADD `foto4` VARCHAR(255) NULL AFTER `foto3`; 

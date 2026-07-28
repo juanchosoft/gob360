@@ -1,0 +1,1 @@
+ALTER TABLE `tbl_gestora` ADD `link` VARCHAR(255) NULL COMMENT 'Link mediatico' AFTER `actividad`; 

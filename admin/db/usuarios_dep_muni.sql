@@ -1,0 +1,1 @@
+ALTER TABLE `tbl_usuarios` ADD `tbl_departamento_id` INT(11) NULL AFTER `es_gaula`, ADD `tbl_municipio_id` INT(11) NULL AFTER `tbl_departamento_id`; 

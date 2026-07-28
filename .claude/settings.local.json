@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mysql:*)",
+      "Bash(curl:*)",
+      "Bash(docker exec:*)",
+      "Bash(php -l:*)",
+      "Bash(docker ps --filter \"name=mariadb\" --format \"{{.Names}}\")",
+      "Bash(docker ps:*)",
+      "Bash(grep:*)",
+      "Bash(docker logs:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Actualizar contraseña</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="./admin/js/lib/data-md5.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #234162;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .form-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        max-width: 400px;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 1rem;
+        color: #00796b;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        color: #444;
+      }
+
+      input[type="password"] {
+        width: 100%;
+        padding: 0.7rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        box-sizing: border-box;
+      }
+
+      button {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #00796b;
+        border: none;
+        color: white;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #004d40;
+      }
+
+      @media (max-width: 480px) {
+        .form-container {
+          padding: 1.5rem;
+        }
+      }
+
+      .spinner {
+        border: 2px solid #ccc;
+        border-top: 2px solid #fff;
+        border-radius: 50%;
+        width: 14px;
+        height: 14px;
+        display: inline-block;
+        animation: spin 0.6s linear infinite;
+        margin-right: 6px;
+        vertical-align: middle;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      #inicio {
+        text-decoration: none;
+        color: #00796b;
+        font-weight: bold;
+        display: block;
+        text-align: center;
+        margin-top: 1rem;
+      }
+
+      #inicio:hover {
+        color: #004d40;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="form-container">
+      <h2>Establecer nueva contraseña</h2>
+      <form id="resetPasswordForm">
+        <label for="password">Nueva contraseña:</label>
+        <input type="password" id="password" name="password" required />
+
+        <label for="confirm">Confirmar contraseña:</label>
+        <input type="password" id="confirm" name="confirm" required />
+
+        <button type="submit" id="submitBtn">Guardar contraseña</button>
+      </form>
+
+      <a id="inicio" href="login.php">← Volver al inicio</a>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("token");
+
+        if (!token) {
+          Swal.fire(
+            "Token inválido",
+            "El enlace no es válido o está incompleto.",
+            "error"
+          );
+          $("#resetPasswordForm").hide();
+          return;
+        }
+
+        $("#resetPasswordForm").on("submit", function (e) {
+          e.preventDefault();
+
+          const password = $("#password").val().trim();
+          const confirm = $("#confirm").val().trim();
+
+          if (!password || !confirm) {
+            Swal.fire(
+              "Campos vacíos",
+              "Por favor completa ambos campos.",
+              "warning"
+            );
+            return;
+          }
+
+          if (password !== confirm) {
+            Swal.fire("Error", "Las contraseñas no coinciden.", "error");
+            return;
+          }
+
+          const md5pass = hex_md5(password);
+          const confirmmd5 = hex_md5(confirm);
+
+          const $btn = $("#submitBtn");
+          $btn
+            .prop("disabled", true)
+            .html(`<span class="spinner"></span> Enviando...`);
+
+          $.ajax({
+            url: "./admin/controllers/usuarioCtrl.php",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+              method: "actualizaContrasena",
+              data: {
+                token: token,
+                password: md5pass,
+                confirm: confirmmd5,
+              },
+            }),
+            dataType: "json",
+            success: function (data) {
+              if (data.state) {
+                Swal.fire("¡Éxito!", data.message, "success");
+                $("#resetPasswordForm")[0].reset();
+                $btn.prop("disabled", false).text("Guardar contraseña");
+              } else {
+                $btn.prop("disabled", false).text("Guardar contraseña");
+                Swal.fire(
+                  "Error",
+                  data.message || "No se pudo actualizar la contraseña.",
+                  "error"
+                );
+              }
+            },
+            error: function () {
+              $btn.prop("disabled", false).text("Guardar contraseña");
+              Swal.fire(
+                "Error",
+                "Ocurrió un problema con la conexión.",
+                "error"
+              );
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

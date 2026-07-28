@@ -1,0 +1,1 @@
+ALTER TABLE `tbl_pctic` ADD `tbl_instituciones_educativas_id` INT(11) NULL AFTER `tbl_sede_educativa_id`; 

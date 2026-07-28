@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Puntos Medellín</name>
+
+    <Placemark>
+      <name>Edificio Coltejer</name>
+      <description>Icono arquitectónico</description>
+      <Point>
+        <coordinates>-75.565843,6.251794,0</coordinates>
+      </Point>
+    </Placemark>
+
+    <Placemark>
+      <name>Cámara de Comercio</name>
+      <description>Centro empresarial</description>
+      <Point>
+        <coordinates>-75.570181,6.250825,0</coordinates>
+      </Point>
+    </Placemark>
+
+    <Placemark>
+      <name>La Alpujarra</name>
+      <description>Centro administrativo</description>
+      <Point>
+        <coordinates>-75.574157,6.244729,0</coordinates>
+      </Point>
+    </Placemark>
+
+  </Document>
+</kml>
+

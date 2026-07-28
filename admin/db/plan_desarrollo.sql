@@ -1,0 +1,1 @@
+ALTER TABLE `tbl_plandesarrollo` ADD `avance_2025` VARCHAR(10) NULL AFTER `avance_2024`; 

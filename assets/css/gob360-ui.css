@@ -1,0 +1,860 @@
+/* =========================================================
+   GOB360 UI SYSTEM
+   Tema oscuro institucional reutilizable
+   ========================================================= */
+
+:root {
+    --gob-bg: #050810;
+    --gob-bg-soft: #0a1020;
+    --gob-surface: rgba(12, 19, 36, .82);
+    --gob-surface-strong: #0d1528;
+    --gob-surface-light: rgba(255, 255, 255, .055);
+    --gob-line: rgba(255, 255, 255, .11);
+    --gob-line-strong: rgba(255, 255, 255, .18);
+    --gob-text: #f7f9ff;
+    --gob-muted: #aeb8cf;
+    --gob-muted-2: #7f8ba6;
+    --gob-primary: #3d7bff;
+    --gob-primary-2: #22c8ff;
+    --gob-success: #39e58c;
+    --gob-warning: #ffcc66;
+    --gob-danger: #ff667f;
+    --gob-radius-sm: 12px;
+    --gob-radius-md: 18px;
+    --gob-radius-lg: 28px;
+    --gob-shadow: 0 28px 80px rgba(0, 0, 0, .52);
+    --gob-shadow-soft: 0 16px 36px rgba(0, 0, 0, .28);
+    --gob-transition: 180ms ease;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body.gob360-auth {
+    margin: 0;
+    overflow-x: hidden;
+    color: var(--gob-text);
+    background: var(--gob-bg);
+    font-family: "Circular Std", Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+a {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Fondo tecnológico */
+.gob360-background {
+    position: fixed;
+    inset: 0;
+    z-index: -5;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 18% 18%, rgba(61, 123, 255, .20), transparent 31%),
+        radial-gradient(circle at 84% 78%, rgba(34, 200, 255, .14), transparent 32%),
+        linear-gradient(145deg, #04070e 0%, #070d1a 48%, #050810 100%);
+}
+
+.gob360-background::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: .18;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, .075) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .075) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(to bottom, #000 15%, transparent 88%);
+}
+
+.gob360-background::after {
+    content: "";
+    position: absolute;
+    width: 680px;
+    height: 680px;
+    right: -250px;
+    top: -260px;
+    border-radius: 50%;
+    border: 1px solid rgba(61, 123, 255, .18);
+    box-shadow:
+        0 0 0 75px rgba(61, 123, 255, .025),
+        0 0 0 150px rgba(34, 200, 255, .018);
+}
+
+.gob360-orb {
+    position: absolute;
+    border-radius: 999px;
+    filter: blur(2px);
+    pointer-events: none;
+}
+
+.gob360-orb--one {
+    width: 270px;
+    height: 270px;
+    left: -90px;
+    bottom: 4%;
+    background: radial-gradient(circle, rgba(57, 229, 140, .12), transparent 69%);
+}
+
+.gob360-orb--two {
+    width: 340px;
+    height: 340px;
+    right: 12%;
+    top: 8%;
+    background: radial-gradient(circle, rgba(61, 123, 255, .13), transparent 68%);
+}
+
+/* Contenedor principal */
+.gob360-auth-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 28px;
+}
+
+.gob360-auth-shell {
+    width: min(1180px, 100%);
+    min-height: 690px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(420px, .88fr);
+    border: 1px solid var(--gob-line);
+    border-radius: var(--gob-radius-lg);
+    overflow: hidden;
+    background: rgba(7, 12, 24, .72);
+    box-shadow: var(--gob-shadow);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+}
+
+/* Panel informativo */
+.gob360-hero {
+    position: relative;
+    padding: 42px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    border-right: 1px solid var(--gob-line);
+    background:
+        linear-gradient(145deg, rgba(61, 123, 255, .13), transparent 42%),
+        linear-gradient(180deg, rgba(255, 255, 255, .026), rgba(255, 255, 255, .01));
+}
+
+.gob360-hero::after {
+    content: "";
+    position: absolute;
+    width: 440px;
+    height: 440px;
+    left: 30%;
+    bottom: -310px;
+    border-radius: 50%;
+    background: rgba(34, 200, 255, .12);
+    filter: blur(85px);
+    pointer-events: none;
+}
+
+.gob360-brand {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.gob360-brand__logo-wrap {
+    width: 100px;
+    min-width: 100px;
+    height: 100px;
+    display: grid;
+    place-items: center;
+    padding: 8px;
+    border-radius: 20px;
+    border: 1px solid var(--gob-line-strong);
+    background: rgba(255, 255, 255, .075);
+    box-shadow: var(--gob-shadow-soft);
+}
+
+.gob360-brand__logo {
+    display: block;
+    width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+}
+
+.gob360-brand__eyebrow {
+    margin: 0 0 -30px;
+    color: var(--gob-primary-2);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+}
+
+.gob360-brand__name {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(22px, 2.5vw, 32px);
+    font-weight: 950;
+    letter-spacing: -.035em;
+    line-height: 1;
+}
+
+.gob360-brand__caption {
+    margin: -30px 0 0;
+    color: var(--gob-muted);
+    font-size: 13px;
+}
+
+.gob360-hero__content {
+    position: relative;
+    z-index: 2;
+    margin: 42px 0 28px;
+}
+
+.gob360-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 34px;
+    padding: 7px 12px;
+    border: 1px solid rgba(61, 123, 255, .28);
+    border-radius: 999px;
+    color: #cfddff;
+    background: rgba(61, 123, 255, .10);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.gob360-kicker__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gob-success);
+    box-shadow: 0 0 0 5px rgba(57, 229, 140, .11);
+}
+
+.gob360-hero__title {
+    max-width: 600px;
+    margin: 22px 0 14px;
+    color: #fff;
+    font-size: clamp(36px, 4vw, 58px);
+    font-weight: 950;
+    line-height: .99;
+    letter-spacing: -.052em;
+}
+
+.gob360-gradient-text {
+    color: transparent;
+    background: linear-gradient(90deg, #fff 0%, #8edcff 44%, #79a5ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.gob360-hero__description {
+    max-width: 570px;
+    margin: 0;
+    color: var(--gob-muted);
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+/* Preview analítico */
+.gob360-preview {
+    position: relative;
+    z-index: 2;
+    padding: 18px;
+    border: 1px solid var(--gob-line);
+    border-radius: 24px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .065), rgba(255, 255, 255, .025));
+    box-shadow: var(--gob-shadow-soft);
+}
+
+.gob360-preview__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.gob360-preview__title {
+    margin: 0;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.gob360-preview__period {
+    color: var(--gob-muted-2);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.gob360-preview__grid {
+    display: grid;
+    grid-template-columns: 1.35fr .65fr;
+    gap: 14px;
+}
+
+.gob360-chart,
+.gob360-metric {
+    min-width: 0;
+    border: 1px solid rgba(255, 255, 255, .075);
+    border-radius: 17px;
+    background: rgba(4, 9, 19, .42);
+}
+
+.gob360-chart {
+    min-height: 156px;
+    padding: 18px 16px 12px;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.gob360-chart__bar {
+    flex: 1;
+    min-width: 10px;
+    height: var(--bar-height);
+    border-radius: 8px 8px 3px 3px;
+    background: linear-gradient(180deg, var(--gob-primary-2), var(--gob-primary));
+    box-shadow: 0 0 24px rgba(34, 200, 255, .10);
+    opacity: .82;
+    animation: gob360Bars 900ms ease both;
+}
+
+.gob360-chart__bar:nth-child(2n) {
+    opacity: .52;
+}
+
+@keyframes gob360Bars {
+    from { height: 0; }
+}
+
+.gob360-metrics {
+    display: grid;
+    gap: 10px;
+}
+
+.gob360-metric {
+    padding: 14px;
+}
+
+.gob360-metric__label {
+    margin: 0 0 6px;
+    color: var(--gob-muted-2);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.gob360-metric__value {
+    margin: 0;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 950;
+}
+
+.gob360-metric__trend {
+    display: inline-flex;
+    margin-top: 4px;
+    color: var(--gob-success);
+    font-size: 10px;
+    font-weight: 850;
+}
+
+.gob360-hero__footer {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 20px;
+    color: var(--gob-muted-2);
+    font-size: 11px;
+}
+
+/* Panel de acceso */
+.gob360-login {
+    padding: 50px 46px;
+    display: flex;
+    align-items: center;
+    background: rgba(4, 8, 17, .55);
+}
+
+.gob360-login__inner {
+    width: min(410px, 100%);
+    margin: 0 auto;
+}
+
+.gob360-login__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 36px;
+}
+
+.gob360-login__mobile-logo {
+    display: none;
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.gob360-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 11px;
+    border: 1px solid var(--gob-line);
+    border-radius: 999px;
+    color: var(--gob-muted);
+    background: rgba(255, 255, 255, .04);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.gob360-status__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gob-success);
+    box-shadow: 0 0 0 5px rgba(57, 229, 140, .09);
+}
+
+.gob360-login__help {
+    color: var(--gob-muted-2);
+    font-size: 12px;
+}
+
+.gob360-login__title {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(30px, 3vw, 40px);
+    font-weight: 950;
+    line-height: 1.05;
+    letter-spacing: -.04em;
+}
+
+.gob360-login__subtitle {
+    margin: 12px 0 32px;
+    color: var(--gob-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.gob360-form {
+    width: 100%;
+}
+
+.gob360-field {
+    margin-bottom: 18px;
+}
+
+.gob360-label {
+    display: block;
+    margin: 0 0 8px 2px;
+    color: #dce4f6;
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.gob360-input-wrap {
+    position: relative;
+}
+
+.gob360-input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-50%);
+    color: var(--gob-muted-2);
+    pointer-events: none;
+    transition: color var(--gob-transition);
+}
+
+.gob360-input {
+    width: 100%;
+    height: 58px;
+    padding: 0 52px 0 50px;
+    border: 1px solid var(--gob-line);
+    border-radius: 16px;
+    outline: none;
+    color: #fff;
+    caret-color: var(--gob-primary-2);
+    background: rgba(255, 255, 255, .04);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .025);
+    font-size: 14px;
+    font-weight: 700;
+    transition:
+        border-color var(--gob-transition),
+        background var(--gob-transition),
+        box-shadow var(--gob-transition);
+}
+
+.gob360-input::placeholder {
+    color: #707b92;
+    font-weight: 600;
+}
+
+.gob360-input:hover {
+    border-color: rgba(255, 255, 255, .17);
+}
+
+.gob360-input:focus {
+    border-color: rgba(34, 200, 255, .66);
+    background: rgba(34, 200, 255, .045);
+    box-shadow: 0 0 0 4px rgba(34, 200, 255, .10);
+}
+
+.gob360-input-wrap:focus-within .gob360-input-icon {
+    color: var(--gob-primary-2);
+}
+
+.gob360-input:-webkit-autofill,
+.gob360-input:-webkit-autofill:hover,
+.gob360-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #fff;
+    box-shadow: 0 0 0 1000px #0b1324 inset;
+    transition: background-color 9999s ease-out;
+}
+
+.gob360-password-toggle {
+    position: absolute;
+    right: 9px;
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    transform: translateY(-50%);
+    border: 0;
+    border-radius: 12px;
+    color: var(--gob-muted-2);
+    background: transparent;
+    cursor: pointer;
+    transition: color var(--gob-transition), background var(--gob-transition);
+}
+
+.gob360-password-toggle:hover,
+.gob360-password-toggle:focus-visible {
+    color: #fff;
+    background: rgba(255, 255, 255, .07);
+    outline: none;
+}
+
+.gob360-password-toggle svg {
+    width: 19px;
+    height: 19px;
+}
+
+.gob360-form-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 2px 0 26px;
+}
+
+.gob360-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0;
+    color: var(--gob-muted);
+    font-size: 12px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+.gob360-check input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--gob-primary);
+    cursor: pointer;
+}
+
+.gob360-link {
+    color: #b7c9f4;
+    font-size: 12px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: color var(--gob-transition);
+}
+
+.gob360-link:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.gob360-submit {
+    position: relative;
+    width: 100%;
+    height: 58px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 16px;
+    color: #fff;
+    background: linear-gradient(105deg, #336dff 0%, #3189ff 48%, #22c8ff 100%);
+    box-shadow: 0 16px 34px rgba(47, 116, 255, .24);
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: transform var(--gob-transition), filter var(--gob-transition), box-shadow var(--gob-transition);
+}
+
+.gob360-submit::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .22), transparent);
+    transition: transform 520ms ease;
+}
+
+.gob360-submit:hover {
+    transform: translateY(-2px);
+    filter: saturate(1.08) brightness(1.04);
+    box-shadow: 0 20px 42px rgba(47, 116, 255, .31);
+}
+
+.gob360-submit:hover::before {
+    transform: translateX(100%);
+}
+
+.gob360-submit:active {
+    transform: translateY(0);
+}
+
+.gob360-submit svg {
+    width: 18px;
+    height: 18px;
+}
+
+.gob360-security-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 22px;
+    padding: 13px 14px;
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 14px;
+    color: var(--gob-muted-2);
+    background: rgba(255, 255, 255, .025);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.gob360-security-note svg {
+    width: 17px;
+    min-width: 17px;
+    margin-top: 1px;
+    color: var(--gob-success);
+}
+
+.gob360-login__footer {
+    margin-top: 30px;
+    color: var(--gob-muted-2);
+    font-size: 11px;
+    text-align: center;
+}
+
+/* SweetAlert */
+.swal2-popup.gob360-alert,
+.gob360-auth .swal2-popup {
+    border: 1px solid var(--gob-line) !important;
+    border-radius: 20px !important;
+    color: #fff !important;
+    background: rgba(10, 16, 31, .96) !important;
+    box-shadow: var(--gob-shadow) !important;
+    backdrop-filter: blur(20px);
+}
+
+.gob360-auth .swal2-title {
+    color: #fff !important;
+}
+
+.gob360-auth .swal2-html-container {
+    color: var(--gob-muted) !important;
+}
+
+.gob360-auth .swal2-confirm {
+    border-radius: 12px !important;
+    background: var(--gob-primary) !important;
+    font-weight: 850 !important;
+}
+
+/* Responsive */
+@media (max-width: 1030px) {
+    .gob360-auth-page {
+        padding: 18px;
+    }
+
+    .gob360-auth-shell {
+        grid-template-columns: 1fr 430px;
+    }
+
+    .gob360-hero {
+        padding: 34px;
+    }
+
+    .gob360-login {
+        padding: 42px 34px;
+    }
+}
+
+@media (max-width: 880px) {
+    .gob360-auth-page {
+        place-items: start center;
+        padding: 16px;
+    }
+
+    .gob360-auth-shell {
+        min-height: auto;
+        grid-template-columns: 1fr;
+    }
+
+    .gob360-hero {
+        min-height: auto;
+        padding: 26px;
+        border-right: 0;
+        border-bottom: 1px solid var(--gob-line);
+    }
+
+    .gob360-hero__content {
+        margin: 30px 0 22px;
+    }
+
+    .gob360-hero__title {
+        max-width: 680px;
+    }
+
+    .gob360-preview {
+        display: none;
+    }
+
+    .gob360-hero__footer {
+        margin-top: 0;
+    }
+
+    .gob360-login {
+        padding: 38px 28px;
+    }
+
+    .gob360-login__inner {
+        width: min(520px, 100%);
+    }
+}
+
+@media (max-width: 575px) {
+    .gob360-auth-page {
+        padding: 0;
+    }
+
+    .gob360-auth-shell {
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+    }
+
+    .gob360-hero {
+        padding: 24px 20px 22px;
+        background: rgba(8, 14, 28, .74);
+    }
+
+    .gob360-brand__logo-wrap {
+        width: 62px;
+        min-width: 62px;
+        height: 62px;
+        border-radius: 17px;
+    }
+
+    .gob360-brand__name {
+        font-size: 24px;
+    }
+
+    .gob360-brand__caption {
+        font-size: 11px;
+    }
+
+    .gob360-kicker {
+        display: none;
+    }
+
+    .gob360-hero__content {
+        margin: 25px 0 0;
+    }
+
+    .gob360-hero__title {
+        margin-top: 0;
+        font-size: 32px;
+    }
+
+    .gob360-hero__description {
+        font-size: 13px;
+    }
+
+    .gob360-hero__footer {
+        display: none;
+    }
+
+    .gob360-login {
+        padding: 34px 20px 40px;
+        background: rgba(4, 8, 17, .62);
+    }
+
+    .gob360-login__top {
+        margin-bottom: 28px;
+    }
+
+    .gob360-login__help {
+        display: none;
+    }
+
+    .gob360-login__title {
+        font-size: 30px;
+    }
+
+    .gob360-login__subtitle {
+        margin-bottom: 26px;
+    }
+
+    .gob360-form-options {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}

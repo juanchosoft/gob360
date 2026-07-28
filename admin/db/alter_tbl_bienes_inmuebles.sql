@@ -1,0 +1,1 @@
+ALTER TABLE `tbl_bienes_inmuebles` ADD `latitud` VARCHAR(60) NULL AFTER `pdf`, ADD `longitud` VARCHAR(60) NULL AFTER `latitud`; 

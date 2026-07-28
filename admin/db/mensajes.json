@@ -1,0 +1,51 @@
+PETICION CUANDO NO TRAE DATOS
+
+{
+    output: {
+        valid: false,
+        response: {
+            code: "104",
+            content: " Sin resultados."
+        }
+    }
+}
+
+
+
+
+
+PETICION EXITOSA
+
+{
+    output: {
+        valid: true,
+        filtro: [{
+            0: "11",
+            1: "2",
+            2: "Departamento",
+            3: "FILTRO POR ANTIOQUIA DEP",
+            4: null,
+            5: "1",
+            6: "0",
+            7: null,
+            8: "2022-09-28 01:48:48",
+            id: "11",
+            tbl_usuario_id: "2",
+            tipo: "Departamento",
+            nombre_filtro: "FILTRO POR ANTIOQUIA DEP",
+            tbl_lider: null,
+            tbl_departamento_id: "1",
+            tbl_municipio_id: "0",
+            tbl_vereda_id: null,
+            dtcreate_at: "2022-09-28 01:48:48"
+        }],
+        response: [{
+            0: "21",
+            1: "Alexander Londoño Espejo...",
+            2: "31232222",
+            id: "21",
+            nombre: "Alexander Londoño Espejo...",
+            telefono: "31232222"
+        }]
+    }
+}

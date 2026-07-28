@@ -1,0 +1,38 @@
+-- Script para crear la tabla tbl_visitas_alcalde
+-- Basada en tbl_visitas pero sin el campo provincia y con tbl_vereda_id obligatorio
+
+CREATE TABLE IF NOT EXISTS `tbl_visitas_alcalde` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo_visita` varchar(50) NOT NULL COMMENT 'Tipo de visita realizada',
+  `tipo_registro` varchar(30) DEFAULT NULL COMMENT 'Tipo de registro: Visita o Compromiso',
+  `consecuencia` varchar(100) DEFAULT NULL COMMENT 'Consecuencia o resultado',
+  `compromisos` text DEFAULT NULL COMMENT 'Descripción de compromisos',
+  `tbl_departamento_id` int(11) NOT NULL COMMENT 'ID del departamento',
+  `tbl_municipio_id` int(11) NOT NULL COMMENT 'ID del municipio',
+  `tbl_vereda_id` int(11) NOT NULL COMMENT 'ID de la vereda - OBLIGATORIO',
+  `estado` varchar(50) NOT NULL DEFAULT 'Sin Cumplir' COMMENT 'Estado del compromiso: Sin Cumplir, En Trámite, Cumplido',
+  `estado_autorizar` varchar(40) NOT NULL DEFAULT 'Sin Cumplir' COMMENT 'Estado de autorización del compromiso',
+  `responsable` varchar(50) DEFAULT NULL COMMENT 'Responsable del compromiso',
+  `img` blob NOT NULL COMMENT 'Imagen del compromiso o visita',
+  `tbl_usuario_id` int(11) NOT NULL COMMENT 'ID del usuario que registra',
+  `compromisopac` text DEFAULT NULL COMMENT 'Compromiso PAC',
+  `respuesta` text DEFAULT NULL COMMENT 'Respuesta al compromiso',
+  `descripcion_hecho` text DEFAULT NULL COMMENT 'Descripción del hecho',
+  `tbl_secretarias_id` int(11) DEFAULT NULL COMMENT 'ID de la secretaría responsable',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Fecha de creación/actualización',
+  `date` varchar(25) DEFAULT NULL COMMENT 'Fecha de la visita',
+  `requiere_respuesta` varchar(5) DEFAULT 'No' COMMENT 'Si requiere respuesta: Si/No',
+  `url` varchar(50) DEFAULT NULL COMMENT 'URL relacionada',
+  `pdf` varchar(155) DEFAULT NULL COMMENT 'Ruta del archivo PDF',
+  `img2` varchar(155) DEFAULT NULL COMMENT 'Ruta de segunda imagen',
+  `componente` varchar(255) DEFAULT NULL COMMENT 'Componente del compromiso',
+  `tipo_ejecucion` varchar(100) DEFAULT NULL COMMENT 'Tipo de ejecución',
+  `update_at` datetime DEFAULT NULL COMMENT 'Fecha de última actualización',
+  PRIMARY KEY (`id`),
+  KEY `idx_municipio` (`tbl_municipio_id`),
+  KEY `idx_vereda` (`tbl_vereda_id`),
+  KEY `idx_estado` (`estado`),
+  KEY `idx_tipo_registro` (`tipo_registro`),
+  KEY `idx_secretaria` (`tbl_secretarias_id`),
+  KEY `idx_date` (`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish2_ci COMMENT='Tabla de visitas y compromisos del Alcalde';

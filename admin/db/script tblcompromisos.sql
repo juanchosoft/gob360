@@ -1,0 +1,4 @@
+ALTER TABLE tbl_compromisos_pilares_factores 
+MODIFY id INT NOT NULL AUTO_INCREMENT PRIMARY KEY;
+ALTER TABLE tbl_compromisos_pilares_factores 
+MODIFY id INT NOT NULL AUTO_INCREMENT PRIMARY KEY;

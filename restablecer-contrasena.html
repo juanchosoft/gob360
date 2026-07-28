@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Restablecer contraseña • Acción Unificada</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+      :root {
+        --bg0: #050a14;
+        --bg1: #08102a;
+        --txt: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.72);
+        --muted2: rgba(255, 255, 255, 0.58);
+        --brand: #18ff6d;
+        --brand2: #0b3edc;
+        --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+        --shadow2: 0 12px 30px rgba(0, 0, 0, 0.4);
+        --radius: 22px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+          sans-serif;
+        color: var(--txt);
+        background: radial-gradient(
+            1200px 700px at 15% 20%,
+            rgba(11, 62, 220, 0.28),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 650px at 85% 75%,
+            rgba(24, 255, 109, 0.18),
+            transparent 58%
+          ),
+          linear-gradient(180deg, var(--bg0), var(--bg1));
+        overflow-x: hidden;
+      }
+
+      /* Fondo con overlays estilo login */
+      .overlay-dark {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        background: radial-gradient(
+            900px 700px at 20% 20%,
+            rgba(11, 62, 220, 0.35),
+            rgba(0, 0, 0, 0.35) 60%,
+            rgba(0, 0, 0, 0.68)
+          ),
+          radial-gradient(
+            900px 700px at 80% 85%,
+            rgba(24, 255, 109, 0.18),
+            rgba(0, 0, 0, 0.55) 60%,
+            rgba(0, 0, 0, 0.78)
+          ),
+          linear-gradient(180deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.75));
+      }
+
+      .grid-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        opacity: 0.22;
+        background-image: linear-gradient(
+            to right,
+            rgba(255, 255, 255, 0.12) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.12) 1px,
+            transparent 1px
+          );
+        background-size: 72px 72px;
+        mask-image: radial-gradient(
+          600px 380px at 50% 45%,
+          black 55%,
+          transparent 88%
+        );
+      }
+
+      /* Layout */
+      .auth-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 26px 16px;
+      }
+
+      .card-shell {
+        width: min(900px, 100%);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.12),
+          rgba(255, 255, 255, 0.06)
+        );
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .card-shell::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: radial-gradient(
+            700px 260px at 20% 15%,
+            rgba(11, 62, 220, 0.35),
+            transparent 60%
+          ),
+          radial-gradient(
+            700px 260px at 80% 90%,
+            rgba(24, 255, 109, 0.2),
+            transparent 60%
+          );
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .card-content {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        min-height: 520px;
+      }
+
+      .panel-form {
+        padding: 38px 42px 30px 42px;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.18),
+          rgba(0, 0, 0, 0.4)
+        );
+        border-right: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .panel-info {
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: radial-gradient(
+            800px 420px at 70% 20%,
+            rgba(11, 62, 220, 0.35),
+            transparent 55%
+          ),
+          radial-gradient(
+            700px 380px at 30% 85%,
+            rgba(24, 255, 109, 0.2),
+            transparent 55%
+          ),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.25));
+      }
+
+      /* Brand row */
+      .brand-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+
+      .brand-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .brand-badge img {
+        width: 52px;
+        height: auto;
+        filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+      }
+
+      .brand-meta .t1 {
+        font-weight: 900;
+        letter-spacing: 0.2px;
+        font-size: 14px;
+        margin: 0;
+        line-height: 1.1;
+        color: var(--txt);
+      }
+
+      .brand-meta .t2 {
+        margin: 0;
+        font-size: 12px;
+        color: var(--muted2);
+      }
+
+      .status-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: var(--shadow2);
+        white-space: nowrap;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .dot-live {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--brand);
+        box-shadow: 0 0 0 6px rgba(24, 255, 109, 0.12);
+      }
+
+      .welcome-title {
+        margin: 18px 0 6px 0;
+        font-size: 30px;
+        line-height: 1.1;
+        font-weight: 950;
+        letter-spacing: -0.4px;
+      }
+
+      .welcome-subtitle {
+        margin: 0 0 18px 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .divider-soft {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.18),
+          transparent
+        );
+        margin: 14px 0 18px 0;
+      }
+
+      .section-title {
+        margin: 10px 0 14px 0;
+        color: rgba(255, 255, 255, 0.88);
+        font-weight: 800;
+        font-size: 12px;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+      }
+
+      /* ===== Input PRO (SVG icon) ===== */
+      .field {
+        width: 100%;
+        margin: 0 0 14px 0;
+      }
+
+      .field-label {
+        display: block;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.68);
+        margin: 0 0 8px 2px;
+        letter-spacing: 0.25px;
+        text-transform: uppercase;
+        font-weight: 900;
+      }
+
+      .field-wrap {
+        position: relative;
+        width: 100%;
+        border-radius: 18px;
+        overflow: hidden;
+      }
+
+      .field .i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.14),
+          rgba(255, 255, 255, 0.06)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28);
+        z-index: 5;
+        pointer-events: none;
+      }
+
+      .icon-svg {
+        width: 18px;
+        height: 18px;
+        display: block;
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      input[type="email"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 56px;
+        border-radius: 18px;
+        padding: 0 16px 0 66px;
+        border: 1px solid rgba(255, 255, 255, 0.16) !important;
+        background: rgba(6, 10, 20, 0.4) !important;
+
+        color: rgba(255, 255, 255, 0.95) !important;
+        caret-color: rgba(255, 255, 255, 0.95) !important;
+
+        font-size: 15px;
+        font-weight: 750;
+        letter-spacing: 0.2px;
+
+        outline: none;
+        box-shadow: none !important;
+      }
+
+      input[type="email"]::placeholder {
+        color: rgba(255, 255, 255, 0.48) !important;
+        font-weight: 650;
+      }
+
+      input[type="email"]:focus {
+        border-color: rgba(24, 255, 109, 0.55) !important;
+        box-shadow: 0 0 0 6px rgba(24, 255, 109, 0.12) !important;
+        background: rgba(6, 10, 20, 0.52) !important;
+      }
+
+      input[type="email"]:-webkit-autofill,
+      input[type="email"]:-webkit-autofill:hover,
+      input[type="email"]:-webkit-autofill:focus {
+        -webkit-text-fill-color: rgba(255, 255, 255, 0.95) !important;
+        transition: background-color 9999s ease-in-out 0s;
+        box-shadow: 0 0 0px 1000px rgba(6, 10, 20, 0.55) inset !important;
+        border: 1px solid rgba(255, 255, 255, 0.18) !important;
+      }
+
+      /* Button PRO */
+      button {
+        width: 100%;
+        height: 54px;
+        border: 0;
+        border-radius: 16px;
+        font-weight: 950;
+        letter-spacing: 0.2px;
+        color: #08110f;
+        background: linear-gradient(
+          135deg,
+          rgba(24, 255, 109, 1),
+          rgba(24, 255, 109, 0.78)
+        );
+        box-shadow: 0 16px 35px rgba(24, 255, 109, 0.18),
+          0 10px 18px rgba(0, 0, 0, 0.25);
+        transition: transform 0.15s ease, filter 0.15s ease;
+        cursor: pointer;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.03);
+      }
+      button:active {
+        transform: translateY(0px) scale(0.99);
+      }
+      button:disabled {
+        opacity: 0.75;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* Spinner inline */
+      .spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(0, 0, 0, 0.18);
+        border-top-color: rgba(0, 0, 0, 0.75);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        vertical-align: -3px;
+        margin-right: 8px;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      .back-row {
+        margin-top: 14px;
+        text-align: center;
+      }
+
+      #inicio {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.78);
+        font-weight: 850;
+      }
+
+      #inicio:hover {
+        color: #fff;
+        text-decoration: underline;
+      }
+
+      /* Right panel content */
+      .info-card {
+        border-radius: 22px;
+        padding: 18px 18px 16px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.07);
+        box-shadow: var(--shadow2);
+      }
+
+      .info-title {
+        font-size: 15px;
+        font-weight: 950;
+        margin: 0 0 8px 0;
+      }
+
+      .info-text {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .mini-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .stat {
+        border-radius: 18px;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .stat .k {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.6);
+        margin: 0 0 4px 0;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        font-weight: 900;
+      }
+
+      .stat .v {
+        margin: 0;
+        font-weight: 950;
+        font-size: 16px;
+        letter-spacing: -0.2px;
+      }
+
+      .footer-right {
+        text-align: right;
+        color: rgba(255, 255, 255, 0.62);
+        font-size: 12px;
+        margin-top: 16px;
+      }
+
+      /* Responsive */
+      @media (max-width: 991.98px) {
+        .card-content {
+          grid-template-columns: 1fr;
+          min-height: auto;
+        }
+        .panel-form {
+          border-right: 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .panel-info { padding: 18px; }
+      }
+
+      @media (max-width: 575.98px) {
+        .panel-form {
+          padding: 22px 18px 18px 18px;
+        }
+        .welcome-title { font-size: 26px; }
+        input[type="email"] {
+          height: 54px;
+          border-radius: 16px;
+          font-size: 15px;
+        }
+        .field .i { width: 42px; height: 42px; border-radius: 13px; }
+      }
+
+      /* SweetAlert dark pro */
+      .swal2-popup {
+        border-radius: 18px !important;
+        background: rgba(12, 18, 36, 0.92) !important;
+        color: #fff !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+        box-shadow: 0 22px 60px rgba(0, 0, 0, 0.55) !important;
+        backdrop-filter: blur(10px);
+      }
+      .swal2-title { color: #fff !important; }
+      .swal2-html-container { color: rgba(255, 255, 255, 0.82) !important; }
+      .swal2-confirm { border-radius: 12px !important; font-weight: 900 !important; }
+    </style>
+  </head>
+
+  <body>
+    <div class="overlay-dark"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="auth-wrapper">
+      <div class="card-shell">
+        <div class="card-content">
+          <!-- FORM -->
+          <div class="panel-form">
+            <div class="brand-row">
+              <div class="brand-badge">
+                <img src="assets/img/santander.png" alt="Gobernación de Santander" />
+                <div class="brand-meta">
+                  <p class="t1">Acción Unificada</p>
+                  <p class="t2">Gobernación de Santander</p>
+                </div>
+              </div>
+              <div class="status-chip">
+                <span class="dot-live"></span>
+                <span>Plataforma oficial</span>
+              </div>
+            </div>
+
+            <h1 class="welcome-title">¿Olvidaste tu contraseña?</h1>
+            <p class="welcome-subtitle">
+              Ingresa tu correo y te enviaremos un enlace para restablecer tu acceso.
+            </p>
+
+            <div class="divider-soft"></div>
+            <div class="section-title">Restablecimiento</div>
+
+            <form id="forgotForm">
+              <div class="field">
+                <label class="field-label" for="email">Correo electrónico</label>
+                <div class="field-wrap">
+                  <span class="i">
+                    <!-- Email icon SVG -->
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                      <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="ejemplo@correo.com"
+                    required
+                    autocomplete="email"
+                  />
+                </div>
+              </div>
+
+              <button id="sendMail" type="button">Enviar enlace</button>
+            </form>
+
+            <div class="back-row">
+              <a href="login.php" id="inicio">← Volver al inicio</a>
+            </div>
+          </div>
+
+          <!-- INFO -->
+          <div class="panel-info">
+            <div>
+              <div class="info-card">
+                <p class="info-title">Seguridad institucional</p>
+                <p class="info-text">
+                  Por tu protección, el enlace enviado tendrá vigencia limitada y solo funcionará una vez.
+                  Si no solicitaste el cambio, ignora el mensaje.
+                </p>
+
+                <div class="mini-stats">
+                  <div class="stat">
+                    <p class="k">Verificación</p>
+                    <p class="v">Correo válido</p>
+                  </div>
+                  <div class="stat">
+                    <p class="k">Protección</p>
+                    <p class="v">Acceso seguro</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="footer-right">© 2026 Gobernación de Santander • Acción Unificada</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#sendMail").on("click", function (e) {
+          e.preventDefault();
+
+          const email = $("#email").val().trim();
+
+          if (email === "") {
+            Swal.fire("Campo vacío", "Por favor ingresa tu correo.", "warning");
+            return;
+          }
+
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+            Swal.fire("Correo inválido", "Por favor escribe un correo válido.", "error");
+            return;
+          }
+
+          const $btn = $("#sendMail");
+          $btn.prop("disabled", true).html(`<span class="spinner"></span> Enviando...`);
+
+          $.ajax({
+            url: "./admin/controllers/usuarioCtrl.php",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+              method: "RestablecerContrasena",
+              data: email,
+            }),
+            dataType: "json",
+            success: function (data) {
+              if (data.state) {
+                Swal.fire("¡Éxito!", "Hemos enviado el enlace a tu correo.", "success");
+              } else {
+                Swal.fire("Error", data.message || "No se pudo enviar el correo.", "error");
+              }
+            },
+            error: function () {
+              Swal.fire("Error", "Ocurrió un problema con la conexión.", "error");
+            },
+            complete: function () {
+              $btn.prop("disabled", false).html("Enviar enlace");
+              $("#email").val("");
+              $("#email").focus();
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

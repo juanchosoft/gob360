@@ -1,0 +1,3 @@
+-- La columna tbl_secretaria_id ya existe en tbl_factores
+-- Script de referencia: ALTER TABLE si se requiriera en otro entorno
+-- ALTER TABLE `tbl_factores` ADD `tbl_secretaria_id` INT(11) DEFAULT NULL AFTER `tbl_factor_inestabilidad_id`;

@@ -1,0 +1,1 @@
+ALTER TABLE `tbl_proyectos` CHANGE `porcentaje_financiero` `porcentaje_financiero` DECIMAL(25,2) NULL DEFAULT NULL; 
