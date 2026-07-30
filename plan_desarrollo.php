@@ -39,306 +39,7 @@ foreach ($arrSecretarias as $val) {
 }
 ?>
 
-<style>
-  :root{
-    --nav-blue:#20427F;
-    --nav-blue-2:#132b52;
-    --nav-blue-3:#2e58a8;
-
-    --bg0:#0b1220;
-    --bg1:#0e1830;
-
-    --card: rgba(255,255,255,.06);
-    --card2: rgba(255,255,255,.08);
-    --line: rgba(255,255,255,.10);
-
-    --paper:#ffffff;
-    --ink:#0f172a;
-    --muted:#94a3b8;
-    --muted2:#cbd5e1;
-
-    --shadow: 0 18px 55px rgba(0,0,0,.38);
-    --shadow2: 0 12px 30px rgba(0,0,0,.22);
-    --radius:18px;
-
-    --focus: rgba(34,193,255,.18);
-  }
-
-  /* Fondo SaaS */
-  .pcoded-main-container{
-    background:
-      radial-gradient(900px 600px at 18% 10%, rgba(120,88,255,.18), transparent 55%),
-      radial-gradient(900px 600px at 85% 18%, rgba(0,187,255,.14), transparent 55%),
-      linear-gradient(180deg, var(--bg0), var(--bg1));
-    min-height: 100vh;
-  }
-
-  /* HERO */
-  .au-hero{
-    position: relative;
-    border-radius: 22px;
-    overflow: hidden;
-    margin: 12px 0 18px;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(255,255,255,.08);
-    background: rgba(255,255,255,.05);
-  }
-  .au-hero__bg{
-    position:absolute; inset:0;
-    background:
-      radial-gradient(900px 520px at 18% 18%, rgba(0,187,255,.16), transparent 62%),
-      radial-gradient(900px 520px at 82% 18%, rgba(120,88,255,.18), transparent 62%),
-      linear-gradient(135deg, rgba(32,62,92,.92), rgba(47,63,110,.82));
-    filter: saturate(1.1) contrast(1.05);
-  }
-  .au-hero__content{
-    position: relative;
-    padding: 18px 18px 16px;
-    color: rgba(255,255,255,.92);
-  }
-  .au-kicker{
-    display:inline-flex; align-items:center; gap:8px;
-    font-weight: 900; font-size: 12px;
-    letter-spacing: .3px; text-transform: uppercase;
-    color: rgba(255,255,255,.72);
-    margin-bottom: 6px;
-  }
-  .au-dot{
-    width: 8px; height: 8px; border-radius: 999px;
-    background: linear-gradient(135deg, #22c1ff, #7b61ff);
-    box-shadow: 0 0 0 4px rgba(255,255,255,.08);
-  }
-  .au-title{
-    margin:0;
-    font-weight: 1000;
-    letter-spacing: .2px;
-    color: rgba(226,232,240,.96);
-    text-shadow: 0 10px 26px rgba(0,0,0,.35);
-  }
-  .au-subtitle{
-    color: rgba(255,255,255,.72);
-    font-size: 13px;
-    margin-top: 2px;
-  }
-
-  /* Cards glass */
-  .card{
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow2);
-    overflow: hidden;
-    background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-    backdrop-filter: blur(10px);
-  }
-  .card-header{
-    background: linear-gradient(135deg, rgba(32,66,127,.25), rgba(19,43,82,.18));
-    border-bottom: 1px solid rgba(255,255,255,.10);
-    font-weight: 1000;
-    color: rgba(255,255,255,.92);
-  }
-  .card-header h5{ color: rgba(255,255,255,.92); }
-
-  /* Mensajes */
-  #message-container .alert{
-    border-radius: 16px;
-    border: 1px solid rgba(255,255,255,.14);
-    box-shadow: var(--shadow2);
-    backdrop-filter: blur(10px);
-  }
-
-  /* Upload card estilo */
-  .upload-card{
-    border-radius: 18px;
-    border: 1px dashed rgba(255,255,255,.22);
-    background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-  }
-  .upload-card .card-header{
-    padding: 18px !important;
-  }
-  .upload-card .card-body{
-    padding: 18px !important;
-  }
-  .upload-card .form-label{
-    color: rgba(255,255,255,.88);
-    font-weight: 1000;
-  }
-  .upload-card .form-control{
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,.18);
-    background: rgba(2,6,23,.30);
-    color: rgba(255,255,255,.92);
-  }
-  .upload-card .form-control::file-selector-button{
-    border: 0;
-    background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2));
-    color:#fff;
-    font-weight: 900;
-    border-radius: 12px;
-  }
-  .upload-card .form-control:focus{
-    outline: none !important;
-    box-shadow: 0 0 0 .2rem var(--focus) !important;
-    border-color: rgba(34,193,255,.45) !important;
-  }
-
-  /* Botones */
-  .btn{
-    border-radius: 14px !important;
-    font-weight: 1000 !important;
-    letter-spacing: .2px;
-  }
-  .btn-primary{
-    background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2)) !important;
-    border: none !important;
-    box-shadow: 0 10px 22px rgba(32,66,127,.20);
-  }
-  .btn-primary:hover{ transform: translateY(-1px); filter: brightness(1.04); }
-  .btn-secondary{
-    border: 1px solid rgba(255,255,255,.18) !important;
-    background: rgba(255,255,255,.08) !important;
-    color: rgba(255,255,255,.92) !important;
-    box-shadow: 0 10px 22px rgba(2,6,23,.06);
-  }
-
-  /* ===== TABLA: SIEMPRE NEGRO SOBRE BLANCO ===== */
-  .table-wrap{
-    display:flex;
-    justify-content:center;
-  }
-
-  .table-shell{
-    width: 100%;
-    max-width: 1320px;
-    background: var(--paper);
-    border-radius: 18px;
-    overflow:hidden;
-    border: 1px solid rgba(15,23,42,.10);
-    box-shadow: 0 26px 70px rgba(0,0,0,.22);
-  }
-
-  table.dataTable,
-  #dynamictable{
-    font-size: 12.5px !important;
-    color: #0f172a !important;
-    background: #fff !important;
-    margin:0 !important;
-  }
-
-  #dynamictable thead th{
-    font-size: 11.5px !important;
-    text-transform: uppercase;
-    letter-spacing: .28px;
-    white-space: nowrap;
-    color: #ffffff !important;
-    background: linear-gradient(135deg, #203e5c, #2f3f6e) !important;
-    border-bottom: 1px solid rgba(15,23,42,.10) !important;
-  }
-
-  #dynamictable tbody td{
-    vertical-align: top;
-    white-space: normal;
-    word-break: break-word;
-    color: #0f172a !important;
-    background: #fff !important;
-    border-top: 1px solid rgba(15,23,42,.08) !important;
-  }
-
-  #dynamictable tbody tr:nth-child(even) td{
-    background:#f8fafc !important;
-  }
-
-  #dynamictable.table-sm > :not(caption) > * > *{
-    padding: .50rem .55rem;
-  }
-
-  /* DataTables UI */
-  .dataTables_wrapper .dataTables_filter input,
-  .dataTables_wrapper .dataTables_length select{
-    border-radius: 12px !important;
-    border: 1px solid rgba(15,23,42,.16) !important;
-    padding: 6px 10px !important;
-    font-size: 12px !important;
-    outline: none !important;
-  }
-  .dataTables_wrapper .dataTables_filter input:focus,
-  .dataTables_wrapper .dataTables_length select:focus{
-    box-shadow: 0 0 0 .2rem rgba(32,66,127,.14) !important;
-    border-color: rgba(32,66,127,.35) !important;
-  }
-  .dataTables_wrapper .dataTables_info,
-  .dataTables_wrapper .dataTables_paginate{
-    font-size: 12px;
-    color:#334155;
-    padding: 10px 12px;
-  }
-  .dataTables_wrapper .paginate_button{
-    border-radius: 10px !important;
-  }
-
-  /* Input Avance pro */
-  .avance-input{
-    border-radius: 14px !important;
-    border: 1px solid rgba(15,23,42,.16) !important;
-    padding: 8px 10px !important;
-    font-size: 12.5px !important;
-    min-width: 110px;
-    transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
-    background: #fff;
-    color:#0f172a;
-  }
-  .avance-input:focus{
-    border-color: rgba(32,66,127,.55) !important;
-    box-shadow: 0 0 0 .2rem rgba(32,66,127,.16) !important;
-    outline: none !important;
-  }
-
-  /* Truncado pro */
-  td.truncado{
-    max-width: 280px;
-    font-size: 12.5px;
-    vertical-align: top;
-  }
-  .clamp-2{
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  td.truncado a{
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 4px;
-    color: #1e40af;
-    font-weight: 1000;
-    font-size: 12px;
-    text-decoration: none;
-  }
-  td.truncado a:hover{ text-decoration: underline; }
-
-  /* Modal texto completo */
-  #modalTextoCompleto .modal-content{
-    border-radius: 18px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,.10);
-    box-shadow: var(--shadow);
-  }
-  #modalTextoCompleto .modal-header{
-    background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2)) !important;
-    color: #fff !important;
-    border-bottom: 1px solid rgba(255,255,255,.12);
-  }
-  #modalTextoCompleto .close span{ color:#fff; opacity:.9; }
-
-  /* Breadcrumb contrast */
-  .page-header .breadcrumb,
-  .page-header .breadcrumb a{ color: rgba(255,255,255,.75) !important; }
-  .page-header h5{ color: rgba(255,255,255,.92) !important; }
-
-  @media (max-width: 768px){
-    td.truncado{ max-width: 210px; }
-  }
-</style>
+<link href="assets/css/metas_plan_desarrollo_gob360_v2.css" rel="stylesheet">
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -352,14 +53,14 @@ foreach ($arrSecretarias as $val) {
       container.innerHTML = `
         <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
           <strong>Mensaje:</strong> ${message}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
       `;
     }
   });
 </script>
 
-<body class="">
+<body class="gob360-development-goals">
   <!-- Loader -->
   <div class="loader-bg">
     <div class="loader-track"><div class="loader-fill"></div></div>
@@ -371,22 +72,76 @@ foreach ($arrSecretarias as $val) {
   <div class="pcoded-main-container">
     <div class="pcoded-content">
 
-      <!-- HERO -->
-      <div class="au-hero">
-        <div class="au-hero__bg"></div>
-        <div class="au-hero__content">
-          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-            <div>
-              <div class="au-kicker"><span class="au-dot"></span><span>PLAN DE DESARROLLO • METAS</span></div>
-              <h2 class="au-title mb-1"><i data-feather="target"></i> Metas Plan de Desarrollo</h2>
-              <div class="au-subtitle">Carga masiva por Excel y control de avance 2025 por registro (según permisos).</div>
+      <!-- HERO GOB360 -->
+      <section class="g360-goals-hero" aria-label="Metas del Plan de Desarrollo GOB360">
+        <div class="g360-goals-hero__grid">
+
+          <div>
+            <img
+              src="assets/img/gob360l.png"
+              alt="Logo GOB360"
+              class="g360-goals-hero__logo"
+            >
+          </div>
+
+          <div>
+            <div class="g360-goals-hero__eyebrow">
+              <i class="feather icon-target"></i>
+              Planeación y seguimiento
             </div>
-            <div class="d-flex align-items-center gap-2">
-              <?php include './admin/include/btn_back.php'; ?>
+
+            <h1 class="g360-goals-hero__title">
+              Metas del Plan de Desarrollo
+            </h1>
+
+            <p class="g360-goals-hero__description">
+              Consulta las metas institucionales, importa la plantilla oficial
+              y actualiza el avance 2025 de cada registro según los permisos y
+              filtros asociados al usuario.
+            </p>
+
+            <div class="g360-goals-hero__chips">
+              <span class="g360-chip g360-chip--success">
+                <i class="feather icon-check-circle"></i>
+                Seguimiento activo
+              </span>
+
+              <span class="g360-chip">
+                <i class="feather icon-upload-cloud"></i>
+                Carga masiva Excel
+              </span>
+
+              <span class="g360-chip">
+                <i class="feather icon-edit-3"></i>
+                Actualización 2025
+              </span>
             </div>
           </div>
+
+          <div class="g360-goals-hero__visual" aria-hidden="true">
+            <div class="g360-mini-card">
+              <i class="feather icon-target"></i>
+              <span>Metas</span>
+            </div>
+
+            <div class="g360-mini-card">
+              <i class="feather icon-upload-cloud"></i>
+              <span>Importar</span>
+            </div>
+
+            <div class="g360-mini-card">
+              <i class="feather icon-edit"></i>
+              <span>Avances</span>
+            </div>
+
+            <div class="g360-mini-card">
+              <i class="feather icon-eye"></i>
+              <span>Consultar</span>
+            </div>
+          </div>
+
         </div>
-      </div>
+      </section>
 
       <!-- Mensajes -->
       <div class="row">
@@ -396,12 +151,27 @@ foreach ($arrSecretarias as $val) {
       <!-- Upload Excel -->
       <div class="row">
         <div class="col-12 col-xl-12">
-          <div class="card my-4 upload-card">
+          <div class="card my-4 upload-card g360-goals-card">
             <div class="card-header">
-              <h5 class="mb-0" style="font-weight:1000;">Creación de Metas del Plan de Desarrollo</h5>
+              <div>
+                <h5>Creación de metas del Plan de Desarrollo</h5>
+                <p>Carga la plantilla oficial para registrar metas institucionales.</p>
+              </div>
             </div>
 
             <div class="card-body">
+              <div class="g360-upload-panel">
+                <div class="g360-upload-intro">
+                  <span class="g360-upload-icon">
+                    <i class="feather icon-file-text"></i>
+                  </span>
+
+                  <div>
+                    <h6>Importación institucional de metas</h6>
+                    <p>Selecciona el archivo Excel y procesa la información con la estructura oficial.</p>
+                  </div>
+                </div>
+
               <?php
               if ($rol_usuario == 'Alcalde' || $rol_usuario == 'Auxiliar' || $rol_usuario === 'SuperAdministrador' || $rol_usuario === 'Gobernador' || $rol_usuario === 'Secretario_Gobernacion') {
               ?>
@@ -409,21 +179,30 @@ foreach ($arrSecretarias as $val) {
                   <div class="col-md-6">
                     <label for="excelFile" class="form-label">Subir archivo de Excel <span class="text-danger">*</span></label>
                     <input class="form-control" type="file" id="excelFile" name="excelFile" required />
-                    <div style="color:rgba(255,255,255,.68); font-size:12px; margin-top:6px;">
-                      Usa la plantilla oficial para evitar errores de columnas.
+                    <div class="g360-upload-help">
+                      Usa la plantilla oficial para evitar errores en la estructura de columnas.
                     </div>
                   </div>
 
                   <div class="col-md-6 d-flex flex-wrap gap-2">
-                    <button type="submit" class="btn btn-primary px-4">Subir Plan y Procesar</button>
-                    <a href="SharedFiles/plan.xlsx" class="btn btn-secondary px-4" download>Descargar plantilla</a>
+                    <button type="submit" class="btn btn-primary px-4">
+                      <i class="feather icon-upload-cloud"></i>
+                      Subir y procesar
+                    </button>
+
+                    <a href="SharedFiles/plan.xlsx" class="btn btn-secondary px-4" download>
+                      <i class="feather icon-download"></i>
+                      Descargar plantilla
+                    </a>
                   </div>
                 </form>
               <?php } else { ?>
-                <div style="color:rgba(255,255,255,.78); font-size:12.5px;">
-                  Tu rol no tiene permisos para carga masiva. Puedes consultar y actualizar avances donde aplique.
+                <div class="g360-permission-note">
+                  <i class="feather icon-info"></i>
+                  <span>Tu rol no tiene permisos para carga masiva. Puedes consultar y actualizar avances donde aplique.</span>
                 </div>
               <?php } ?>
+              </div>
             </div>
           </div>
         </div>
@@ -432,19 +211,22 @@ foreach ($arrSecretarias as $val) {
       <!-- Tabla -->
       <div class="row">
         <div class="col-xl-12 col-md-12">
-          <div class="card table-card">
+          <div class="card table-card g360-goals-card">
             <div class="card-header d-flex align-items-center justify-content-between">
-              <h5 class="mb-0" style="font-weight:1000;">Metas Plan de Desarrollo</h5>
+              <div>
+                <h5>Metas del Plan de Desarrollo</h5>
+                <p>Consulta el detalle institucional y actualiza el avance 2025 por registro.</p>
+              </div>
               <div class="card-header-right">
                 <div class="btn-group card-option">
                   <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="feather icon-more-horizontal"></i>
                   </button>
                   <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
-                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
-                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
-                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
+                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> Maximizar</span><span style="display:none"><i class="feather icon-minimize"></i> Restaurar</span></a></li>
+                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> Colapsar</span><span style="display:none"><i class="feather icon-plus"></i> Expandir</span></a></li>
+                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> Recargar</a></li>
+                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> Eliminar</a></li>
                   </ul>
                 </div>
               </div>

@@ -46,343 +46,10 @@ foreach ($estrategiasResponse as $estrategia) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cuadro control — Red de Valor Social</title>
-  <style>
-    :root{
-      --bg0:#070A12;
-      --bg1:#0B1222;
-      --stroke: rgba(255,255,255,.10);
-      --stroke2: rgba(255,255,255,.14);
-      --txt: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.66);
-      --brand:#4f7cff;
-      --brand2:#9b5cff;
-      --r-xl:18px;
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-      --shadow2: 0 14px 40px rgba(0,0,0,.25);
-    }
-
-    body{
-      background:
-        radial-gradient(900px 420px at 10% 10%, rgba(79,124,255,.28), transparent 60%),
-        radial-gradient(900px 420px at 80% 20%, rgba(155,92,255,.22), transparent 60%),
-        radial-gradient(900px 520px at 50% 100%, rgba(24,255,109,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1)) !important;
-      color: var(--txt);
-      overflow-x:hidden;
-    }
-
-    .pcoded-main-container{ background: transparent !important; }
-    .pcoded-content{ padding: 16px 16px !important; }
-    @media(min-width:768px){ .pcoded-content{ padding: 24px 24px !important; } }
-    @media(min-width:1200px){ .pcoded-content{ padding: 34px 42px !important; } }
-
-    .page-header .page-block{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.05);
-      border-radius: 16px;
-      padding: 14px 14px;
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-      position: relative;
-    }
-    .page-header .page-block:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(320px 180px at 10% 10%, rgba(79,124,255,.25), transparent 65%),
-        radial-gradient(320px 180px at 90% 20%, rgba(155,92,255,.18), transparent 65%);
-      pointer-events:none;
-    }
-    .page-header .page-block > *{ position:relative; z-index:1; }
-    .page-header h5, .breadcrumb .breadcrumb-item, .breadcrumb .breadcrumb-item a{
-      color: var(--txt) !important;
-    }
-    .breadcrumb .breadcrumb-item a{ color: var(--muted) !important; }
-
-    .card{
-      border: 1px solid var(--stroke) !important;
-      border-radius: var(--r-xl) !important;
-      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.04)) !important;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
-    }
-    .card:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(320px 180px at 10% 10%, rgba(79,124,255,.35), transparent 65%),
-        radial-gradient(320px 180px at 90% 20%, rgba(155,92,255,.25), transparent 65%),
-        radial-gradient(520px 220px at 50% 120%, rgba(24,255,109,.10), transparent 60%);
-      pointer-events:none;
-    }
-    .card > *{ position:relative; z-index:1; }
-    .card-header{
-      background: rgba(0,0,0,.14) !important;
-      border-bottom: 1px solid var(--stroke) !important;
-      padding: 18px 18px !important;
-    }
-    .card-header h5{
-      font-weight: 900 !important;
-      letter-spacing: .2px;
-      color: var(--txt) !important;
-      margin:0 !important;
-    }
-    .card-body{ padding: 18px !important; }
-    @media(min-width:768px){ .card-body{ padding: 22px !important; } }
-
-    .form-control, select.form-control, textarea.form-control,
-    #editModal select, #editModal textarea, #editModal .form-control{
-      border-radius: 14px !important;
-      border: 1px solid rgba(255,255,255,.14) !important;
-      background: rgba(0,0,0,.28) !important;
-      color: var(--txt) !important;
-      padding: 12px 14px !important;
-      min-height: 46px;
-      box-shadow:none !important;
-    }
-    .form-control::placeholder{ color: rgba(255,255,255,.50) !important; }
-    .form-control:focus, select.form-control:focus, textarea.form-control:focus{
-      border-color: rgba(79,124,255,.55) !important;
-      box-shadow: 0 0 0 .2rem rgba(79,124,255,.18) !important;
-      outline: none !important;
-    }
-    select.form-control option, #editModal select option{ color:#0B1B38; background:#fff; }
-    label{ color: rgba(255,255,255,.72) !important; font-weight: 900; }
-
-    .btn{
-      border-radius: 14px !important;
-      padding: 10px 22px !important;
-      font-weight: 900 !important;
-      border: 1px solid rgba(255,255,255,.14) !important;
-      box-shadow: 0 10px 24px rgba(0,0,0,.25);
-    }
-    .btn-sm{ padding: 6px 12px !important; }
-    .btn-primary{
-      border-color: rgba(79,124,255,.45) !important;
-      background: linear-gradient(135deg, rgba(79,124,255,.35), rgba(155,92,255,.22)) !important;
-      color:#fff !important;
-    }
-    .btn-warning{
-      border-color: rgba(255,209,102,.45) !important;
-      background: linear-gradient(135deg, rgba(255,209,102,.28), rgba(0,0,0,.22)) !important;
-      color:#fff !important;
-    }
-    .btn-danger{
-      border-color: rgba(255,91,122,.45) !important;
-      background: linear-gradient(135deg, rgba(255,91,122,.22), rgba(0,0,0,.22)) !important;
-      color:#fff !important;
-    }
-    .btn-secondary{
-      background: rgba(255,255,255,.06) !important;
-      color: var(--txt) !important;
-    }
-
-    .gs-filter-bar{
-      display:flex;
-      flex-wrap:wrap;
-      align-items:center;
-      gap:10px;
-      margin-bottom:14px;
-      padding:12px 14px;
-      border-radius:14px;
-      border:1px solid var(--stroke);
-      background: rgba(0,0,0,.18);
-      box-shadow: var(--shadow2);
-    }
-    .gs-filter-label{ font-weight:800; color:var(--muted); font-size:13px; }
-    .gs-filter-btn{
-      border-radius:999px !important;
-      border:1px solid var(--stroke2) !important;
-      background: rgba(0,0,0,.22) !important;
-      color: rgba(255,255,255,.86) !important;
-      font-weight:800 !important;
-      padding:7px 12px !important;
-      box-shadow:none !important;
-    }
-    .gs-filter-btn.active,
-    .gs-filter-btn:hover{
-      background: linear-gradient(135deg, rgba(79,124,255,.40), rgba(155,92,255,.28)) !important;
-      border-color: rgba(79,124,255,.50) !important;
-      color:#fff !important;
-    }
-
-    .badge-tipo{
-      display:inline-block;
-      padding:4px 10px;
-      border-radius:999px;
-      font-size:11px;
-      font-weight:800;
-      white-space:nowrap;
-    }
-    .badge-tipo-1{
-      background: rgba(79,124,255,.18);
-      color: #9ec0ff;
-      border: 1px solid rgba(79,124,255,.35);
-    }
-    .badge-tipo-2{
-      background: rgba(155,92,255,.18);
-      color: #d2b4ff;
-      border: 1px solid rgba(155,92,255,.35);
-    }
-
-    .table-responsive{
-      border-radius: 16px;
-      border: 1px solid var(--stroke) !important;
-      background: rgba(0,0,0,.16);
-      overflow:auto;
-      margin-top: 14px;
-    }
-    .table{
-      margin-bottom: 0 !important;
-      color: var(--txt) !important;
-      font-size: 12.5px !important;
-    }
-    .table thead th{
-      background: rgba(255,255,255,.06) !important;
-      color: rgba(255,255,255,.88) !important;
-      border-bottom: 1px solid var(--stroke) !important;
-      white-space: nowrap;
-      font-size: 12px !important;
-      letter-spacing: .2px;
-      text-transform: uppercase;
-    }
-    .table tbody tr{
-      background: transparent !important;
-      transition: background .15s ease, color .15s ease;
-    }
-    .table tbody td{
-      color: rgba(255,255,255,.86) !important;
-      border-top: 1px solid rgba(255,255,255,.06) !important;
-      vertical-align: middle !important;
-      white-space: normal;
-      word-break: break-word;
-    }
-    .table-hover tbody tr:hover,
-    table.dataTable.hover tbody tr:hover{
-      background: rgba(255,255,255,.06) !important;
-    }
-    .table tbody td a{ color: rgba(255,255,255,.86) !important; }
-    .table tbody td i.feather{ color: rgba(255,255,255,.86) !important; }
-
-    .dataTables_wrapper .dataTables_filter label,
-    .dataTables_wrapper .dataTables_length label,
-    .dataTables_wrapper .dataTables_info{
-      color: var(--muted) !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button{
-      color: var(--txt) !important;
-      border-radius: 12px !important;
-      border: 1px solid var(--stroke2) !important;
-      background: rgba(0,0,0,.20) !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current{
-      background: linear-gradient(135deg, rgba(79,124,255,.35), rgba(155,92,255,.22)) !important;
-      border-color: rgba(79,124,255,.45) !important;
-    }
-
-    /* Modal dark */
-    .modal-backdrop{ background:#000 !important; }
-    .modal-backdrop.show{ opacity:.90 !important; }
-    .modal-content{
-      border-radius: 18px !important;
-      border: 1px solid rgba(255,255,255,.14) !important;
-      background: linear-gradient(135deg, rgba(10,12,18,.96), rgba(0,0,0,.94)) !important;
-      color: var(--txt) !important;
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .modal-header{
-      background: linear-gradient(135deg, rgba(79,124,255,.35), rgba(155,92,255,.22)) !important;
-      border-bottom: 1px solid rgba(255,255,255,.12) !important;
-    }
-    .modal-title{ font-weight: 900 !important; color:#fff !important; margin:0; }
-    .close, .close span{ color:#fff !important; opacity: 1 !important; text-shadow:none !important; }
-
-    .foto-actual-thumb{
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .foto-actual-thumb img{
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-      display: block;
-      cursor: pointer;
-      transition: transform .15s;
-    }
-    .foto-actual-thumb img:hover{ transform: scale(1.04); }
-    .foto-actual-label{
-      font-size: 11px;
-      color: var(--muted);
-      text-align: center;
-      margin-top: 4px;
-    }
-    .upload-card{
-      border: 1px dashed rgba(255,255,255,.22);
-      border-radius: 16px;
-      padding: 10px;
-      background: rgba(0,0,0,.18);
-    }
-    .upload-card .preview{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom: 8px;
-      color: var(--txt);
-    }
-    .upload-card img{
-      width: 58px;
-      height: 58px;
-      border-radius: 12px;
-      object-fit: cover;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.25);
-    }
-    .upload-card iframe{
-      width: 100% !important;
-      height: 62px !important;
-      border-radius: 12px;
-      background: rgba(255,255,255,.92);
-    }
-    .modal-actions{
-      position: sticky;
-      bottom: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.85) 22%);
-      padding-top: 12px;
-      margin-top: 6px;
-    }
-    .modal-actions .bar{
-      display:flex;
-      gap:10px;
-      justify-content:flex-end;
-      padding: 10px;
-      border-radius: 16px;
-      border: 1px solid var(--stroke);
-      box-shadow: var(--shadow2);
-      background: rgba(0,0,0,.35);
-    }
-    .section-label-muted{
-      font-weight:700;
-      margin-bottom:8px;
-      color: var(--muted);
-    }
-    @media (max-width: 992px){
-      #editModal .modal-dialog{ max-width: 92vw; }
-    }
-    @media (max-width: 768px){
-      .modal-actions .bar{ justify-content: space-between; }
-      .modal-actions .bar .btn{ width: 49%; }
-    }
-  </style>
+  <link href="assets/css/cuadro_control_red_valor_social_gob360.css" rel="stylesheet">
 </head>
 
-<body class="">
+<body class="gob360-social-control">
   <div class="loader-bg">
     <div class="loader-track"><div class="loader-fill"></div></div>
   </div>
@@ -411,11 +78,85 @@ foreach ($estrategiasResponse as $estrategia) {
         </div>
       </div>
 
+      <!-- HERO VISUAL GOB360 -->
+      <section class="g360-control-hero" aria-label="Control de actividades de la Red de Valor Social">
+        <div class="g360-control-hero__grid">
+
+          <div>
+            <img
+              src="assets/img/gob360l.png"
+              alt="Logo GOB360"
+              class="g360-control-hero__logo"
+            >
+          </div>
+
+          <div>
+            <div class="g360-control-hero__eyebrow">
+              <i class="feather icon-activity"></i>
+              Gestión social territorial
+            </div>
+
+            <h1 class="g360-control-hero__title">
+              Control de actividades
+            </h1>
+
+            <p class="g360-control-hero__description">
+              Consulta, filtra, revisa y edita las actividades de la Red de Valor
+              Social 1 y 2, incluyendo territorio, población impactada, inversión,
+              estrategias, enlaces y evidencias fotográficas.
+            </p>
+
+            <div class="g360-control-hero__chips">
+              <span class="g360-chip g360-chip--success">
+                <i class="feather icon-check-circle"></i>
+                Registros consolidados
+              </span>
+
+              <span class="g360-chip">
+                <i class="feather icon-filter"></i>
+                Filtro por red
+              </span>
+
+              <span class="g360-chip">
+                <i class="feather icon-edit"></i>
+                Edición integrada
+              </span>
+            </div>
+          </div>
+
+          <div class="g360-control-hero__visual" aria-hidden="true">
+            <div class="g360-mini-card">
+              <i class="feather icon-list"></i>
+              <span>Registros</span>
+            </div>
+
+            <div class="g360-mini-card">
+              <i class="feather icon-map-pin"></i>
+              <span>Territorio</span>
+            </div>
+
+            <div class="g360-mini-card">
+              <i class="feather icon-users"></i>
+              <span>Impacto</span>
+            </div>
+
+            <div class="g360-mini-card">
+              <i class="feather icon-image"></i>
+              <span>Evidencias</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       <div class="row">
         <div class="col-sm-12">
-          <div class="card">
+          <div class="card g360-control-card">
             <div class="card-header d-flex align-items-center justify-content-between">
-              <h5><i class="feather icon-list"></i> Tabla de Acciones</h5>
+              <div>
+                <h5><i class="feather icon-list mr-2"></i>Tabla de actividades</h5>
+                <p>Consulta y administra los registros de las dos redes de valor social.</p>
+              </div>
             </div>
 
             <div class="card-body">
@@ -646,8 +387,15 @@ foreach ($estrategiasResponse as $estrategia) {
 
             <div class="modal-actions">
               <div class="bar">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="VISITASG.saveData();">Guardar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                  <i class="feather icon-x-circle mr-1"></i>
+                  Cerrar
+                </button>
+
+                <button type="button" class="btn btn-primary" onclick="VISITASG.saveData();">
+                  <i class="feather icon-save mr-1"></i>
+                  Guardar cambios
+                </button>
               </div>
             </div>
           </div>
@@ -670,31 +418,6 @@ foreach ($estrategiasResponse as $estrategia) {
     }, 1000);
   </script>
   <?php include './admin/include/generic_dataTables.php'; ?>
-  <style>
-    table.dataTable tbody tr{ background-color: transparent !important; }
-    table.dataTable.stripe tbody tr.odd,
-    table.dataTable.display tbody tr.odd{ background-color: rgba(255,255,255,.03) !important; }
-    table.dataTable tbody td{ color: rgba(255,255,255,.86) !important; }
-    table.dataTable tbody td a{ color: rgba(255,255,255,.86) !important; }
-    table.dataTable tbody td i.feather{ color: rgba(255,255,255,.86) !important; }
-    .dataTables_wrapper .dataTables_paginate .paginate_button{
-      color: rgba(255,255,255,.86) !important;
-      background: rgba(255,255,255,.06) !important;
-      border: 1px solid rgba(255,255,255,.10) !important;
-      border-radius: 8px !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
-      background: linear-gradient(135deg, rgba(79,124,255,.35), rgba(155,92,255,.22)) !important;
-      border-color: rgba(79,124,255,.45) !important;
-      color: #fff !important;
-    }
-    .dataTables_wrapper .dataTables_info,
-    .dataTables_wrapper .dataTables_length label,
-    .dataTables_wrapper .dataTables_filter label{
-      color: rgba(255,255,255,.66) !important;
-    }
-  </style>
   <script src="<?php echo Util::versionar('./admin/js/cuadro_control_visitasg.js'); ?>"></script>
 </body>
 </html>

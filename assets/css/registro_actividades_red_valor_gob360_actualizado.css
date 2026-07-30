@@ -1,0 +1,594 @@
+:root{
+  --g360-bg0:#050914;
+  --g360-bg1:#071426;
+  --g360-bg2:#08252b;
+  --g360-glass:rgba(255,255,255,.065);
+  --g360-border:rgba(255,255,255,.13);
+  --g360-text:rgba(255,255,255,.95);
+  --g360-muted:rgba(255,255,255,.65);
+  --g360-cyan:#26d8ff;
+  --g360-blue:#3978ff;
+  --g360-green:#34eaa1;
+  --g360-red:#ff6682;
+  --g360-radius-xl:28px;
+  --g360-radius-lg:20px;
+  --g360-shadow-xl:0 30px 90px rgba(0,0,0,.44);
+  --g360-shadow-lg:0 18px 55px rgba(0,0,0,.32);
+  --g360-shadow-soft:0 12px 30px rgba(0,0,0,.20);
+  --g360-ring:0 0 0 .25rem rgba(38,216,255,.20);
+  --g360-safe-top:108px;
+}
+
+*{box-sizing:border-box}
+html,body{min-height:100%;overflow-x:hidden!important}
+
+body.gob360-activity-registration{
+  min-height:100vh;
+  color:var(--g360-text);
+  background:
+    radial-gradient(900px 500px at 8% 5%,rgba(57,120,255,.27),transparent 62%),
+    radial-gradient(850px 500px at 92% 8%,rgba(38,216,255,.14),transparent 60%),
+    radial-gradient(900px 600px at 50% 110%,rgba(52,234,161,.11),transparent 58%),
+    linear-gradient(155deg,var(--g360-bg0),var(--g360-bg1) 55%,var(--g360-bg2))!important;
+  background-attachment:fixed!important;
+}
+
+body.gob360-activity-registration::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  opacity:.15;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);
+  background-size:68px 68px;
+  mask-image:linear-gradient(to bottom,#000,transparent 95%);
+}
+
+.gob360-activity-registration .pcoded-main-container,
+.gob360-activity-registration .pcoded-content{
+  background:transparent!important;
+}
+
+.gob360-activity-registration .pcoded-main-container .pcoded-content{
+  max-width:1500px;
+  margin:0 auto;
+  padding:calc(var(--g360-safe-top) + 18px) 18px 42px!important;
+}
+
+/* Cabecera interna */
+.gob360-activity-registration .page-header .page-block{
+  position:relative;
+  overflow:hidden;
+  padding:18px 20px!important;
+  border:1px solid var(--g360-border)!important;
+  border-radius:var(--g360-radius-xl)!important;
+  background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.04))!important;
+  box-shadow:var(--g360-shadow-soft)!important;
+  backdrop-filter:blur(16px);
+}
+
+.gob360-activity-registration .page-header .page-block::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(420px 170px at 8% 0%,rgba(57,120,255,.28),transparent 65%),
+    radial-gradient(420px 170px at 95% 20%,rgba(38,216,255,.16),transparent 66%);
+}
+
+.gob360-activity-registration .page-header .page-block>*{
+  position:relative;
+  z-index:1;
+}
+
+.gob360-activity-registration .page-header h5{
+  margin:0;
+  color:#fff!important;
+  font-size:clamp(18px,2.3vw,27px);
+  font-weight:950!important;
+}
+
+.gob360-activity-registration .breadcrumb{
+  margin:8px 0 0;
+  padding:0;
+  background:transparent!important;
+}
+
+.gob360-activity-registration .breadcrumb a,
+.gob360-activity-registration .breadcrumb-item{
+  color:var(--g360-muted)!important;
+  font-weight:700;
+}
+
+.gob360-activity-registration .au-hint{
+  margin:9px 0 0;
+  color:var(--g360-muted)!important;
+  font-size:12px;
+}
+
+/* Hero */
+.g360-form-hero{
+  position:relative;
+  overflow:hidden;
+  margin-bottom:18px;
+  padding:25px;
+  border:1px solid var(--g360-border);
+  border-radius:var(--g360-radius-xl);
+  background:
+    radial-gradient(660px 260px at 0% 0%,rgba(57,120,255,.27),transparent 66%),
+    radial-gradient(660px 260px at 100% 100%,rgba(52,234,161,.14),transparent 66%),
+    var(--g360-glass);
+  box-shadow:var(--g360-shadow-xl);
+  backdrop-filter:blur(18px);
+}
+
+.g360-form-hero__grid{
+  display:grid;
+  grid-template-columns:minmax(230px,350px) 1fr auto;
+  align-items:center;
+  gap:26px;
+}
+
+.g360-form-hero__logo{
+  display:block;
+  width:min(100%,340px);
+  height:auto;
+  border-radius:18px;
+  filter:drop-shadow(0 18px 36px rgba(0,0,0,.42)) drop-shadow(0 0 28px rgba(38,216,255,.24));
+}
+
+.g360-form-hero__eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+  color:var(--g360-green);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:1.7px;
+  text-transform:uppercase;
+}
+
+.g360-form-hero__title{
+  margin:0;
+  color:#fff;
+  font-size:clamp(27px,3.5vw,47px);
+  font-weight:1000;
+  line-height:1.04;
+  letter-spacing:-1.15px;
+}
+
+.g360-form-hero__description{
+  max-width:780px;
+  margin:11px 0 0;
+  color:var(--g360-muted);
+  font-size:14px;
+  line-height:1.65;
+}
+
+.g360-form-hero__chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:17px;
+}
+
+.g360-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:34px;
+  padding:7px 11px;
+  color:rgba(255,255,255,.87);
+  font-size:12px;
+  font-weight:850;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:999px;
+  background:rgba(2,8,20,.28);
+}
+
+.g360-chip--success{border-color:rgba(52,234,161,.32)}
+
+.g360-form-hero__visual{
+  min-width:200px;
+  display:grid;
+  grid-template-columns:repeat(2,88px);
+  justify-content:end;
+  gap:10px;
+}
+
+.g360-mini-card{
+  min-height:88px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:12px;
+  color:#fff;
+  text-align:center;
+  border:1px solid var(--g360-border);
+  border-radius:18px;
+  background:rgba(255,255,255,.065);
+  box-shadow:0 12px 28px rgba(0,0,0,.22);
+}
+
+.g360-mini-card i{color:var(--g360-green);font-size:22px}
+.g360-mini-card span{font-size:10px;font-weight:900;letter-spacing:.5px;text-transform:uppercase}
+
+/* Card formulario */
+.gob360-activity-registration .g360-form-card{
+  overflow:visible;
+  border:1px solid var(--g360-border)!important;
+  border-radius:var(--g360-radius-xl)!important;
+  background:var(--g360-glass)!important;
+  box-shadow:var(--g360-shadow-xl)!important;
+  backdrop-filter:blur(18px);
+}
+
+.gob360-activity-registration .g360-form-card>.card-header{
+  min-height:76px;
+  padding:18px 21px!important;
+  color:#fff;
+  border-bottom:1px solid var(--g360-border)!important;
+  border-radius:var(--g360-radius-xl) var(--g360-radius-xl) 0 0;
+  background:
+    radial-gradient(420px 160px at 0% 0%,rgba(52,234,161,.13),transparent 68%),
+    linear-gradient(135deg,rgba(57,120,255,.27),rgba(8,22,42,.72))!important;
+}
+
+.gob360-activity-registration .g360-form-card>.card-header h5{
+  margin:0;
+  color:#fff!important;
+  font-size:18px;
+  font-weight:950!important;
+}
+
+.gob360-activity-registration .g360-form-card>.card-header p{
+  margin:4px 0 0;
+  color:var(--g360-muted);
+  font-size:11px;
+}
+
+.gob360-activity-registration .g360-form-card>.card-body{
+  padding:21px!important;
+}
+
+/* Secciones */
+.g360-form-section{
+  position:relative;
+  margin-bottom:17px;
+  padding:18px;
+  border:1px solid var(--g360-border);
+  border-radius:var(--g360-radius-lg);
+  background:
+    radial-gradient(420px 180px at 0% 0%,rgba(57,120,255,.10),transparent 70%),
+    rgba(4,12,26,.54);
+  box-shadow:var(--g360-shadow-soft);
+}
+
+.g360-form-section__header{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  margin-bottom:16px;
+  padding-bottom:13px;
+  border-bottom:1px solid rgba(255,255,255,.09);
+}
+
+.g360-form-section__number{
+  width:39px;
+  height:39px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:13px;
+  font-weight:1000;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--g360-cyan),#7beaff);
+  box-shadow:0 10px 22px rgba(38,216,255,.17);
+}
+
+.g360-form-section__title{
+  margin:0;
+  color:#fff;
+  font-size:15px;
+  font-weight:950;
+}
+
+.g360-form-section__subtitle{
+  margin:3px 0 0;
+  color:var(--g360-muted);
+  font-size:11px;
+  line-height:1.4;
+}
+
+/* Campos */
+.gob360-activity-registration .form-group{margin-bottom:17px}
+
+.gob360-activity-registration label{
+  display:block;
+  margin-bottom:7px;
+  color:rgba(255,255,255,.82)!important;
+  font-size:10.5px;
+  font-weight:900!important;
+  letter-spacing:.42px;
+  text-transform:uppercase;
+}
+
+.gob360-activity-registration .text-danger{color:#ff8ca2!important}
+
+.gob360-activity-registration .form-control,
+.gob360-activity-registration select.form-control,
+.gob360-activity-registration textarea.form-control{
+  min-height:47px;
+  padding:11px 13px!important;
+  color:rgba(255,255,255,.94)!important;
+  font-size:13px;
+  font-weight:700;
+  border:1px solid rgba(255,255,255,.13)!important;
+  border-radius:13px!important;
+  background:rgba(3,10,23,.65)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease,background .16s ease;
+}
+
+.gob360-activity-registration .form-control::placeholder{
+  color:rgba(255,255,255,.36)!important;
+}
+
+.gob360-activity-registration .form-control:focus,
+.gob360-activity-registration select.form-control:focus,
+.gob360-activity-registration textarea.form-control:focus{
+  transform:translateY(-1px);
+  border-color:rgba(38,216,255,.42)!important;
+  background:rgba(3,10,23,.82)!important;
+  box-shadow:var(--g360-ring)!important;
+  outline:none!important;
+}
+
+.gob360-activity-registration select.form-control option{
+  color:#fff;
+  background:#0a1629;
+}
+
+.gob360-activity-registration textarea.form-control{
+  min-height:115px;
+  resize:vertical;
+  line-height:1.55;
+}
+
+.gob360-activity-registration .helper-muted{
+  margin-top:7px;
+  color:var(--g360-muted);
+  font-size:11px;
+}
+
+/* Select2 */
+.gob360-activity-registration .select2-container{width:100%!important}
+
+.gob360-activity-registration .select2-container--bootstrap4 .select2-selection{
+  min-height:47px!important;
+  border:1px solid rgba(255,255,255,.13)!important;
+  border-radius:13px!important;
+  background:rgba(3,10,23,.65)!important;
+  box-shadow:none!important;
+}
+
+.gob360-activity-registration
+.select2-container--bootstrap4
+.select2-selection--single
+.select2-selection__rendered{
+  padding-left:13px!important;
+  color:rgba(255,255,255,.92)!important;
+  font-size:13px;
+  font-weight:700;
+  line-height:45px!important;
+}
+
+.gob360-activity-registration
+.select2-container--bootstrap4
+.select2-selection--single
+.select2-selection__arrow{
+  height:45px!important;
+}
+
+.gob360-activity-registration
+.select2-container--bootstrap4.select2-container--focus
+.select2-selection{
+  border-color:rgba(38,216,255,.42)!important;
+  box-shadow:var(--g360-ring)!important;
+}
+
+.gob360-activity-registration .select2-dropdown{
+  overflow:hidden;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  border-radius:13px!important;
+  background:#09162a!important;
+  box-shadow:var(--g360-shadow-lg);
+}
+
+.gob360-activity-registration .select2-search--dropdown{
+  padding:9px!important;
+  background:#09162a;
+}
+
+.gob360-activity-registration .select2-search__field{
+  min-height:40px;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.13)!important;
+  border-radius:10px;
+  background:rgba(255,255,255,.06);
+}
+
+.gob360-activity-registration .select2-results__option{
+  padding:9px 12px!important;
+  color:rgba(255,255,255,.84)!important;
+  font-size:12px;
+  font-weight:700;
+}
+
+.gob360-activity-registration .select2-results__option--highlighted,
+.gob360-activity-registration .select2-results__option[aria-selected="true"]{
+  color:#fff!important;
+  background:rgba(57,120,255,.35)!important;
+}
+
+/* Evidencias */
+.gob360-activity-registration .upload-box{
+  position:relative;
+  overflow:hidden;
+  min-height:91px;
+  padding:10px;
+  border:1px dashed rgba(38,216,255,.24);
+  border-radius:15px;
+  background:
+    radial-gradient(180px 90px at 50% 0%,rgba(38,216,255,.08),transparent 70%),
+    rgba(3,10,23,.50);
+}
+
+.gob360-activity-registration .upload-box:hover{
+  border-color:rgba(38,216,255,.42);
+  background:rgba(38,216,255,.055);
+}
+
+.gob360-activity-registration .upload-box::before{
+  content:"Evidencia fotográfica";
+  display:block;
+  margin-bottom:7px;
+  color:var(--g360-muted);
+  font-size:9px;
+  font-weight:850;
+  letter-spacing:.45px;
+  text-transform:uppercase;
+}
+
+.gob360-activity-registration .upload-box iframe{
+  width:100%!important;
+  height:58px!important;
+  display:block;
+  overflow:hidden;
+  border:0;
+  border-radius:10px;
+  background:rgba(255,255,255,.055);
+}
+
+/* Acciones */
+.gob360-activity-registration .form-actions{
+  position:sticky;
+  bottom:12px;
+  z-index:20;
+  margin-top:5px;
+  padding-top:12px;
+  background:linear-gradient(180deg,rgba(5,9,20,0),rgba(5,9,20,.94) 36%);
+}
+
+.gob360-activity-registration .form-actions .bar{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+  padding:11px;
+  border:1px solid var(--g360-border);
+  border-radius:17px;
+  background:rgba(4,12,26,.90);
+  box-shadow:var(--g360-shadow-lg);
+  backdrop-filter:blur(16px);
+}
+
+.gob360-activity-registration .btn{
+  min-height:45px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:10px 20px!important;
+  font-size:12px;
+  font-weight:950!important;
+  border-radius:13px!important;
+  box-shadow:0 11px 24px rgba(0,0,0,.22);
+}
+
+.gob360-activity-registration .btn:hover{transform:translateY(-2px)}
+
+.gob360-activity-registration .btn-primary{
+  color:#06101d!important;
+  border:0!important;
+  background:linear-gradient(135deg,var(--g360-cyan),#79eaff)!important;
+}
+
+.gob360-activity-registration .btn-danger{
+  color:#fff!important;
+  border:1px solid rgba(255,102,130,.27)!important;
+  background:rgba(255,102,130,.12)!important;
+}
+
+@media(min-width:768px){
+  :root{--g360-safe-top:112px}
+
+  .gob360-activity-registration .pcoded-main-container .pcoded-content{
+    padding-right:24px!important;
+    padding-left:24px!important;
+  }
+}
+
+@media(min-width:1200px){
+  :root{--g360-safe-top:120px}
+
+  .gob360-activity-registration .pcoded-main-container .pcoded-content{
+    padding-right:36px!important;
+    padding-left:36px!important;
+  }
+}
+
+@media(max-width:1100px){
+  .g360-form-hero__grid{grid-template-columns:250px 1fr}
+
+  .g360-form-hero__visual{
+    grid-column:1/-1;
+    grid-template-columns:repeat(4,88px);
+    justify-content:center;
+  }
+}
+
+@media(max-width:767.98px){
+  :root{--g360-safe-top:88px}
+
+  .gob360-activity-registration .pcoded-main-container .pcoded-content{
+    padding-right:13px!important;
+    padding-left:13px!important;
+  }
+
+  .g360-form-hero{padding:20px}
+  .g360-form-hero__grid{grid-template-columns:1fr;text-align:center}
+  .g360-form-hero__logo{width:min(320px,92%);margin:0 auto}
+  .g360-form-hero__chips{justify-content:center}
+
+  .g360-form-hero__visual{
+    grid-column:auto;
+    grid-template-columns:repeat(2,minmax(100px,1fr));
+    width:100%;
+  }
+
+  .gob360-activity-registration .g360-form-card>.card-body{
+    padding:14px!important;
+  }
+
+  .g360-form-section{padding:14px}
+
+  .gob360-activity-registration .form-actions{bottom:7px}
+  .gob360-activity-registration .form-actions .bar{justify-content:space-between}
+
+  .gob360-activity-registration .form-actions .btn{
+    width:49%;
+    padding-right:10px!important;
+    padding-left:10px!important;
+  }
+}

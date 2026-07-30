@@ -32,78 +32,11 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
   <link rel="stylesheet" href="assets/css/interior_dash.css" />
-  <style>
-  /* === VARIACIONES SEMÁFORO === */
-  .kpi-grid{
-    /* sale del padding de chart-wrap (10px) para llegar al borde */
-    margin-left:-10px;
-    margin-right:-10px;
-    margin-bottom:-10px;
-  }
-  .var-wrap{
-    display:flex;
-    width:100%;
-  }
-  /* Spacer que imita el ancho del eje Y de Highcharts */
-  .var-axis-spacer{
-    flex:0 0 48px; /* sobreescrito por JS con el valor real */
-    background:#fff;
-    border-top:2px solid #ddd;
-  }
-  .var-tabla{
-    flex:1 1 0;
-    min-width:0;
-    background:#fff;
-    border:none;
-    border-top:2px solid #ddd;
-    overflow:hidden;
-    box-sizing:border-box;
-  }
-  .var-tabla-head{
-    display:flex;
-    width:100%;
-  }
-  .var-tabla-head .var-th{
-    flex:1 1 0;
-    min-width:0;
-    text-align:center;
-    padding:8px 4px;
-    font-size:11px;
-    font-weight:900;
-    text-transform:uppercase;
-    letter-spacing:.2px;
-    color:#333;
-    background:#ececec;
-    border-right:1px solid #ccc;
-    line-height:1.3;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-  }
-  .var-tabla-head .var-th:last-child{ border-right:none; }
-  .var-tabla-row{
-    display:flex;
-    width:100%;
-    border-top:1px solid #ccc;
-  }
-  .var-tabla-row .var-td{
-    flex:1 1 0;
-    min-width:0;
-    text-align:center;
-    padding:10px 4px;
-    font-size:18px;
-    font-weight:900;
-    color:#fff;
-    border-right:1px solid rgba(255,255,255,.3);
-  }
-  .var-tabla-row .var-td:last-child{ border-right:none; }
-  .var-td.var-rojo    { background:#e53935; }
-  .var-td.var-verde   { background:#43a047; }
-  .var-td.var-amarillo{ background:#fdd835; color:#333; }
-  </style>
+  <link rel="stylesheet" href="assets/css/dashboard_interior_seguridad_gob360.css" />
+  
 </head>
 
-<body>
+<body class="gob360-security-dashboard">
   <!-- loader (intacto) -->
   <div class="loader-bg">
     <div class="loader-track"><div class="loader-fill"></div></div>
@@ -124,12 +57,20 @@
                   <div class="row align-items-center">
                     <div class="col-md-12">
                       <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="m-b-10 title">Dashboard Interior</h5>
+                        <div>
+                          <h5 class="m-b-10 title">
+                            <i class="feather icon-shield"></i>
+                            Boletín Estratégico de Seguridad
+                          </h5>
+                          <p class="g360-page-subtitle">
+                            Comparativo anual, factores de atención y análisis territorial.
+                          </p>
+                        </div>
                         <?php include './admin/include/btn_back.php'; ?>
                       </div>
                       <ul class="breadcrumb">
                         <li class="breadcrumb-item title"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                        <li class="breadcrumb-item title"><a href="#!">Información Secretaria Interior</a></li>
+                        <li class="breadcrumb-item title"><a href="#!">Información Secretaría del Interior</a></li>
                         <li class="breadcrumb-item title"><a href="#!">Dirección de seguridad y convivencia</a></li>
                       </ul>
                     </div>
@@ -138,42 +79,145 @@
               </div>
 
               <!-- HERO -->
-              <div class="dash-hero nombres">
-                <div class="dash-hero-row">
-                  <div class="dash-hero-title">
-                    <div class="dash-hero-badge" aria-hidden="true"><i class="bi bi-bar-chart-line-fill"></i></div>
-                    <div style="flex:1;text-align:center;">
-                      <h1 class="title" style="font-size:28px;font-weight:900;margin:0;letter-spacing:.5px;">Boletín Estratégico de Seguridad</h1>
-                      <small class="title">Comparativo anual por jurisdicción · lectura rápida · enfoque ejecutivo</small>
+              <section class="g360-security-dashboard-hero nombres" aria-label="Boletín Estratégico de Seguridad">
+                <div class="g360-security-dashboard-hero__grid">
+
+                  <aside class="g360-security-dashboard-brand">
+                    <span class="g360-security-dashboard-brand__eyebrow">
+                      Plataforma institucional
+                    </span>
+
+                    <img
+                      src="assets/img/gob360l.png"
+                      alt="Logo GOB360"
+                      class="g360-security-dashboard-brand__logo"
+                    >
+
+                    <span class="g360-security-dashboard-brand__caption">
+                      Gestión pública inteligente y territorial
+                    </span>
+
+                    <div class="g360-security-dashboard-brand__status">
+                      <span></span>
+                      Boletín activo
+                    </div>
+                  </aside>
+
+                  <div class="g360-security-dashboard-hero__content">
+                    <div class="g360-security-dashboard-hero__eyebrow">
+                      <i class="bi bi-shield-check"></i>
+                      Secretaría del Interior
+                    </div>
+
+                    <h1 class="g360-security-dashboard-hero__title">
+                      Boletín Estratégico de Seguridad
+                    </h1>
+
+                    <p class="g360-security-dashboard-hero__description">
+                      Comparativo anual por jurisdicción, lectura ejecutiva de
+                      indicadores priorizados, variaciones por delito y factores
+                      de atención gubernamental.
+                    </p>
+
+                    <div class="g360-security-dashboard-meta">
+                      <span class="g360-meta-pill" id="hero_boletin_no" style="display:none">
+                        <i class="bi bi-hash"></i>
+                        Boletín No. <strong id="hero_boletin_no_txt"></strong>
+                      </span>
+
+                      <span class="g360-meta-pill" id="hero_boletin_fecha" style="display:none">
+                        <i class="bi bi-calendar3"></i>
+                        <strong id="hero_boletin_fecha_txt"></strong>
+                      </span>
+
+                      <span class="g360-meta-pill" id="hero_fecha_cierre" style="display:none">
+                        <i class="bi bi-calendar2-check"></i>
+                        <strong id="hero_fecha_txt"></strong>
+                      </span>
+
+                      <span class="g360-meta-pill" id="hero_fuente" style="display:none">
+                        <i class="bi bi-database-check"></i>
+                        <strong id="hero_fuente_txt"></strong>
+                      </span>
+                    </div>
+
+                    <div class="g360-security-dashboard-actions">
+                      <a
+                        href="admin/ajax/dash_interior_pdf.php"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="g360-pdf-button"
+                        title="Descargar Boletín PDF"
+                        id="pdf_download_link"
+                      >
+                        <i class="bi bi-file-earmark-pdf-fill"></i>
+                        Descargar PDF
+                      </a>
+
+                      <span class="g360-year-chip" id="chip_year_1">
+                        <span class="dot dot-2025"></span>
+                        2025
+                      </span>
+
+                      <span class="g360-year-chip" id="chip_year_2">
+                        <span class="dot dot-2026"></span>
+                        2026
+                      </span>
+                    </div>
+
+                    <div class="g360-security-dashboard-features" aria-hidden="true">
+                      <article>
+                        <i class="bi bi-bar-chart-line"></i>
+                        <span>8 comparativos</span>
+                      </article>
+
+                      <article>
+                        <i class="bi bi-arrow-left-right"></i>
+                        <span>Variación anual</span>
+                      </article>
+
+                      <article>
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Factores críticos</span>
+                      </article>
+
+                      <article>
+                        <i class="bi bi-file-earmark-pdf"></i>
+                        <span>Reporte oficial</span>
+                      </article>
                     </div>
                   </div>
-                  <div class="dash-hero-actions" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-                    <span class="chip-year hero-meta-pill" id="hero_boletin_no" style="display:none;font-size:11px;opacity:.85">
-                      <i class="bi bi-hash"></i> Boletín No. <span id="hero_boletin_no_txt"></span>
-                    </span>
-                    <span class="chip-year hero-meta-pill" id="hero_boletin_fecha" style="display:none;font-size:11px;opacity:.85">
-                      <i class="bi bi-calendar3"></i> <span id="hero_boletin_fecha_txt"></span>
-                    </span>
-                    <span class="chip-year hero-meta-pill" id="hero_fecha_cierre" style="display:none;font-size:11px;opacity:.85">
-                      <i class="bi bi-calendar2-check"></i> <span id="hero_fecha_txt"></span>
-                    </span>
-                    <span class="chip-year hero-meta-pill" id="hero_fuente" style="display:none;font-size:11px;opacity:.85">
-                      <i class="bi bi-database-check"></i> <span id="hero_fuente_txt"></span>
-                    </span>
-                    <a href="admin/ajax/dash_interior_pdf.php" target="_blank"
-                       class="chip-year"
-                       style="text-decoration:none;background:rgba(255,122,0,.18);border:1px solid #ff7a00;color:#ff7a00;font-size:11px;cursor:pointer"
-                       title="Descargar Boletín PDF" id="pdf_download_link">
-                      <i class="bi bi-file-earmark-pdf-fill"></i> Descargar PDF
-                    </a>
-                    <span class="chip-year" id="chip_year_1"><span class="dot dot-2025"></span> 2025</span>
-                    <span class="chip-year" id="chip_year_2"><span class="dot dot-2026"></span> 2026</span>
-                  </div>
+
                 </div>
-              </div>
+              </section>
 
               <!-- ✅ GRID 8 GRAFICOS -->
-              <div class="boletin-grid nombres">
+              <section class="g360-dashboard-section g360-dashboard-section--charts">
+                <header class="g360-dashboard-section__header">
+                  <div class="g360-dashboard-section__heading">
+                    <span class="g360-dashboard-section__icon">
+                      <i class="bi bi-bar-chart-line-fill"></i>
+                    </span>
+
+                    <div>
+                      <span class="g360-dashboard-section__eyebrow">
+                        Analítica comparativa
+                      </span>
+                      <h2>Comportamiento de seguridad por jurisdicción</h2>
+                      <p>
+                        Cada panel compara los dos periodos configurados y presenta
+                        la diferencia absoluta y porcentual de cada indicador.
+                      </p>
+                    </div>
+                  </div>
+
+                  <span class="g360-dashboard-section__badge">
+                    <i class="bi bi-grid-3x3-gap"></i>
+                    8 paneles
+                  </span>
+                </header>
+
+                <div class="boletin-grid nombres">
 
                 <!-- 1 -->
                 <div class="boletin-card">
@@ -351,11 +395,21 @@
                 </div>
 
               </div><!-- /boletin-grid -->
+              </section>
 
               <!-- ✅ FACTORES -->
-              <div class="factores-wrap nombres" id="factores_atencion">
+              <section class="factores-wrap nombres g360-dashboard-section g360-dashboard-section--factors" id="factores_atencion">
                 <div class="factores-head">
-                  <h3>Factores de Atención Gubernamental</h3>
+                  <div>
+                      <span class="g360-dashboard-section__eyebrow">
+                        Alertas estratégicas
+                      </span>
+                      <h3>Factores de Atención Gubernamental</h3>
+                      <p class="g360-factors-description">
+                        Medición de factores críticos, municipios sin homicidios,
+                        tasa departamental y observaciones de seguimiento.
+                      </p>
+                    </div>
                   <div class="factores-meta">
                     <div class="factores-badge" id="meta_fecha"><i class="bi bi-calendar2-check"></i> Fecha cierre: <b>--</b></div>
                     <div class="factores-badge" id="meta_fuente"><i class="bi bi-database-check"></i> Fuente: <b>--</b></div>
@@ -396,7 +450,7 @@
                     </div>
                     </div>
                 </div>
-              </div>
+              </section>
 
               <?php include 'admin/include/footer.php'; ?>
             </div>
@@ -859,15 +913,20 @@ $(document).ready(function(){
 
   <!-- MODAL (intacto) -->
   <div class="modal fade" id="modalMunicipio" tabindex="-1" aria-labelledby="modalMunicipioLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen modal-dialog-centered" role="document">
-      <div class="modal-content">
+    <div class="modal-dialog modal-xl modal-dialog-centered g360-security-modal-dialog" role="document">
+      <div class="modal-content g360-security-modal">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalMunicipioLabel">Información Administrativa por Municipios</h5>
+          <h5 class="modal-title" id="modalMunicipioLabel">
+            <span class="g360-modal-title-icon">
+              <i class="bi bi-geo-alt"></i>
+            </span>
+            Información de seguridad por municipio
+          </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" onclick="cerrarModalmodalMunicipio()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" style="padding: 15px;">
+        <div class="modal-body">
           <div class="row"></div>
           <div class="table-responsive">
             <table id="dynamictable" class="table table-bordered table-hover" width="100%"></table>

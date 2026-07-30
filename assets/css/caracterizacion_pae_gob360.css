@@ -1,0 +1,842 @@
+:root {
+    --g360-bg-0: #050914;
+    --g360-bg-1: #071426;
+    --g360-bg-2: #08252b;
+
+    --g360-glass: rgba(255, 255, 255, .065);
+    --g360-glass-strong: rgba(255, 255, 255, .095);
+    --g360-border: rgba(255, 255, 255, .13);
+    --g360-border-strong: rgba(255, 255, 255, .20);
+
+    --g360-text: rgba(255, 255, 255, .95);
+    --g360-muted: rgba(255, 255, 255, .66);
+
+    --g360-cyan: #26d8ff;
+    --g360-blue: #3978ff;
+    --g360-green: #34eaa1;
+    --g360-yellow: #ffd166;
+    --g360-red: #ff6682;
+
+    --g360-paper: #ffffff;
+    --g360-paper-soft: #f7faff;
+    --g360-ink: #132238;
+    --g360-paper-muted: #64748b;
+    --g360-paper-border: #e3e9f1;
+
+    --g360-radius-xl: 28px;
+    --g360-radius-lg: 20px;
+    --g360-radius-md: 14px;
+
+    --g360-shadow-xl: 0 30px 90px rgba(0, 0, 0, .44);
+    --g360-shadow-lg: 0 18px 55px rgba(0, 0, 0, .32);
+    --g360-shadow-soft: 0 12px 30px rgba(0, 0, 0, .20);
+
+    --g360-ring: 0 0 0 .25rem rgba(38, 216, 255, .20);
+    --g360-safe-top: 108px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+    overflow-x: hidden !important;
+}
+
+body.gob360-pae-characterization {
+    min-height: 100vh;
+    color: var(--g360-text);
+    background:
+        radial-gradient(900px 500px at 8% 5%, rgba(57, 120, 255, .27), transparent 62%),
+        radial-gradient(850px 500px at 92% 8%, rgba(38, 216, 255, .14), transparent 60%),
+        radial-gradient(900px 600px at 50% 110%, rgba(52, 234, 161, .11), transparent 58%),
+        linear-gradient(155deg, var(--g360-bg-0), var(--g360-bg-1) 55%, var(--g360-bg-2)) !important;
+    background-attachment: fixed !important;
+}
+
+body.gob360-pae-characterization::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    opacity: .15;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, .08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .08) 1px, transparent 1px);
+    background-size: 68px 68px;
+    mask-image: linear-gradient(to bottom, #000, transparent 95%);
+}
+
+body.gob360-pae-characterization .pcoded-main-container,
+body.gob360-pae-characterization .pcoded-wrapper,
+body.gob360-pae-characterization .pcoded-content,
+body.gob360-pae-characterization .pcoded-inner-content,
+body.gob360-pae-characterization .main-body,
+body.gob360-pae-characterization .page-wrapper {
+    background: transparent !important;
+}
+
+body.gob360-pae-characterization .pcoded-main-container .pcoded-content {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: calc(var(--g360-safe-top) + 18px) 18px 48px !important;
+}
+
+/* CABECERA INTERNA */
+body.gob360-pae-characterization .page-header {
+    margin-bottom: 18px !important;
+}
+
+body.gob360-pae-characterization .page-header .page-block {
+    position: relative;
+    overflow: hidden;
+    padding: 18px 20px !important;
+    border: 1px solid var(--g360-border) !important;
+    border-radius: var(--g360-radius-xl) !important;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .04)) !important;
+    box-shadow: var(--g360-shadow-soft) !important;
+    backdrop-filter: blur(16px);
+}
+
+body.gob360-pae-characterization .page-header .page-block::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(420px 170px at 8% 0%, rgba(57, 120, 255, .28), transparent 65%),
+        radial-gradient(420px 170px at 95% 20%, rgba(38, 216, 255, .16), transparent 66%);
+}
+
+body.gob360-pae-characterization .page-header .page-block > * {
+    position: relative;
+    z-index: 1;
+}
+
+body.gob360-pae-characterization .page-header h5 {
+    margin: 0 !important;
+    color: #ffffff !important;
+    font-size: clamp(18px, 2.3vw, 27px);
+    font-weight: 950 !important;
+    letter-spacing: -.35px;
+}
+
+body.gob360-pae-characterization .breadcrumb {
+    margin: 8px 0 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+body.gob360-pae-characterization .breadcrumb a,
+body.gob360-pae-characterization .breadcrumb-item {
+    color: var(--g360-muted) !important;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* HERO */
+.g360-pae-hero {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 18px;
+    padding: 25px;
+    border: 1px solid var(--g360-border);
+    border-radius: var(--g360-radius-xl);
+    background:
+        radial-gradient(660px 260px at 0% 0%, rgba(57, 120, 255, .27), transparent 66%),
+        radial-gradient(660px 260px at 100% 100%, rgba(52, 234, 161, .14), transparent 66%),
+        var(--g360-glass);
+    box-shadow: var(--g360-shadow-xl);
+    backdrop-filter: blur(18px);
+}
+
+.g360-pae-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(230px, 350px) 1fr auto;
+    align-items: center;
+    gap: 26px;
+}
+
+.g360-pae-hero__logo {
+    display: block;
+    width: min(100%, 340px);
+    height: auto;
+    border-radius: 18px;
+    filter:
+        drop-shadow(0 18px 36px rgba(0, 0, 0, .42))
+        drop-shadow(0 0 28px rgba(38, 216, 255, .24));
+}
+
+.g360-pae-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: var(--g360-green);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1.7px;
+    text-transform: uppercase;
+}
+
+.g360-pae-hero__title {
+    margin: 0;
+    color: #ffffff;
+    font-size: clamp(27px, 3.5vw, 47px);
+    font-weight: 1000;
+    line-height: 1.04;
+    letter-spacing: -1.15px;
+}
+
+.g360-pae-hero__description {
+    max-width: 790px;
+    margin: 11px 0 0;
+    color: var(--g360-muted);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.g360-pae-hero__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 17px;
+}
+
+.g360-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 34px;
+    padding: 7px 11px;
+    color: rgba(255, 255, 255, .87);
+    font-size: 12px;
+    font-weight: 850;
+    border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 999px;
+    background: rgba(2, 8, 20, .28);
+}
+
+.g360-chip--success {
+    border-color: rgba(52, 234, 161, .32);
+}
+
+.g360-pae-hero__visual {
+    min-width: 200px;
+    display: grid;
+    grid-template-columns: repeat(2, 88px);
+    justify-content: end;
+    gap: 10px;
+}
+
+.g360-mini-card {
+    min-height: 88px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 12px;
+    color: #ffffff;
+    text-align: center;
+    border: 1px solid var(--g360-border);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, .065);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .22);
+}
+
+.g360-mini-card i {
+    color: var(--g360-green);
+    font-size: 22px;
+}
+
+.g360-mini-card span {
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.g360-pae-shell {
+    width: 100%;
+}
+
+body.gob360-pae-characterization .g360-pae-form-card {
+    overflow: visible;
+    border: 1px solid var(--g360-border) !important;
+    border-radius: var(--g360-radius-xl) !important;
+    background: var(--g360-glass) !important;
+    box-shadow: var(--g360-shadow-xl) !important;
+    backdrop-filter: blur(18px);
+}
+
+body.gob360-pae-characterization .g360-pae-form-card > .card-header {
+    min-height: 78px;
+    padding: 18px 21px !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid var(--g360-border) !important;
+    border-radius: var(--g360-radius-xl) var(--g360-radius-xl) 0 0;
+    background:
+        radial-gradient(420px 160px at 0% 0%, rgba(52, 234, 161, .13), transparent 68%),
+        linear-gradient(135deg, rgba(57, 120, 255, .27), rgba(8, 22, 42, .72)) !important;
+}
+
+body.gob360-pae-characterization .g360-pae-form-card > .card-header h5 {
+    margin: 0;
+    color: #ffffff !important;
+    font-size: 18px;
+    font-weight: 950 !important;
+}
+
+body.gob360-pae-characterization .g360-pae-form-card > .card-header p {
+    margin: 4px 0 0;
+    color: var(--g360-muted);
+    font-size: 11px;
+}
+
+body.gob360-pae-characterization .g360-pae-form-card > .card-body {
+    padding: 20px !important;
+    background: transparent !important;
+}
+
+body.gob360-pae-characterization .g360-pae-form-card > .card-body > .card-body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+/* SECCIÓN DE IDENTIFICACIÓN */
+.g360-school-section,
+.g360-media-section {
+    position: relative;
+    margin-bottom: 18px;
+    padding: 18px;
+    border: 1px solid var(--g360-border);
+    border-radius: var(--g360-radius-lg);
+    background:
+        radial-gradient(440px 180px at 0% 0%, rgba(57, 120, 255, .10), transparent 70%),
+        rgba(4, 12, 26, .54);
+    box-shadow: var(--g360-shadow-soft);
+}
+
+.g360-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid rgba(255, 255, 255, .09);
+}
+
+.g360-section-heading__icon {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #06101d;
+    font-size: 18px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, var(--g360-cyan), #7beaff);
+    box-shadow: 0 10px 22px rgba(38, 216, 255, .17);
+}
+
+.g360-section-heading h3 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 950;
+}
+
+.g360-section-heading p {
+    margin: 4px 0 0;
+    color: var(--g360-muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+/* BLOQUES PAE */
+body.gob360-pae-characterization .pae-section {
+    overflow: hidden;
+    margin-top: 17px;
+    border: 1px solid var(--g360-border) !important;
+    border-radius: var(--g360-radius-lg) !important;
+    background: rgba(4, 12, 26, .50) !important;
+    box-shadow: var(--g360-shadow-soft);
+}
+
+body.gob360-pae-characterization .pae-section-title {
+    min-height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px !important;
+    color: #ffffff;
+    border-bottom: 1px solid var(--g360-border);
+    background:
+        radial-gradient(360px 140px at 0% 0%, rgba(38, 216, 255, .12), transparent 70%),
+        linear-gradient(135deg, rgba(57, 120, 255, .22), rgba(5, 15, 31, .48));
+}
+
+body.gob360-pae-characterization .pae-section-title .ttl {
+    margin: 0;
+    color: #ffffff !important;
+    font-size: 14px;
+    font-weight: 950;
+}
+
+body.gob360-pae-characterization .pae-section > .p-3 {
+    padding: 17px !important;
+}
+
+body.gob360-pae-characterization .pae-section > .card-header {
+    margin: 4px 17px 0;
+    padding: 13px 15px !important;
+    color: #ffffff !important;
+    border: 1px solid var(--g360-border) !important;
+    border-radius: 14px !important;
+    background:
+        linear-gradient(135deg, rgba(57, 120, 255, .22), rgba(4, 12, 26, .54)) !important;
+}
+
+body.gob360-pae-characterization .pae-section > .card-header h6 {
+    margin: 0;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: 950 !important;
+}
+
+body.gob360-pae-characterization .pae-section > br {
+    display: none;
+}
+
+body.gob360-pae-characterization .pae-section > .row {
+    margin: 0;
+    padding: 17px 9px 3px;
+}
+
+body.gob360-pae-characterization .pae-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 32px;
+    padding: 6px 10px;
+    color: rgba(255, 255, 255, .82);
+    font-size: 10.5px;
+    font-weight: 900;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .045);
+}
+
+/* CAMPOS */
+body.gob360-pae-characterization .form-group {
+    margin-bottom: 16px;
+}
+
+body.gob360-pae-characterization label {
+    display: block;
+    margin-bottom: 7px;
+    color: rgba(255, 255, 255, .82) !important;
+    font-size: 10.5px;
+    font-weight: 900 !important;
+    letter-spacing: .34px;
+    line-height: 1.45;
+    text-transform: uppercase;
+}
+
+body.gob360-pae-characterization .text-danger {
+    color: #ff8ca2 !important;
+}
+
+body.gob360-pae-characterization .form-control,
+body.gob360-pae-characterization select.form-control,
+body.gob360-pae-characterization textarea.form-control {
+    min-height: 47px;
+    padding: 11px 13px !important;
+    color: rgba(255, 255, 255, .94) !important;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, .13) !important;
+    border-radius: 13px !important;
+    background: rgba(3, 10, 23, .65) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .025) !important;
+    transition:
+        border-color .16s ease,
+        box-shadow .16s ease,
+        background .16s ease;
+}
+
+body.gob360-pae-characterization .form-control::placeholder {
+    color: rgba(255, 255, 255, .36) !important;
+}
+
+body.gob360-pae-characterization .form-control:focus,
+body.gob360-pae-characterization select.form-control:focus,
+body.gob360-pae-characterization textarea.form-control:focus {
+    border-color: rgba(38, 216, 255, .42) !important;
+    background: rgba(3, 10, 23, .82) !important;
+    box-shadow: var(--g360-ring) !important;
+    outline: none !important;
+}
+
+body.gob360-pae-characterization select.form-control option {
+    color: #ffffff;
+    background: #0a1629;
+}
+
+body.gob360-pae-characterization .form-control:disabled,
+body.gob360-pae-characterization select.form-control:disabled {
+    cursor: not-allowed;
+    color: rgba(255, 255, 255, .66) !important;
+    border-color: rgba(255, 255, 255, .08) !important;
+    background: rgba(255, 255, 255, .045) !important;
+    opacity: .85;
+}
+
+body.gob360-pae-characterization textarea.form-control {
+    min-height: 125px;
+    resize: vertical;
+    line-height: 1.55;
+}
+
+body.gob360-pae-characterization #visita {
+    color: #fff5cf !important;
+    font-weight: 900 !important;
+    border-color: rgba(255, 209, 102, .38) !important;
+    background:
+        linear-gradient(180deg, rgba(255, 209, 102, .12), rgba(3, 10, 23, .72)) !important;
+}
+
+/* RADIO Y CÁMARA */
+.g360-media-section {
+    margin-top: 18px;
+}
+
+body.gob360-pae-characterization .g360-camera-card {
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--g360-border) !important;
+    border-radius: 18px !important;
+    background:
+        radial-gradient(320px 160px at 0% 0%, rgba(38, 216, 255, .09), transparent 70%),
+        rgba(4, 12, 26, .58) !important;
+    box-shadow: var(--g360-shadow-soft) !important;
+}
+
+body.gob360-pae-characterization .g360-camera-card .card-body {
+    padding: 17px !important;
+    color: var(--g360-text);
+    background: transparent !important;
+}
+
+body.gob360-pae-characterization #estado {
+    color: var(--g360-cyan) !important;
+    font-size: 13px;
+    font-weight: 900 !important;
+}
+
+body.gob360-pae-characterization .form-check-label {
+    display: inline !important;
+    color: rgba(255, 255, 255, .82) !important;
+    font-size: 12px;
+    text-transform: none;
+}
+
+body.gob360-pae-characterization .form-check-input {
+    accent-color: var(--g360-cyan);
+}
+
+body.gob360-pae-characterization .video-preview,
+body.gob360-pae-characterization #canvas {
+    width: 100% !important;
+    max-width: 520px;
+    max-height: 300px;
+    display: block;
+    object-fit: cover;
+    margin: 0 auto 12px;
+    border: 1px solid rgba(255, 255, 255, .14) !important;
+    border-radius: 15px !important;
+    background: #071426;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, .25);
+}
+
+body.gob360-pae-characterization #contenedorFotosTomadas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow-x: auto;
+    padding-top: 10px;
+}
+
+body.gob360-pae-characterization .foto-tomada {
+    flex: 0 0 auto;
+    padding: 9px;
+    color: var(--g360-text);
+    text-align: center;
+    border: 1px solid var(--g360-border);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .055);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, .16);
+}
+
+/* FIRMA */
+body.gob360-pae-characterization .signature-wrap {
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--g360-border);
+    border-radius: 18px;
+    background:
+        radial-gradient(320px 160px at 0% 0%, rgba(52, 234, 161, .08), transparent 70%),
+        rgba(4, 12, 26, .58);
+    box-shadow: var(--g360-shadow-soft);
+}
+
+body.gob360-pae-characterization .signature-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 14px 15px;
+    color: #ffffff;
+    border-bottom: 1px solid var(--g360-border);
+    background: rgba(255, 255, 255, .035);
+}
+
+body.gob360-pae-characterization .signature-head .ttl {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 950;
+}
+
+body.gob360-pae-characterization .signature-head .sub {
+    margin: 0;
+    color: var(--g360-muted);
+    font-size: 11px;
+}
+
+body.gob360-pae-characterization .signature-body {
+    padding: 14px;
+}
+
+body.gob360-pae-characterization #signature-pad {
+    width: 100% !important;
+    height: 260px !important;
+    touch-action: none;
+    border: 1px solid #dce4ed !important;
+    border-radius: 14px !important;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(15, 35, 62, .025);
+}
+
+body.gob360-pae-characterization .signature-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* BOTONES */
+body.gob360-pae-characterization .btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 15px !important;
+    font-size: 12px;
+    font-weight: 950 !important;
+    border-radius: 13px !important;
+    transition:
+        filter .16s ease,
+        box-shadow .16s ease;
+}
+
+body.gob360-pae-characterization .btn:hover {
+    filter: brightness(1.04);
+}
+
+body.gob360-pae-characterization .btn-primary {
+    color: #06101d !important;
+    border: 0 !important;
+    background: linear-gradient(135deg, var(--g360-cyan), #7beaff) !important;
+    box-shadow: 0 11px 24px rgba(38, 216, 255, .16);
+}
+
+body.gob360-pae-characterization .btn-danger {
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 102, 130, .24) !important;
+    background: rgba(255, 102, 130, .13) !important;
+    box-shadow: 0 11px 24px rgba(0, 0, 0, .17);
+}
+
+body.gob360-pae-characterization .btn-outline-dark {
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, .13) !important;
+    background: rgba(255, 255, 255, .055) !important;
+    box-shadow: none !important;
+}
+
+/* ACCIONES FINALES */
+body.gob360-pae-characterization .pae-actions {
+    position: sticky;
+    bottom: 10px;
+    z-index: 30;
+    margin-top: 18px;
+    padding: 12px;
+    border: 1px solid var(--g360-border);
+    border-radius: 18px;
+    background: rgba(4, 12, 26, .92);
+    box-shadow: var(--g360-shadow-lg);
+    backdrop-filter: blur(16px);
+}
+
+body.gob360-pae-characterization .pae-actions .hint {
+    margin-top: 7px;
+    color: var(--g360-muted);
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.45;
+}
+
+/* INPUT NUMBER */
+body.gob360-pae-characterization input[type=number]::-webkit-inner-spin-button,
+body.gob360-pae-characterization input[type=number]::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+body.gob360-pae-characterization input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* RESPONSIVE */
+@media (min-width: 768px) {
+    :root {
+        --g360-safe-top: 112px;
+    }
+
+    body.gob360-pae-characterization .pcoded-main-container .pcoded-content {
+        padding-right: 24px !important;
+        padding-left: 24px !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    :root {
+        --g360-safe-top: 120px;
+    }
+
+    body.gob360-pae-characterization .pcoded-main-container .pcoded-content {
+        padding-right: 36px !important;
+        padding-left: 36px !important;
+    }
+}
+
+@media (max-width: 1100px) {
+    .g360-pae-hero__grid {
+        grid-template-columns: 250px 1fr;
+    }
+
+    .g360-pae-hero__visual {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(4, 88px);
+        justify-content: center;
+    }
+}
+
+@media (max-width: 991.98px) {
+    body.gob360-pae-characterization input,
+    body.gob360-pae-characterization select,
+    body.gob360-pae-characterization textarea {
+        font-size: 16px !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    :root {
+        --g360-safe-top: 88px;
+    }
+
+    body.gob360-pae-characterization .pcoded-main-container .pcoded-content {
+        padding-right: 13px !important;
+        padding-left: 13px !important;
+    }
+
+    .g360-pae-hero {
+        padding: 20px;
+    }
+
+    .g360-pae-hero__grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .g360-pae-hero__logo {
+        width: min(320px, 92%);
+        margin: 0 auto;
+    }
+
+    .g360-pae-hero__chips {
+        justify-content: center;
+    }
+
+    .g360-pae-hero__visual {
+        grid-column: auto;
+        grid-template-columns: repeat(2, minmax(100px, 1fr));
+        width: 100%;
+    }
+
+    body.gob360-pae-characterization .g360-pae-form-card > .card-body {
+        padding: 13px !important;
+    }
+
+    .g360-school-section,
+    .g360-media-section {
+        padding: 14px;
+    }
+
+    body.gob360-pae-characterization .pae-section > .p-3 {
+        padding: 13px !important;
+    }
+
+    body.gob360-pae-characterization .pae-section > .card-header {
+        margin-right: 13px;
+        margin-left: 13px;
+    }
+
+    body.gob360-pae-characterization .pae-section > .row {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    body.gob360-pae-characterization #signature-pad {
+        height: 220px !important;
+    }
+
+    body.gob360-pae-characterization .signature-head {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    body.gob360-pae-characterization .signature-actions .btn {
+        width: 100%;
+    }
+
+    body.gob360-pae-characterization .pae-actions {
+        bottom: 7px;
+        padding: 10px;
+    }
+}

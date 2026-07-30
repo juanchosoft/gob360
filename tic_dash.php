@@ -64,21 +64,11 @@ $sumaproyectos = $arr['output']['sumaproyectos'];
 $santander =  $arr['output']['response'];
 ?>
 
-<body>
+<link href="assets/css/dashboard_tic_gob360.css" rel="stylesheet">
 
-    <style>
-        .nombres { font-family:"IBM Plex Sans",sans-serif !important; }
-        .fondo { background-color:#FC0707; padding:2px 4px; color:white; display:inline-block; border-radius:4px; font-weight:800; }
-        .santander svg{ width:100%; height:auto; max-width:680px; display:block; margin:0 auto; }
-        .santander .municipios{ cursor:pointer; transition:opacity .15s; }
-        .santander .municipios:hover{ opacity:.75; }
-        .santander text{ fill:#fff !important; font-weight:700; font-size:10px; }
-        .santander path{ stroke:rgba(255,255,255,.15); stroke-width:.3; }
-        .kpi-tic h6{ color:rgba(255,255,255,.7) !important; font-weight:900 !important; font-size:13px !important; margin-top:10px !important; }
-        .kpi-tic h4{ color:#fff !important; font-weight:1100 !important; font-size:22px !important; }
-        .kpi-tic img{ filter:brightness(0) invert(1); opacity:.85; }
-        .santander text{ fill:#fff !important; font-weight:700; font-size:10px; }
-    </style>
+<body class="gob360-tic-dashboard">
+
+    
     <!-- [ Pre-loader ] start -->
     <div class="loader-bg">
         <div class="loader-track">
@@ -107,87 +97,168 @@ $santander =  $arr['output']['response'];
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="m-b-10">Dashboard TIC</h5>
+                                <h5 class="m-b-10">Analítica de la Secretaría TIC</h5>
 <?php include './admin/include/btn_back.php'; ?>
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#!"> Información General Secretaria TIC</a></li>
+                                <li class="breadcrumb-item"><a href="#!"> Información general de la Secretaría TIC</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- HERO VISUAL GOB360 -->
+            <section class="g360-tic-dashboard-hero" aria-label="Dashboard TIC GOB360">
+                <div class="g360-tic-dashboard-hero__grid">
 
-            <div class="row">
-                <div class="card-body">
-                    <h4 class="text-center mb-4" style="color:#fff;font-size:28px;font-weight:1000;">
-                        <i data-feather="map-pin"></i> Filtrar por Municipios
-                    </h4>
-                    <input type="hidden" name="op" id="op" />
-                    <input type="hidden" name="id" id="id" />
-                    <input type="hidden" name="filtro" id="filtro" value="vereda" />
-                    <input type="hidden" name="filtroVeredaById" id="filtroVeredaById" value="si" />
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <div class="form-group">
-                                <label for="tbl_departamento_id">Departamento <span class="text-danger">*</span></label>
-                                <select onchange="DEPARTAMENTO.getMunicipios();" class="form-control"
-                                    style="width: 100%;" id="tbl_departamento_id"
-                                    name="tbl_departamento_id">
-                                    <?php echo $optionDep; ?>
-                                </select>
-                            </div>
+                    <div>
+                        <img
+                            src="assets/img/gob360l.png"
+                            alt="Logo GOB360"
+                            class="g360-tic-dashboard-hero__logo"
+                        >
+                    </div>
+
+                    <div>
+                        <div class="g360-tic-dashboard-hero__eyebrow">
+                            <i class="feather icon-cpu"></i>
+                            Analítica de transformación digital
                         </div>
 
-                        <div class="col-md-6 mb-3">
-                            <div class="form-group">
-                                <label for="tbl_municipio_id">Municipio <span class="text-danger">*</span></label>
-                                <select class="form-control" style="width: 100%;" id="tbl_municipio_id"
-                                    onchange="TIC_DASHBOARD.updateUrlMunicipio(this);"
-                                    name="tbl_municipio_id">
-                                </select>
-                            </div>
+                        <h1 class="g360-tic-dashboard-hero__title">
+                            Dashboard TIC
+                        </h1>
+
+                        <p class="g360-tic-dashboard-hero__description">
+                            Consulta la distribución territorial de kits de
+                            robótica, computadores, laboratorios de innovación,
+                            inversión y proyectos tecnológicos de la Secretaría TIC.
+                        </p>
+
+                        <div class="g360-tic-dashboard-hero__chips">
+                            <span class="g360-chip g360-chip--success">
+                                <i class="feather icon-check-circle"></i>
+                                Información consolidada
+                            </span>
+
+                            <span class="g360-chip">
+                                <i class="feather icon-filter"></i>
+                                Filtro municipal
+                            </span>
+
+                            <span class="g360-chip">
+                                <i class="feather icon-map"></i>
+                                Mapa interactivo
+                            </span>
                         </div>
                     </div>
 
+                    <div class="g360-tic-dashboard-hero__visual" aria-hidden="true">
+                        <div class="g360-mini-card">
+                            <i class="feather icon-cpu"></i>
+                            <span>Robótica</span>
+                        </div>
+
+                        <div class="g360-mini-card">
+                            <i class="feather icon-monitor"></i>
+                            <span>Equipos</span>
+                        </div>
+
+                        <div class="g360-mini-card">
+                            <i class="feather icon-zap"></i>
+                            <span>Innovación</span>
+                        </div>
+
+                        <div class="g360-mini-card">
+                            <i class="feather icon-dollar-sign"></i>
+                            <span>Inversión</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card g360-filter-card">
+                        <div class="card-header">
+                            <div>
+                                <h4><i class="feather icon-filter mr-2"></i>Filtro territorial</h4>
+                                <p>Selecciona departamento y municipio para actualizar los indicadores.</p>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <input type="hidden" name="op" id="op" />
+                            <input type="hidden" name="id" id="id" />
+                            <input type="hidden" name="filtro" id="filtro" value="vereda" />
+                            <input type="hidden" name="filtroVeredaById" id="filtroVeredaById" value="si" />
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tbl_departamento_id">Departamento <span class="text-danger">*</span></label>
+                                        <select onchange="DEPARTAMENTO.getMunicipios();" class="form-control"
+                                            style="width: 100%;" id="tbl_departamento_id"
+                                            name="tbl_departamento_id">
+                                            <?php echo $optionDep; ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tbl_municipio_id">Municipio <span class="text-danger">*</span></label>
+                                        <select class="form-control" style="width: 100%;" id="tbl_municipio_id"
+                                            onchange="TIC_DASHBOARD.updateUrlMunicipio(this);"
+                                            name="tbl_municipio_id">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-md-12 col-xl-12">
                     <center>
                         <div>
                             <div class="d-flex justify-content-center" id="containerDataTic" name="containerDataTic">
-                                <div class="card" style="max-width: 90rem; width: 100%;">
-                                    <div class="card-header text-center">
-                                        <h4 class="mb-0" style="color:#fff;font-size:27px;font-weight:1000;">Resumen General TIC</h4>
+                                <div class="card g360-dashboard-card">
+                                    <div class="card-header">
+                                        <div>
+                                            <h4><i class="feather icon-bar-chart-2 mr-2"></i>Resumen general TIC</h4>
+                                            <p>Indicadores consolidados de dotación, conectividad, proyectos e inversión.</p>
+                                        </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="row text-center justify-content-center kpi-tic">
                                             <div class="col-md-3 mb-4">
                                                 <img src="assets/img/robot.png" alt="" width="60px">
-                                                <h6 class="mt-2">Kits Robótica Entregados</h6>
+                                                <h6 class="mt-2">Kits de robótica entregados</h6>
                                                 <h4><?php echo number_format($robotica, 0); ?></h4>
                                             </div>
                                             <div class="col-md-3 mb-4">
                                                 <img src="assets/img/computadoresi.png" alt="" width="60px">
-                                                <h6 class="mt-2">Computadores Instituciones</h6>
+                                                <h6 class="mt-2">Computadores para instituciones</h6>
                                                 <h4><?php echo number_format($institucion, 0); ?></h4>
                                             </div>
                                             <div class="col-md-3 mb-4">
                                                 <img src="assets/img/computadoresa.png" alt="" width="60px">
-                                                <h6 class="mt-2">Computadores Alumnos</h6>
+                                                <h6 class="mt-2">Computadores para estudiantes</h6>
                                                 <h4><?php echo number_format($alumno, 0); ?></h4>
                                             </div>
                                             <div class="col-md-3 mb-4">
                                                 <img src="assets/img/laboratoriosi.png" alt="" width="60px">
-                                                <h6 class="mt-2">Laboratorios Innovación</h6>
+                                                <h6 class="mt-2">Laboratorios de innovación</h6>
                                                 <h4><?php echo number_format($laboratorio, 0); ?></h4>
                                             </div>
                                             <div class="col-md-3 mb-4">
                                                 <img src="assets/img/optica.png" alt="" width="60px">
-                                                <h6 class="mt-2">KM Fibra Óptica Instalada</h6>
+                                                <h6 class="mt-2">Kilómetros de fibra óptica</h6>
                                                 <h4>0</h4>
                                             </div>
                                             <div class="col-md-3 mb-4">
@@ -207,12 +278,12 @@ $santander =  $arr['output']['response'];
                                             </div>
                                             <div class="col-md-3 mb-4">
                                                 <img src="assets/img/inversion.png" alt="" width="60px">
-                                                <h6 class="mt-2">Inversión Secretaría</h6>
+                                                <h6 class="mt-2">Inversión de la Secretaría</h6>
                                                 <h4><?php echo number_format($inversionsec, 0); ?></h4>
                                             </div>
                                             <div class="col-md-3 mb-4">
                                                 <img src="assets/img/totalpro.png" alt="" width="60px">
-                                                <h6 class="mt-2">Valor Total Proyectos</h6>
+                                                <h6 class="mt-2">Valor total de proyectos</h6>
                                                 <h4><?php echo number_format($valorproyectos, 0); ?></h4>
                                             </div>
 
@@ -229,14 +300,23 @@ $santander =  $arr['output']['response'];
                     <!-- Opciones de filtro -->
                     <div class="row mt-3">
                         <div class="col-12">
-                            <div class="card">
+                            <div class="card g360-options-card">
+                                <div class="card-header">
+                                    <div>
+                                        <h5><i class="feather icon-sliders mr-2"></i>Visualización territorial</h5>
+                                        <p>Selecciona el indicador representado en el mapa o abre la geolocalización.</p>
+                                    </div>
+                                </div>
+
                                 <div class="card-body">
-                                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-                                        <div>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalGeocalizacion">Geolocalización</button>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-3">
-                                            <label style="color:#fff;font-weight:900;margin:0;white-space:nowrap;">Opciones</label>
+                                    <div class="g360-options-layout">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalGeocalizacion">
+                                            <i class="feather icon-map-pin"></i>
+                                            Geolocalización
+                                        </button>
+
+                                        <div class="g360-options-select">
+                                            <label for="opcion">Indicador</label>
                                             <select onchange="TIC_DASHBOARD.updateUrlOpcion(this)" class="form-control" id="opcion" name="opcion" style="width:250px;">
                                                 <option value="robotica">Robótica</option>
                                                 <option value="computadores_institucion">Computadores Institución</option>
@@ -255,7 +335,16 @@ $santander =  $arr['output']['response'];
                     <!-- Mapa Santander -->
                     <div class="row mt-3">
                         <div class="col-12">
-                            <div id="contenido-mapa" class="santander munis" style="width:100%;padding:20px;border-radius:22px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);">
+                            <div class="card g360-map-card">
+                                <div class="card-header">
+                                    <div>
+                                        <h5><i class="feather icon-map mr-2"></i>Distribución territorial TIC</h5>
+                                        <p>Selecciona un municipio para consultar su información tecnológica detallada.</p>
+                                    </div>
+                                </div>
+
+                                <div class="card-body">
+                            <div id="contenido-mapa" class="santander munis">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 788.66 885.68" style="width:100%;height:auto;display:block;">
 
                                     <?php foreach ($santander as $key => $value) : ?>
@@ -275,6 +364,8 @@ $santander =  $arr['output']['response'];
                                     <?php require_once 'nombres_mapa_santander.php' ?>
                                 </svg>
                             </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -287,9 +378,9 @@ $santander =  $arr['output']['response'];
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modalGeocalizacionTitle">Geolocalización <span
+                                <h5 class="modal-title" id="modalGeocalizacionTitle"><i class="feather icon-map-pin mr-2"></i>Geolocalización <span
                                         id="nombrePilar"></span></h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span
                                         aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
@@ -404,41 +495,3 @@ $santander =  $arr['output']['response'];
 
 </html>
 
-<style>
-    .content-map {
-        background-color: #ffffff !important;
-        padding: 20px 0;
-    }
-
-
-    #mapa {
-        background-color: transparent;
-        background-repeat: no-repeat;
-        background-position: center;
-        width: 100%;
-        height: auto;
-        margin: 0 auto;
-        text-align: center;
-        padding: 0.1px 0;
-    }
-
-    #mapa svg {
-        max-width: 950px;
-
-        width: 100%;
-
-    }
-
-    #mapa svg path {
-        fill: #fff;
-        transition: all .4s;
-    }
-
-    #mapa svg path:hover {
-        fill: #636363
-    }
-
-    #mapa img {
-        position: absolute;
-    }
-</style>

@@ -14,7 +14,9 @@ $arrData = $arr;
 
 ?>
 
-<body class="">
+<link href="assets/css/detalle_proyectos_secretaria_gob360.css" rel="stylesheet">
+
+<body class="gob360-project-detail">
     <!-- [ Pre-loader ] start -->
     <div class="loader-bg">
         <div class="loader-track">
@@ -43,7 +45,7 @@ $arrData = $arr;
 
                         <div class="col-md-12">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="m-b-10">Detalle Proyectos Secretarías </h5>
+                                <h5 class="m-b-10">Detalle de Proyectos</h5>
 <?php include './admin/include/btn_back.php'; ?>
                             </div>
                             <ul class="breadcrumb">
@@ -59,24 +61,72 @@ $arrData = $arr;
                 </div>
             </div>
             <!-- [ breadcrumb ] end -->
+
+            <section class="g360-project-detail-hero" aria-label="Detalle de proyectos por secretaría GOB360">
+                <div class="g360-project-detail-hero__grid">
+                    <div>
+                        <img src="assets/img/gob360l.png" alt="Logo GOB360" class="g360-project-detail-hero__logo">
+                    </div>
+
+                    <div>
+                        <div class="g360-project-detail-hero__eyebrow">
+                            <i class="feather icon-folder"></i>
+                            Seguimiento institucional de proyectos
+                        </div>
+
+                        <h1 class="g360-project-detail-hero__title">Detalle de Proyectos</h1>
+
+                        <p class="g360-project-detail-hero__description">
+                            Consulta los proyectos asociados a la secretaría, revisa su valor,
+                            municipio, fecha de entrega, estado y niveles de ejecución física y financiera.
+                        </p>
+
+                        <div class="g360-project-detail-hero__chips">
+                            <span class="g360-chip g360-chip--success">
+                                <i class="feather icon-check-circle"></i>
+                                Seguimiento consolidado
+                            </span>
+                            <span class="g360-chip">
+                                <i class="feather icon-trending-up"></i>
+                                Avance de ejecución
+                            </span>
+                            <span class="g360-chip">
+                                <i class="feather icon-dollar-sign"></i>
+                                Control financiero
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="g360-project-detail-hero__visual" aria-hidden="true">
+                        <div class="g360-mini-card"><i class="feather icon-map-pin"></i><span>Municipio</span></div>
+                        <div class="g360-mini-card"><i class="feather icon-calendar"></i><span>Entrega</span></div>
+                        <div class="g360-mini-card"><i class="feather icon-activity"></i><span>Ejecución</span></div>
+                        <div class="g360-mini-card"><i class="feather icon-dollar-sign"></i><span>Financiero</span></div>
+                    </div>
+                </div>
+            </section>
+
             <!-- [ Main Content ] start -->
             <div class="row">
 
                 <!-- prject ,team member start -->
                 <div class="col-xl-12 col-md-12">
-                    <div class="card">
+                    <div class="card g360-project-detail-card">
                         <div class="card-header">
-                            <h5>Detalle Proyectos por Secretarías</h5>
+                            <div>
+                                <h5>Proyectos asociados a la secretaría</h5>
+                                <p>Consulta el detalle y abre cada proyecto para revisar su información completa.</p>
+                            </div>
                             <div class="card-header-right">
                                 <div class="btn-group card-option">
                                     <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="feather icon-more-horizontal"></i>
                                     </button>
                                     <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                                        <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
-                                        <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
-                                        <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
-                                        <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
+                                        <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> Maximizar</span><span style="display:none"><i class="feather icon-minimize"></i> Restaurar</span></a></li>
+                                        <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> Colapsar</span><span style="display:none"><i class="feather icon-plus"></i> Expandir</span></a></li>
+                                        <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> Recargar</a></li>
+                                        <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> Eliminar</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -84,12 +134,29 @@ $arrData = $arr;
                         <div class="card-body">
                             <div class="col-lg-12">
                                 <div class="card-body table-border-style">
+
+                                    <div class="g360-detail-guide">
+                                        <div class="g360-detail-guide__content">
+                                            <span class="g360-detail-guide__icon">
+                                                <i class="feather icon-info"></i>
+                                            </span>
+                                            <div>
+                                                <h6>Seguimiento por proyecto</h6>
+                                                <p>Usa el botón de visualización para abrir el detalle individual de cada registro.</p>
+                                            </div>
+                                        </div>
+                                        <span class="g360-detail-guide__badge">
+                                            <i class="feather icon-eye"></i>
+                                            Acceso al expediente
+                                        </span>
+                                    </div>
+
                                     <!-- Tabla de datos -->
                                     <div class="table-responsive">
                                         <table id="dynamictable" class="table table-hover mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th>Acciones</th>
+                                                    <th>Ver detalle</th>
                                                     <th>Item</th>
                                                     <th>Municipio</th>
                                                     <th>Secretaría</th>
@@ -98,8 +165,8 @@ $arrData = $arr;
                                                     <th>Valor Proyecto</th>
                                                     <th>Fecha Entrega</th>
                                                     <th>Estado</th>
-                                                    <th>Porcentaje Ejecución</th>
-                                                    <th>Porcentaje Financiero</th>
+                                                    <th>Ejecución física</th>
+                                                    <th>Ejecución financiera</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -110,7 +177,7 @@ $arrData = $arr;
                                                 ?>
                                                         <tr>
                                                             <td>
-                                                                <button type="button" id="<?php echo $arr[$i]['id']; ?>" title="Editar"
+                                                                <button type="button" id="<?php echo $arr[$i]['id']; ?>" title="Ver detalle del proyecto"
                                                                     onclick="location.href='detalle_proyectos_Secretarias.php?id=<?php echo $arr[$i]['id']; ?>&nombre=<?php echo $arr[$i]['nombre']; ?>'"
                                                                     class="btn btn-sm btn-outline-success">
                                                                     <i data-feather="eye" width="16" height="16"></i>
@@ -137,7 +204,7 @@ $arrData = $arr;
                                                                         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header text-center w-100">
-                                                                                    <h5 class="modal-title mx-auto" id="modalLabel_<?php echo $idProyecto; ?>">Nombre del Proyecto</h5>
+                                                                                    <h5 class="modal-title mx-auto" id="modalLabel_<?php echo $idProyecto; ?>">Nombre completo del proyecto</h5>
                                                                                     <button type="button" class="close position-absolute" style="right: 1rem;" data-dismiss="modal" aria-label="Cerrar">
                                                                                         <span aria-hidden="true">&times;</span>
                                                                                     </button>

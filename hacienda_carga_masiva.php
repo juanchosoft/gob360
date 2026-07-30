@@ -5,140 +5,16 @@ require './admin/include/generic_classes.php';
 $modulo = 'Hacienda - Carga Masiva';
 ?>
 
-<body class="">
+<link href="assets/css/carga_masiva_hacienda_gob360.css" rel="stylesheet">
+
+<body class="gob360-hacienda-bulk">
     <div class="loader-bg">
         <div class="loader-track"><div class="loader-fill"></div></div>
     </div>
     <?php include './admin/include/navbar.php'; ?>
     <?php include './admin/include/header.php'; ?>
 
-<style>
-  :root{
-    --nav-blue:#20427F;
-    --nav-blue-2:#132b52;
-    --nav-blue-3:#2e58a8;
-    --bg:#f6f8fc;
-    --card:#ffffff;
-    --ink:#0f172a;
-    --muted:#64748b;
-    --line:rgba(15,23,42,.10);
-    --radius-xl:22px;
-    --radius-lg:16px;
-    --radius-md:12px;
-    --shadow-soft:0 12px 30px rgba(2,6,23,.10);
-    --shadow-mid:0 18px 40px rgba(2,6,23,.14);
-    --ring:0 0 0 4px rgba(46,88,168,.16);
-  }
-  body{ background: var(--bg) !important; }
-  .pcoded-main-container{ background: transparent !important; }
-  .pcoded-content{ padding-top: 18px !important; }
 
-  .page-block{
-    background: linear-gradient(135deg, rgba(32,66,127,.10), rgba(255,255,255,.72));
-    border: 1px solid rgba(255,255,255,.70);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-soft);
-    padding: 16px 18px;
-    backdrop-filter: blur(10px);
-  }
-  .page-block h5{ font-weight: 900 !important; letter-spacing: .2px; color: var(--ink); }
-  .breadcrumb{ margin-top: 6px !important; margin-bottom: 0 !important; background: transparent !important; padding: 0 !important; }
-  .breadcrumb .breadcrumb-item a{ color: var(--muted) !important; }
-  .breadcrumb .breadcrumb-item{ font-size: 13px; }
-
-  .card{ border: 1px solid var(--line) !important; border-radius: var(--radius-xl) !important; box-shadow: var(--shadow-soft); overflow: hidden; background: var(--card); }
-  .card-header{ border-bottom: 1px solid rgba(255,255,255,.10) !important; padding: 14px 16px !important; background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2)) !important; color: #fff !important; }
-  .card-header h5{ color:#fff !important; margin:0 !important; font-weight: 900 !important; }
-  .card-body{ background: linear-gradient(180deg, rgba(32,66,127,.04), rgba(255,255,255,1)); }
-
-  label.form-label, .form-group label{ font-weight: 800; color: var(--ink); margin-bottom: 8px; }
-  .form-control{ border-radius: 14px !important; border: 1px solid rgba(15,23,42,.14) !important; padding: 12px 12px !important; height: auto !important; box-shadow: none !important; transition: .18s ease; background: #fff !important; }
-  .form-control:focus{ border-color: rgba(46,88,168,.55) !important; box-shadow: var(--ring) !important; }
-
-  /* Zona de carga */
-  .drop-zone{
-    border: 2.5px dashed rgba(32,66,127,.30);
-    border-radius: var(--radius-lg);
-    background: rgba(32,66,127,.04);
-    padding: 40px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: .2s ease;
-    position: relative;
-  }
-  .drop-zone:hover, .drop-zone.drag-over{
-    border-color: var(--nav-blue);
-    background: rgba(32,66,127,.08);
-  }
-  .drop-zone input[type="file"]{ display: none; }
-  .drop-zone .dz-icon{ font-size: 48px; color: var(--nav-blue); opacity: .55; }
-  .drop-zone .dz-text{ color: var(--muted); font-size: 14px; margin-top: 10px; }
-  .drop-zone .dz-filename{ font-weight: 800; color: var(--nav-blue); margin-top: 8px; font-size: 13px; }
-
-  /* Botones */
-  .btn-hz-primary{
-    background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-3));
-    color: #fff !important;
-    border: none;
-    border-radius: 14px;
-    padding: 11px 22px;
-    font-weight: 800;
-    font-size: 14px;
-    transition: .18s ease;
-    box-shadow: 0 4px 14px rgba(32,66,127,.30);
-  }
-  .btn-hz-primary:hover{ transform: translateY(-1px); box-shadow: 0 8px 20px rgba(32,66,127,.38); }
-  .btn-hz-primary:disabled{ opacity: .55; transform: none; }
-
-  .btn-hz-outline{
-    background: #fff;
-    color: var(--nav-blue) !important;
-    border: 2px solid var(--nav-blue);
-    border-radius: 14px;
-    padding: 10px 22px;
-    font-weight: 800;
-    font-size: 14px;
-    transition: .18s ease;
-  }
-  .btn-hz-outline:hover{ background: rgba(32,66,127,.06); }
-
-  /* Tabla resultados */
-  .result-table{ font-size: 13px; }
-  .result-table th{ background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2)); color: #fff; font-weight: 800; }
-  .result-table .badge-ok{ background: #d1fae5; color: #065f46; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 700; }
-  .result-table .badge-err{ background: #fee2e2; color: #991b1b; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 700; }
-
-  /* Resumen */
-  .summary-box{
-    border-radius: var(--radius-lg);
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
-  }
-  .summary-box.ok{ background: #d1fae5; border: 1.5px solid #6ee7b7; }
-  .summary-box.warn{ background: #fef9c3; border: 1.5px solid #fde047; }
-  .summary-box.err{ background: #fee2e2; border: 1.5px solid #fca5a5; }
-  .summary-box .sb-num{ font-size: 28px; font-weight: 900; }
-  .summary-box .sb-label{ font-size: 13px; color: var(--muted); font-weight: 600; }
-
-  .spinner-border-sm{ width: 1rem; height: 1rem; }
-
-  /* Info steps */
-  .step-badge{
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: var(--nav-blue);
-    color: #fff;
-    font-weight: 900;
-    font-size: 13px;
-    flex-shrink: 0;
-  }
-  .step-row{ display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
-  .step-row p{ margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
-</style>
 
 <div class="pcoded-main-container">
   <div class="pcoded-content">
@@ -147,7 +23,7 @@ $modulo = 'Hacienda - Carga Masiva';
         <div class="row align-items-center">
           <div class="col-md-12">
             <div class="page-header-title">
-              <h5 class="m-b-10">Carga Masiva — Hacienda</h5>
+              <h5 class="m-b-10">Carga masiva de Hacienda</h5>
             </div>
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
@@ -159,15 +35,86 @@ $modulo = 'Hacienda - Carga Masiva';
       </div>
     </div>
 
+    <!-- HERO VISUAL GOB360 -->
+    <section class="g360-bulk-hero" aria-label="Carga masiva de Hacienda GOB360">
+      <div class="g360-bulk-hero__grid">
+
+        <div>
+          <img
+            src="assets/img/gob360l.png"
+            alt="Logo GOB360"
+            class="g360-bulk-hero__logo"
+          >
+        </div>
+
+        <div>
+          <div class="g360-bulk-hero__eyebrow">
+            <i class="feather icon-upload-cloud"></i>
+            Automatización fiscal
+          </div>
+
+          <h1 class="g360-bulk-hero__title">
+            Carga masiva de Hacienda
+          </h1>
+
+          <p class="g360-bulk-hero__description">
+            Descarga la plantilla correspondiente, completa los registros y
+            procesa el archivo Excel para importar información de operativos
+            GOA con validación individual de cada fila.
+          </p>
+
+          <div class="g360-bulk-hero__chips">
+            <span class="g360-chip g360-chip--success">
+              <i class="feather icon-check-circle"></i>
+              Validación por registro
+            </span>
+
+            <span class="g360-chip">
+              <i class="feather icon-file-text"></i>
+              Plantilla por acción
+            </span>
+
+            <span class="g360-chip">
+              <i class="feather icon-alert-triangle"></i>
+              Reporte de errores
+            </span>
+          </div>
+        </div>
+
+        <div class="g360-bulk-hero__visual" aria-hidden="true">
+          <div class="g360-mini-card">
+            <i class="feather icon-list"></i>
+            <span>Acción</span>
+          </div>
+
+          <div class="g360-mini-card">
+            <i class="feather icon-download"></i>
+            <span>Plantilla</span>
+          </div>
+
+          <div class="g360-mini-card">
+            <i class="feather icon-upload"></i>
+            <span>Carga</span>
+          </div>
+
+          <div class="g360-mini-card">
+            <i class="feather icon-check-square"></i>
+            <span>Resultado</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <div class="row">
 
       <!-- Columna izquierda: instrucciones + formulario -->
       <div class="col-lg-5 col-xl-4">
 
         <!-- Pasos -->
-        <div class="card mb-3">
+        <div class="card mb-3 g360-bulk-card">
           <div class="card-header">
-            <h5><i class="feather icon-info mr-2"></i> ¿Cómo funciona?</h5>
+            <h5><i class="feather icon-info mr-2"></i>Proceso de importación</h5>
           </div>
           <div class="card-body p-3">
             <div class="step-row">
@@ -190,9 +137,12 @@ $modulo = 'Hacienda - Carga Masiva';
         </div>
 
         <!-- Formulario -->
-        <div class="card">
+        <div class="card g360-bulk-card">
           <div class="card-header">
-            <h5><i class="feather icon-upload-cloud mr-2"></i> Cargar Archivo</h5>
+            <div>
+              <h5><i class="feather icon-upload-cloud mr-2"></i>Cargar archivo Excel</h5>
+              <p>Selecciona la acción, descarga la plantilla y procesa el archivo diligenciado.</p>
+            </div>
           </div>
           <div class="card-body p-3">
             <div class="form-group mb-3">
@@ -209,7 +159,7 @@ $modulo = 'Hacienda - Carga Masiva';
 
             <div class="mb-3" id="wrapPlantilla" style="display:none;">
               <a id="btnDescarga" href="#" target="_blank" class="btn-hz-outline d-block text-center text-decoration-none py-2">
-                <i class="feather icon-download mr-1"></i> Descargar Plantilla Excel
+                <i class="feather icon-download mr-1"></i> Descargar plantilla Excel
               </a>
             </div>
 
@@ -224,9 +174,9 @@ $modulo = 'Hacienda - Carga Masiva';
             </div>
 
             <button id="btnSubir" class="btn-hz-primary w-100 mt-1" disabled>
-              <span id="btnSubirText"><i class="feather icon-upload mr-1"></i> Procesar Carga</span>
+              <span id="btnSubirText"><i class="feather icon-upload mr-1"></i> Procesar carga</span>
               <span id="btnSubirSpinner" style="display:none;">
-                <span class="spinner-border spinner-border-sm mr-1"></span> Procesando...
+                <span class="spinner-border spinner-border-sm mr-1"></span> Procesando archivo...
               </span>
             </button>
           </div>
@@ -235,9 +185,9 @@ $modulo = 'Hacienda - Carga Masiva';
 
       <!-- Columna derecha: resultados -->
       <div class="col-lg-7 col-xl-8">
-        <div class="card" id="cardResultados" style="display:none;">
+        <div class="card g360-bulk-card g360-results-card" id="cardResultados" style="display:none;">
           <div class="card-header">
-            <h5><i class="feather icon-check-circle mr-2"></i> Resultado de la Carga</h5>
+            <div><h5><i class="feather icon-check-circle mr-2"></i>Resultado de la carga</h5><p>Resumen de registros procesados y detalle de validaciones.</p></div>
           </div>
           <div class="card-body p-3">
 
@@ -247,7 +197,7 @@ $modulo = 'Hacienda - Carga Masiva';
             <!-- Tabla de errores -->
             <div id="erroresWrap" style="display:none;">
               <h6 class="font-weight-bold mb-2" style="color:#991b1b;">
-                <i class="feather icon-alert-triangle mr-1"></i> Filas con error
+                <i class="feather icon-alert-triangle mr-1"></i> Registros con error
               </h6>
               <div class="table-responsive">
                 <table class="table result-table table-bordered">
@@ -271,10 +221,10 @@ $modulo = 'Hacienda - Carga Masiva';
         </div>
 
         <!-- Estado vacío -->
-        <div class="card" id="cardVacio">
+        <div class="card g360-bulk-card g360-empty-card" id="cardVacio">
           <div class="card-body text-center py-5">
-            <i class="feather icon-layers" style="font-size:64px;color:rgba(32,66,127,.18);"></i>
-            <p class="mt-3 mb-0" style="color:var(--muted);font-size:15px;">Selecciona una acción y sube tu archivo para ver los resultados aquí.</p>
+            <div class="g360-empty-icon"><i class="feather icon-layers"></i></div>
+            <p class="mt-3 mb-0" style="color:var(--muted);font-size:15px;">Selecciona una acción, descarga la plantilla y procesa el archivo para visualizar aquí el resultado de la importación.</p>
           </div>
         </div>
       </div>

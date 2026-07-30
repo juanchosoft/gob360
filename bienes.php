@@ -50,293 +50,11 @@ foreach ($arrSecret as $val) {
     }
 }
 ?>
-<style>
-  :root{
-    --nav-blue:#20427F;
-    --nav-blue-2:#132b52;
-    --nav-blue-3:#2e58a8;
 
-    --white:#fff;
-    --ink:#0f172a;
-    --muted:#64748b;
 
-    --card:#ffffff;
-    --soft:#f6f8ff;
+<link href="assets/css/gestion_bienes_administrativos_gob360.css" rel="stylesheet">
 
-    --radius-xl:22px;
-    --radius-lg:16px;
-    --radius-md:12px;
-
-    --shadow-soft: 0 12px 30px rgba(2, 6, 23, .12);
-    --shadow-mid:  0 18px 40px rgba(2, 6, 23, .18);
-
-    --ring: 0 0 0 .22rem rgba(46, 88, 168, .22);
-  }
-
-  /* ====== Fix: separación vs header ====== */
-  .pcoded-main-container{ padding-top: 0 !important; }
-  .pcoded-content{ padding-top: 18px !important; }
-
-  /* ====== Hero / breadcrumb estilo SaaS ====== */
-  .page-header .page-block{
-    background: radial-gradient(1200px 300px at 10% 0%, rgba(46,88,168,.28), transparent 55%),
-                linear-gradient(135deg, rgba(32,66,127,.10), rgba(19,43,82,.06));
-    border: 1px solid rgba(32,66,127,.10);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-soft);
-    padding: 18px 18px;
-  }
-  .page-header h5{
-    color: var(--ink);
-    font-weight: 800;
-    letter-spacing: .2px;
-  }
-  .page-header .breadcrumb{
-    background: transparent;
-    margin-bottom: 0;
-    padding: 0;
-  }
-  .page-header .breadcrumb-item a{ color: var(--muted); }
-  .page-header .breadcrumb-item.active{ color: var(--ink); }
-  .page-header .feather{ color: var(--nav-blue); }
-
-  /* ====== Tabs pro (pill) ====== */
-  .nav-tabs{
-    border: 0 !important;
-    gap: 10px;
-    margin-top: 14px;
-  }
-  .nav-tabs .nav-link{
-    border: 1px solid rgba(15, 23, 42, .10) !important;
-    border-radius: 999px !important;
-    padding: .55rem 1rem;
-    color: var(--muted);
-    background: #fff;
-    box-shadow: 0 8px 18px rgba(2,6,23,.06);
-    transition: all .18s ease;
-    font-weight: 700;
-  }
-  .nav-tabs .nav-link:hover{
-    transform: translateY(-1px);
-    border-color: rgba(32,66,127,.22) !important;
-  }
-  .nav-tabs .nav-link.active{
-    color: #fff !important;
-    background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2)) !important;
-    border-color: transparent !important;
-    box-shadow: 0 14px 26px rgba(19,43,82,.22);
-  }
-
-  /* ====== Cards premium ====== */
-  .card{
-    border: 1px solid rgba(15,23,42,.10) !important;
-    border-radius: var(--radius-xl) !important;
-    box-shadow: var(--shadow-soft);
-    overflow: hidden;
-  }
-  .card-header{
-    background: linear-gradient(135deg, rgba(32,66,127,.10), rgba(19,43,82,.06)) !important;
-    border-bottom: 1px solid rgba(15,23,42,.08) !important;
-  }
-  .card-header h5{
-    font-weight: 800;
-    color: var(--ink);
-    letter-spacing: .2px;
-  }
-  .card-body.m-4{ margin: 0 !important; padding: 18px !important; }
-
-  /* ====== Form UI pro ====== */
-  label{
-    font-weight: 800;
-    color: var(--ink);
-    margin-bottom: .35rem;
-  }
-  .form-control{
-    border-radius: 14px !important;
-    border: 1px solid rgba(15,23,42,.12) !important;
-    padding: .65rem .85rem;
-    box-shadow: none !important;
-    transition: all .15s ease;
-    background: #fff;
-  }
-  .form-control:focus{
-    border-color: rgba(46,88,168,.55) !important;
-    box-shadow: var(--ring) !important;
-  }
-  textarea.form-control{ min-height: 92px; }
-
-  .soft-panel{
-    background: radial-gradient(900px 200px at 20% 0%, rgba(32,66,127,.10), transparent 60%),
-                linear-gradient(135deg, rgba(15,23,42,.02), rgba(15,23,42,.00));
-    border: 1px dashed rgba(32,66,127,.22);
-    border-radius: var(--radius-xl);
-    padding: 14px;
-  }
-
-  /* ====== Botones pro ====== */
-  .btn{
-    border-radius: 14px !important;
-    font-weight: 800;
-    letter-spacing: .2px;
-  }
-  .btn-primary{
-    background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2)) !important;
-    border: none !important;
-    box-shadow: 0 12px 22px rgba(19,43,82,.22);
-  }
-  .btn-primary:hover{ transform: translateY(-1px); }
-  .btn-danger{
-    border: none !important;
-    box-shadow: 0 12px 22px rgba(239,68,68,.18);
-  }
-  .btn-secondary{
-    border: 1px solid rgba(15,23,42,.12) !important;
-    background: #fff !important;
-    color: var(--ink) !important;
-  }
-
-  /* ====== Tile geolocalización ====== */
-  .geo-tile{
-    width: 100%;
-    height: 84px;
-    border-radius: 18px;
-    border: 1px solid rgba(32,66,127,.18);
-    background: linear-gradient(135deg, rgba(32,66,127,.12), rgba(19,43,82,.06));
-    box-shadow: 0 14px 26px rgba(2,6,23,.10);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transition: all .18s ease;
-  }
-  .geo-tile:hover{ transform: translateY(-1px); }
-  .geo-tile img{
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
-    filter: drop-shadow(0 10px 20px rgba(19,43,82,.18));
-  }
-  .geo-tile span{
-    font-weight: 900;
-    color: var(--ink);
-    line-height: 1.05;
-  }
-  .geo-sub{
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 700;
-  }
-
-  /* ====== Upload iframes más limpios ====== */
-  iframe{
-    border-radius: 14px;
-    border: 1px solid rgba(15,23,42,.12);
-    background: #fff;
-  }
-
-  /* ====== Tabla premium (compacta) ====== */
-  .table-responsive{ border-radius: var(--radius-xl); overflow: hidden; }
-  table.table{
-    margin-bottom: 0;
-    font-size: 12px; /* letra más pequeña */
-  }
-  table.table thead th{
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2));
-    color: #fff;
-    font-weight: 900;
-    border-bottom: 0 !important;
-    white-space: nowrap;
-  }
-  table.table td{
-    vertical-align: middle !important;
-    color: #0f172a;
-  }
-  .table-striped tbody tr:nth-of-type(odd){
-    background: rgba(246,248,255,.55);
-  }
-
-  /* acciones compactas */
-  .btn-ico{
-    width: 34px;
-    height: 34px;
-    padding: 0 !important;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px !important;
-  }
-
-  .photo-links a{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 10px;
-    border: 1px solid rgba(32,66,127,.18);
-    background: #fff;
-    margin-right: 6px;
-    box-shadow: 0 10px 18px rgba(2,6,23,.08);
-  }
-  .photo-links i{ color: var(--nav-blue); }
-
-  /* ====== Modal mapa estilo header ====== */
-  #modalGeocalizacion .modal-content{
-    border: 0 !important;
-    border-radius: 22px !important;
-    overflow: hidden;
-    box-shadow: var(--shadow-mid);
-  }
-  #modalGeocalizacion .modal-header{
-    background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2)) !important;
-    color: #fff !important;
-    border-bottom: 0 !important;
-  }
-  #modalGeocalizacion .modal-title{ font-weight: 900; }
-  #modalGeocalizacion .close{ color: #fff; opacity: .95; }
-  #modalGeocalizacion .modal-body{
-    background: radial-gradient(1000px 240px at 10% 0%, rgba(32,66,127,.12), transparent 60%),
-                #fff;
-  }
-  #modalGeocalizacion .controls{
-    display:flex;
-    flex-wrap:wrap;
-    gap: 10px 14px;
-    margin-top: 12px;
-    padding: 12px;
-    border-radius: 16px;
-    border: 1px solid rgba(15,23,42,.10);
-    background: rgba(246,248,255,.65);
-  }
-  #modalGeocalizacion .controls label{
-    display:flex;
-    align-items:center;
-    gap: 8px;
-    font-weight: 800;
-    color: var(--ink);
-    margin: 0;
-  }
-  #modalGeocalizacion .coordinates{
-    margin-top: 12px;
-    padding: 12px;
-    border-radius: 16px;
-    border: 1px solid rgba(15,23,42,.10);
-    background: #fff;
-    font-weight: 800;
-    color: var(--ink);
-  }
-
-  /* ====== pequeños ajustes responsive ====== */
-  @media (max-width: 992px){
-    .card-body.m-4{ padding: 14px !important; }
-    .page-header .page-block{ padding: 14px; }
-  }
-</style>
-
-<body class="">
+<body class="gob360-assets-management">
 
   <!-- [ Pre-loader ] start -->
   <div class="loader-bg">
@@ -364,9 +82,9 @@ foreach ($arrSecret as $val) {
             <div class="col-md-12">
               <div class="d-flex flex-wrap justify-content-between align-items-center" style="gap:10px;">
                 <div>
-                  <h5 class="m-b-10 mb-1">Información administrativa</h5>
+                  <h5 class="m-b-10 mb-1">Gestión de bienes administrativos</h5>
                   <div class="text-muted" style="font-weight:700; font-size:12px;">
-                    Gestión de bienes inmuebles • control, responsables y geolocalización
+                    Registro, inventario, responsables, evidencias y geolocalización institucional
                   </div>
                 </div>
                 <div class="ml-auto">
@@ -379,7 +97,7 @@ foreach ($arrSecret as $val) {
                   <a href="index.php"><i class="feather icon-home"></i></a>
                 </li>
                 <li class="breadcrumb-item">
-                  <a href="#!">Configuración General / Información administrativa</a>
+                  <a href="#!">Secretaría Administrativa / Gestión de bienes</a>
                 </li>
               </ul>
             </div>
@@ -387,18 +105,91 @@ foreach ($arrSecret as $val) {
         </div>
       </div>
 
+      <!-- HERO VISUAL GOB360 -->
+      <section class="g360-assets-hero" aria-label="Gestión de bienes administrativos GOB360">
+        <div class="g360-assets-hero__grid">
+
+          <div>
+            <img
+              src="assets/img/gob360l.png"
+              alt="Logo GOB360"
+              class="g360-assets-hero__logo"
+            >
+          </div>
+
+          <div>
+            <div class="g360-assets-hero__eyebrow">
+              <i class="feather icon-archive"></i>
+              Gestión administrativa institucional
+            </div>
+
+            <h1 class="g360-assets-hero__title">
+              Control de bienes administrativos
+            </h1>
+
+            <p class="g360-assets-hero__description">
+              Registra, ubica y consulta los bienes de la entidad mediante
+              información de control, responsable, costo, dependencia,
+              evidencias fotográficas y geolocalización.
+            </p>
+
+            <div class="g360-assets-hero__chips">
+              <span class="g360-chip g360-chip--success">
+                <i class="feather icon-check-circle"></i>
+                Registro centralizado
+              </span>
+
+              <span class="g360-chip">
+                <i class="feather icon-map-pin"></i>
+                Geolocalización
+              </span>
+
+              <span class="g360-chip">
+                <i class="feather icon-image"></i>
+                Evidencias fotográficas
+              </span>
+            </div>
+          </div>
+
+          <div class="g360-assets-hero__visual" aria-hidden="true">
+            <div class="g360-mini-card">
+              <i class="feather icon-tag"></i>
+              <span>Control</span>
+            </div>
+
+            <div class="g360-mini-card">
+              <i class="feather icon-dollar-sign"></i>
+              <span>Valor</span>
+            </div>
+
+            <div class="g360-mini-card">
+              <i class="feather icon-user-check"></i>
+              <span>Responsable</span>
+            </div>
+
+            <div class="g360-mini-card">
+              <i class="feather icon-map"></i>
+              <span>Ubicación</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       <!-- Tabs -->
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <ul class="nav nav-tabs g360-assets-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#home" type="button"
             role="tab" aria-controls="home" aria-selected="true" onclick="emptyDataForm();">
-            Ingresar Información
+            <i class="feather icon-plus-circle"></i>
+            Registrar bien
           </button>
         </li>
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#profile" type="button"
             role="tab" aria-controls="profile" aria-selected="false">
-            Listado
+            <i class="feather icon-list"></i>
+            Consultar bienes
           </button>
         </li>
       </ul>
@@ -406,9 +197,13 @@ foreach ($arrSecret as $val) {
       <div class="tab-content" id="myTabContent">
         <!-- TAB 1 -->
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-          <div class="card mt-3">
+          <div class="card mt-3 g360-assets-card g360-assets-form-card">
             <div class="card-header d-flex flex-wrap align-items-center justify-content-between py-3">
-              <h5 class="mb-0 text-center w-100">Formulario Información administrativa</h5>
+              <div>
+                <h5>Registro de información administrativa</h5>
+                <p>Completa la identificación, ubicación, responsable y evidencias del bien.</p>
+              </div>
+
               <div class="card-header-right ml-auto">
                 <div class="btn-group card-option">
                   <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -440,8 +235,8 @@ foreach ($arrSecret as $val) {
                 <div class="soft-panel mb-3">
                   <div class="row">
                     <div class="col-12" style="font-weight:900;color:var(--ink);">
-                      Datos de control
-                      <div class="text-muted" style="font-weight:700;font-size:12px;">Completa los campos obligatorios para registrar el bien.</div>
+                      <i class="feather icon-tag mr-2"></i>Identificación y control
+                      <div class="text-muted">Código interno, calcomanía, costo y ubicación institucional.</div>
                     </div>
                   </div>
                 </div>
@@ -506,8 +301,8 @@ foreach ($arrSecret as $val) {
                 <div class="soft-panel mb-3">
                   <div class="row">
                     <div class="col-12" style="font-weight:900;color:var(--ink);">
-                      Responsable y descripción
-                      <div class="text-muted" style="font-weight:700;font-size:12px;">Asigna dependencia, identificación y responsable del bien.</div>
+                      <i class="feather icon-user-check mr-2"></i>Responsable y descripción
+                      <div class="text-muted">Asigna la dependencia, identificación, responsable y detalle del artículo.</div>
                     </div>
                   </div>
                 </div>
@@ -544,8 +339,8 @@ foreach ($arrSecret as $val) {
                 <div class="soft-panel mb-3">
                   <div class="row">
                     <div class="col-12" style="font-weight:900;color:var(--ink);">
-                      Evidencias fotográficas
-                      <div class="text-muted" style="font-weight:700;font-size:12px;">Carga hasta 4 fotos del bien (si aplica).</div>
+                      <i class="feather icon-camera mr-2"></i>Evidencias fotográficas
+                      <div class="text-muted">Adjunta hasta cuatro imágenes que permitan verificar el estado del bien.</div>
                     </div>
                   </div>
                 </div>
@@ -577,13 +372,16 @@ foreach ($arrSecret as $val) {
                   </div>
                 </div>
 
-                <div class="form-row pt-3">
+                <div class="form-row pt-3 g360-form-actions">
                   <div class="col text-center">
                     <button type="button" onclick="UTIL.clearForm('formbienes');" class="btn btn-danger mr-2">
+                      <i class="feather icon-x-circle"></i>
                       Cancelar
                     </button>
+
                     <button type="button" id="createBienes" onclick="BIENES.validateData();" class="btn btn-primary">
-                      Guardar
+                      <i class="feather icon-save"></i>
+                      Guardar bien
                     </button>
                   </div>
                 </div>
@@ -595,9 +393,13 @@ foreach ($arrSecret as $val) {
 
         <!-- TAB 2 -->
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-          <div class="card mt-3">
+          <div class="card mt-3 g360-assets-card g360-assets-list-card">
             <div class="card-header d-flex flex-wrap align-items-center justify-content-between py-3">
-              <h5 class="mb-0 text-center w-100">Listado Relación Bienes Inmuebles</h5>
+              <div>
+                <h5>Inventario de bienes administrativos</h5>
+                <p>Consulta los registros, fotografías y abre cada elemento para su edición.</p>
+              </div>
+
               <div class="card-header-right ml-auto">
                 <div class="btn-group card-option">
                   <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -693,8 +495,8 @@ foreach ($arrSecret as $val) {
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="modalGeocalizacionTitle">Geolocalización</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <h5 class="modal-title" id="modalGeocalizacionTitle"><i class="feather icon-map-pin mr-2"></i>Geolocalización del bien</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>

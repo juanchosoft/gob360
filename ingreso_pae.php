@@ -29,385 +29,13 @@ foreach ($arrDep as $val) {
 
 
 ?>
-<style>
-  :root{
-    --nav-blue:#20427F;
-    --nav-blue-2:#132b52;
-    --nav-blue-3:#2e58a8;
-
-    --bg:#f6f8fc;
-    --card:#ffffff;
-    --ink:#0f172a;
-    --muted:#64748b;
-    --line:rgba(15,23,42,.10);
-
-    --radius-xl:22px;
-    --radius-lg:16px;
-    --radius-md:12px;
-
-    --shadow-soft:0 12px 30px rgba(2,6,23,.10);
-    --shadow-mid:0 18px 40px rgba(2,6,23,.14);
-
-    --ring: 0 0 0 4px rgba(46,88,168,.16);
-  }
-
-  body{ background:var(--bg) !important; }
-  .pcoded-main-container{ background:transparent !important; }
-  .pcoded-content{ padding-top:18px !important; }
-
-  /* ===== Page header SaaS ===== */
-  .page-header{ margin-bottom:16px !important; }
-  .page-block{
-    background: linear-gradient(135deg, rgba(32,66,127,.10), rgba(255,255,255,.72));
-    border: 1px solid rgba(255,255,255,.72);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-soft);
-    padding: 16px 18px;
-    backdrop-filter: blur(10px);
-  }
-  .page-block h5{
-    font-weight: 900 !important;
-    letter-spacing: .2px;
-    color: var(--ink);
-    margin: 0 !important;
-  }
-  .breadcrumb{
-    margin-top: 6px !important;
-    margin-bottom: 0 !important;
-    background: transparent !important;
-    padding: 0 !important;
-  }
-  .breadcrumb .breadcrumb-item{ font-size: 13px; }
-  .breadcrumb .breadcrumb-item a{ color: var(--muted) !important; }
-
-  /* ===== Cards Pro ===== */
-  .card{
-    border: 1px solid var(--line) !important;
-    border-radius: var(--radius-xl) !important;
-    box-shadow: var(--shadow-soft);
-    background: var(--card);
-    overflow: hidden;
-  }
-  .card-header{
-    padding: 14px 16px !important;
-    border-bottom: 1px solid rgba(255,255,255,.12) !important;
-    background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2)) !important;
-    color: #fff !important;
-  }
-  .card-header h5, .card-header h6{
-    margin: 0 !important;
-    color: #fff !important;
-    font-weight: 900 !important;
-    letter-spacing: .2px;
-  }
-  .card-body{
-    padding: 18px !important;
-    background:
-      radial-gradient(circle at 20% 10%, rgba(46,88,168,.06), transparent 40%),
-      radial-gradient(circle at 80% 20%, rgba(32,66,127,.06), transparent 45%),
-      linear-gradient(180deg, rgba(255,255,255,1), rgba(246,248,252,1));
-  }
-
-  /* ===== Secciones internas (sub-headers) ===== */
-  .pae-section{
-    margin-top: 14px;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(15,23,42,.10);
-    overflow: hidden;
-    background: rgba(255,255,255,.85);
-  }
-  .pae-section .pae-section-title{
-    padding: 12px 14px;
-    background: linear-gradient(135deg, rgba(32,66,127,.10), rgba(255,255,255,.70));
-    border-bottom: 1px solid rgba(15,23,42,.10);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap: 10px;
-  }
-  .pae-section .pae-section-title .ttl{
-    font-weight: 900;
-    color: var(--ink);
-    margin: 0;
-    letter-spacing: .2px;
-  }
-  .pae-chip{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:6px 10px;
-    border-radius: 999px;
-    font-weight: 900;
-    font-size: 12px;
-    border: 1px solid rgba(15,23,42,.12);
-    background: rgba(255,255,255,.85);
-    color: var(--muted);
-  }
-
-  /* ===== Form Pro ===== */
-  .form-group label{
-    font-weight: 800 !important;
-    color: var(--ink);
-    margin-bottom: 8px;
-  }
-  .form-control, select.form-control, textarea.form-control{
-    border-radius: 14px !important;
-    border: 1px solid rgba(15,23,42,.14) !important;
-    padding: 12px 12px !important;
-    height: auto !important;
-    box-shadow: none !important;
-    background: #fff !important;
-    transition: border-color .18s ease, box-shadow .18s ease;
-  }
-  .form-control:focus{
-    border-color: rgba(46,88,168,.60) !important;
-    box-shadow: var(--ring) !important;
-  }
-
-  /* Select “visita” pro (sin amarillo feo) */
-  #visita{
-    background: linear-gradient(180deg, rgba(246,192,38,.25), rgba(255,255,255,1)) !important;
-    border-color: rgba(246,192,38,.55) !important;
-    font-weight: 900 !important;
-  }
-
-  /* ===== Helper: layout del form ===== */
-  .pae-form-grid .form-group{ margin-bottom: 14px; }
-
-  /* ===== Camera / Signature cards pro ===== */
-  .camera-card .card-body,
-  .sign-card .card-body{
-    background: rgba(255,255,255,.92) !important;
-  }
-
-  .video-preview{
-    width: 100% !important;
-    max-width: 420px;
-    max-height: 240px;
-    object-fit: cover;
-    margin: 0 auto;
-    display: block;
-    border-radius: 14px;
-    border: 1px solid rgba(15,23,42,.10);
-  }
-
-  #canvas{
-    border-radius: 14px !important;
-    border: 1px solid rgba(15,23,42,.10) !important;
-    overflow: hidden;
-  }
-
-  #signature-pad{
-    border-radius: 14px !important;
-    border: 1px solid rgba(15,23,42,.10) !important;
-    background: #fff;
-  }
-
-  /* Fotos tomadas */
-  #contenedorFotosTomadas{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    overflow-x:auto;
-    padding-top: 8px;
-  }
-  .foto-tomada{
-    flex:0 0 auto;
-    text-align:center;
-    border-radius: 14px;
-    border: 1px solid rgba(15,23,42,.10);
-    padding: 10px;
-    background: #fff;
-    box-shadow: 0 10px 22px rgba(2,6,23,.08);
-  }
-
-  /* ===== Botones SaaS (sin “saltos”) ===== */
-  .btn{
-    border-radius: 14px !important;
-    font-weight: 900 !important;
-    letter-spacing: .2px;
-    padding: 10px 14px !important;
-    border: none !important;
-    box-shadow: 0 10px 20px rgba(2,6,23,.12);
-    transition: box-shadow .18s ease, filter .18s ease;
-  }
-  .btn:hover{ transform:none !important; box-shadow: 0 14px 26px rgba(2,6,23,.16); filter: brightness(.98); }
-  .btn:active{ transform:none !important; }
-
-  .btn-primary{
-    background: linear-gradient(135deg, var(--nav-blue-3), var(--nav-blue)) !important;
-  }
-  .btn-danger{
-    background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
-  }
-  .btn-outline-dark{
-    border: 1px solid rgba(15,23,42,.20) !important;
-    background: #fff !important;
-    color: var(--ink) !important;
-    box-shadow: none !important;
-  }
-  .btn-outline-dark:hover{
-    background: rgba(15,23,42,.04) !important;
-    box-shadow: 0 12px 22px rgba(2,6,23,.10) !important;
-  }
-
-  /* ===== Barra de acciones fija (Guardar/Cancelar) ===== */
-  .pae-actions{
-    position: sticky;
-    bottom: 0;
-    z-index: 20;
-    background: rgba(246,248,252,.88);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(15,23,42,.10);
-    padding: 12px 10px;
-    margin-top: 16px;
-    border-radius: 16px;
-  }
-  .pae-actions .btn{
-    width: 100%;
-    padding: 12px 14px !important;
-  }
-  .pae-actions .hint{
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 6px;
-    text-align: center;
-  }
-
-  @media (min-width: 992px){
-    .pae-actions .btn{ width: auto; }
-    .pae-actions{
-      border-radius: 18px;
-      padding: 14px 14px;
-    }
-  }
-
-  /* Oculta flechas number */
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
-  input[type=number]{ -moz-appearance:textfield; }
-</style>
-<style>
-/* =========================
-   RESPONSIVE PRO (MOBILE/TABLET)
-   ========================= */
-
-/* Evita zoom raro en iOS al enfocar inputs */
-@media (max-width: 991.98px){
-  input, select, textarea{ font-size: 16px !important; }
-}
-
-/* Reduce padding general en mobile */
-@media (max-width: 991.98px){
-  .pcoded-content{ padding-left: 12px !important; padding-right: 12px !important; }
-  .page-block{ padding: 14px !important; }
-  .card-body{ padding: 14px !important; }
-}
-
-/* Grid más cómodo en tablet */
-@media (min-width: 768px) and (max-width: 991.98px){
-  .card-body{ padding: 16px !important; }
-}
-
-/* Campos full width y separación más limpia */
-@media (max-width: 767.98px){
-  .form-group{ margin-bottom: 12px !important; }
-  .row.pae-form-grid > [class*="col-"]{ margin-bottom: 4px; }
-}
-
-/* ====== FIRMA PRO ====== */
-.signature-wrap{
-  border-radius: 16px;
-  border: 1px solid rgba(15,23,42,.12);
-  background: rgba(255,255,255,.92);
-  box-shadow: 0 10px 24px rgba(2,6,23,.10);
-  overflow: hidden;
-}
-
-.signature-head{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 12px 12px;
-  background: linear-gradient(135deg, rgba(32,66,127,.10), rgba(255,255,255,.70));
-  border-bottom: 1px solid rgba(15,23,42,.10);
-}
-
-.signature-head .ttl{
-  font-weight: 900;
-  margin: 0;
-  color: #0f172a;
-  letter-spacing: .2px;
-  display:flex;
-  align-items:center;
-  gap: 8px;
-}
-
-.signature-head .sub{
-  font-size: 12px;
-  color: #64748b;
-  margin: 0;
-}
-
-.signature-body{
-  padding: 12px;
-}
-
-/* Canvas siempre 100% ancho, alto controlado por CSS (se ajusta con JS para nitidez) */
-#signature-pad{
-  width: 100% !important;
-  height: 260px !important;
-  touch-action: none;              /* clave para mobile */
-  background: #fff;
-  border-radius: 14px !important;
-  border: 1px solid rgba(15,23,42,.12) !important;
-}
-
-/* En móvil: un poco menos alto para evitar scroll */
-@media (max-width: 767.98px){
-  #signature-pad{ height: 220px !important; }
-}
-
-/* En tablet: más cómodo */
-@media (min-width: 768px) and (max-width: 991.98px){
-  #signature-pad{ height: 260px !important; }
-}
-
-/* Botonera firma full width en móvil */
-.signature-actions{
-  display:flex;
-  gap: 10px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
-.signature-actions .btn{
-  flex: 1 1 auto;
-  min-width: 160px;
-}
-@media (max-width: 767.98px){
-  .signature-actions .btn{ width: 100%; min-width: 100%; }
-}
-
-/* Video/canvas cámara mejor en móvil */
-@media (max-width: 767.98px){
-  .video-preview{ max-width: 100% !important; max-height: 220px !important; }
-  #canvas{ max-height: 240px !important; }
-}
-
-/* Barra de acciones abajo: más compacta en móvil */
-@media (max-width: 767.98px){
-  .pae-actions{ padding: 10px 10px !important; border-radius: 14px !important; }
-  .pae-actions .btn{ padding: 12px 14px !important; }
-}
-
-/* Selects muy largos: evita que se vean comprimidos */
-select.form-control{ min-height: 46px; }
-textarea.form-control{ min-height: 120px; resize: vertical; }
-</style>
 
 
-<body class="">
+
+
+<link href="assets/css/caracterizacion_pae_gob360.css" rel="stylesheet">
+
+<body class="gob360-pae-characterization">
     <!-- [ Pre-loader ] start -->
     <div class="loader-bg">
         <div class="loader-track">
@@ -425,19 +53,7 @@ textarea.form-control{ min-height: 120px; resize: vertical; }
     include './admin/include/header.php';
     ?>
     <!-- [ Header ] end -->
-    <style>
-        /* Oculta las flechas de los input tipo number (Chrome, Safari, Edge) */
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        /* Oculta flechas en Firefox */
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-    </style>
+    
     <!-- [ Main Content ] start -->
     <div class="pcoded-main-container">
         <div class="pcoded-content">
@@ -448,13 +64,13 @@ textarea.form-control{ min-height: 120px; resize: vertical; }
 
                         <div class="col-md-12">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="m-b-10">Secretaria Educación </h5>
+                                <h5 class="m-b-10">Secretaría de Educación</h5>
 <?php include './admin/include/btn_back.php'; ?>
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#!">Secretaria Educación / Caracterización
+                                <li class="breadcrumb-item"><a href="#!">Secretaría de Educación / Caracterización
                                         PAE</a></li>
                             </ul>
                         </div>
@@ -463,22 +79,95 @@ textarea.form-control{ min-height: 120px; resize: vertical; }
                 </div>
             </div>
             <!-- [ breadcrumb ] end -->
+
+            <!-- HERO VISUAL GOB360 -->
+            <section class="g360-pae-hero" aria-label="Caracterización PAE GOB360">
+                <div class="g360-pae-hero__grid">
+
+                    <div>
+                        <img
+                            src="assets/img/gob360l.png"
+                            alt="Logo GOB360"
+                            class="g360-pae-hero__logo"
+                        >
+                    </div>
+
+                    <div>
+                        <div class="g360-pae-hero__eyebrow">
+                            <i class="feather icon-check-square"></i>
+                            Programa de Alimentación Escolar
+                        </div>
+
+                        <h1 class="g360-pae-hero__title">
+                            Caracterización PAE
+                        </h1>
+
+                        <p class="g360-pae-hero__description">
+                            Registra la información territorial, institucional y
+                            operativa de cada sede educativa, incluyendo utensilios,
+                            cocina, almacenamiento, servicios públicos, comedor,
+                            evidencias, firma y geolocalización.
+                        </p>
+
+                        <div class="g360-pae-hero__chips">
+                            <span class="g360-chip g360-chip--success">
+                                <i class="feather icon-shield"></i>
+                                Formulario validado
+                            </span>
+
+                            <span class="g360-chip">
+                                <i class="feather icon-map-pin"></i>
+                                Registro territorial
+                            </span>
+
+                            <span class="g360-chip">
+                                <i class="feather icon-camera"></i>
+                                Evidencia y firma
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="g360-pae-hero__visual" aria-hidden="true">
+                        <div class="g360-mini-card">
+                            <i class="feather icon-home"></i>
+                            <span>Sede</span>
+                        </div>
+
+                        <div class="g360-mini-card">
+                            <i class="feather icon-package"></i>
+                            <span>Dotación</span>
+                        </div>
+
+                        <div class="g360-mini-card">
+                            <i class="feather icon-droplet"></i>
+                            <span>Servicios</span>
+                        </div>
+
+                        <div class="g360-mini-card">
+                            <i class="feather icon-edit-3"></i>
+                            <span>Firma</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
             <!-- [ Main Content ] start -->
 
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                      <div class="card">
+                <div class="col-sm-12">                    <div class="g360-pae-shell">
+                      <div class="card g360-pae-form-card">
                             <div class="card-header">
-                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                                <div>
-                                    <h5 class="mb-1">Ingreso Información Caracterización PAE</h5>
-                                    <h6 class="mb-0" style="opacity:.92;">Datos de la Sede Educativa</h6>
-                                </div>
+                                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                    <div>
+                                        <h5>Formulario de caracterización PAE</h5>
+                                        <p>Completa la información de la sede educativa y sus condiciones de operación.</p>
+                                    </div>
 
-                                <span class="pae-chip">
-                                    <i class="bi bi-shield-check"></i> Formulario validado
-                                </span>
+                                    <span class="pae-chip">
+                                        <i class="bi bi-shield-check"></i>
+                                        Registro institucional
+                                    </span>
                                 </div>
                             </div>
 
@@ -488,6 +177,19 @@ textarea.form-control{ min-height: 120px; resize: vertical; }
                             <form id="formsecretaria" class="needs-validation" novalidate>
                                 <input type="hidden" name="filtroVeredaById" id="filtroVeredaById" value="si" />
                                 <input type="hidden" name="filtro" id="filtro" value="vereda" />
+
+                                <section class="g360-school-section">
+                                    <div class="g360-section-heading">
+                                        <span class="g360-section-heading__icon">
+                                            <i class="feather icon-map-pin"></i>
+                                        </span>
+
+                                        <div>
+                                            <h3>Identificación y ubicación de la sede</h3>
+                                            <p>Fecha, territorio, institución, sede, responsable y tipo de visita.</p>
+                                        </div>
+                                    </div>
+
                                 <div class="row">
                                     <div class="form-group col-md-2">
                                         <label for="validationCustom01">Fecha<span
@@ -622,6 +324,8 @@ textarea.form-control{ min-height: 120px; resize: vertical; }
                                         </select>
                                     </div>
                                 </div>
+
+                                </section>
 
                                 <div class="pae-section">
                                     <div class="pae-section-title">
@@ -1497,22 +1201,34 @@ textarea.form-control{ min-height: 120px; resize: vertical; }
                         </div>
                         <!-- ///////////////////////////////////////////////////////// INICIO CAMARA//////// /////////////////////////////////////////////////////////////-->
 
-                        <div class="container">
+                        <section class="g360-media-section">
+                            <div class="g360-section-heading">
+                                <span class="g360-section-heading__icon">
+                                    <i class="feather icon-camera"></i>
+                                </span>
+
+                                <div>
+                                    <h3>Evidencias, firma y geolocalización</h3>
+                                    <p>Captura fotografías y registra la firma que respalda la caracterización.</p>
+                                </div>
+                            </div>
+
+                        <div class="container-fluid p-0">
                             <div class="row justify-content-center">
                                 <!-- Radios -->
                                 <div class="col-md-6 mb-4">
-                                    <div class="card shadow-sm">
+                                    <div class="card shadow-sm g360-camera-card">
                                         <div class="card-body text-center">
-                                            <p id="estado" class="mb-3 fw-bold text-primary">Selecciona una opción</p>
+                                            <p id="estado" class="mb-3 fw-bold text-primary">Configura la evidencia fotográfica</p>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="radio_select"
                                                     id="radiosfoto" value="1" checked>
-                                                <label class="form-check-label" for="radiosfoto">No tomar foto</label>
+                                                <label class="form-check-label" for="radiosfoto">Continuar sin fotografía</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="radio_select"
                                                     id="radiotfoto" value="0">
-                                                <label class="form-check-label" for="radiotfoto">📸 Tomar Foto</label>
+                                                <label class="form-check-label" for="radiotfoto">Tomar fotografía</label>
                                             </div>
                                         </div>
                                     </div>
@@ -1520,7 +1236,7 @@ textarea.form-control{ min-height: 120px; resize: vertical; }
 
                                 <!-- Cámara -->
                                 <div class="col-md-6">
-                                    <div class="card shadow-sm">
+                                    <div class="card shadow-sm g360-camera-card">
                                         <div class="card-body text-center">
                                             <!-- Video en vivo -->
                                             <video id="video" class="video-preview rounded border mb-3" autoplay playsinline style="display: none;"></video>
@@ -1540,7 +1256,7 @@ textarea.form-control{ min-height: 120px; resize: vertical; }
 
                                             <input type="hidden" id="fotos" name="fotos">
                                            <button id="boton" type="button" class="btn btn-primary w-100">
-                                            <i class="bi bi-camera-fill me-2"></i>Tomar foto
+                                            <i class="bi bi-camera-fill mr-2"></i>Capturar fotografía
                                             </button>
 
                                             <div id="estadoFotosTomada"></div>
@@ -1574,6 +1290,8 @@ textarea.form-control{ min-height: 120px; resize: vertical; }
                                     </div>
                             </div>
                         </div>
+                        </section>
+
                         <!-- ESTA LINEA ESTÁ DUPLICADA CON LA INFORMACION DE LAS FOTOS  -->
                         <!--   <input type="hidden" id="tbl_id_pae" value="123456789" >Este debe ser dinámico -->
                         <!-- <div id="contenedor-video-preview" class="text-center" style="display: none;">
@@ -1590,13 +1308,13 @@ textarea.form-control{ min-height: 120px; resize: vertical; }
                         <div class="row g-2">
                             <div class="col-12 col-lg-3">
                             <button type="button" onclick="UTIL.clearForm('formsecretaria');" class="btn btn-danger w-100">
-                                <i class="bi bi-x-circle me-2"></i>Cancelar
+                                <i class="bi bi-x-circle mr-2"></i>Cancelar
                             </button>
                             </div>
 
                             <div class="col-12 col-lg-9">
                             <button type="button" class="btn btn-primary w-100" onclick="capturarUbicacionAntesDeGuardar()">
-                                <i class="bi bi-save2 me-2"></i>Guardar Caracterización
+                                <i class="bi bi-save2 mr-2"></i>Guardar caracterización
                             </button>
                             <div class="hint">
                                 Se capturará geolocalización antes de guardar (si el navegador lo permite).
@@ -1615,28 +1333,7 @@ textarea.form-control{ min-height: 120px; resize: vertical; }
   </div>
 </div>
 
-    <style>
-        #contenedorFotosTomadas {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            overflow-x: auto;
-        }
-
-        .foto-tomada {
-            flex: 0 0 auto;
-            text-align: center;
-        }
-
-        .video-preview {
-            width: 280px;
-            height: auto;
-            max-height: 200px;
-            object-fit: cover;
-            margin: 0 auto;
-            display: block;
-        }
-    </style>
+    
     <script>
 (function () {
   function resizeSignatureCanvas() {

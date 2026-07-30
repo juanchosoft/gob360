@@ -1,0 +1,1053 @@
+:root{
+      --bg0:#070A12;
+      --bg1:#0B1222;
+      --card: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.10);
+      --stroke2: rgba(255,255,255,.14);
+      --txt: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.66);
+      --muted2: rgba(255,255,255,.50);
+      --good:#18ff6d;
+      --warn:#ffd166;
+      --bad:#ff5b7a;
+      --info:#56ccff;
+      --brand:#4f7cff;
+      --brand2:#9b5cff;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+
+    body.dashboard-body{
+      background:
+        radial-gradient(900px 420px at 10% 10%, rgba(79,124,255,.28), transparent 60%),
+        radial-gradient(900px 420px at 80% 20%, rgba(155,92,255,.22), transparent 60%),
+        radial-gradient(900px 520px at 50% 100%, rgba(24,255,109,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      color: var(--txt);
+      overflow-x:hidden;
+    }
+
+    .pcoded-main-container{ background: transparent !important; }
+    .pcoded-content{ padding-bottom: 2rem; }
+
+    .hero-gov{
+      border: 1px solid var(--stroke);
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius: 20px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .hero-gov:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(300px 180px at 10% 10%, rgba(79,124,255,.35), transparent 65%),
+        radial-gradient(300px 180px at 90% 20%, rgba(155,92,255,.25), transparent 65%),
+        radial-gradient(500px 220px at 50% 120%, rgba(24,255,109,.10), transparent 60%);
+      pointer-events:none;
+    }
+    .hero-gov > *{ position:relative; z-index:1; }
+
+    .hero-title{
+      font-weight: 900;
+      letter-spacing: .2px;
+      font-size: clamp(18px, 2.6vw, 30px);
+      line-height: 1.15;
+      margin:0;
+      color: var(--txt);
+    }
+    .hero-sub{
+      color: var(--muted);
+      margin: 6px 0 0 0;
+      font-size: 13px;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.35rem .65rem;
+      border-radius: 999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.20);
+      color: var(--muted);
+      font-size: 12px;
+      white-space:nowrap;
+    }
+    .chip b{ color: var(--txt); font-weight: 800; }
+
+    .btn-wow{
+      border:1px solid var(--stroke2);
+      background: rgba(255,255,255,.06);
+      color: var(--txt);
+      border-radius: 12px;
+      padding: .6rem .85rem;
+      font-weight: 900;
+      transition: .2s ease;
+      box-shadow: 0 10px 24px rgba(0,0,0,.25);
+    }
+    .btn-wow:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); color: var(--txt); }
+    .btn-wow.primary{ background: linear-gradient(135deg, rgba(79,124,255,.35), rgba(155,92,255,.22)); border-color: rgba(79,124,255,.45); }
+
+    .bento-grid{
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 1199px){ .bento-grid{ grid-template-columns: repeat(8, 1fr); } }
+    @media (max-width: 767px){ .bento-grid{ grid-template-columns: repeat(4, 1fr); gap: 12px; } }
+
+    .kpi-card{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.06);
+      border-radius: 18px;
+      padding: 14px;
+      height: 100%;
+      box-shadow: 0 14px 40px rgba(0,0,0,.25);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    .kpi-card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(260px 140px at 10% 0%, rgba(79,124,255,.18), transparent 60%),
+        radial-gradient(260px 140px at 100% 20%, rgba(155,92,255,.12), transparent 60%);
+      opacity:.85;
+      pointer-events:none;
+    }
+    .kpi-card > *{ position:relative; z-index:1; }
+
+    .kpi-card.feature{
+      background: linear-gradient(135deg, rgba(79,124,255,.18), rgba(155,92,255,.10));
+      border-color: rgba(79,124,255,.25);
+      box-shadow: 0 22px 70px rgba(0,0,0,.45);
+    }
+
+    .kpi-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+    .kpi-ico{
+      width: 44px; height:44px; border-radius: 16px;
+      display:flex; align-items:center; justify-content:center;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.18);
+      font-size: 18px;
+      flex: 0 0 auto;
+    }
+    .kpi-label{ color: var(--muted); font-size: 12px; margin: 0; }
+    .kpi-value{ font-weight: 950; font-size: 24px; margin: 2px 0 0 0; letter-spacing:.2px; }
+    .kpi-meta{
+      margin-top: 10px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      color: var(--muted2);
+      font-size: 12px;
+    }
+
+    .trend{
+      display:inline-flex; align-items:center; gap:.35rem;
+      padding:.2rem .55rem;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,.18);
+      font-weight: 950;
+      color: var(--txt);
+    }
+
+    .span-12{ grid-column: span 12; }
+    .span-8{ grid-column: span 8; }
+    .span-6{ grid-column: span 6; }
+    .span-4{ grid-column: span 4; }
+    .span-3{ grid-column: span 3; }
+    .span-2{ grid-column: span 2; }
+
+    @media (max-width: 1199px){
+      .span-12{ grid-column: span 8; }
+      .span-8{ grid-column: span 8; }
+      .span-6{ grid-column: span 4; }
+      .span-4{ grid-column: span 4; }
+      .span-3{ grid-column: span 4; }
+      .span-2{ grid-column: span 4; }
+    }
+    @media (max-width: 767px){
+      .span-12,.span-8,.span-6,.span-4,.span-3,.span-2{ grid-column: span 4; }
+    }
+
+    .panel-card{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.06);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.25);
+      height: 100%;
+      backdrop-filter: blur(10px);
+    }
+    .panel-title{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom: 10px;
+    }
+    .panel-title h6{ margin:0; font-weight: 950; letter-spacing:.2px; color: var(--txt); }
+    .panel-title small{ color: var(--muted); }
+
+    .breadcrumb .breadcrumb-item a{ color: var(--muted) !important; }
+    .breadcrumb .breadcrumb-item.active{ color: var(--txt) !important; }
+
+    .hz-group{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+    .hz-group select{ background:rgba(255,255,255,.06); border:1px solid var(--stroke); border-radius:14px; padding:10px 14px; color:#fff; font-weight:700; font-size:13px; }
+    .hz-group select option{ background:#1e293b; color:#fff; }
+    .hz-kpi-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:14px; }
+    .hz-kpi{ background:rgba(255,255,255,.04); border:1px solid var(--stroke); border-radius:16px; padding:14px; }
+    .hz-kpi small{ color:var(--muted); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.3px; }
+    .hz-kpi strong{ display:block; color:#fff; font-size:22px; font-weight:950; margin-top:4px; }
+    .hz-kpi .sub{ color:var(--muted2); font-size:12px; }
+    .hz-map-wrap{ background:rgba(255,255,255,.04); border:1px solid var(--stroke); border-radius:22px; padding:16px; margin-top:14px; }
+    #contenido-mapa svg{ width:100%; height:auto; max-height:480px; }
+    #contenido-mapa .municipios{ cursor:pointer; transition:opacity .15s; }
+    #contenido-mapa .municipios:hover{ opacity:.75; }
+
+    .status-dot{
+      width:10px; height:10px; border-radius:50%;
+      display:inline-block;
+    }
+    .status-dot.good{ background:var(--good); }
+
+/* ============================================================
+   GOB360 · CENTRO EJECUTIVO DE HACIENDA
+============================================================ */
+:root{
+  --h-bg-0:#030711;
+  --h-bg-1:#061326;
+  --h-bg-2:#06252c;
+
+  --h-panel:rgba(255,255,255,.062);
+  --h-panel-strong:rgba(255,255,255,.09);
+  --h-border:rgba(255,255,255,.125);
+  --h-border-strong:rgba(255,255,255,.19);
+
+  --h-text:rgba(255,255,255,.96);
+  --h-muted:rgba(255,255,255,.65);
+  --h-muted-soft:rgba(255,255,255,.47);
+
+  --h-cyan:#28dcff;
+  --h-blue:#3f7cff;
+  --h-green:#39e6a3;
+  --h-gold:#f6c85f;
+  --h-red:#ff647f;
+  --h-purple:#a78bfa;
+
+  --h-paper:#ffffff;
+  --h-paper-soft:#f7faff;
+  --h-paper-border:#e1e8f1;
+  --h-ink:#122238;
+
+  --h-radius-xl:30px;
+  --h-radius-lg:21px;
+  --h-radius-md:14px;
+
+  --h-shadow-xl:0 32px 95px rgba(0,0,0,.46);
+  --h-shadow-lg:0 20px 58px rgba(0,0,0,.34);
+  --h-shadow-soft:0 13px 32px rgba(0,0,0,.22);
+
+  --h-ring:0 0 0 .25rem rgba(40,220,255,.19);
+  --h-safe-top:112px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  min-height:100%;
+  overflow-x:hidden!important;
+}
+
+body.gob360-hacienda-executive{
+  min-height:100vh;
+  color:var(--h-text)!important;
+  background:
+    radial-gradient(950px 520px at 6% 3%,rgba(63,124,255,.30),transparent 61%),
+    radial-gradient(850px 500px at 95% 8%,rgba(40,220,255,.14),transparent 61%),
+    radial-gradient(900px 570px at 48% 112%,rgba(57,230,163,.11),transparent 60%),
+    linear-gradient(150deg,var(--h-bg-0),var(--h-bg-1) 57%,var(--h-bg-2))!important;
+  background-attachment:fixed!important;
+}
+
+body.gob360-hacienda-executive::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  opacity:.13;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:linear-gradient(to bottom,#000,transparent 96%);
+}
+
+.gob360-hacienda-executive .pcoded-main-container,
+.gob360-hacienda-executive .pcoded-wrapper,
+.gob360-hacienda-executive .pcoded-content{
+  background:transparent!important;
+}
+
+.gob360-hacienda-executive .pcoded-main-container .pcoded-content{
+  max-width:1660px;
+  margin:0 auto;
+  padding:calc(var(--h-safe-top) + 18px) 22px 52px!important;
+}
+
+/* CARGADOR */
+.gob360-hacienda-executive .loader-bg{
+  z-index:999999!important;
+  background:#030711!important;
+}
+
+.gob360-hacienda-executive .loader-track{
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+}
+
+.gob360-hacienda-executive .loader-fill{
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--h-blue),var(--h-cyan),var(--h-green))!important;
+  box-shadow:0 0 25px rgba(40,220,255,.42);
+}
+
+/* CABECERA INTERNA */
+.gob360-hacienda-executive .page-header{
+  margin-bottom:18px!important;
+}
+
+.gob360-hacienda-executive .page-header .page-block{
+  position:relative;
+  overflow:hidden;
+  padding:18px 21px!important;
+  border:1px solid var(--h-border)!important;
+  border-radius:var(--h-radius-xl)!important;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.038))!important;
+  box-shadow:var(--h-shadow-soft)!important;
+  backdrop-filter:blur(17px);
+}
+
+.gob360-hacienda-executive .page-header .page-block::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(440px 180px at 6% 0%,rgba(63,124,255,.29),transparent 66%),
+    radial-gradient(440px 180px at 96% 15%,rgba(40,220,255,.16),transparent 67%);
+}
+
+.gob360-hacienda-executive .page-header .page-block>*{
+  position:relative;
+  z-index:1;
+}
+
+.gob360-hacienda-executive .page-header h5{
+  margin:0!important;
+  color:#fff!important;
+  font-size:clamp(19px,2.3vw,28px);
+  font-weight:1000!important;
+  letter-spacing:-.35px;
+}
+
+.gob360-hacienda-executive .breadcrumb{
+  margin:8px 0 0!important;
+  padding:0!important;
+  background:transparent!important;
+}
+
+.gob360-hacienda-executive .breadcrumb a,
+.gob360-hacienda-executive .breadcrumb-item{
+  color:var(--h-muted)!important;
+  font-size:12px;
+  font-weight:750;
+}
+
+/* HERO EJECUTIVO */
+.g360-hacienda-hero{
+  position:relative;
+  overflow:hidden;
+  margin-bottom:19px;
+  padding:26px;
+  border:1px solid var(--h-border);
+  border-radius:var(--h-radius-xl);
+  background:
+    radial-gradient(720px 290px at 0% 0%,rgba(63,124,255,.30),transparent 67%),
+    radial-gradient(680px 290px at 100% 100%,rgba(57,230,163,.14),transparent 67%),
+    var(--h-panel);
+  box-shadow:var(--h-shadow-xl);
+  backdrop-filter:blur(19px);
+}
+
+.g360-hacienda-hero::before{
+  content:"";
+  position:absolute;
+  right:-110px;
+  top:-160px;
+  width:450px;
+  height:450px;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(40,220,255,.18),transparent 68%);
+}
+
+.g360-hacienda-hero::after{
+  content:"";
+  position:absolute;
+  left:-170px;
+  bottom:-245px;
+  width:470px;
+  height:470px;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(57,230,163,.10),transparent 70%);
+}
+
+.g360-hacienda-hero__grid{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:minmax(245px,355px) 1fr;
+  align-items:stretch;
+  gap:27px;
+}
+
+.g360-hacienda-brand{
+  min-height:340px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:21px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  background:
+    radial-gradient(320px 180px at 50% 0%,rgba(40,220,255,.11),transparent 71%),
+    rgba(2,8,20,.29);
+  box-shadow:0 19px 40px rgba(0,0,0,.25);
+}
+
+.g360-hacienda-brand__eyebrow{
+  margin-bottom:13px;
+  color:var(--h-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+.g360-hacienda-brand__logo{
+  display:block;
+  width:min(100%,335px);
+  height:auto;
+  border-radius:18px;
+  filter:
+    drop-shadow(0 18px 36px rgba(0,0,0,.44))
+    drop-shadow(0 0 30px rgba(40,220,255,.24));
+}
+
+.g360-hacienda-brand__caption{
+  margin-top:14px;
+  color:var(--h-muted);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.15px;
+  text-transform:uppercase;
+}
+
+.g360-hacienda-brand__status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:18px;
+  padding:7px 11px;
+  color:#dfffee;
+  font-size:10.5px;
+  font-weight:900;
+  border:1px solid rgba(57,230,163,.23);
+  border-radius:999px;
+  background:rgba(57,230,163,.07);
+}
+
+.g360-hacienda-brand__status span{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--h-green);
+  box-shadow:0 0 14px rgba(57,230,163,.58);
+}
+
+.g360-hacienda-hero__content{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.g360-hacienda-hero__top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.g360-hacienda-hero__eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:9px;
+  color:var(--h-green);
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+}
+
+.g360-hacienda-hero__title{
+  max-width:900px;
+  margin:0;
+  color:#fff;
+  font-size:clamp(31px,4.1vw,51px);
+  font-weight:1000;
+  line-height:1.02;
+  letter-spacing:-1.35px;
+}
+
+.g360-hacienda-hero__description{
+  max-width:880px;
+  margin:13px 0 0;
+  color:var(--h-muted);
+  font-size:14px;
+  line-height:1.68;
+}
+
+.g360-hacienda-current-action{
+  min-width:205px;
+  max-width:245px;
+  padding:13px 14px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  background:rgba(3,10,23,.48);
+  box-shadow:0 12px 25px rgba(0,0,0,.17);
+}
+
+.g360-hacienda-current-action span{
+  display:block;
+  margin-bottom:5px;
+  color:var(--h-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:.65px;
+  text-transform:uppercase;
+}
+
+.g360-hacienda-current-action strong{
+  display:block;
+  color:#fff;
+  font-size:12px;
+  font-weight:950;
+  line-height:1.4;
+}
+
+/* RESUMEN EJECUTIVO */
+.g360-hacienda-executive-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:20px;
+}
+
+.g360-executive-kpi{
+  min-width:0;
+  min-height:126px;
+  display:grid;
+  grid-template-columns:46px 1fr;
+  align-items:start;
+  gap:12px;
+  padding:15px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  background:
+    radial-gradient(260px 120px at 0% 0%,rgba(40,220,255,.08),transparent 71%),
+    rgba(3,10,23,.49);
+  box-shadow:0 12px 27px rgba(0,0,0,.18);
+}
+
+.g360-executive-kpi__icon{
+  width:46px;
+  height:46px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:19px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--h-cyan),#83edff);
+  box-shadow:0 9px 21px rgba(40,220,255,.16);
+}
+
+.g360-executive-kpi--money .g360-executive-kpi__icon{
+  background:linear-gradient(135deg,var(--h-gold),#ffe19a);
+}
+
+.g360-executive-kpi--success .g360-executive-kpi__icon{
+  background:linear-gradient(135deg,var(--h-green),#96f4ce);
+}
+
+.g360-executive-kpi--territory .g360-executive-kpi__icon{
+  color:#fff;
+  background:linear-gradient(135deg,var(--h-blue),var(--h-purple));
+}
+
+.g360-executive-kpi small{
+  display:block;
+  margin-bottom:5px;
+  color:var(--h-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:.52px;
+  text-transform:uppercase;
+}
+
+.g360-executive-kpi strong{
+  display:block;
+  overflow:hidden;
+  color:#fff;
+  font-size:clamp(19px,2vw,27px);
+  font-weight:1000;
+  line-height:1.15;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.g360-executive-kpi p{
+  margin:7px 0 0;
+  color:var(--h-muted-soft);
+  font-size:10.5px;
+  line-height:1.4;
+}
+
+.g360-hacienda-capabilities{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:13px;
+}
+
+.g360-hacienda-capabilities span{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:33px;
+  padding:7px 10px;
+  color:rgba(255,255,255,.82);
+  font-size:10.5px;
+  font-weight:850;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:999px;
+  background:rgba(255,255,255,.045);
+}
+
+.g360-hacienda-capabilities i{
+  color:var(--h-cyan);
+}
+
+/* ÁREA DE TRABAJO */
+.g360-hacienda-workspace{
+  overflow:hidden;
+  border:1px solid var(--h-border);
+  border-radius:var(--h-radius-xl);
+  background:var(--h-panel);
+  box-shadow:var(--h-shadow-xl);
+  backdrop-filter:blur(18px);
+}
+
+.g360-hacienda-workspace__header{
+  min-height:88px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+  padding:18px 21px;
+  border-bottom:1px solid var(--h-border);
+  background:
+    radial-gradient(440px 180px at 0% 0%,rgba(57,230,163,.13),transparent 68%),
+    linear-gradient(135deg,rgba(63,124,255,.27),rgba(8,22,42,.73));
+}
+
+.g360-hacienda-workspace__heading{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.g360-hacienda-workspace__icon{
+  width:44px;
+  height:44px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:19px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--h-cyan),#83edff);
+  box-shadow:0 10px 23px rgba(40,220,255,.16);
+}
+
+.g360-hacienda-workspace__eyebrow{
+  display:block;
+  margin-bottom:3px;
+  color:var(--h-green);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.g360-hacienda-workspace__heading h2{
+  margin:0;
+  color:#fff;
+  font-size:18px;
+  font-weight:1000;
+}
+
+.g360-hacienda-workspace__heading p{
+  max-width:720px;
+  margin:5px 0 0;
+  color:var(--h-muted);
+  font-size:11px;
+  line-height:1.48;
+}
+
+.g360-hacienda-workspace__meta{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.g360-live-status,
+.g360-data-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 11px;
+  font-size:10.5px;
+  font-weight:900;
+  border-radius:999px;
+}
+
+.g360-live-status{
+  color:#dfffee;
+  border:1px solid rgba(57,230,163,.23);
+  background:rgba(57,230,163,.07);
+}
+
+.g360-live-status span{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--h-green);
+  box-shadow:0 0 14px rgba(57,230,163,.58);
+}
+
+.g360-data-badge{
+  color:rgba(255,255,255,.82);
+  border:1px solid rgba(255,255,255,.11);
+  background:rgba(255,255,255,.045);
+}
+
+.g360-data-badge i{
+  color:var(--h-cyan);
+}
+
+.g360-hacienda-workspace__body{
+  padding:18px;
+}
+
+/* COMPATIBILIDAD CON HACIENDA_SECTION.PHP */
+.gob360-hacienda-executive .hz-group{
+  padding:13px;
+  border:1px solid var(--h-border);
+  border-radius:17px;
+  background:
+    radial-gradient(390px 145px at 0% 0%,rgba(40,220,255,.07),transparent 70%),
+    rgba(3,10,23,.48);
+}
+
+.gob360-hacienda-executive .hz-group select{
+  min-height:45px;
+  padding:10px 13px;
+  color:#fff!important;
+  font-size:12px;
+  font-weight:850;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:13px;
+  outline:none;
+  background:rgba(3,10,23,.67);
+  box-shadow:none;
+}
+
+.gob360-hacienda-executive .hz-group select:focus{
+  border-color:rgba(40,220,255,.42);
+  box-shadow:var(--h-ring);
+}
+
+.gob360-hacienda-executive .hz-group select option{
+  color:#fff;
+  background:#0a1629;
+}
+
+.gob360-hacienda-executive .bento-grid{
+  gap:12px!important;
+}
+
+.gob360-hacienda-executive .kpi-card,
+.gob360-hacienda-executive .panel-card,
+.gob360-hacienda-executive .hz-kpi{
+  border-color:var(--h-border)!important;
+  background:
+    radial-gradient(290px 135px at 0% 0%,rgba(40,220,255,.08),transparent 70%),
+    rgba(3,10,23,.53)!important;
+  box-shadow:var(--h-shadow-soft)!important;
+  backdrop-filter:blur(14px);
+}
+
+.gob360-hacienda-executive .kpi-card{
+  border-radius:19px!important;
+}
+
+.gob360-hacienda-executive .kpi-card.feature{
+  border-color:rgba(40,220,255,.23)!important;
+  background:
+    radial-gradient(390px 160px at 0% 0%,rgba(63,124,255,.17),transparent 68%),
+    rgba(3,10,23,.58)!important;
+}
+
+.gob360-hacienda-executive .kpi-ico{
+  color:var(--h-cyan);
+  border-color:rgba(40,220,255,.18)!important;
+  background:rgba(40,220,255,.07)!important;
+}
+
+.gob360-hacienda-executive .kpi-label,
+.gob360-hacienda-executive .kpi-meta,
+.gob360-hacienda-executive .panel-title small,
+.gob360-hacienda-executive .hz-kpi small,
+.gob360-hacienda-executive .hz-kpi .sub{
+  color:var(--h-muted)!important;
+}
+
+.gob360-hacienda-executive .kpi-value,
+.gob360-hacienda-executive .panel-title h6,
+.gob360-hacienda-executive .hz-kpi strong{
+  color:#fff!important;
+}
+
+.gob360-hacienda-executive .trend{
+  border-color:rgba(255,255,255,.11)!important;
+  background:rgba(255,255,255,.045)!important;
+}
+
+.gob360-hacienda-executive .btn-wow{
+  min-height:43px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:9px 14px!important;
+  color:#fff!important;
+  font-size:11.5px!important;
+  font-weight:950!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  border-radius:13px!important;
+  background:rgba(255,255,255,.055)!important;
+  box-shadow:0 10px 23px rgba(0,0,0,.16)!important;
+}
+
+.gob360-hacienda-executive .btn-wow.primary{
+  color:#06101d!important;
+  border-color:transparent!important;
+  background:linear-gradient(135deg,var(--h-cyan),#83edff)!important;
+}
+
+.gob360-hacienda-executive .hz-map-wrap{
+  overflow:auto;
+  padding:15px!important;
+  border:1px solid var(--h-paper-border)!important;
+  border-radius:19px!important;
+  background:
+    radial-gradient(620px 300px at 50% 0%,rgba(63,124,255,.07),transparent 70%),
+    var(--h-paper-soft)!important;
+  box-shadow:0 14px 35px rgba(0,0,0,.17);
+  -webkit-overflow-scrolling:touch;
+}
+
+.gob360-hacienda-executive #contenido-mapa svg{
+  width:100%!important;
+  min-width:470px;
+  max-width:790px;
+  height:auto!important;
+  display:block;
+  margin:0 auto;
+}
+
+.gob360-hacienda-executive #contenido-mapa text{
+  fill:#183452!important;
+  font-weight:850;
+}
+
+.gob360-hacienda-executive #contenido-mapa .municipios{
+  transition:opacity .15s ease,filter .15s ease,stroke .15s ease;
+}
+
+.gob360-hacienda-executive #contenido-mapa .municipios:hover{
+  opacity:.82;
+  filter:brightness(.89);
+  stroke:#0f172a!important;
+  stroke-width:1px!important;
+}
+
+/* TABLAS Y GRÁFICAS QUE VENGAN EN EL INCLUDE */
+.gob360-hacienda-executive .table-responsive{
+  overflow:auto;
+  border:1px solid var(--h-paper-border);
+  border-radius:17px;
+  background:#fff;
+}
+
+.gob360-hacienda-executive table.table{
+  margin:0!important;
+  color:var(--h-ink);
+  background:#fff;
+}
+
+.gob360-hacienda-executive table.table thead th{
+  color:#fff!important;
+  font-size:10px;
+  font-weight:950;
+  text-transform:uppercase;
+  background:linear-gradient(180deg,#183b68,#0e2544)!important;
+}
+
+.gob360-hacienda-executive table.table tbody td{
+  color:var(--h-ink)!important;
+  font-size:11.5px;
+  border-color:#e7edf4!important;
+}
+
+.gob360-hacienda-executive .highcharts-background{
+  fill:#fff!important;
+}
+
+.gob360-hacienda-executive .highcharts-title,
+.gob360-hacienda-executive .highcharts-axis-title,
+.gob360-hacienda-executive .highcharts-axis-labels text,
+.gob360-hacienda-executive .highcharts-data-label text,
+.gob360-hacienda-executive .highcharts-legend-item text{
+  fill:#334155!important;
+  color:#334155!important;
+}
+
+.gob360-hacienda-executive .highcharts-grid-line{
+  stroke:#e5eaf1!important;
+}
+
+/* RESPONSIVE */
+@media(min-width:768px){
+  :root{
+    --h-safe-top:114px;
+  }
+
+  .gob360-hacienda-executive .pcoded-main-container .pcoded-content{
+    padding-right:25px!important;
+    padding-left:25px!important;
+  }
+}
+
+@media(min-width:1200px){
+  :root{
+    --h-safe-top:122px;
+  }
+
+  .gob360-hacienda-executive .pcoded-main-container .pcoded-content{
+    padding-right:37px!important;
+    padding-left:37px!important;
+  }
+}
+
+@media(max-width:1150px){
+  .g360-hacienda-hero__grid{
+    grid-template-columns:1fr;
+  }
+
+  .g360-hacienda-brand{
+    min-height:auto;
+  }
+
+  .g360-hacienda-brand__logo{
+    width:min(335px,90%);
+  }
+}
+
+@media(max-width:900px){
+  .g360-hacienda-hero__top{
+    flex-direction:column;
+  }
+
+  .g360-hacienda-current-action{
+    width:100%;
+    max-width:none;
+  }
+}
+
+@media(max-width:767.98px){
+  :root{
+    --h-safe-top:88px;
+  }
+
+  .gob360-hacienda-executive .pcoded-main-container .pcoded-content{
+    padding-right:13px!important;
+    padding-left:13px!important;
+  }
+
+  .g360-hacienda-hero{
+    padding:19px;
+  }
+
+  .g360-hacienda-brand{
+    padding:16px;
+  }
+
+  .g360-hacienda-hero__title{
+    font-size:29px;
+  }
+
+  .g360-hacienda-executive-grid{
+    grid-template-columns:1fr;
+  }
+
+  .g360-hacienda-workspace__header{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .g360-hacienda-workspace__body{
+    padding:13px;
+  }
+
+  .gob360-hacienda-executive #contenido-mapa svg{
+    min-width:420px;
+  }
+}

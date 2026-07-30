@@ -280,22 +280,9 @@ include './admin/include/head.php';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-    <body class="">
-        <style>
-            .nombres {
-                font-family: "IBM Plex Sans", sans-serif !important;
-            }
+    <link href="assets/css/informe_comparativo_secretarias_gob360.css" rel="stylesheet">
 
-            .fondo {
-                background-color: #FC0707;
-                padding: 2px 4px;
-                /* Añade un poco de espacio alrededor del texto */
-                color: white;
-                display: inline-block;
-            }
-      </style>
-
-</style>
+<body class="gob360-secretary-comparison">
 
 <!-- [ Pre-loader ] start -->
 <div class="loader-bg">
@@ -307,307 +294,7 @@ include './admin/include/head.php';
 <?php include './admin/include/navbar.php'; ?>
 <?php include './admin/include/header.php'; ?>
 
-<style>
-  :root{
-    --nav-blue:#20427F;
-    --nav-blue-2:#132b52;
-    --nav-blue-3:#2e58a8;
 
-    --bg:#f6f8fc;
-    --card:#ffffff;
-    --ink:#0f172a;
-    --muted:#64748b;
-    --line:rgba(15,23,42,.10);
-
-    --radius-xl:22px;
-    --radius-lg:16px;
-    --radius-md:12px;
-
-    --shadow-soft:0 12px 30px rgba(2,6,23,.10);
-    --shadow-mid:0 18px 40px rgba(2,6,23,.14);
-
-    --ring: 0 0 0 4px rgba(46,88,168,.16);
-  }
-
-  /* ====== CONTENEDOR GENERAL ====== */
-  body{ background: var(--bg) !important; }
-  .pcoded-main-container{ background: transparent !important; }
-  .pcoded-content{ padding-top: 18px !important; }
-  .page-wrapper{ padding-top: 6px !important; }
-  .page-header{ margin-bottom: 16px !important; }
-
-  /* ====== HEADER DE PÁGINA (SaaS) ====== */
-  .page-block{
-    background: linear-gradient(135deg, rgba(32,66,127,.10), rgba(255,255,255,.70));
-    border: 1px solid rgba(255,255,255,.70);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-soft);
-    padding: 16px 18px;
-    backdrop-filter: blur(10px);
-  }
-  .page-block h5{
-    font-weight: 800 !important;
-    letter-spacing: .2px;
-    color: var(--ink);
-  }
-  .breadcrumb{
-    margin-top: 6px !important;
-    margin-bottom: 0 !important;
-    background: transparent !important;
-    padding: 0 !important;
-  }
-  .breadcrumb .breadcrumb-item a{ color: var(--muted) !important; }
-  .breadcrumb .breadcrumb-item{ font-size: 13px; }
-
-  /* ====== CARDS PRO (SIN MOVIMIENTOS) ====== */
-  .card{
-    border: 1px solid var(--line) !important;
-    border-radius: var(--radius-xl) !important;
-    box-shadow: var(--shadow-soft);
-    overflow: hidden;
-    background: var(--card);
-    transition: box-shadow .18s ease; /* NO transform */
-  }
-  .card:hover{
-    box-shadow: var(--shadow-mid);
-    transform: none !important; /* QUITA el "salto" */
-  }
-
-  .card-header{
-    border-bottom: 1px solid rgba(255,255,255,.10) !important;
-    padding: 14px 16px !important;
-    background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2)) !important;
-    color: #fff !important;
-  }
-  .card-header h5{
-    color: #fff !important;
-    margin: 0 !important;
-    font-weight: 800 !important;
-    letter-spacing: .2px;
-  }
-
-  .card-info-complementaria .card-body{
-    padding: 16px !important;
-    background: linear-gradient(180deg, rgba(32,66,127,.04), rgba(255,255,255,1));
-  }
-
-  /* ====== FORM PRO ====== */
-  .form-group label{
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 8px;
-  }
-  .form-control{
-    border-radius: 14px !important;
-    border: 1px solid rgba(15,23,42,.14) !important;
-    padding: 12px 12px !important;
-    height: auto !important;
-    box-shadow: none !important;
-    transition: border-color .18s ease, box-shadow .18s ease;
-    background: #fff !important;
-  }
-  .form-control:focus{
-    border-color: rgba(46,88,168,.55) !important;
-    box-shadow: var(--ring) !important;
-  }
-
-  /* ====== BOTONES SAAS (SIN MOVIMIENTOS) ====== */
-  .btn{
-    border-radius: 14px !important;
-    font-weight: 800 !important;
-    letter-spacing: .2px;
-    padding: 10px 14px !important;
-    border: none !important;
-    box-shadow: 0 10px 20px rgba(2,6,23,.12);
-    transition: box-shadow .18s ease, filter .18s ease; /* NO transform */
-  }
-  .btn:hover{
-    transform: none !important; /* QUITA el "salto" */
-    box-shadow: 0 14px 26px rgba(2,6,23,.16);
-    filter: brightness(0.98);
-  }
-  .btn:active{ transform: none !important; }
-
-  .btn-primary{
-    background: linear-gradient(135deg, var(--nav-blue-3), var(--nav-blue)) !important;
-  }
-  .btn-success{
-    background: linear-gradient(135deg, #20c997, #198754) !important;
-  }
-  .btn-secondary{
-    background: linear-gradient(135deg, #64748b, #475569) !important;
-  }
-
-  /* ====== MAPAS ====== */
-  .maps-grid{ margin-top: 8px; }
-
-  .map-card .card-header{
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .map-card .card-header .title-wrap{
-    display:flex; align-items:center; gap:10px;
-  }
-  .map-badge{
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: rgba(255,255,255,.14);
-    border: 1px solid rgba(255,255,255,.18);
-    font-size: 12px;
-    font-weight: 800;
-  }
-
-  .map-body{
-    padding: 14px !important;
-    background:
-      radial-gradient(circle at 20% 10%, rgba(46,88,168,.08), transparent 40%),
-      radial-gradient(circle at 80% 20%, rgba(32,66,127,.08), transparent 45%),
-      linear-gradient(180deg, rgba(255,255,255,1), rgba(246,248,252,1));
-  }
-
-  .map-frame{
-    width: 100%;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(15,23,42,.10);
-    background: rgba(255,255,255,.78);
-    box-shadow: 0 10px 24px rgba(2,6,23,.10);
-    padding: 12px;
-    overflow: auto;
-  }
-
-  #contenido-mapa,
-  #contenido-mapa-nuevo{
-    width: 100% !important;
-    max-width: 900px !important;
-    margin: 0 auto !important;
-  }
-  #contenido-mapa svg,
-  #contenido-mapa-nuevo svg{
-    max-width: 100% !important;
-    height: auto !important;
-    display: block;
-  }
-
-  /* =========================================================
-     ✅ MAPA: SOLO ESTE HOVER (sin transform, sin otras animaciones)
-     ========================================================= */
-  .municipios,
-  .municipios-nuevo{
-    transition: filter .12s ease, stroke .12s ease, stroke-width .12s ease !important;
-  }
-
-  /* Elimina cualquier animación/movimiento previo */
-  .municipios:hover,
-  .municipios-nuevo:hover{
-    transform: none !important;
-  }
-
-  /* CRÍTICO */
-  .municipios.critico:hover,
-  .municipios-nuevo.critico:hover{
-    filter: brightness(0.85);
-    stroke: #B71C1C;
-    stroke-width: .9px;
-    cursor: pointer;
-  }
-
-  /* ESTABLE */
-  .municipios.estable:hover,
-  .municipios-nuevo.estable:hover{
-    filter: brightness(0.90);
-    stroke: #1B5E20;
-    stroke-width: .8px;
-    cursor: pointer;
-  }
-
-  /* ALTO */
-  .municipios.alto:hover,
-  .municipios-nuevo.alto:hover{
-    filter: brightness(0.88);
-    stroke: #EF6C00;
-    stroke-width: .8px;
-    cursor: pointer;
-  }
-
-  /* MEDIO */
-  .municipios.medio:hover,
-  .municipios-nuevo.medio:hover{
-    filter: brightness(0.92);
-    stroke: #C9A600;
-    stroke-width: .7px;
-    cursor: pointer;
-  }
-
-  /* NEUTRO */
-  .municipios.neutro:hover,
-  .municipios-nuevo.neutro:hover{
-    filter: brightness(0.94);
-    stroke: rgba(15,23,42,.45);
-    stroke-width: .6px;
-    cursor: pointer;
-  }
-
-  /* Si NO tiene clase (fallback), aplica neutro */
-  .municipios:hover:not(.critico):not(.estable):not(.alto):not(.medio):not(.neutro),
-  .municipios-nuevo:hover:not(.critico):not(.estable):not(.alto):not(.medio):not(.neutro){
-    filter: brightness(0.94);
-    stroke: rgba(15,23,42,.45);
-    stroke-width: .6px;
-    cursor: pointer;
-  }
-
-  /* ====== MODALES PRO ====== */
-  .modal-content{
-    border-radius: 18px !important;
-    overflow: hidden;
-    border: 1px solid rgba(15,23,42,.10) !important;
-    box-shadow: 0 22px 60px rgba(2,6,23,.24);
-  }
-  .modal-header{
-    background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2)) !important;
-    color: #fff !important;
-    border-bottom: 1px solid rgba(255,255,255,.12) !important;
-  }
-  .modal-header .modal-title{ font-weight: 900 !important; }
-  .modal-header .close{ color:#fff !important; opacity: .95 !important; text-shadow: none !important; }
-  .modal-body{
-    padding: 18px !important;
-    background: linear-gradient(180deg, rgba(32,66,127,.04), rgba(255,255,255,1));
-  }
-  .modal-footer{
-    background: #fff;
-    border-top: 1px solid rgba(15,23,42,.10) !important;
-  }
-
-  .modal-dialog.modal-xl.centered{
-    max-width: 96vw;
-    margin: 1.25rem auto;
-  }
-
-  .resumen-table{
-    max-height: 280px;
-    overflow-y: auto;
-    border-radius: 12px;
-    border: 1px solid rgba(15,23,42,.10);
-  }
-  .table th{
-    background-color: #f1f5f9 !important;
-    font-weight: 800;
-    font-size: 13px;
-  }
-  .table td{ font-size: 13px; }
-
-  @media (max-width: 992px){
-    .page-block{ padding: 14px; }
-    .map-frame{ padding: 10px; }
-  }
-</style>
 
 
 <div class="pcoded-main-container">
@@ -639,15 +326,89 @@ include './admin/include/head.php';
               </div>
             </div>
 
+            <!-- HERO VISUAL GOB360 -->
+            <section class="g360-comparison-hero" aria-label="Informe comparativo de secretarías GOB360">
+              <div class="g360-comparison-hero__grid">
+
+                <div>
+                  <img
+                    src="assets/img/gob360l.png"
+                    alt="Logo GOB360"
+                    class="g360-comparison-hero__logo"
+                  >
+                </div>
+
+                <div>
+                  <div class="g360-comparison-hero__eyebrow">
+                    <i class="feather icon-layers"></i>
+                    Análisis territorial institucional
+                  </div>
+
+                  <h1 class="g360-comparison-hero__title">
+                    Informe comparativo de secretarías
+                  </h1>
+
+                  <p class="g360-comparison-hero__description">
+                    Compara el estado territorial inicial y actual de cada
+                    secretaría mediante mapas interactivos, niveles de
+                    clasificación, geolocalización y consulta consolidada por municipio.
+                  </p>
+
+                  <div class="g360-comparison-hero__chips">
+                    <span class="g360-chip g360-chip--success">
+                      <i class="feather icon-check-circle"></i>
+                      Información consolidada
+                    </span>
+
+                    <span class="g360-chip">
+                      <i class="feather icon-map"></i>
+                      Comparativo territorial
+                    </span>
+
+                    <span class="g360-chip">
+                      <i class="feather icon-map-pin"></i>
+                      Consulta municipal
+                    </span>
+                  </div>
+                </div>
+
+                <div class="g360-comparison-hero__visual" aria-hidden="true">
+                  <div class="g360-mini-card">
+                    <i class="feather icon-briefcase"></i>
+                    <span>Secretarías</span>
+                  </div>
+
+                  <div class="g360-mini-card">
+                    <i class="feather icon-map"></i>
+                    <span>Mapa inicial</span>
+                  </div>
+
+                  <div class="g360-mini-card">
+                    <i class="feather icon-trending-up"></i>
+                    <span>Mapa actual</span>
+                  </div>
+
+                  <div class="g360-mini-card">
+                    <i class="feather icon-navigation"></i>
+                    <span>Geolocalizar</span>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
             <!-- Filtro principal -->
             <div class="row">
               <div class="col-12">
-                <div class="card mb-4 card-info-complementaria">
+                <div class="card mb-4 card-info-complementaria g360-panel-card g360-filter-card">
                   <div class="card-header text-white">
-                    <h5 class="mb-0">
-                      <i class="bi bi-sliders me-2" style="font-size:1.2rem;"></i>
-                      Informe comparativo
-                    </h5>
+                    <div>
+                      <h5>
+                        <i class="bi bi-sliders mr-2"></i>
+                        Configuración del comparativo
+                      </h5>
+                      <p>Selecciona la secretaría utilizada por los mapas territoriales.</p>
+                    </div>
                   </div>
 
                   <div class="card-body">
@@ -656,7 +417,7 @@ include './admin/include/head.php';
                         <div class="form-group mb-0">
                           <label for="secretariaUnicaId">
                             <i class="bi bi-building me-1" style="font-size:1.05rem;"></i>
-                            Secretaria (Mapa Principal) <span class="text-danger">*</span>
+                            Secretaría del mapa principal <span class="text-danger">*</span>
                           </label>
 
                           <select <?php echo $isDisabled; ?>
@@ -681,11 +442,11 @@ include './admin/include/head.php';
 
               <!-- MAPA INICIAL -->
               <div class="col-lg-6 mb-4">
-                <div class="card h-100 w-100 map-card card-mapa-nuevo">
+                <div class="card h-100 w-100 map-card card-mapa-nuevo g360-panel-card g360-map-card">
                   <div class="card-header">
                     <div class="title-wrap">
                       <span class="map-badge">
-                        <i class="bi bi-map-fill"></i> Mapa Inicial
+                        <i class="bi bi-map-fill"></i> Línea base territorial
                       </span>
                     </div>
 
@@ -701,7 +462,7 @@ include './admin/include/head.php';
                   </div>
 
                   <div class="card-body map-body">
-                    <div class="d-flex flex-wrap gap-2 justify-content-center mb-3">
+                    <div class="g360-map-legend">
                         <span class="badge rounded-pill px-3 py-2" style="background:#EEF2F7;color:#0f172a;border:1px solid rgba(15,23,42,.10);font-weight:800;">Neutro</span>
                         <span class="badge rounded-pill px-3 py-2" style="background:#E53935;color:#fff;font-weight:800;">Crítico</span>
                         <span class="badge rounded-pill px-3 py-2" style="background:#FB8C00;color:#fff;font-weight:800;">Alto</span>
@@ -744,11 +505,11 @@ include './admin/include/head.php';
 
               <!-- MAPA ACTUAL -->
               <div class="col-lg-6 mb-4">
-                <div class="card h-100 w-100 map-card card-mapa">
+                <div class="card h-100 w-100 map-card card-mapa g360-panel-card g360-map-card">
                   <div class="card-header">
                     <div class="title-wrap">
                       <span class="map-badge">
-                        <i class="bi bi-map-fill"></i> Mapa Actual
+                        <i class="bi bi-map-fill"></i> Estado territorial actual
                       </span>
                     </div>
 
@@ -764,7 +525,7 @@ include './admin/include/head.php';
                   </div>
 
                   <div class="card-body map-body">
-                          <div class="d-flex flex-wrap gap-2 justify-content-center mb-3">
+                          <div class="g360-map-legend">
                         <span class="badge rounded-pill px-3 py-2" style="background:#EEF2F7;color:#0f172a;border:1px solid rgba(15,23,42,.10);font-weight:800;">Neutro</span>
                         <span class="badge rounded-pill px-3 py-2" style="background:#E53935;color:#fff;font-weight:800;">Crítico</span>
                         <span class="badge rounded-pill px-3 py-2" style="background:#FB8C00;color:#fff;font-weight:800;">Alto</span>
@@ -823,7 +584,7 @@ include './admin/include/head.php';
         <h5 class="modal-title" id="modalConsolidadoTitle">
           Resumen de Ejecución en: <span id="modalMunicipioNombre"></span>
         </h5>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -849,7 +610,7 @@ include './admin/include/head.php';
 
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalCenterTitle">Geolocalización</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>

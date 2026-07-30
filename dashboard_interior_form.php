@@ -10,119 +10,12 @@ date_default_timezone_set('America/Bogota');
 
 include './admin/include/head.php';
 ?>
-<body>
+<body class="gob360-security-admin">
 <!-- Bootstrap Icons (no incluido en head.php) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<style>
-    :root{
-      --bg1:#08141b; --bg2:#0f2530; --bg3:#102f3d;
-      --stroke:rgba(255,255,255,.12);
-      --txt:rgba(255,255,255,.92); --muted:rgba(255,255,255,.70);
-      --radius:18px;
-      --accent:#ff7a00; --accent2:#00e5ff;
-    }
-    body{
-      background:
-        radial-gradient(1200px 600px at 20% 0%, rgba(0,229,255,.10), transparent 65%),
-        radial-gradient(900px 500px at 80% 10%, rgba(255,122,0,.10), transparent 60%),
-        linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
-      color:var(--txt);
-    }
-    .card-pro{
-      background:rgba(255,255,255,.06);
-      border:1px solid var(--stroke);
-      border-radius:var(--radius);
-      box-shadow:0 18px 55px rgba(0,0,0,.40);
-      overflow:hidden;
-    }
-    .card-pro .card-header{
-      background:linear-gradient(90deg, rgba(15,45,58,.85), rgba(21,63,82,.65));
-      border-bottom:1px solid rgba(255,255,255,.10);
-      font-weight:1000;
-      letter-spacing:.5px;
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-    }
-    .badge-soft{
-      padding:7px 10px;border-radius:12px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.20);
-      font-weight:900;
-      color:rgba(255,255,255,.85);
-    }
-    .boletin-badge{
-      padding:6px 14px;border-radius:14px;
-      border:1px solid rgba(0,229,255,.35);
-      background:rgba(0,229,255,.10);
-      font-weight:900;
-      color:#00e5ff;
-      font-size:13px;
-      display:inline-flex;align-items:center;gap:6px;
-    }
-    .boletin-badge i{ font-size:16px; }
-    .form-control,.custom-select{
-      background:rgba(0,0,0,.25)!important;
-      color:#fff!important;
-      border:1px solid rgba(255,255,255,.15)!important;
-      border-radius:12px!important;
-      font-weight:800;
-    }
-    .custom-select option{
-      color:#111 !important;
-      background:#fff !important;
-    }
+<link rel="stylesheet" href="assets/css/formulario_estadisticas_seguridad_gob360.css">
 
-    .small-muted{color:var(--muted);font-weight:700;font-size:12px}
-    .btn-pro{border-radius:14px;font-weight:1000;letter-spacing:.3px}
-    .kv{
-      display:flex;justify-content:space-between;gap:12px;
-      border-bottom:1px dashed rgba(255,255,255,.12);
-      padding:10px 0;
-    }
-    .kv:last-child{border-bottom:none}
-    .kv b{font-weight:1000}
-
-    .boletin-bar{
-      display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-      padding:12px 18px;
-      background:rgba(0,0,0,.15);
-      border:1px solid var(--stroke);
-      border-radius:var(--radius);
-      margin-bottom:16px;
-    }
-
-    .loader-bg{ display:none; }
-  </style>
-  <style>
-  .swal2-popup {
-    background: linear-gradient(135deg, #0f2530, #102f3d) !important;
-    border: 1px solid rgba(255,255,255,.15) !important;
-    border-radius: 18px !important;
-    color: #fff !important;
-    box-shadow: 0 25px 60px rgba(0,0,0,.6) !important;
-  }
-
-  .swal2-title {
-    font-weight: 1000 !important;
-    letter-spacing: .5px;
-  }
-
-  .swal2-confirm {
-    background: linear-gradient(90deg, #00e5ff, #00bcd4) !important;
-    border: none !important;
-    border-radius: 12px !important;
-    font-weight: 900 !important;
-    padding: 8px 22px !important;
-  }
-
-  .swal2-confirm:hover {
-    background: linear-gradient(90deg, #00bcd4, #00e5ff) !important;
-  }
-
-  .swal2-icon.swal2-success {
-    border-color: #33d17a !important;
-    color: #33d17a !important;
-  }
-</style>
+  
 <!-- Loader (intacto) -->
 <div class="loader-bg">
   <div class="loader-track"><div class="loader-fill"></div></div>
@@ -142,45 +35,163 @@ include './admin/include/head.php';
               <div class="page-block">
                 <div class="row align-items-center">
                   <div class="col-md-12">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-center g360-page-heading">
+                      <div>
+                        <h5 class="m-b-10">
+                          <i class="feather icon-shield"></i>
+                          Administración de Estadísticas de Seguridad
+                        </h5>
+                        <p>Configuración de boletines, metas, gráficos y datos comparativos.</p>
+                      </div>
+
                       <?php include './admin/include/btn_back.php'; ?>
                     </div>
                     <ul class="breadcrumb">
                       <li class="breadcrumb-item title"><a href="index.html"><i class="feather icon-home"></i></a></li>
                       <li class="breadcrumb-item title"><a href="#!">Administración</a></li>
-                      <li class="breadcrumb-item title"><a href="#!">Dashboard Interior</a></li>
+                      <li class="breadcrumb-item title"><a href="#!">Estadísticas de seguridad</a></li>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="card card-pro mb-3">
-              <div class="card-header">
-                <span><i class="bi bi-pencil-square"></i> Formulario Estadistica de Seguridad
-                  <?php if($edit): ?>
-                  <span style="margin-left:12px;font-size:12px;color:#00e5ff;background:rgba(0,229,255,.12);padding:3px 12px;border-radius:20px;border:1px solid rgba(0,229,255,.25)" id="card_boletin_status">
-                    <i class="bi bi-newspaper"></i> <span id="card_boletin_label">Datos globales por año</span>
+            <section class="g360-security-hero" aria-label="Administración de estadísticas de seguridad GOB360">
+              <div class="g360-security-hero__grid">
+
+                <aside class="g360-security-brand">
+                  <span class="g360-security-brand__eyebrow">
+                    Plataforma institucional
                   </span>
-                  <?php endif; ?>
-                </span>
-                <div class="d-flex align-items-center gap-2" style="gap:8px">
+
+                  <img
+                    src="assets/img/gob360l.png"
+                    alt="Logo GOB360"
+                    class="g360-security-brand__logo"
+                  >
+
+                  <span class="g360-security-brand__caption">
+                    Gestión pública inteligente y territorial
+                  </span>
+
+                  <div class="g360-security-brand__status">
+                    <span></span>
+                    Módulo habilitado
+                  </div>
+                </aside>
+
+                <div class="g360-security-hero__content">
+                  <div class="g360-security-hero__eyebrow">
+                    <i class="feather icon-shield"></i>
+                    Secretaría del Interior
+                  </div>
+
+                  <h1 class="g360-security-hero__title">
+                    Centro de Estadísticas de Seguridad
+                  </h1>
+
+                  <p class="g360-security-hero__description">
+                    Administra los datos globales y boletines diarios que alimentan
+                    el dashboard institucional de seguridad. Configura metas,
+                    compara periodos, actualiza gráficos y genera reportes PDF.
+                  </p>
+
+                  <div class="g360-security-capabilities">
+                    <article>
+                      <i class="bi bi-newspaper"></i>
+                      <span>Boletines</span>
+                    </article>
+
+                    <article>
+                      <i class="bi bi-bullseye"></i>
+                      <span>Metas</span>
+                    </article>
+
+                    <article>
+                      <i class="bi bi-bar-chart-line"></i>
+                      <span>Gráficos</span>
+                    </article>
+
+                    <article>
+                      <i class="bi bi-file-earmark-pdf"></i>
+                      <span>Reportes</span>
+                    </article>
+                  </div>
+
+                  <div class="g360-security-hero__meta">
+                    <span>
+                      <i class="bi bi-calendar3"></i>
+                      Vigencia <?php echo date('Y'); ?>
+                    </span>
+
+                    <span>
+                      <i class="bi bi-person-check"></i>
+                      <?php echo $edit ? 'Edición autorizada' : 'Consulta habilitada'; ?>
+                    </span>
+
+                    <span>
+                      <i class="bi bi-database-check"></i>
+                      Datos institucionales
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            <div class="card card-pro g360-security-editor-card mb-3">
+              <div class="card-header">
+                <div class="g360-card-heading">
+                  <span class="g360-card-heading__icon">
+                    <i class="bi bi-pencil-square"></i>
+                  </span>
+
+                  <div>
+                    <span class="g360-card-heading__eyebrow">Editor institucional</span>
+                    <h5>Formulario de Estadísticas de Seguridad</h5>
+
+                    <?php if($edit): ?>
+                    <span class="boletin-badge" id="card_boletin_status">
+                      <i class="bi bi-newspaper"></i>
+                      <span id="card_boletin_label">Datos globales por año</span>
+                    </span>
+                    <?php endif; ?>
+                  </div>
+                </div>
+
+                <div class="g360-card-actions">
                   <a class="btn btn-sm btn-light btn-pro" id="btnDescargarPDF" target="_blank" href="admin/ajax/dash_interior_pdf.php" style="display:none" data-boletin-id="0">
                     <i class="bi bi-download"></i> PDF
                   </a>
                   <?php if($edit): ?>
                   <button class="btn btn-sm btn-outline-light btn-pro" id="btnActivarBoletin" type="button" style="display:none">
-                    <i class="bi bi-star-fill" style="color:#ffc107"></i> Activar
+                    <i class="bi bi-star-fill"></i> Activar
                   </button>
                   <button class="btn btn-sm btn-outline-light btn-pro" id="btnAbrirMeta" type="button">
                     <i class="bi bi-sliders"></i> Configurar Meta
                   </button>
                   <?php endif; ?>
-                  <span class="badge-soft"><i class="bi bi-bar-chart"></i> gráfico + valores</span>
+                  <span class="badge-soft"><i class="bi bi-bar-chart"></i> Gráfico + valores</span>
                 </div>
               </div>
 
               <div class="card-body">
+
+                <div class="g360-editor-intro">
+                  <span class="g360-editor-intro__icon">
+                    <i class="bi bi-sliders2-vertical"></i>
+                  </span>
+
+                  <div>
+                    <h6>Configura la fuente de información</h6>
+                    <p>
+                      Selecciona año, boletín y gráfico. Luego carga los valores,
+                      realiza los cambios y guarda la información.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="g360-security-filters">
                 <div class="form-row">
                   <div class="form-group col-md-2">
                     <label>Año</label>
@@ -199,7 +210,7 @@ include './admin/include/head.php';
                     <label>
                       Boletín
                       <?php if($edit): ?>
-                      <button class="btn btn-sm btn-success btn-pro" id="btnNuevoBoletin" type="button" style="padding:2px 10px;font-size:11px;margin-left:6px" title="Crear nuevo boletín diario">
+                      <button class="btn btn-sm btn-success btn-pro g360-new-bulletin-btn" id="btnNuevoBoletin" type="button" title="Crear nuevo boletín diario">
                         <i class="bi bi-plus-circle"></i> Nuevo
                       </button>
                       <?php endif; ?>
@@ -221,30 +232,93 @@ include './admin/include/head.php';
                     </button>
                   </div>
                 </div>
+                </div>
 
-                <hr style="border-color: rgba(255,255,255,.12)">
+                <div class="g360-editor-workspace">
+                  <div class="g360-editor-workspace__header">
+                    <div>
+                      <span>Área de edición</span>
+                      <h6>Valores y configuración del gráfico</h6>
+                    </div>
 
-                <div id="editor" class="mt-2"></div>
+                    <span class="g360-editor-workspace__badge">
+                      <i class="bi bi-graph-up-arrow"></i>
+                      Vista editable
+                    </span>
+                  </div>
+
+                  <div id="editor" class="g360-editor-container"></div>
+                </div>
 
                 <?php if($edit): ?>
-                  <button class="btn btn-success btn-pro btn-block mt-3" id="btnGuardar" type="button">
-                    <i class="bi bi-save2"></i> Guardar Valores
-                  </button>
+                  <div class="g360-save-bar">
+                    <div class="g360-save-bar__message">
+                      <i class="bi bi-shield-check"></i>
+                      <span>
+                        Guarda los cambios para actualizar el dashboard institucional.
+                      </span>
+                    </div>
+
+                    <button class="btn btn-success btn-pro" id="btnGuardar" type="button">
+                      <i class="bi bi-save2"></i>
+                      Guardar valores
+                    </button>
+                  </div>
                 <?php else: ?>
                   <div class="alert alert-warning mt-3">No tienes permiso de edición.</div>
                 <?php endif; ?>
               </div>
             </div>
 
-            <div class="card card-pro">
+            <div class="card card-pro g360-result-card">
               <div class="card-header">
-                <span><i class="bi bi-eye"></i> Ver resultado</span>
+                <div class="g360-card-heading">
+                  <span class="g360-card-heading__icon g360-card-heading__icon--success">
+                    <i class="bi bi-eye"></i>
+                  </span>
+
+                  <div>
+                    <span class="g360-card-heading__eyebrow">Vista pública</span>
+                    <h5>Revisar resultado del Dashboard</h5>
+                  </div>
+                </div>
+
                 <a href="dash_interior.php" class="btn btn-outline-light btn-pro">
-                  <i class="bi bi-bar-chart-line-fill"></i> Ver Dashboard
+                  <i class="bi bi-bar-chart-line-fill"></i>
+                  Abrir dashboard
                 </a>
               </div>
-              <div class="card-body small-muted">
-                Guarda aquí → abre el dashboard → recarga.
+
+              <div class="card-body">
+                <div class="g360-result-steps">
+                  <article>
+                    <span>1</span>
+                    <div>
+                      <strong>Guarda los valores</strong>
+                      <p>Confirma los cambios realizados en el formulario.</p>
+                    </div>
+                  </article>
+
+                  <i class="bi bi-arrow-right"></i>
+
+                  <article>
+                    <span>2</span>
+                    <div>
+                      <strong>Abre el dashboard</strong>
+                      <p>Consulta la visualización institucional actualizada.</p>
+                    </div>
+                  </article>
+
+                  <i class="bi bi-arrow-right"></i>
+
+                  <article>
+                    <span>3</span>
+                    <div>
+                      <strong>Recarga la vista</strong>
+                      <p>Verifica los gráficos, metas y valores publicados.</p>
+                    </div>
+                  </article>
+                </div>
               </div>
             </div>
 
@@ -261,12 +335,15 @@ include './admin/include/head.php';
      MODAL: Configurar Meta (tbl_dash_interior_meta)
 ====================================================== -->
 <div class="modal fade" id="modalMeta" tabindex="-1" role="dialog" aria-labelledby="modalMetaLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:540px">
-    <div class="modal-content" style="background:linear-gradient(135deg,#0f2530,#102f3d);border:1px solid rgba(255,255,255,.15);border-radius:18px;color:#fff">
+  <div class="modal-dialog modal-dialog-centered g360-meta-modal-dialog" role="document">
+    <div class="modal-content g360-meta-modal">
 
-      <div class="modal-header" style="border-bottom:1px solid rgba(255,255,255,.12)">
+      <div class="modal-header">
         <h5 class="modal-title font-weight-bold" id="modalMetaLabel">
-          <i class="bi bi-sliders"></i> <span id="modalMetaTitle">Configurar Meta del Dashboard</span>
+          <span class="g360-modal-title-icon">
+            <i class="bi bi-sliders"></i>
+          </span>
+          <span id="modalMetaTitle">Configurar Meta del Dashboard</span>
         </h5>
         <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
           <span aria-hidden="true">&times;</span>
@@ -322,7 +399,7 @@ include './admin/include/head.php';
         </div>
       </div>
 
-      <div class="modal-footer" style="border-top:1px solid rgba(255,255,255,.12)">
+      <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-pro" data-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-success btn-pro" id="btnGuardarMeta">
           <i class="bi bi-save2"></i> Guardar Meta

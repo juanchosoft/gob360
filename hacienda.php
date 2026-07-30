@@ -28,7 +28,9 @@ foreach ($arr as $val) {
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<body class="">
+<link href="assets/css/ejecucion_hacienda_gob360.css" rel="stylesheet">
+
+<body class="gob360-hacienda-execution">
     <!-- [ Pre-loader ] start -->
     <div class="loader-bg">
         <div class="loader-track">
@@ -46,218 +48,7 @@ foreach ($arr as $val) {
     include './admin/include/header.php';
     ?>
     <!-- [ Header ] end -->
-<style>
-  :root{
-    --nav-blue:#20427F;
-    --nav-blue-2:#132b52;
-    --nav-blue-3:#2e58a8;
 
-    --bg:#f6f8fc;
-    --card:#ffffff;
-    --ink:#0f172a;
-    --muted:#64748b;
-    --line:rgba(15,23,42,.10);
-
-    --radius-xl:22px;
-    --radius-lg:16px;
-    --radius-md:12px;
-
-    --shadow-soft:0 12px 30px rgba(2,6,23,.10);
-    --shadow-mid:0 18px 40px rgba(2,6,23,.14);
-
-    --ring: 0 0 0 4px rgba(46,88,168,.16);
-  }
-
-  body{ background: var(--bg) !important; }
-  .pcoded-main-container{ background: transparent !important; }
-  .pcoded-content{ padding-top: 18px !important; }
-
-  /* ===== Header SaaS ===== */
-  .page-block{
-    background: linear-gradient(135deg, rgba(32,66,127,.10), rgba(255,255,255,.72));
-    border: 1px solid rgba(255,255,255,.70);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-soft);
-    padding: 16px 18px;
-    backdrop-filter: blur(10px);
-  }
-  .page-block h5{
-    font-weight: 900 !important;
-    letter-spacing: .2px;
-    color: var(--ink);
-  }
-  .breadcrumb{
-    margin-top: 6px !important;
-    margin-bottom: 0 !important;
-    background: transparent !important;
-    padding: 0 !important;
-  }
-  .breadcrumb .breadcrumb-item a{ color: var(--muted) !important; }
-  .breadcrumb .breadcrumb-item{ font-size: 13px; }
-
-  /* ===== Cards Pro ===== */
-  .card{
-    border: 1px solid var(--line) !important;
-    border-radius: var(--radius-xl) !important;
-    box-shadow: var(--shadow-soft);
-    overflow: hidden;
-    background: var(--card);
-  }
-  .card-header{
-    border-bottom: 1px solid rgba(255,255,255,.10) !important;
-    padding: 14px 16px !important;
-    background: linear-gradient(135deg, var(--nav-blue), var(--nav-blue-2)) !important;
-    color: #fff !important;
-  }
-  .card-header h5{
-    color:#fff !important;
-    margin:0 !important;
-    font-weight: 900 !important;
-    letter-spacing: .2px;
-  }
-  .card-body{
-    background: linear-gradient(180deg, rgba(32,66,127,.04), rgba(255,255,255,1));
-  }
-
-  /* ===== Form Pro ===== */
-  label.form-label, .form-group label{
-    font-weight: 800;
-    color: var(--ink);
-    margin-bottom: 8px;
-  }
-  .form-control{
-    border-radius: 14px !important;
-    border: 1px solid rgba(15,23,42,.14) !important;
-    padding: 12px 12px !important;
-    height: auto !important;
-    box-shadow: none !important;
-    transition: .18s ease;
-    background: #fff !important;
-  }
-  .form-control:focus{
-    border-color: rgba(46,88,168,.55) !important;
-    box-shadow: var(--ring) !important;
-  }
-  textarea.form-control{ min-height: 110px; resize: vertical; }
-
-  /* ===== Chips / Helpers ===== */
-  .hz-chip{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: rgba(255,255,255,.16);
-    border: 1px solid rgba(255,255,255,.18);
-    font-size: 12px;
-    font-weight: 900;
-    color:#fff;
-  }
-
-  /* ===== Secciones internas (agrupación) ===== */
-  .hz-section{
-    border:1px solid rgba(15,23,42,.10);
-    border-radius: var(--radius-lg);
-    background: rgba(255,255,255,.78);
-    box-shadow: 0 10px 24px rgba(2,6,23,.08);
-    padding: 14px;
-    margin-bottom: 12px;
-  }
-  .hz-section-title{
-    display:flex;
-    align-items:center;
-    justify-content: space-between;
-    gap:12px;
-    margin-bottom: 10px;
-  }
-  .hz-section-title h6{
-    margin:0;
-    font-weight: 950;
-    color: var(--ink);
-    letter-spacing: .2px;
-  }
-  .hz-sub{
-    margin:0;
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 700;
-  }
-
-  /* ===== Botones SaaS ===== */
-  .btn{
-    border-radius: 14px !important;
-    font-weight: 900 !important;
-    letter-spacing: .2px;
-    padding: 10px 14px !important;
-    border: none !important;
-    box-shadow: 0 10px 20px rgba(2,6,23,.12);
-    transition: .18s ease;
-  }
-  .btn:hover{ transform: translateY(-1px); box-shadow: 0 14px 26px rgba(2,6,23,.16); }
-  .btn:active{ transform: translateY(0px); }
-  .btn-primary{ background: linear-gradient(135deg, var(--nav-blue-3), var(--nav-blue)) !important; }
-  .btn-danger{ background: linear-gradient(135deg, #ef4444, #b91c1c) !important; }
-
-  /* ===== Sticky actions (móvil) ===== */
-  .hz-actions{
-    display:flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 14px;
-  }
-  @media (max-width: 767.98px){
-    .pcoded-content{ padding-left: 12px !important; padding-right: 12px !important; }
-    .card-body.m-4{ margin: 12px !important; }
-    input, select, textarea{ font-size: 16px !important; } /* evita zoom iOS */
-
-    .hz-actions{
-      position: sticky;
-      bottom: 10px;
-      z-index: 20;
-      background: rgba(246,248,252,.92);
-      backdrop-filter: blur(10px);
-      padding: 10px;
-      border: 1px solid rgba(15,23,42,.10);
-      border-radius: 16px;
-      box-shadow: 0 16px 40px rgba(2,6,23,.16);
-    }
-    .hz-actions .btn{ width: 100%; }
-  }
-
-  /* ===== Select2 pro ===== */
-  .select2-container .select2-selection--multiple{
-    min-height: 46px !important;
-    border-radius: 14px !important;
-    border: 1px solid rgba(15,23,42,.14) !important;
-    padding: 6px 10px !important;
-    background: #fff !important;
-  }
-  .select2-container--default.select2-container--focus .select2-selection--multiple{
-    border-color: rgba(46,88,168,.55) !important;
-    box-shadow: var(--ring) !important;
-  }
-  .select2-container--default .select2-selection--multiple .select2-selection__choice{
-    border: 0 !important;
-    border-radius: 999px !important;
-    padding: 6px 10px !important;
-    font-weight: 900 !important;
-    background: rgba(32,66,127,.10) !important;
-    color: var(--ink) !important;
-  }
-  .select2-container{ width: 100% !important; }
-
-  /* ===== iframe upload (foto) ===== */
-  .hz-upload iframe{
-    width: 100% !important;
-    max-width: 240px !important;
-    border-radius: 14px;
-    border: 1px solid rgba(15,23,42,.10);
-    background: #fff;
-  }
-  @media (max-width: 767.98px){
-    .hz-upload iframe{ max-width: 100% !important; }
-  }
-</style>
 
     <!-- [ Main Content ] start -->
     <div class="pcoded-main-container">
@@ -269,13 +60,13 @@ foreach ($arr as $val) {
 
                         <div class="col-md-12">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="m-b-10">Ejecución Hacienda </h5>
+                                <h5 class="m-b-10">Ejecución de Hacienda</h5>
                             <?php include './admin/include/btn_back.php'; ?>
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#!">Ejecuciòn Hacienda / Seguimiento
+                                <li class="breadcrumb-item"><a href="#!">Ejecución de Hacienda / Seguimiento
                                     </a></li>
                             </ul>
                         </div>
@@ -284,23 +75,98 @@ foreach ($arr as $val) {
                 </div>
             </div>
             <!-- [ breadcrumb ] end -->
+
+            <!-- HERO VISUAL GOB360 -->
+            <section class="g360-hacienda-hero" aria-label="Ejecución de Hacienda GOB360">
+                <div class="g360-hacienda-hero__grid">
+
+                    <div>
+                        <img
+                            src="assets/img/gob360l.png"
+                            alt="Logo GOB360"
+                            class="g360-hacienda-hero__logo"
+                        >
+                    </div>
+
+                    <div>
+                        <div class="g360-hacienda-hero__eyebrow">
+                            <i class="feather icon-trending-up"></i>
+                            Gestión fiscal y financiera
+                        </div>
+
+                        <h1 class="g360-hacienda-hero__title">
+                            Ejecución de Hacienda
+                        </h1>
+
+                        <p class="g360-hacienda-hero__description">
+                            Registra recaudos, operativos, aprehensiones,
+                            capacitaciones, visitas a establecimientos y procesos
+                            jurídicos, con consolidado dinámico por acción y municipio.
+                        </p>
+
+                        <div class="g360-hacienda-hero__chips">
+                            <span class="g360-chip g360-chip--success">
+                                <i class="feather icon-check-circle"></i>
+                                Registro operativo
+                            </span>
+
+                            <span class="g360-chip">
+                                <i class="feather icon-map-pin"></i>
+                                Selección municipal
+                            </span>
+
+                            <span class="g360-chip">
+                                <i class="feather icon-bar-chart-2"></i>
+                                Consolidado dinámico
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="g360-hacienda-hero__visual" aria-hidden="true">
+                        <div class="g360-mini-card">
+                            <i class="feather icon-dollar-sign"></i>
+                            <span>Recaudos</span>
+                        </div>
+
+                        <div class="g360-mini-card">
+                            <i class="feather icon-shield"></i>
+                            <span>GOA</span>
+                        </div>
+
+                        <div class="g360-mini-card">
+                            <i class="feather icon-truck"></i>
+                            <span>Operativos</span>
+                        </div>
+
+                        <div class="g360-mini-card">
+                            <i class="feather icon-camera"></i>
+                            <span>Evidencia</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
             <!-- [ Main Content ] start -->
 
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="card">
+                    <div class="card g360-hacienda-card">
                         <div class="card-header">
-                            <h5>Ejecución Hacienda</h5>
+                            <div>
+                                <h5>Registro de ejecución fiscal</h5>
+                                <p>Selecciona la acción y completa únicamente los campos habilitados para el registro.</p>
+                            </div>
                         </div>
-                        <div class="card-body m-4">
+                        <div class="card-body">
   <form id="formsecretaria" class="needs-validation" novalidate>
 
     <!-- TOP: Consolidado + filtros principales -->
     <div class="hz-section">
       <div class="hz-section-title">
         <div>
-          <h6><i class="bi bi-graph-up-arrow me-2"></i>Panel de ejecución</h6>
-          <p class="hz-sub">Selecciona acción, fecha y municipio(s) para cargar el consolidado.</p>
+          <h6><i class="bi bi-graph-up-arrow mr-2"></i>Configuración de la ejecución</h6>
+          <p class="hz-sub">Selecciona la acción, la fecha y los municipios para consultar el consolidado.</p>
         </div>
         <span class="hz-chip"><i class="bi bi-shield-check"></i> Hacienda</span>
       </div>
@@ -349,7 +215,7 @@ foreach ($arr as $val) {
     <div class="hz-section">
       <div class="hz-section-title">
         <div>
-          <h6><i class="bi bi-ui-checks-grid me-2"></i>Detalle de registro</h6>
+          <h6><i class="bi bi-ui-checks-grid mr-2"></i>Detalle dinámico del registro</h6>
           <p class="hz-sub">Completa solo los campos que aplique según la acción seleccionada.</p>
         </div>
       </div>
@@ -435,7 +301,7 @@ foreach ($arr as $val) {
           <label for="tipo_cigarrillo" class="form-label">Tipo Cigarrillo</label>
           <select class="form-control" id="tipo_cigarrillo" name="tipo_cigarrillo">
             <option value="Nacional">Nacional</option>
-            <option value="Extrajero">Extrajero</option>
+            <option value="Extrajero">Extranjero</option>
           </select>
         </div>
 
@@ -453,7 +319,7 @@ foreach ($arr as $val) {
           <label for="tipo_tabaco" class="form-label">Tipo Tabaco</label>
           <select class="form-control" id="tipo_tabaco" name="tipo_tabaco">
             <option value="Nacional">Nacional</option>
-            <option value="Extrajero">Extrajero</option>
+            <option value="Extrajero">Extranjero</option>
           </select>
         </div>
 
@@ -545,7 +411,7 @@ foreach ($arr as $val) {
         </div>
 
         <div class="col-12 col-md-6 col-lg-4 campo campo-tipo-establecimiento">
-          <label for="tipoe" class="form-label">Tipo capacitaciones del Establecimiento</label>
+          <label for="tipoe" class="form-label">Tipo de establecimiento</label>
           <select class="form-control" id="tipoe" name="tipoe">
             <option value="Establecimiento comercial">Establecimiento comercial</option>
           </select>
@@ -655,10 +521,10 @@ foreach ($arr as $val) {
     <!-- Acciones -->
     <div class="hz-actions">
       <button type="button" onclick="UTIL.clearForm('formsecretaria');" class="btn btn-danger">
-        <i class="bi bi-x-circle me-2"></i>Cancelar
+        <i class="bi bi-x-circle mr-2"></i>Cancelar
       </button>
       <button type="button" onclick="HACIENDA.saveData();" class="btn btn-primary">
-        <i class="bi bi-save2 me-2"></i>Guardar
+        <i class="bi bi-save2 mr-2"></i>Guardar ejecución
       </button>
     </div>
 

@@ -455,7 +455,9 @@
         $arrApoyoDep = Ciudad::getApoyoByCodigoDepartamento(array('codigo_departamento' => $code));
     }
     ?>
- <body class="dashboard-body">
+ <link href="assets/css/dashboard_pae_gob360.css" rel="stylesheet">
+
+<body class="dashboard-body gob360-pae-dashboard">
    
      <div class="loader-bg">
          <div class="loader-track">
@@ -476,13 +478,13 @@
                      <div class="row align-items-center">
                          <div class="col-md-12">
                              <div class="d-flex justify-content-between align-items-center">
-                                 <h5 class="m-b-10">Dashboard PAE</h5>
+                                 <h5 class="m-b-10">Analítica del Programa de Alimentación Escolar</h5>
 <?php include './admin/include/btn_back.php'; ?>
                              </div>
                              <ul class="breadcrumb">
                                  <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a>
                                  </li>
-                                 <li class="breadcrumb-item"><a href="#!"> Secretaria de Educación/Dirección PAE </a>
+                                 <li class="breadcrumb-item"><a href="#!"> Secretaría de Educación / Dirección PAE </a>
                                  </li>
                              </ul>
                          </div>
@@ -490,50 +492,125 @@
                  </div>
              </div>
 
-    <div class="row mb-4">
-    <div class="col-md-8">
-    <div class="card">
+             <!-- HERO VISUAL GOB360 -->
+             <section class="g360-pae-dashboard-hero" aria-label="Dashboard PAE GOB360">
+                 <div class="g360-pae-dashboard-hero__grid">
+
+                     <div>
+                         <img
+                             src="assets/img/gob360l.png"
+                             alt="Logo GOB360"
+                             class="g360-pae-dashboard-hero__logo"
+                         >
+                     </div>
+
+                     <div>
+                         <div class="g360-pae-dashboard-hero__eyebrow">
+                             <i class="feather icon-pie-chart"></i>
+                             Analítica del Programa de Alimentación Escolar
+                         </div>
+
+                         <h1 class="g360-pae-dashboard-hero__title">
+                             Dashboard PAE
+                         </h1>
+
+                         <p class="g360-pae-dashboard-hero__description">
+                             Analiza la caracterización de las sedes educativas,
+                             infraestructura, almacenamiento, comedores, cocinas,
+                             dotación, servicios públicos y modalidades del PAE
+                             mediante indicadores, gráficas y mapa territorial.
+                         </p>
+
+                         <div class="g360-pae-dashboard-hero__chips">
+                             <span class="g360-chip g360-chip--success">
+                                 <i class="feather icon-check-circle"></i>
+                                 Información consolidada
+                             </span>
+
+                             <span class="g360-chip">
+                                 <i class="feather icon-filter"></i>
+                                 Filtro municipal
+                             </span>
+
+                             <span class="g360-chip">
+                                 <i class="feather icon-map"></i>
+                                 Análisis territorial
+                             </span>
+                         </div>
+                     </div>
+
+                     <div class="g360-pae-dashboard-hero__visual" aria-hidden="true">
+                         <div class="g360-mini-card">
+                             <i class="feather icon-home"></i>
+                             <span>Sedes</span>
+                         </div>
+
+                         <div class="g360-mini-card">
+                             <i class="feather icon-bar-chart-2"></i>
+                             <span>Indicadores</span>
+                         </div>
+
+                         <div class="g360-mini-card">
+                             <i class="feather icon-grid"></i>
+                             <span>Dotación</span>
+                         </div>
+
+                         <div class="g360-mini-card">
+                             <i class="feather icon-map-pin"></i>
+                             <span>Mapa</span>
+                         </div>
+                     </div>
+
+                 </div>
+             </section>
+
+    <div class="row mb-4 g360-dashboard-grid">
+    <div class="col-md-8 g360-main-column">
+    <div class="card g360-analytics-shell">
 
         <!-- Submenú de Secciones -->
-            <div class="card shadow-sm border mb-4">
-                <div class="card-header" style="background-color: rgb(35, 65, 98); ">
-                    <h5 class="mb-0" style="color: white !important;">Submenú: Secciones del Informe PAE</h5>
+            <div class="card shadow-sm border mb-4 g360-section-menu-card">
+                <div class="card-header">
+                    <div>
+                        <h5><i class="feather icon-layers mr-2"></i>Secciones del informe PAE</h5>
+                        <p>Selecciona el componente que deseas analizar en las gráficas.</p>
+                    </div>
                 </div>
                 <div class="card-body p-0">
                     <ul class="nav nav-tabs nav-justified flex-column flex-sm-row submenu-personalizado" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="nav-link active" id="btn-item1" href="javascript:void(0);" onclick="mostrarSeccion('item1_estado_sedes')">
-                                1. Estado General de las Sedes Educativas
+                                1. Estado general de las sedes educativas
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="btn-item2" href="javascript:void(0);" onclick="mostrarSeccion('item2_estado_almacenamiento')">
-                                2. Estado del Almacenamiento, Preparación y Consumo
+                                2. Almacenamiento, preparación y consumo
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="btn-item3" href="javascript:void(0);" onclick="mostrarSeccion('item3_comedores')">
-                                3. Instituciones con Comedor Escolar
+                                3. Instituciones con comedor escolar
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="btn-item4" href="javascript:void(0);" onclick="mostrarSeccion('item4_cocinas')">
-                                4. Instituciones con Cocinas para Preparación
+                                4. Cocinas para preparación de alimentos
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="btn-item5" href="javascript:void(0);" onclick="mostrarSeccion('item5_concepto_sanitario')">
-                                5. Concepto Higiénico Sanitario
+                                5. Concepto higiénico-sanitario
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="btn-item6" href="javascript:void(0);" onclick="mostrarSeccion('item6_dotacion')">
-                                6. Dotación y Equipos
+                                6. Dotación y equipos
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="btn-item7" href="javascript:void(0);" onclick="mostrarSeccion('item7_servicios_publicos')">
-                                7. Servicios Públicos
+                                7. Servicios públicos
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
@@ -544,32 +621,7 @@
                     </ul>
                 </div>
             </div>
-            <style>
-                .submenu-personalizado .nav-link {
-                background-color: #f4f6f9;
-                color: rgb(35, 65, 98);
-                font-weight: 500;
-                padding: 16px 24px;
-                margin: 2px;
-                transition: background-color 0.3s ease;
-                min-height: 60px;
-                text-align: center;
-                white-space: normal;
-            }
-
-            .submenu-personalizado .nav-link:hover {
-                background-color: rgb(220, 230, 240);
-                color: rgb(35, 65, 98);
-            }
-
-            .submenu-personalizado .nav-link.active {
-                background-color: rgb(35, 65, 98);
-                color: white !important;
-                font-weight: bold;
-                border-bottom: 4px solid #2b4e6c;
-            }
-
-            </style>
+            
 
             <!-- INFORMACION DE LOS GRAFICOS PAE -->
                 <?php include 'admin/include/graficospae.php'; ?>
@@ -578,11 +630,12 @@
     </div>
 
 <div class="col-md-4">
-  <div class="card shadow-sm">         
-    <div class="card-header" style="background-color: rgb(35, 65, 98);">
-        <h4 class="text-center mb-0" style="font-size: 28px; color: white;">
-            Filtrar por Municipios
-        </h4>
+  <div class="card shadow-sm g360-filter-card">         
+    <div class="card-header">
+        <div>
+            <h4><i class="feather icon-filter mr-2"></i>Filtro territorial</h4>
+            <p>Selecciona un municipio para actualizar el dashboard.</p>
+        </div>
     </div>  
     <div class="card-body text-center">
 
@@ -622,32 +675,40 @@
     <!-- Datos estadísticos con gráficos quemados -->
            <?php include 'admin/include/dataquemadadashpae.php'; ?> 
             <!-- Indicadores en una fila horizontal -->
-            <div class="row text-center justify-content-center align-items-center mt-4">
+            <div class="row text-center justify-content-center align-items-stretch mt-4 g360-kpi-grid">
 
               <div class="col-md-6 mb-3">
+                <div class="g360-kpi-item">
                 <img src="assets/img/sedes.png" alt="Sedes" width="50">
                 <h6 class="mt-2">Sedes Caracterizadas</h6>
                 <h5 class="text-primary"><?php echo number_format($caracterizaciones, 0); ?></h5>
+                </div>
               </div>
 
               <div class="col-md-6 mb-3">
+                <div class="g360-kpi-item">
                 <img src="assets/img/rural.png" alt="Rural" width="50">
                 <h6 class="mt-2">Zona Rural</h6>
                 <h5 class="text-success"><?php echo number_format($zona_rural, 0); ?></h5>
+                </div>
               </div>
 
               <div class="col-md-6 mb-3">
+                <div class="g360-kpi-item">
                 <img src="assets/img/urban.png" alt="Urbana" width="50">
                 <h6 class="mt-2">Zona Urbana</h6>
                 <h5 class="text-warning"><?php echo number_format($zona_urbana, 0); ?></h5>
+                </div>
               </div>
 
               <div class="col-md-6 mb-3">
+                <div class="g360-kpi-item">
                 <a href="plan_desarrollo.php">
                   <img src="assets/img/ninosfocalizados.png" alt="Niños" width="50">
                 </a>
                 <h6 class="mt-2">Niños Focalizados</h6>
                 <h5 class="text-danger"><?php echo number_format($ninos_foc, 0); ?></h5>
+                </div>
               </div>
 
             </div>
@@ -663,13 +724,18 @@
 <!-- Nueva fila con un card con los gráficos abajo -->
 <div class="row">
   <div class="col-md-11 mx-auto">
-    <div class="card mt-3 shadow-sm">
+    <div class="card mt-3 shadow-sm g360-map-card">
       <div class="card-header">
-        <h5 class="mb-0">Información por Mapa </h5>
+        <div>
+            <h5><i class="feather icon-map mr-2"></i>Información territorial por mapa</h5>
+            <p>Consulta la distribución geográfica de los indicadores del PAE.</p>
+        </div>
       </div>
+      <div class="g360-map-surface">
                   <!-- ========== INICIO MAPA ========== -->
                 <?php include 'admin/include/mapadashboardpae.php'; ?>
                 <!-- ========== FIN MAPA ========== -->
+      </div>
         <!-- <p>CARD CON SUBMENU PAE.</p> -->
       </div>
     </div>
@@ -685,8 +751,8 @@
              <div class="modal-dialog modal-dialog-centered" role="document">
                  <div class="modal-content">
                      <div class="modal-header">
-                         <h5 class="modal-title" id="exampleModalCenterTitle">Geolocalización</h5>
-                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                         <h5 class="modal-title" id="exampleModalCenterTitle"><i class="feather icon-map-pin mr-2"></i>Geolocalización PAE</h5>
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span
                                  aria-hidden="true">&times;</span></button>
                      </div>
                      <div class="modal-body">
@@ -706,9 +772,10 @@
          <div class="modal-dialog modal-sm">
              <div class="modal-content">
                  <div class="modal-header">
-                     <h5 class="modal-title h4" id="mySmallModalLabel"> Grafico Elementos Utilizados para el
-                         almacenamiento de alimentos</h5>
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                     <h5 class="modal-title h4" id="mySmallModalLabel">
+                         Elementos utilizados para el almacenamiento de alimentos
+                     </h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span
                              aria-hidden="true">&times;</span></button>
                  </div>
                  <div class="modal-body">
@@ -738,9 +805,6 @@
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
      <script src="assets/js/plugins/apexcharts.min.js"></script>
      <script src="assets/js/pages/chart-apex.js"></script>
-
-     </script>
-
 
      <script type="text/javascript" src="admin/js/departamento.js"></script>
      <script>

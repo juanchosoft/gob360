@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa Información administrativa</title>
+    <title>Dashboard de bienes administrativos</title>
     
     <?php
     include './admin/include/head.php';
@@ -74,68 +74,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     
-    <style>
-        .nombres {
-            font-family: "IBM Plex Sans", sans-serif !important;
-        }
-        
-        .fondo {
-            background-color: #FC0707;
-            padding: 2px 4px;
-            color: white;
-            display: inline-block;
-        }
-        
-        .card {
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 0.5rem;
-        }
-        
-        .card-header {
-            font-weight: bold;
-        }
-        
-        .progress {
-            height: 20px;
-            border-radius: 10px;
-        }
-        
-        .progress-bar {
-            line-height: 20px;
-            font-size: 12px;
-        }
-        
-        .text-xs {
-            font-size: 0.75rem;
-        }
-        
-        .bg-cumplidos {
-            background-color: #0d5fa7 !important;
-            color: white !important;
-        }
-        
-        .bg-cumplidos small {
-            color: white !important;
-        }
-        
-        .mapaClick {
-            transition: all 0.2s ease-in-out;
-            transform-origin: center;
-        }
-        
-        .mapaClick:hover,
-        .mapaClick:focus,
-        .mapaClick:focus-visible {
-            stroke: rgb(0, 238, 255);
-            stroke-width: 2px;
-            filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.7));
-            cursor: pointer;
-            outline: none;
-        }
-    </style>
+    
 </head>
 
-<body class="">
+<link href="assets/css/dashboard_bienes_administrativos_gob360.css" rel="stylesheet">
+
+<body class="gob360-assets-dashboard">
     <!-- [ Pre-loader ] start -->
     <div class="loader-bg">
         <div class="loader-track">
@@ -158,12 +102,12 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-12">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h5 class="m-b-10">Mapa Información administrativa</h5>
+                                                <h5 class="m-b-10">Dashboard de Bienes Administrativos</h5>
                                                 <?php include './admin/include/btn_back.php'; ?>
                                             </div>
                                             <ul class="breadcrumb">
                                                 <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                                                <li class="breadcrumb-item"><a href="#!">Información administrativa </a></li>
+                                                <li class="breadcrumb-item"><a href="#!">Información administrativa</a></li>
                                                 <li class="breadcrumb-item"><a href="#!">Bienes</a></li>
                                             </ul>
                                         </div>
@@ -171,10 +115,84 @@
                                 </div>
                             </div>
 
+                            <!-- HERO VISUAL GOB360 -->
+                            <section class="g360-assets-dashboard-hero" aria-label="Dashboard de bienes administrativos GOB360">
+                                <div class="g360-assets-dashboard-hero__grid">
+
+                                    <div>
+                                        <img
+                                            src="assets/img/gob360l.png"
+                                            alt="Logo GOB360"
+                                            class="g360-assets-dashboard-hero__logo"
+                                        >
+                                    </div>
+
+                                    <div>
+                                        <div class="g360-assets-dashboard-hero__eyebrow">
+                                            <i class="feather icon-map"></i>
+                                            Analítica patrimonial territorial
+                                        </div>
+
+                                        <h1 class="g360-assets-dashboard-hero__title">
+                                            Bienes Administrativos
+                                        </h1>
+
+                                        <p class="g360-assets-dashboard-hero__description">
+                                            Consulta la inversión, cantidad de bienes,
+                                            costos máximos y mínimos, distribución por
+                                            municipios y ubicación territorial del inventario institucional.
+                                        </p>
+
+                                        <div class="g360-assets-dashboard-hero__chips">
+                                            <span class="g360-chip g360-chip--success">
+                                                <i class="feather icon-check-circle"></i>
+                                                Inventario consolidado
+                                            </span>
+
+                                            <span class="g360-chip">
+                                                <i class="feather icon-bar-chart-2"></i>
+                                                Distribución municipal
+                                            </span>
+
+                                            <span class="g360-chip">
+                                                <i class="feather icon-map-pin"></i>
+                                                Mapa interactivo
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="g360-assets-dashboard-hero__visual" aria-hidden="true">
+                                        <div class="g360-mini-card">
+                                            <i class="feather icon-dollar-sign"></i>
+                                            <span>Inversión</span>
+                                        </div>
+
+                                        <div class="g360-mini-card">
+                                            <i class="feather icon-archive"></i>
+                                            <span>Bienes</span>
+                                        </div>
+
+                                        <div class="g360-mini-card">
+                                            <i class="feather icon-map"></i>
+                                            <span>Territorio</span>
+                                        </div>
+
+                                        <div class="g360-mini-card">
+                                            <i class="feather icon-bar-chart"></i>
+                                            <span>Analítica</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </section>
+
                             <!-- [ Main Content ] start -->
-                            <div class="card">
-                                <div class="card-header d-flex flex-wrap align-items-center justify-content-between py-3">
-                                    <h5 class="mb-0 text-center w-100">Información administrativa</h5>
+                            <div class="card g360-assets-main-card">
+                                <div class="card-header">
+                                    <div>
+                                        <h5>Dashboard territorial de bienes</h5>
+                                        <p>Indicadores patrimoniales, mapa municipal y distribución del inventario administrativo.</p>
+                                    </div>
                                     <div class="card-header-right ml-auto">
                                         <div class="btn-group card-option">
                                             <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -204,72 +222,67 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row">
+                                    <div class="row g360-assets-analytics-grid">
                                         <!-- Indicadores IZQUIERDA -->
-                                        <div class="col-md-3">
-                                            <div class="card text-center mb-3" style="cursor: pointer;">
-                                                <div class="card-body p-2">
-                                                    <h3 class="font-weight-bold mb-0 text-dark" id="total-inversion">0</h3>
-                                                    <small class="text-uppercase text-muted">Total Inversión</small>
-                                                </div>
+                                        <div class="col-lg-3 col-md-12">
+                                            <div class="g360-assets-kpi-stack">
+                                                <span id="total-municipios" class="d-none" aria-hidden="true">0</span>
+
+                                                <article class="g360-assets-kpi">
+                                                    <span class="g360-assets-kpi__icon">
+                                                        <i class="feather icon-dollar-sign"></i>
+                                                    </span>
+                                                    <h3 id="total-inversion">0</h3>
+                                                    <small>Total inversión registrada</small>
+                                                </article>
+
+                                                <article class="g360-assets-kpi">
+                                                    <span class="g360-assets-kpi__icon">
+                                                        <i class="feather icon-archive"></i>
+                                                    </span>
+                                                    <h4 id="total-bienes">0</h4>
+                                                    <small>Total de bienes</small>
+                                                </article>
+
+                                                <article class="g360-assets-kpi g360-assets-kpi--success">
+                                                    <span class="g360-assets-kpi__icon">
+                                                        <i class="feather icon-trending-up"></i>
+                                                    </span>
+                                                    <h4 id="costo-max">0</h4>
+                                                    <small>Costo máximo</small>
+                                                    <small class="g360-assets-kpi__context" id="municipio-costo-maximo">Municipio: N/A</small>
+                                                </article>
+
+                                                <article class="g360-assets-kpi g360-assets-kpi--danger">
+                                                    <span class="g360-assets-kpi__icon">
+                                                        <i class="feather icon-trending-down"></i>
+                                                    </span>
+                                                    <h4 id="costo-min">0</h4>
+                                                    <small>Costo mínimo</small>
+                                                    <small class="g360-assets-kpi__context" id="municipio-costo-minimo">Municipio: N/A</small>
+                                                </article>
+
                                             </div>
-
-                                            <div class="card text-center mb-3">
-                                                <div class="card-body p-2">
-                                                    <h4 class="mb-1" id="total-bienes">0</h4>
-                                                    <small class="text-muted">Total Bienes</small>
-                                                </div>
-                                            </div>
-
-                                            <div class="card text-dark bg-success mb-3" style="cursor: pointer;">
-                                                <div class="card-body p-2 text-center">
-                                                    <h4 class="mb-0" id="costo-max">0</h4>
-                                                    <small class="d-block">Costo Máximo</small> 
-                                                    <small class="d-block" id="municipio-costo-maximo">Municipio: N/A</small>
-                                                </div>
-                                            </div>
-
-                                            <div class="card text-white bg-danger mb-3" style="cursor: pointer;">
-                                                <div class="card-body p-2 text-center">
-                                                    <h4 class="mb-0" id="costo-min">0</h4>
-                                                    <small class="d-block">Costo Mínimo</small>
-                                                    <small class="d-block" id="municipio-costo-minimo">Municipio: N/A</small>
-                                                </div>
-                                            </div>  
-
-                                            <!-- <div class="card text-center mb-3">
-                                                <div class="card-body p-2">
-                                                    <h6 class="mb-1" id="total-municipios">0</h6>
-                                                    <small class="text-muted">Municipios</small>
-                                                </div>
-                                            </div> -->
                                         </div>
 
                                         <!-- MAPA CENTRO -->
-                                        <div class="col-md-6">
-                                            <div class="card h-100 w-100 card-mapa">
-                                                <style>
-                                                    .card-mapa {
-                                                        max-width: 100% !important;
-                                                    }
-                                                    
-                                                    #contenido-mapa {
-                                                        width: 100% !important;
-                                                        max-width: 800px !important;
-                                                        margin: 0 auto !important;
-                                                        overflow-x: auto !important;
-                                                        padding: 1rem !important;
-                                                    }
-                                                    
-                                                    #contenido-mapa svg {
-                                                        max-width: 100% !important;
-                                                        height: auto !important;
-                                                    }
-                                                </style>
-                                                <div class="card-header d-flex justify-content-center align-items-center gap-3 flex-wrap text-center">
-                                                    <h5 class="mb-0 fw-bold">Mapa</h5>
-                                                    <button class="btn btn-primary px-4 py-2 fs-6 fw-semibold" data-toggle="modal">
-                                                        <i class="bi bi-geo-alt-fill me-1"></i> Geolocalización
+                                        <div class="col-lg-6 col-md-12">
+                                            <div class="card h-100 w-100 card-mapa g360-map-card">
+                                                
+                                                <div class="card-header">
+                                                    <div>
+                                                        <h5><i class="feather icon-map mr-2"></i>Mapa de bienes por municipio</h5>
+                                                        <p>Selecciona un municipio para abrir su información administrativa.</p>
+                                                    </div>
+
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-primary"
+                                                        data-toggle="modal"
+                                                        data-target="#modalGeocalizacion"
+                                                    >
+                                                        <i class="feather icon-map-pin"></i>
+                                                        Geolocalización
                                                     </button>
                                                 </div>
 
@@ -298,7 +311,7 @@
                                         </div>
 
                                         <!-- Indicadores DERECHA -->
-                                        <div class="col-md-3">
+                                        <div class="col-lg-3 col-md-12">
                                             <div>
                                                 <!-- <div class="card-body py-2 px-3">
                                                     <div class="row align-items-center">
@@ -339,12 +352,16 @@
                                                 </div> -->
                                             </div>
 
-                                            <div class="card mb-3">
-                                                <div class="card-header text-white p-2 text-center">
-                                                    <h6 class="mb-0">Distribución por Provincia</h6>
+                                            <div class="card g360-chart-card">
+                                                <div class="card-header">
+                                                    <div>
+                                                        <h6><i class="feather icon-bar-chart-2 mr-2"></i>Distribución municipal</h6>
+                                                        <p>Cantidad de bienes registrados en cada municipio.</p>
+                                                    </div>
                                                 </div>
-                                                <div class="card-body p-2">
-                                                    <canvas id="graficoProvincias2" height="460"></canvas>
+
+                                                <div class="card-body">
+                                                    <div id="graficoProvincias2"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -356,11 +373,11 @@
 
                     <div class="card-body">
                         <div id="modalGeocalizacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalCenterTitle">Geolocalización</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h5 class="modal-title" id="exampleModalCenterTitle"><i class="feather icon-map-pin mr-2"></i>Geolocalización de bienes</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
                                     </div>
                                     <div class="modal-body">
                                         <div id="map" style="height: 600px; width: 100%;"></div>
@@ -431,10 +448,12 @@
                     Highcharts.chart('graficoProvincias2', {
                         chart: {
                             type: 'bar',
-                            height: 460  //alto 
+                            height: 485,
+                            backgroundColor: '#ffffff',
+                            borderRadius: 14
                         },
                         title: {
-                            text: 'Distribución por Municipios', // 
+                            text: 'Bienes por municipio',
                             align: 'center'
                         },
                         xAxis: {
@@ -460,10 +479,14 @@
                         },
                         plotOptions: {
                             bar: {
+                                borderRadius: 5,
                                 dataLabels: {
                                     enabled: true
                                 }
                             }
+                        },
+                        credits: {
+                            enabled: false
                         },
                         series: [{
                             name: 'Bienes',

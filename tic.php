@@ -39,7 +39,9 @@ $isvalid = $arrtic['output']['valid'];
 $arrtic = $arrtic['output']['response'];
 ?>
 
-<body class="">
+<link href="assets/css/entregas_tecnologia_tic_gob360.css" rel="stylesheet">
+
+<body class="gob360-tic-deliveries">
     <!-- [ Pre-loader ] start -->
     <div class="loader-bg">
         <div class="loader-track">
@@ -68,13 +70,13 @@ $arrtic = $arrtic['output']['response'];
 
                         <div class="col-md-12">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="m-b-10">Secretaria TIC </h5>
+                                <h5 class="m-b-10">Secretaría TIC</h5>
 <?php include './admin/include/btn_back.php'; ?>
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#!">Secretaria TIC / Entregas Tecnología</a></li>
+                                <li class="breadcrumb-item"><a href="#!">Secretaría TIC / Entregas tecnológicas</a></li>
                             </ul>
                         </div>
 
@@ -82,18 +84,106 @@ $arrtic = $arrtic['output']['response'];
                 </div>
             </div>
             <!-- [ breadcrumb ] end -->
+
+            <!-- HERO VISUAL GOB360 -->
+            <section class="g360-tic-hero" aria-label="Entregas tecnológicas GOB360">
+                <div class="g360-tic-hero__grid">
+
+                    <div>
+                        <img
+                            src="assets/img/gob360l.png"
+                            alt="Logo GOB360"
+                            class="g360-tic-hero__logo"
+                        >
+                    </div>
+
+                    <div>
+                        <div class="g360-tic-hero__eyebrow">
+                            <i class="feather icon-cpu"></i>
+                            Transformación digital educativa
+                        </div>
+
+                        <h1 class="g360-tic-hero__title">
+                            Entregas tecnológicas
+                        </h1>
+
+                        <p class="g360-tic-hero__description">
+                            Registra y consulta las entregas de kits de robótica,
+                            computadores y laboratorios de innovación realizadas
+                            en las instituciones y sedes educativas del territorio.
+                        </p>
+
+                        <div class="g360-tic-hero__chips">
+                            <span class="g360-chip g360-chip--success">
+                                <i class="feather icon-check-circle"></i>
+                                Registro institucional
+                            </span>
+
+                            <span class="g360-chip">
+                                <i class="feather icon-map-pin"></i>
+                                Trazabilidad territorial
+                            </span>
+
+                            <span class="g360-chip">
+                                <i class="feather icon-image"></i>
+                                Evidencia fotográfica
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="g360-tic-hero__visual" aria-hidden="true">
+                        <div class="g360-mini-card">
+                            <i class="feather icon-cpu"></i>
+                            <span>Robótica</span>
+                        </div>
+
+                        <div class="g360-mini-card">
+                            <i class="feather icon-monitor"></i>
+                            <span>Equipos</span>
+                        </div>
+
+                        <div class="g360-mini-card">
+                            <i class="feather icon-zap"></i>
+                            <span>Innovación</span>
+                        </div>
+
+                        <div class="g360-mini-card">
+                            <i class="feather icon-map"></i>
+                            <span>Territorio</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
             <!-- [ Main Content ] start -->
 
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="card">
+                    <div class="card g360-tic-form-card">
                         <div class="card-header">
-                            <h5>Entregas Tecnología</h5>
+                            <div>
+                                <h5>Registro de entrega tecnológica</h5>
+                                <p>Completa la ubicación, sede educativa, dotación entregada y evidencia del registro.</p>
+                            </div>
                         </div>
-                        <div class="card-body m-4">
+                        <div class="card-body">
                             <form id="formsecretaria" class="needs-validation" novalidate>
                                 <input type="hidden" id="filtro" name="filtro" value="vereda">
                                 <input type="hidden" id="cod_dane" name="cod_dane">
+
+                                <section class="g360-tic-section">
+                                    <div class="g360-tic-section__header">
+                                        <span class="g360-tic-section__icon">
+                                            <i class="feather icon-map-pin"></i>
+                                        </span>
+
+                                        <div>
+                                            <h3>Ubicación y dotación educativa</h3>
+                                            <p>Información territorial, sede beneficiada y cantidades entregadas.</p>
+                                        </div>
+                                    </div>
+
                                 <div class="row">
                                     <div class="form-group col-md-2">
                                         <label for="validationCustom01">Fecha<span
@@ -172,13 +262,13 @@ $arrtic = $arrtic['output']['response'];
 
                                     </div>
                                     <div class="form-group col-md-2">
-                                        <label for="validationCustom01">Cantidad Kit Robótica Entregado
+                                        <label for="validationCustom01">Kits de robótica entregados
                                         </label>
                                         <input type="number" class="form-control" placeholder=""
                                             id="robotica" name="robotica" required>
                                     </div>
                                     <div class="form-group col-md-2">
-                                        <label for="validationCustom01">Cantidad Dotación Computadores Educar Instituciones Educativas
+                                        <label for="validationCustom01">Computadores entregados a instituciones
                                         </label>
                                         <input type="number" class="form-control" placeholder=""
                                             id="computadores_institucion" name="computadores_institucion">
@@ -186,7 +276,7 @@ $arrtic = $arrtic['output']['response'];
 
 
                                     <div class="form-group col-md-2">
-                                        <label for="validationCustom01">Cantidad Dotación Computadores Educar Alumnos
+                                        <label for="validationCustom01">Computadores entregados a estudiantes
                                         </label>
                                         <input type="number" class="form-control" placeholder=""
                                             id="computador_alumno" name="computador_alumno">
@@ -194,7 +284,7 @@ $arrtic = $arrtic['output']['response'];
 
 
                                     <div class="form-group col-md-2">
-                                        <label for="validationCustom01">Cantidad Laboratorios de Innovación 2024
+                                        <label for="validationCustom01">Laboratorios de innovación entregados
                                         </label>
                                         <input type="number" class="form-control" placeholder=""
                                             id="laboratorio_innovacion" name="laboratorio_innovacion">
@@ -206,17 +296,19 @@ $arrtic = $arrtic['output']['response'];
                                     <div class="form-group col-md-6">
                                         <label>Observaciones</label>
                                         <div>
-                                            <textarea required="" placeholder="Ingrese observaciones de la obra"
+                                            <textarea required="" placeholder="Ingrese observaciones de la entrega tecnológica"
                                                 type="text" class="form-control" id="observaciones"
                                                 name="observaciones"></textarea>
                                         </div>
 
                                     </div>
                                 </div>
+                                </section>
+
                                 <?php if ($create && $edit) { ?>
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label" for="exampleInputName2">Foto</label>
-                                        <div class="col-sm-8">
+                                    <div class="form-group g360-photo-upload">
+                                        <label class="control-label" for="exampleInputName2"><i class="feather icon-camera mr-2"></i>Evidencia fotográfica</label>
+                                        <div class="col-sm-12 p-0">
                                             <div class="controls">
                                                 <iframe id='ifm' name='ifm' src="upload.php" width="200" height="60"
                                                     scrolling="no" frameborder="0"></iframe>
@@ -229,13 +321,20 @@ $arrtic = $arrtic['output']['response'];
                                 ?>
 
 
-                                <div class="form-row">
+                                <div class="form-row g360-form-actions">
 
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-end flex-wrap">
                                         <button type="button" onclick="UTIL.clearForm('formsecretaria');"
-                                            class="btn  btn-danger">Cancelar</button>
+                                            class="btn btn-danger mr-2">
+                                            <i class="feather icon-x-circle"></i>
+                                            Cancelar
+                                        </button>
+
                                         <button type="button" onclick="TIC.validateData();"
-                                            class="btn btn-primary">Ingresar</button>
+                                            class="btn btn-primary">
+                                            <i class="feather icon-save"></i>
+                                            Guardar entrega
+                                        </button>
 
 
                                     </div>
@@ -247,9 +346,15 @@ $arrtic = $arrtic['output']['response'];
                     <br>
                     <div class="contenedor">
                         <div class="contenido">
-                            <div class="card">
-                                <h5 class="card-header" style="color: #37474f; font-size: 14px">Listado Tic</h5>
-                                <div class="card-body table-border-style mb-4">
+                            <div class="card g360-tic-list-card">
+                                <div class="card-header">
+                                    <div>
+                                        <h5>Historial de entregas TIC</h5>
+                                        <p>Consulta, edita y revisa la evidencia fotográfica de cada entrega tecnológica.</p>
+                                    </div>
+                                </div>
+
+                                <div class="card-body table-border-style">
 
                                     <!-- Tabla de datos -->
                                     <div class="table-responsive">
@@ -263,10 +368,10 @@ $arrtic = $arrtic['output']['response'];
                                                     <th>Vereda</th>
                                                     <th>Establecimiento Educativo</th>
                                                     <th>Zona</th>
-                                                    <th>kits Robótica</th>
-                                                    <th>Computadores Instituciones</th>
-                                                    <th>Computadores Alumnos</th>
-                                                    <th>Laboratorios Innovación</th>
+                                                    <th>Kits de robótica</th>
+                                                    <th>Equipos para instituciones</th>
+                                                    <th>Equipos para estudiantes</th>
+                                                    <th>Laboratorios de innovación</th>
                                                     <th>Observaciones</th>
                                                     <th>Foto</th>
                                                 </tr>
@@ -334,7 +439,7 @@ $arrtic = $arrtic['output']['response'];
                                                     <?php endforeach; ?>
                                                 <?php else: ?>
                                                     <tr>
-                                                        <td colspan="9" class="text-center text-muted">No se encontraron registros.</td>
+                                                        <td colspan="13" class="text-center text-muted">No se encontraron registros.</td>
                                                     </tr>
                                                 <?php endif; ?>
                                             </tbody>
