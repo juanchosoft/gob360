@@ -23,7 +23,9 @@ function h($v) {
     return htmlspecialchars((string)($v ?? ''), ENT_QUOTES, 'UTF-8');
 }
 ?>
-<body>
+<link rel="stylesheet" href="assets/css/dashboard_planeacion_alcaldia_gob360.css">
+
+<body class="gob360-planning-dashboard">
   <div class="loader-bg">
     <div class="loader-track"><div class="loader-fill"></div></div>
   </div>
@@ -31,142 +33,287 @@ function h($v) {
   <?php include './admin/include/navbar.php'; ?>
   <?php include './admin/include/header.php'; ?>
 
-  <style>
-    :root{
-      --radius-xl:22px; --shadow-mid: 0 22px 70px rgba(0,0,0,.34); --safe-top: 96px;
-    }
-    .pcoded-content{ padding: calc(var(--safe-top) + 16px) 16px 18px !important; }
-    @media(min-width:768px){ :root{ --safe-top: 112px; } .pcoded-content{ padding: calc(var(--safe-top) + 18px) 24px 24px !important; } }
-    @media(min-width:1200px){ :root{ --safe-top: 120px; } .pcoded-content{ padding: calc(var(--safe-top) + 22px) 42px 34px !important; } }
-
-    .btn-brutal{
-      border-radius:14px !important; padding:.62rem 1.05rem !important;
-      font-weight:1000 !important; display:inline-flex; align-items:center; gap:8px;
-      box-shadow:0 14px 34px rgba(0,0,0,.25); color:#fff !important;
-    }
-    .btn-brutal.btn-sm{ padding:.32rem .55rem !important; border-radius:10px !important; font-size:11px !important; }
-    .btn-primary.btn-brutal{ background:linear-gradient(135deg,#3b82f6,#4f46e5) !important; border:1px solid rgba(255,255,255,.14) !important; }
-    .btn-info.btn-brutal{ background:linear-gradient(135deg,#38bdf8,#0ea5e9) !important; border:1px solid rgba(255,255,255,.14) !important; }
-    .btn-secondary.btn-brutal{ background:rgba(255,255,255,.09) !important; border:1px solid rgba(255,255,255,.17) !important; }
-
-    .table-wrap{ display:flex; justify-content:center; padding:8px 0 2px; }
-    .table-shell{
-      width:min(100%,1520px);
-      background: rgba(255,255,255,.06) !important;
-      border-radius:24px; overflow:hidden;
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow:var(--shadow-mid);
-    }
-    .table-shell__top{
-      display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
-      padding:20px 24px 16px; border-bottom:1px solid rgba(255,255,255,.10); background:rgba(0,0,0,.14);
-    }
-    .table-shell__eyebrow{
-      display:inline-flex; align-items:center; gap:8px; margin-bottom:6px;
-      color:rgba(255,255,255,.7); font-size:11px; font-weight:1000; letter-spacing:.14em; text-transform:uppercase;
-    }
-    .table-shell__eyebrow:before{
-      content:""; width:9px; height:9px; border-radius:999px;
-      background:linear-gradient(135deg,#22c1ff,#20427F); box-shadow:0 0 0 5px rgba(34,193,255,.12);
-    }
-    .table-shell__title{ margin:0; color:#fff; font-size:1.3rem; font-weight:1000; }
-    .table-shell__subtitle{ margin-top:4px; color:rgba(255,255,255,.6); font-size:.92rem; }
-    .table-shell__body{ padding:18px; }
-
-    .kpi-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:16px; }
-    .kpi-card{
-      border-radius:18px; padding:1rem 1.1rem;
-      background:rgba(0,0,0,.16); border:1px solid rgba(255,255,255,.10);
-    }
-    .kpi-label{ font-size:.72rem; opacity:.7; font-weight:1000; text-transform:uppercase; letter-spacing:.08em; color:#fff; }
-    .kpi-value{ font-size:1.6rem; font-weight:1000; margin-top:.25rem; color:#fff; }
-
-    .form-section{
-      background: rgba(255,255,255,.06) !important;
-      border-radius: 22px !important;
-      border: 1px solid rgba(255,255,255,.12) !important;
-      padding: 16px !important;
-      margin-bottom: 14px;
-    }
-    .form-section h6{
-      color:#fff !important; font-weight:1000 !important; letter-spacing:.04em;
-      text-transform:uppercase; font-size:.78rem; margin-bottom:12px;
-      display:flex; align-items:center; gap:8px;
-    }
-    .form-section h6:before{
-      content:""; width:8px; height:8px; border-radius:999px;
-      background:linear-gradient(135deg,#22c1ff,#20427F); box-shadow:0 0 0 4px rgba(34,193,255,.12);
-    }
-
-    .hist-wrap{ border-radius:18px; border:1px solid rgba(255,255,255,.10); overflow:auto; }
-    .hist-table{ width:100%; margin:0; font-size:12px; }
-    .hist-table thead th{
-      color:#fff !important; background: linear-gradient(135deg, #203e5c, #2f3f6e) !important;
-      text-transform:uppercase; font-size:10px !important; text-align:center; padding:8px 6px !important;
-      border-color:rgba(255,255,255,.06) !important;
-    }
-    .hist-table tbody td{
-      color:rgba(255,255,255,.86) !important; border-top:1px solid rgba(255,255,255,.06) !important;
-      vertical-align:middle; padding:8px 6px !important; font-weight:700 !important;
-    }
-    .hist-table tbody tr:nth-child(even) td{ background:rgba(255,255,255,.03) !important; }
-    .help-muted{ color: rgba(255,255,255,.55) !important; font-size:.82rem !important; font-weight:800 !important; }
-  </style>
+  
 
   <div class="pcoded-main-container">
     <div class="pcoded-content">
 
-      <div class="page-header">
-        <div class="page-block">
-          <div class="row align-items-center">
-            <div class="col-md-12">
-              <div class="d-flex justify-content-between align-items-center flex-wrap" style="gap:8px;">
-                <h5 class="m-b-10">Dashboard Planeación Alcaldía</h5>
-                <div class="d-flex" style="gap:8px;">
-                  <a href="proyectos_planeacion_alcaldia.php" class="btn btn-primary btn-brutal btn-sm">
-                    <i class="feather icon-list"></i> Listado
-                  </a>
+      <section class="g360-planning-hero" aria-label="Dashboard de Planeación Municipal GOB360">
+        <div class="g360-planning-hero__grid">
+
+          <aside class="g360-planning-brand">
+            <span class="g360-planning-brand__eyebrow">
+              Plataforma institucional
+            </span>
+
+            <img
+              src="assets/img/gob360l.png"
+              alt="Logo GOB360"
+              class="g360-planning-brand__logo"
+            >
+
+            <span class="g360-planning-brand__caption">
+              Gestión pública inteligente y territorial
+            </span>
+
+            <div class="g360-planning-brand__status">
+              <span></span>
+              Dashboard operativo
+            </div>
+          </aside>
+
+          <div class="g360-planning-hero__content">
+            <div class="g360-planning-hero__top">
+              <div>
+                <div class="g360-planning-hero__eyebrow">
+                  <i class="feather icon-bar-chart-2"></i>
+                  Planeación Municipal
+                </div>
+
+                <h1 class="g360-planning-hero__title">
+                  Dashboard de Proyectos
+                </h1>
+
+                <p class="g360-planning-hero__description">
+                  Monitorea proyectos radicados, estados de gestión, inversión
+                  consolidada, retrasos, reenvíos y desempeño por municipio desde
+                  una vista ejecutiva.
+                </p>
+              </div>
+
+              <div class="g360-planning-hero__actions">
+                <a
+                  href="proyectos_planeacion_alcaldia.php"
+                  class="g360-hero-button g360-hero-button--primary"
+                >
+                  <i class="feather icon-list"></i>
+                  Ver proyectos
+                </a>
+
+                <div class="g360-planning-back">
                   <?php include './admin/include/btn_back.php'; ?>
                 </div>
               </div>
-              <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="proyectos_planeacion_alcaldia.php">Planeación</a></li>
-                <li class="breadcrumb-item"><a href="#!">Dashboard</a></li>
-              </ul>
+            </div>
+
+            <div class="g360-planning-summary">
+              <article>
+                <span class="g360-planning-summary__icon">
+                  <i class="feather icon-folder"></i>
+                </span>
+
+                <div>
+                  <small>Total de proyectos</small>
+                  <strong><?= number_format($total, 0, ',', '.') ?></strong>
+                  <p>Proyectos dentro del alcance actual</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-planning-summary__icon g360-planning-summary__icon--money">
+                  <i class="feather icon-dollar-sign"></i>
+                </span>
+
+                <div>
+                  <small>Valor consolidado</small>
+                  <strong>$ <?= number_format($valor, 0, ',', '.') ?></strong>
+                  <p>Inversión total registrada</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-planning-summary__icon g360-planning-summary__icon--approved">
+                  <i class="feather icon-check-circle"></i>
+                </span>
+
+                <div>
+                  <small>Proyectos aprobados</small>
+                  <strong><?= number_format($aprobados, 0, ',', '.') ?></strong>
+                  <p>
+                    <?= $total > 0 ? number_format(($aprobados / $total) * 100, 1, ',', '.') : '0,0' ?>%
+                    del consolidado
+                  </p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-planning-summary__icon g360-planning-summary__icon--pending">
+                  <i class="feather icon-clock"></i>
+                </span>
+
+                <div>
+                  <small>Pendientes de gestión</small>
+                  <strong><?= number_format($enviados, 0, ',', '.') ?></strong>
+                  <p>
+                    <?= number_format((int)($s['sin_gestion'] ?? 0), 0, ',', '.') ?>
+                    superan el umbral
+                  </p>
+                </div>
+              </article>
+            </div>
+
+            <div class="g360-planning-capabilities">
+              <span>
+                <i class="feather icon-globe"></i>
+                Alcance: <?= h($s['scope'] ?? 'Sin definir') ?>
+              </span>
+
+              <span>
+                <i class="feather icon-calendar"></i>
+                Umbral: <?= (int)($s['dias_umbral'] ?? 7) ?> días
+              </span>
+
+              <span>
+                <i class="feather icon-refresh-cw"></i>
+                <?= number_format((int)($s['reenvios'] ?? 0), 0, ',', '.') ?> reenvíos
+              </span>
+
+              <span>
+                <i class="feather icon-shield"></i>
+                Acceso autorizado
+              </span>
             </div>
           </div>
+
         </div>
-      </div>
+      </section>
 
       <div class="table-wrap">
-        <div class="table-shell">
+        <div class="table-shell g360-planning-workspace">
           <div class="table-shell__top">
             <div>
-              <div class="table-shell__eyebrow">Indicadores</div>
-              <h3 class="table-shell__title">Proyectos Planeación Alcaldía</h3>
+              <div class="table-shell__eyebrow">Analítica institucional</div>
+              <h3 class="table-shell__title">Control ejecutivo de proyectos</h3>
               <div class="table-shell__subtitle">
-                Alcance: <?= h($s['scope'] ?? '') ?>
-                <?php if (($s['scope'] ?? '') === 'all'): ?> · vista global (todos los municipios)<?php endif; ?>
+                Indicadores generales y comportamiento territorial.
+                <?php if (($s['scope'] ?? '') === 'all'): ?>
+                  Vista global habilitada para todos los municipios.
+                <?php endif; ?>
               </div>
             </div>
+
+            <div class="table-shell__badge">
+              <i class="feather icon-shield"></i>
+              GOB360
+            </div>
           </div>
+
           <div class="table-shell__body">
 
-            <div class="kpi-grid">
-              <div class="kpi-card"><div class="kpi-label">Total</div><div class="kpi-value"><?= $total ?></div></div>
-              <div class="kpi-card"><div class="kpi-label">Enviado</div><div class="kpi-value" style="color:#fbbf24"><?= $enviados ?></div></div>
-              <div class="kpi-card"><div class="kpi-label">Aprobado</div><div class="kpi-value" style="color:#34d399"><?= $aprobados ?></div></div>
-              <div class="kpi-card"><div class="kpi-label">Rechazado</div><div class="kpi-value" style="color:#ef4444"><?= $rechazados ?></div></div>
-              <div class="kpi-card"><div class="kpi-label">Valor total</div><div class="kpi-value" style="font-size:1.15rem">$ <?= number_format($valor, 0, ',', '.') ?></div></div>
-              <div class="kpi-card"><div class="kpi-label">Sin gestión &gt; <?= (int)($s['dias_umbral'] ?? 7) ?>d</div><div class="kpi-value"><?= (int)($s['sin_gestion'] ?? 0) ?></div></div>
-              <div class="kpi-card"><div class="kpi-label">Reenviados</div><div class="kpi-value"><?= (int)($s['reenvios'] ?? 0) ?></div></div>
-            </div>
+            <section class="g360-kpi-section">
+              <div class="g360-section-heading">
+                <span class="g360-section-heading__icon">
+                  <i class="feather icon-activity"></i>
+                </span>
+
+                <div>
+                  <span>Resumen operativo</span>
+                  <h4>Estado general de los proyectos</h4>
+                  <p>Consolidado de radicación, gestión, aprobación y alertas.</p>
+                </div>
+              </div>
+
+              <div class="kpi-grid">
+                <article class="kpi-card">
+                  <span class="g360-kpi-icon">
+                    <i class="feather icon-folder"></i>
+                  </span>
+                  <div class="kpi-label">Total</div>
+                  <div class="kpi-value"><?= number_format($total, 0, ',', '.') ?></div>
+                  <div class="g360-kpi-note">Proyectos registrados</div>
+                </article>
+
+                <article class="kpi-card g360-kpi-card--pending">
+                  <span class="g360-kpi-icon">
+                    <i class="feather icon-send"></i>
+                  </span>
+                  <div class="kpi-label">Enviados</div>
+                  <div class="kpi-value"><?= number_format($enviados, 0, ',', '.') ?></div>
+                  <div class="g360-kpi-note">Pendientes de decisión</div>
+                </article>
+
+                <article class="kpi-card g360-kpi-card--approved">
+                  <span class="g360-kpi-icon">
+                    <i class="feather icon-check-circle"></i>
+                  </span>
+                  <div class="kpi-label">Aprobados</div>
+                  <div class="kpi-value"><?= number_format($aprobados, 0, ',', '.') ?></div>
+                  <div class="g360-kpi-note">Proyectos cerrados</div>
+                </article>
+
+                <article class="kpi-card g360-kpi-card--rejected">
+                  <span class="g360-kpi-icon">
+                    <i class="feather icon-x-circle"></i>
+                  </span>
+                  <div class="kpi-label">Rechazados</div>
+                  <div class="kpi-value"><?= number_format($rechazados, 0, ',', '.') ?></div>
+                  <div class="g360-kpi-note">Requieren ajustes</div>
+                </article>
+
+                <article class="kpi-card g360-kpi-card--money">
+                  <span class="g360-kpi-icon">
+                    <i class="feather icon-dollar-sign"></i>
+                  </span>
+                  <div class="kpi-label">Valor total</div>
+                  <div class="kpi-value g360-kpi-value--money">
+                    $ <?= number_format($valor, 0, ',', '.') ?>
+                  </div>
+                  <div class="g360-kpi-note">Inversión consolidada</div>
+                </article>
+
+                <article class="kpi-card g360-kpi-card--alert">
+                  <span class="g360-kpi-icon">
+                    <i class="feather icon-alert-triangle"></i>
+                  </span>
+                  <div class="kpi-label">
+                    Sin gestión &gt; <?= (int)($s['dias_umbral'] ?? 7) ?> días
+                  </div>
+                  <div class="kpi-value">
+                    <?= number_format((int)($s['sin_gestion'] ?? 0), 0, ',', '.') ?>
+                  </div>
+                  <div class="g360-kpi-note">Requieren atención</div>
+                </article>
+
+                <article class="kpi-card g360-kpi-card--resend">
+                  <span class="g360-kpi-icon">
+                    <i class="feather icon-refresh-cw"></i>
+                  </span>
+                  <div class="kpi-label">Reenviados</div>
+                  <div class="kpi-value">
+                    <?= number_format((int)($s['reenvios'] ?? 0), 0, ',', '.') ?>
+                  </div>
+                  <div class="g360-kpi-note">Proyectos ajustados</div>
+                </article>
+              </div>
+            </section>
+
+            <section class="g360-analysis-section">
+              <div class="g360-section-heading">
+                <span class="g360-section-heading__icon g360-section-heading__icon--territory">
+                  <i class="feather icon-map"></i>
+                </span>
+
+                <div>
+                  <span>Análisis territorial</span>
+                  <h4>Retrasos y comportamiento municipal</h4>
+                  <p>Identifica proyectos críticos y distribución por municipio.</p>
+                </div>
+              </div>
 
             <div class="row">
               <div class="col-lg-6">
-                <div class="form-section">
-                  <h6>Mayor retraso (Enviado)</h6>
+                <div class="form-section g360-data-panel g360-data-panel--delay">
+                  <div class="g360-data-panel__header">
+                    <span class="g360-data-panel__icon">
+                      <i class="feather icon-clock"></i>
+                    </span>
+
+                    <div>
+                      <span>Alerta operativa</span>
+                      <h6>Mayor retraso en proyectos enviados</h6>
+                      <p>Ordena la atención de proyectos que llevan más días sin decisión.</p>
+                    </div>
+                  </div>
                   <div class="hist-wrap">
                     <table class="hist-table">
                       <thead><tr><th>Proyecto</th><th>Municipio</th><th>Días</th><th></th></tr></thead>
@@ -192,8 +339,18 @@ function h($v) {
                 </div>
               </div>
               <div class="col-lg-6">
-                <div class="form-section">
-                  <h6>Por municipio</h6>
+                <div class="form-section g360-data-panel g360-data-panel--municipality">
+                  <div class="g360-data-panel__header">
+                    <span class="g360-data-panel__icon">
+                      <i class="feather icon-map-pin"></i>
+                    </span>
+
+                    <div>
+                      <span>Consolidado territorial</span>
+                      <h6>Proyectos por municipio</h6>
+                      <p>Compara total, enviados, aprobados y rechazados.</p>
+                    </div>
+                  </div>
                   <div class="hist-wrap">
                     <table class="hist-table">
                       <thead><tr><th>Municipio</th><th>Total</th><th>Env</th><th>Apr</th><th>Rec</th></tr></thead>
@@ -216,6 +373,7 @@ function h($v) {
                 </div>
               </div>
             </div>
+            </section>
 
           </div>
         </div>

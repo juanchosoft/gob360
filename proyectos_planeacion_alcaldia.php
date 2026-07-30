@@ -172,7 +172,9 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
 }
 ?>
 
-<body>
+<link rel="stylesheet" href="assets/css/proyectos_planeacion_alcaldia_gob360.css">
+
+<body class="gob360-municipal-projects">
 
   <!-- Loader -->
   <div class="loader-bg">
@@ -182,314 +184,188 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
   <?php include './admin/include/navbar.php'; ?>
   <?php include './admin/include/header.php'; ?>
 
-  <style>
-    :root{
-      --nav-blue:#20427F; --nav-blue-2:#132b52; --nav-blue-3:#2e58a8;
-      --radius-xl:22px; --radius-lg:16px; --radius-md:14px;
-      --shadow-soft: 0 14px 40px rgba(0,0,0,.28); --shadow-mid: 0 22px 70px rgba(0,0,0,.34);
-      --ring: 0 0 0 .25rem rgba(96,165,250,.35);
-      --safe-top: 96px;
-    }
-    html, body{ overflow-x: hidden !important; }
-    .pcoded-content{ padding: calc(var(--safe-top) + 16px) 16px 18px !important; }
-    @media(min-width:768px){ :root{ --safe-top: 112px; } .pcoded-content{ padding: calc(var(--safe-top) + 18px) 24px 24px !important; } }
-    @media(min-width:1200px){ :root{ --safe-top: 120px; } .pcoded-content{ padding: calc(var(--safe-top) + 22px) 42px 34px !important; } }
-
-    .form-section{
-      background: rgba(255,255,255,.06) !important;
-      border-radius: var(--radius-xl) !important;
-      border: 1px solid rgba(255,255,255,.12) !important;
-      padding: 20px !important;
-    }
-    .help-muted{ color: rgba(255,255,255,.6) !important; font-size:.82rem !important; font-weight:800 !important; margin-top:.35rem !important; }
-    .file-pro{ padding:.65rem .75rem; border-radius:var(--radius-md); border:1px dashed rgba(255,255,255,.22); background:rgba(255,255,255,.06); }
-
-    .btn-brutal{
-      border-radius:14px !important; padding:.62rem 1.05rem !important;
-      font-weight:1000 !important; letter-spacing:.2px;
-      box-shadow:0 14px 34px rgba(0,0,0,.25);
-      transition:transform .16s ease, box-shadow .16s ease, filter .16s ease;
-      display:inline-flex; align-items:center; gap:8px; white-space:nowrap;
-      color:#fff !important;
-    }
-    .btn-brutal.btn-sm{ padding:.32rem .55rem !important; border-radius:10px !important; gap:4px; font-size:11px !important; box-shadow:0 8px 18px rgba(0,0,0,.18); }
-    .btn-brutal:hover{ transform:translateY(-1px); filter:brightness(1.04); box-shadow:0 18px 40px rgba(0,0,0,.28); }
-    .btn-primary.btn-brutal{ background:linear-gradient(135deg,#3b82f6,#4f46e5) !important; border:1px solid rgba(255,255,255,.14) !important; }
-    .btn-danger.btn-brutal{ background:linear-gradient(135deg,#ef4444,#b91c1c) !important; border:1px solid rgba(255,255,255,.14) !important; }
-    .btn-secondary.btn-brutal{ background:rgba(255,255,255,.09) !important; border:1px solid rgba(255,255,255,.17) !important; }
-    .btn-info.btn-brutal{ background:linear-gradient(135deg,#38bdf8,#0ea5e9) !important; border:1px solid rgba(255,255,255,.14) !important; }
-    .btn-warning.btn-brutal{ background:linear-gradient(135deg,#f6c23e,#f59e0b) !important; border:1px solid rgba(255,255,255,.14) !important; color:#111827 !important; }
-
-    .table-wrap{ display:flex; justify-content:center; padding:8px 0 2px; }
-    .table-shell{
-      width:min(100%,1520px);
-      background: rgba(255,255,255,.06) !important;
-      border-radius:24px; overflow:hidden;
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow:var(--shadow-mid);
-    }
-    .table-shell__top{
-      display:flex; align-items:center; justify-content:space-between; gap:18px;
-      padding:20px 24px 16px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.14);
-    }
-    .table-shell__eyebrow{
-      display:inline-flex; align-items:center; gap:8px; margin-bottom:6px;
-      color:rgba(255,255,255,.7); font-size:11px; font-weight:1000;
-      letter-spacing:.14em; text-transform:uppercase;
-    }
-    .table-shell__eyebrow:before{
-      content:""; width:9px; height:9px; border-radius:999px;
-      background:linear-gradient(135deg,#22c1ff,#20427F);
-      box-shadow:0 0 0 5px rgba(34,193,255,.12);
-    }
-    .table-shell__title{ margin:0; color:#fff; font-size:1.3rem; font-weight:1000; letter-spacing:-.02em; }
-    .table-shell__subtitle{ margin-top:4px; color:rgba(255,255,255,.6); font-size:.92rem; line-height:1.45; }
-    .table-shell__badge{
-      display:inline-flex; align-items:center; justify-content:center;
-      min-width:92px; padding:.7rem 1rem; border-radius:16px;
-      background:linear-gradient(135deg,#203e5c,#2f3f6e); color:#fff;
-      font-size:.78rem; font-weight:1000; letter-spacing:.06em; text-transform:uppercase;
-      box-shadow:0 16px 36px rgba(32,62,92,.20);
-    }
-    .table-shell__body{ padding:18px 18px 14px; }
-    .table-responsive--premium{ border-radius:18px; border:1px solid rgba(255,255,255,.10); overflow:auto; }
-
-    #dynamictable{ margin:0 !important; font-size:11px !important; width:100% !important; }
-    #dynamictable thead th{
-      color:#fff !important;
-      background: linear-gradient(135deg, #203e5c, #2f3f6e) !important;
-      text-transform:uppercase; letter-spacing:.1px;
-      font-size:10px !important; white-space:nowrap;
-      text-align:center; vertical-align:middle !important;
-      padding:8px 5px !important;
-      border-color:rgba(255,255,255,.06) !important;
-    }
-    #dynamictable tbody tr{ background:transparent !important; }
-    #dynamictable tbody td{
-      color:rgba(255,255,255,.86) !important;
-      background:transparent !important;
-      border-top:1px solid rgba(255,255,255,.06) !important;
-      vertical-align:middle; padding:6px 4px !important;
-      line-height:1.25; font-size:10.5px !important; font-weight:700 !important;
-    }
-    #dynamictable .col-id,
-    #dynamictable .col-fecha,
-    #dynamictable .col-valor,
-    #dynamictable .col-estado{ white-space:nowrap; }
-    #dynamictable .col-proyecto,
-    #dynamictable .col-obs{ white-space:normal; word-break:break-word; }
-    #dynamictable .col-secretaria,
-    #dynamictable .col-meta{ white-space:normal; word-break:break-word; font-size:9px !important; }
-    #dynamictable .col-secretaria .sec-pill{ font-size:8.5px !important; padding:1px 4px; gap:2px; border-radius:5px; }
-    #dynamictable .col-meta .sec-pill{ font-size:8.5px !important; padding:1px 4px; gap:2px; border-radius:5px; }
-    #dynamictable .col-secretaria .sec-dot,
-    #dynamictable .col-meta .meta-dot{ width:5px; height:5px; }
-    #dynamictable tbody tr:nth-child(even) td{ background:rgba(255,255,255,.03) !important; }
-    #dynamictable tbody tr:hover td{ background:rgba(255,255,255,.06) !important; }
-
-    .dataTables_wrapper{ padding:4px 4px 0; }
-    .dataTables_wrapper .row:first-child,
-    .dataTables_wrapper .row:last-child{ margin-left:0; margin-right:0; }
-    .dataTables_wrapper .row:first-child{ padding:0 2px 14px; align-items:center; }
-    .dataTables_wrapper .row:last-child{ padding:14px 2px 2px; align-items:center; }
-    .dataTables_wrapper .dataTables_filter input,
-    .dataTables_wrapper .dataTables_length select{
-      border-radius:14px !important;
-      border:1px solid rgba(255,255,255,.14) !important;
-      padding:9px 12px !important; font-size:12.5px !important;
-      outline:none !important;
-      background:rgba(255,255,255,.06) !important;
-      color:#fff !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button{
-      border-radius:12px !important;
-      color:rgba(255,255,255,.86) !important;
-      border:1px solid rgba(255,255,255,.14) !important;
-      background:rgba(255,255,255,.06) !important;
-      padding:0.4em 0.9em !important;
-      font-weight:800 !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
-      background:linear-gradient(135deg,#203e5c,#2f3f6e) !important;
-      color:#fff !important;
-      border:1px solid rgba(255,255,255,.20) !important;
-      box-shadow:0 10px 24px rgba(32,62,92,.18);
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
-      background:rgba(255,255,255,.10) !important;
-      color:#fff !important;
-      border:1px solid rgba(255,255,255,.20) !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
-    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover{
-      color:rgba(255,255,255,.30) !important;
-      background:transparent !important;
-      border:1px solid transparent !important;
-    }
-    .dataTables_wrapper .dataTables_info,
-    .dataTables_wrapper .dataTables_length label,
-    .dataTables_wrapper .dataTables_filter label{ color:#fff !important; font-weight:800; }
-    .dataTables_wrapper .dataTables_info{ font-size:12.5px; padding:10px 6px; }
-    .table-responsive--premium{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
-
-    /* Filtros listado */
-    .planeacion-filtros{
-      display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;
-      padding:14px 16px 4px; border-bottom:1px solid rgba(255,255,255,.08);
-      background:rgba(0,0,0,.12);
-    }
-    .planeacion-filtros .filtro-field{ flex:1 1 220px; min-width:180px; }
-    .planeacion-filtros .filtro-field--users{ flex:2 1 320px; }
-    .planeacion-filtros .filtro-actions{ flex:0 0 auto; display:flex; gap:8px; padding-bottom:12px; }
-    .planeacion-filtros label{
-      display:block; font-size:11px; font-weight:800; letter-spacing:.04em;
-      text-transform:uppercase; color:rgba(255,255,255,.72); margin-bottom:6px;
-    }
-    .planeacion-filtros .form-control,
-    .planeacion-filtros select{
-      border-radius:12px !important;
-      border:1px solid rgba(255,255,255,.14) !important;
-      background:rgba(255,255,255,.06) !important;
-      color:#fff !important;
-      min-height:40px;
-    }
-    .planeacion-filtros .select2-container{ width:100% !important; }
-    .planeacion-filtros .select2-container--default .select2-selection--multiple,
-    .planeacion-filtros .select2-container--default .select2-selection--single{
-      border-radius:12px !important;
-      border:1px solid rgba(255,255,255,.14) !important;
-      background:rgba(255,255,255,.06) !important;
-      min-height:40px;
-      color:#fff !important;
-    }
-    .planeacion-filtros .select2-container--default .select2-selection--multiple .select2-selection__choice{
-      background:rgba(59,130,246,.35) !important;
-      border:1px solid rgba(255,255,255,.18) !important;
-      color:#fff !important;
-      border-radius:8px !important;
-      font-weight:700; font-size:11px;
-    }
-    .planeacion-filtros .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
-      color:rgba(255,255,255,.85) !important; margin-right:4px;
-    }
-    .planeacion-filtros .select2-container--default .select2-selection--multiple .select2-selection__rendered{
-      padding:4px 8px; color:#fff;
-    }
-    .planeacion-filtros .select2-container--default .select2-selection--single .select2-selection__rendered{
-      color:#fff !important; line-height:38px; padding-left:12px;
-    }
-    .planeacion-filtros .select2-container--default .select2-selection--single .select2-selection__arrow{ height:38px; }
-    .select2-container--open .select2-dropdown{
-      background:#1a2332 !important; border:1px solid rgba(255,255,255,.16) !important; color:#fff;
-    }
-    .select2-container--default .select2-results__option{ color:rgba(255,255,255,.9); }
-    .select2-container--default .select2-results__option--highlighted[aria-selected],
-    .select2-container--default .select2-results__option--highlighted[aria-selected=true]{
-      background:#3b82f6 !important; color:#fff !important;
-    }
-    .select2-container--default .select2-search--dropdown .select2-search__field{
-      background:rgba(255,255,255,.08) !important; border:1px solid rgba(255,255,255,.2) !important; color:#fff !important;
-    }
-    .table-responsive--premium::after{ content:'↔ Desliza para ver más'; display:block; text-align:center; font-size:10px; color:rgba(255,255,255,.4); padding:4px 0 2px; }
-    @media(min-width:992px){ .table-responsive--premium::after{ display:none; } }
-    .table-empty{
-      padding:26px 12px !important; text-align:center;
-      color:rgba(255,255,255,.6) !important; font-weight:800;
-    }
-
-    @media (max-width:576px){
-      .table-shell__top{ padding:16px; } .table-shell__body{ padding:12px; }
-      .table-shell__badge{ width:100%; }
-      .dataTables_wrapper .dataTables_filter{ text-align:left; margin-top:10px; }
-      .btn-brutal{ width:100% !important; justify-content:center !important; }
-    }
-
-    .badge{ border-radius:999px !important; padding:.25rem .5rem !important; font-weight:1000 !important; letter-spacing:.2px; border:1px solid rgba(255,255,255,.12); font-size:10.5px !important; }
-    .badge-warning-soft{ background:rgba(245,158,11,.25) !important; color:#fbbf24 !important; }
-    .badge-success-soft{ background:rgba(22,163,74,.20) !important; color:#34d399 !important; }
-    .badge-danger-soft{ background:rgba(220,38,38,.20) !important; color:#ef4444 !important; }
-    .badge-secondary-soft{ background:rgba(148,163,184,.18) !important; color:#94a3b8 !important; }
-
-    .sec-pill{
-      display:inline-flex; align-items:center; gap:5px; padding:3px 7px;
-      border-radius:8px; font-weight:800 !important; font-size:10.5px !important;
-      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06);
-      color:rgba(255,255,255,.86); white-space:nowrap; margin-bottom:3px;
-    }
-    .sec-pill:last-child{ margin-bottom:0; }
-    .sec-dot{ flex-shrink:0; width:6px; height:6px; border-radius:50%; background:linear-gradient(135deg,#60a5fa,#4f46e5); }
-    .meta-pill{ background:rgba(52,211,153,.12); border-color:rgba(52,211,153,.20); color:#34d399; }
-    .meta-dot{ flex-shrink:0; width:6px; height:6px; border-radius:50%; background:linear-gradient(135deg,#34d399,#15803d); }
-    .pdf-pill{
-      display:inline-flex; align-items:center; gap:5px; padding:4px 6px; border-radius:8px;
-      border:1px solid rgba(239,68,68,.25); background:rgba(239,68,68,.10);
-      color:#fca5a5; font-weight:700; font-size:11px;
-      text-decoration:none; margin-bottom:2px; transition:background .15s;
-    }
-    .pdf-pill:hover{ background:rgba(239,68,68,.18); color:#fca5a5; text-decoration:none; }
-    .pdf-pill:last-child{ margin-bottom:0; }
-    .pdf-pill .pdf-icon{
-      flex-shrink:0; width:18px; height:18px;
-      background:linear-gradient(135deg,#ef4444,#b91c1c); border-radius:4px;
-      display:flex; align-items:center; justify-content:center;
-      color:#fff; font-size:.65rem;
-    }
-    .log-entry{
-      background:rgba(255,255,255,.06) !important;
-      border:1px solid rgba(255,255,255,.10) !important;
-      border-radius:14px !important;
-    }
-  </style>
+  
 
   <div class="pcoded-main-container">
     <div class="pcoded-content">
 
-      <!-- Header -->
-      <div class="page-header">
-        <div class="page-block">
-          <div class="row align-items-center">
-            <div class="col-md-12">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="m-b-10">Ingreso Proyectos Planeación</h5>
-                <div class="d-flex align-items-center" style="gap:8px;">
-                  <?php if ($canInformes): ?>
-                    <a href="informes_proyectos_planeacion_alcaldia.php" class="btn btn-warning btn-brutal btn-sm">
-                      <i class="feather icon-pie-chart"></i> Informes
-                    </a>
-                  <?php endif; ?>
-                  <?php if ($canDashboard): ?>
-                    <a href="dashboard_proyectos_planeacion_alcaldia.php" class="btn btn-info btn-brutal btn-sm">
-                      <i class="feather icon-bar-chart-2"></i> Dashboard
-                    </a>
-                  <?php endif; ?>
+      <!-- HERO GOB360 -->
+      <section class="g360-projects-hero" aria-label="Proyectos de Planeación Municipal GOB360">
+        <div class="g360-projects-hero__grid">
+
+          <aside class="g360-projects-brand">
+            <span class="g360-projects-brand__eyebrow">
+              Plataforma institucional
+            </span>
+
+            <img
+              src="assets/img/gob360l.png"
+              alt="Logo GOB360"
+              class="g360-projects-brand__logo"
+            >
+
+            <span class="g360-projects-brand__caption">
+              Gestión pública inteligente y territorial
+            </span>
+
+            <div class="g360-projects-brand__status">
+              <span></span>
+              Banco de proyectos activo
+            </div>
+          </aside>
+
+          <div class="g360-projects-hero__content">
+            <div class="g360-projects-hero__top">
+              <div>
+                <div class="g360-projects-hero__eyebrow">
+                  <i class="feather icon-briefcase"></i>
+                  Planeación Municipal
+                </div>
+
+                <h1 class="g360-projects-hero__title">
+                  Radicación y Seguimiento de Proyectos
+                </h1>
+
+                <p class="g360-projects-hero__description">
+                  Registra proyectos, vincula secretarías y metas del Plan de Desarrollo,
+                  adjunta soportes, consulta estados y gestiona aprobaciones, rechazos,
+                  reaperturas, asignaciones e historial institucional.
+                </p>
+              </div>
+
+              <div class="g360-projects-hero__actions">
+                <?php if ($canInformes): ?>
+                  <a href="informes_proyectos_planeacion_alcaldia.php" class="g360-hero-button g360-hero-button--warning">
+                    <i class="feather icon-pie-chart"></i>
+                    Informes
+                  </a>
+                <?php endif; ?>
+
+                <?php if ($canDashboard): ?>
+                  <a href="dashboard_proyectos_planeacion_alcaldia.php" class="g360-hero-button g360-hero-button--primary">
+                    <i class="feather icon-bar-chart-2"></i>
+                    Dashboard
+                  </a>
+                <?php endif; ?>
+
+                <div class="g360-projects-back">
                   <?php include './admin/include/btn_back.php'; ?>
                 </div>
               </div>
-              <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#!">Banco de Proyectos / Ingreso Proyectos Planeación</a></li>
-              </ul>
+            </div>
+
+            <div class="g360-projects-summary">
+              <article>
+                <span class="g360-projects-summary__icon">
+                  <i class="feather icon-folder"></i>
+                </span>
+
+                <div>
+                  <small>Proyectos visibles</small>
+                  <strong><?= number_format(count($arrProyectos), 0, ',', '.') ?></strong>
+                  <p>Según alcance y filtros activos</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-projects-summary__icon g360-projects-summary__icon--municipality">
+                  <i class="feather icon-map-pin"></i>
+                </span>
+
+                <div>
+                  <small>Ámbito territorial</small>
+                  <strong>
+                    <?= $isUsuarioAlcalde && $nombreMunicipioUsuario !== ''
+                      ? escapeHtml($nombreMunicipioUsuario)
+                      : 'Departamental' ?>
+                  </strong>
+                  <p>Municipio fijo o selección autorizada</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-projects-summary__icon g360-projects-summary__icon--role">
+                  <i class="feather icon-user-check"></i>
+                </span>
+
+                <div>
+                  <small>Perfil activo</small>
+                  <strong><?= escapeHtml($user_rol ?: 'Usuario') ?></strong>
+                  <p>Permisos aplicados por autorización</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-projects-summary__icon g360-projects-summary__icon--create">
+                  <i class="feather icon-file-plus"></i>
+                </span>
+
+                <div>
+                  <small>Radicación</small>
+                  <strong><?= $canCreate ? 'Habilitada' : 'Consulta' ?></strong>
+                  <p>Creación según permisos del usuario</p>
+                </div>
+              </article>
+            </div>
+
+            <div class="g360-projects-capabilities" aria-hidden="true">
+              <span>
+                <i class="feather icon-target"></i>
+                Metas PDD
+              </span>
+
+              <span>
+                <i class="feather icon-users"></i>
+                Asignaciones
+              </span>
+
+              <span>
+                <i class="feather icon-file-text"></i>
+                Soportes PDF
+              </span>
+
+              <span>
+                <i class="feather icon-clock"></i>
+                Trazabilidad
+              </span>
+
+              <span>
+                <i class="feather icon-check-circle"></i>
+                Gestión y aprobación
+              </span>
             </div>
           </div>
+
         </div>
-      </div>
+      </section>
 
       <!-- FORM -->
       <?php if ($canCreate): ?>
       <div class="row">
         <div class="col-sm-12">
-          <div class="card">
+          <div class="card g360-project-card g360-project-card--form">
             <div class="card-header flex-wrap">
-              <div>
-                <h5 id="formPlaneacionTitle">Formulario de Ingreso de Proyecto Planeación Alcaldía</h5>
-                <div class="text-muted" id="formPlaneacionSubtitle" style="font-weight:800; font-size:.85rem; margin-top:4px;">
-                  Completa la información y adjunta <b>foto</b> + <b>PDF</b> para radicar el proyecto.
-                </div>
-                <div id="bannerEdicionRechazado" class="mt-2" style="display:none;">
-                  <span class="badge badge-warning-soft">Editando proyecto rechazado #<span id="bannerEditId"></span> — al guardar se reenvía a Planeación</span>
+              <div class="g360-card-heading">
+                <span class="g360-card-heading__icon">
+                  <i class="feather icon-file-plus"></i>
+                </span>
+
+                <div>
+                  <span class="g360-card-heading__eyebrow">Nueva radicación</span>
+                  <h5 id="formPlaneacionTitle">Formulario de Proyecto de Planeación</h5>
+
+                  <div class="g360-card-heading__description" id="formPlaneacionSubtitle">
+                    Completa la información, vincula el proyecto con el PDD
+                    y adjunta fotografía y documentos PDF.
+                  </div>
+
+                  <div id="bannerEdicionRechazado" class="g360-edit-banner" style="display:none;">
+                    <i class="feather icon-alert-triangle"></i>
+                    <span>
+                      Editando proyecto rechazado #<strong id="bannerEditId"></strong>.
+                      Al guardar se reenviará a Planeación.
+                    </span>
+                  </div>
                 </div>
               </div>
               <div class="card-header-right">
@@ -506,15 +382,40 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
             </div>
 
             <div class="card-body">
-              <div class="form-section">
+              <div class="form-section g360-project-form">
                 <form id="formsecretaria" role="form" autocomplete="off" data-modo="crear">
                   <input type="hidden" name="id" id="proyecto_edit_id" value="">
+
+                  <div class="g360-form-intro">
+                    <span class="g360-form-intro__icon">
+                      <i class="feather icon-edit-3"></i>
+                    </span>
+
+                    <div>
+                      <h6>Información para la radicación</h6>
+                      <p>
+                        Los campos marcados son obligatorios. La información será
+                        utilizada para la revisión y gestión institucional del proyecto.
+                      </p>
+                    </div>
+                  </div>
 
                   <!-- hidden dep (para JS) -->
                   <div style="display:none;">
                     <select class="form-control" onchange="DEPARTAMENTO.getMunicipios();" id="tbl_departamento_id" name="tbl_departamento_id" disabled>
                       <?php echo $optionDep; ?>
                     </select>
+                  </div>
+
+                  <div class="g360-form-section-heading">
+                    <span class="g360-form-section-heading__icon">
+                      <i class="feather icon-file-text"></i>
+                    </span>
+
+                    <div>
+                      <h6>Identificación del proyecto</h6>
+                      <p>Fecha de radicación y nombre general de la iniciativa.</p>
+                    </div>
                   </div>
 
                   <div class="form-row">
@@ -526,6 +427,17 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
                       <label for="proyecto">Nombre del Proyecto<span class="text-danger">*</span></label>
                       <input type="text" class="form-control" id="proyecto" name="proyecto" placeholder="Describa el objeto del proyecto brevemente" autocomplete="off" required/>
                       <div class="help-muted">Tip: inicia con "Construcci&oacute;n de&hellip;", "Mejoramiento de&hellip;", "Dotaci&oacute;n de&hellip;".</div>
+                    </div>
+                  </div>
+
+                  <div class="g360-form-section-heading">
+                    <span class="g360-form-section-heading__icon g360-form-section-heading__icon--territory">
+                      <i class="feather icon-map"></i>
+                    </span>
+
+                    <div>
+                      <h6>Territorio y dependencia responsable</h6>
+                      <p>Define el municipio beneficiado y las secretarías vinculadas.</p>
                     </div>
                   </div>
 
@@ -544,7 +456,7 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
 
                     <div class="form-group col-md-6">
                       <label>Secretar&iacute;a Alcald&iacute;a<span class="text-danger">*</span></label>
-                      <div id="secrePills" class="pill-select" style="display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);min-height:46px;"></div>
+                      <div id="secrePills" class="pill-select g360-pill-selector"></div>
                       <select class="form-control" id="tbl_secretarias_id" name="tbl_secretarias_id[]" multiple style="display:none;" required>
                         <?php
                         // Evitar option vacía en multi-select; las opciones reales ya vienen en $optionSecretariasMunicipios
@@ -555,10 +467,21 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
                     </div>
                   </div>
 
+                  <div class="g360-form-section-heading">
+                    <span class="g360-form-section-heading__icon g360-form-section-heading__icon--target">
+                      <i class="feather icon-target"></i>
+                    </span>
+
+                    <div>
+                      <h6>Alineación con el Plan de Desarrollo</h6>
+                      <p>Relaciona la iniciativa con sus metas y registra el valor proyectado.</p>
+                    </div>
+                  </div>
+
                   <div class="form-row">
                     <div class="form-group col-md-8">
                       <label>Meta del Plan de Desarrollo Relacionada<span class="text-danger">*</span></label>
-                      <div id="metaPills" class="pill-select" style="display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);min-height:46px;max-height:220px;overflow-y:auto;"></div>
+                      <div id="metaPills" class="pill-select g360-pill-selector g360-pill-selector--scroll"></div>
                       <select class="form-control" id="tbl_meta_id" name="tbl_meta_id[]" multiple style="display:none;" required>
                         <?php if (!empty($arrMetas)) : ?>
                           <?php foreach ($arrMetas as $meta) : ?>
@@ -578,11 +501,33 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
                     </div>
                   </div>
 
+                  <div class="g360-form-section-heading">
+                    <span class="g360-form-section-heading__icon g360-form-section-heading__icon--details">
+                      <i class="feather icon-align-left"></i>
+                    </span>
+
+                    <div>
+                      <h6>Alcance y observaciones</h6>
+                      <p>Describe población beneficiada, localización, alcance y estado actual.</p>
+                    </div>
+                  </div>
+
                   <div class="form-row">
                     <div class="form-group col-md-12">
                       <label for="observaciones">Observaciones</label>
                       <textarea class="form-control" id="observaciones" name="observaciones" placeholder="Ingrese observaciones adicionales del proyecto" rows="3"></textarea>
                       <div class="help-muted">Incluye alcance, poblaci&oacute;n beneficiada, localizaci&oacute;n, estado actual, etc.</div>
+                    </div>
+                  </div>
+
+                  <div class="g360-form-section-heading">
+                    <span class="g360-form-section-heading__icon g360-form-section-heading__icon--documents">
+                      <i class="feather icon-paperclip"></i>
+                    </span>
+
+                    <div>
+                      <h6>Soportes documentales</h6>
+                      <p>Adjunta la fotografía principal y hasta cinco documentos PDF.</p>
                     </div>
                   </div>
 
@@ -640,13 +585,25 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
                     </div>
                   </div>
 
-                  <div class="form-row pt-3">
-                    <div class="col text-center">
-                      <button type="button" id="btnCancelarProyecto" class="btn btn-danger btn-brutal mr-3">
-                        <i class="feather icon-x-circle"></i> Cancelar
+                  <div class="g360-project-save-bar">
+                    <div class="g360-project-save-bar__message">
+                      <i class="feather icon-shield"></i>
+
+                      <span>
+                        Verifica municipio, secretarías, metas, valor y documentos
+                        antes de enviar el proyecto.
+                      </span>
+                    </div>
+
+                    <div class="g360-project-save-bar__actions">
+                      <button type="button" id="btnCancelarProyecto" class="btn btn-danger btn-brutal">
+                        <i class="feather icon-x-circle"></i>
+                        Cancelar
                       </button>
-                      <button type="button" id="btnIngresarProyecto" class="btn btn-primary btn-brutal ml-3">
-                        <i class="feather icon-check-circle"></i> <span id="btnIngresarProyectoLabel">Ingresar Proyecto</span>
+
+                      <button type="button" id="btnIngresarProyecto" class="btn btn-primary btn-brutal">
+                        <i class="feather icon-check-circle"></i>
+                        <span id="btnIngresarProyectoLabel">Ingresar Proyecto</span>
                       </button>
                     </div>
                   </div>
@@ -663,12 +620,19 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
       <!-- LISTADO -->
       <div class="row">
         <div class="col-sm-12">
-          <div class="card">
+          <div class="card g360-project-card g360-project-card--list">
             <div class="card-header flex-wrap">
-              <div>
-                <h5>Listado de Proyectos de Secretaría</h5>
-                <div class="text-muted" style="font-weight:800; font-size:.85rem; margin-top:4px;">
-                  Consulta el estado, descarga PDF y revisa el historial de acciones.
+              <div class="g360-card-heading">
+                <span class="g360-card-heading__icon g360-card-heading__icon--list">
+                  <i class="feather icon-list"></i>
+                </span>
+
+                <div>
+                  <span class="g360-card-heading__eyebrow">Banco de proyectos</span>
+                  <h5>Listado de Proyectos de Planeación</h5>
+
+                  <div class="g360-card-heading__description">
+                    Consulta estado, soportes, gestión, asignaciones e historial.
                   <?php if ($canViewAll): ?>
                     <span class="badge badge-info ml-1">Vista departamental</span>
                   <?php elseif ($canViewAllAlcaldia || ($scopeActual['mode'] ?? '') === 'municipio'): ?>
@@ -676,6 +640,7 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
                   <?php elseif (($scopeActual['mode'] ?? '') === 'asignados'): ?>
                     <span class="badge badge-warning-soft ml-1">Solo asignados</span>
                   <?php endif; ?>
+                  </div>
                 </div>
               </div>
 
@@ -693,7 +658,18 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
             </div>
 
             <?php if ($mostrarFiltrosListado): ?>
-            <form method="get" action="proyectos_planeacion_alcaldia.php" id="formFiltrosPlaneacion" class="planeacion-filtros">
+            <form method="get" action="proyectos_planeacion_alcaldia.php" id="formFiltrosPlaneacion" class="planeacion-filtros g360-list-filters">
+              <div class="g360-list-filters__heading">
+                <span class="g360-list-filters__icon">
+                  <i class="feather icon-filter"></i>
+                </span>
+
+                <div>
+                  <span>Consulta segmentada</span>
+                  <h6>Filtros del listado</h6>
+                  <p>Filtra por municipio y por uno o varios usuarios responsables.</p>
+                </div>
+              </div>
               <?php if ($mostrarFiltroMunicipio): ?>
               <div class="filtro-field">
                 <label for="filtro_municipio">Municipio</label>
@@ -733,7 +709,10 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
                       <h3 class="table-shell__title">Listado de Proyectos de Secret&aacute;r&iacute;a</h3>
                       <div class="table-shell__subtitle">Consulta el estado, descarga el PDF y revisa el historial de acciones de cada proyecto.</div>
                     </div>
-                    <div class="table-shell__badge">Vista Pro</div>
+                    <div class="table-shell__badge">
+                        <i class="feather icon-shield"></i>
+                        GOB360
+                      </div>
                   </div>
                   <div class="table-shell__body">
                     <div class="table-responsive table-responsive--premium p-0">
@@ -1203,13 +1182,18 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
 
   <!-- MODAL LOGS -->
   <div class="modal fade" id="logsModal" tabindex="-1" role="dialog" aria-labelledby="logsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
+    <div class="modal-dialog modal-lg modal-dialog-centered g360-project-modal-dialog" role="document">
+      <div class="modal-content g360-project-modal">
         <div class="modal-header">
-          <h5 class="modal-title" id="logs_title" style="color:#fff !important;">Historial de mi proyecto</h5>
+          <h5 class="modal-title" id="logs_title">
+            <span class="g360-modal-title-icon">
+              <i class="feather icon-clock"></i>
+            </span>
+            Historial del proyecto
+          </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
-        <div class="modal-body" id="logs_body" style="color:#fff !important;"></div>
+        <div class="modal-body" id="logs_body"></div>
         <div class="modal-footer">
           <a id="btn_descargar_logs" href="#" class="btn btn-primary btn-brutal" download>
             <i class="feather icon-download"></i> Descargar acciones
@@ -1221,27 +1205,18 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
       </div>
     </div>
   </div>
-  <style>
-    #logsModal .modal-body,
-    #logsModal .modal-body p,
-    #logsModal .modal-body strong,
-    #logsModal .modal-body span,
-    #logsModal .modal-body td,
-    #logsModal .modal-body th,
-    #logsModal .modal-body h6{ color:#fff !important; }
-    #logsModal .modal-body .badge{ color:#fff !important; }
-    #logsModal .modal-body .log-entry{ border-color:rgba(255,255,255,.12) !important; background:rgba(255,255,255,.06) !important; }
-    #logsModal .modal-body .text-muted{ color:rgba(255,255,255,.6) !important; }
-  </style>
-
-    </style>
 
   <!-- MODAL ASIGNAR -->
   <div class="modal fade" id="modalAsignarProyecto" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered g360-project-modal-dialog g360-project-modal-dialog--assign" role="document">
+      <div class="modal-content g360-project-modal">
         <div class="modal-header">
-          <h5 class="modal-title" style="color:#fff !important;">Asignar usuarios · <span id="asignar_proyecto_nombre"></span></h5>
+          <h5 class="modal-title">
+            <span class="g360-modal-title-icon">
+              <i class="feather icon-user-plus"></i>
+            </span>
+            Asignar usuarios · <span id="asignar_proyecto_nombre"></span>
+          </h5>
           <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
         </div>
         <div class="modal-body">
@@ -1258,48 +1233,9 @@ if ($isUsuarioAlcalde && !empty($codigo_municipio_usuario)) {
       </div>
     </div>
   </div>
-  <style>
-    .asign-user-row{
-      display:flex; align-items:flex-start; gap:10px;
-      padding:10px 12px; margin-bottom:8px;
-      border-radius:14px; border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.05); cursor:pointer; color:#fff;
-    }
-    .asign-user-row small{ display:block; color:rgba(255,255,255,.55); font-weight:700; }
-    .asign-user-row input{ margin-top:3px; }
-    .help-muted{ color:rgba(255,255,255,.6) !important; font-weight:800; font-size:.85rem; }
-  </style>
+  
 
   <?php include './admin/include/generic_dataTables.php'; ?>
-  <style>
-    .dataTables_wrapper .dataTables_paginate .paginate_button{
-      color:rgba(255,255,255,.86) !important;
-      background:rgba(255,255,255,.06) !important;
-      border:1px solid rgba(255,255,255,.14) !important;
-      border-radius:12px !important;
-      padding:0.4em 0.9em !important;
-      font-weight:800 !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
-      background:linear-gradient(135deg,#203e5c,#2f3f6e) !important;
-      color:#fff !important;
-      border:1px solid rgba(255,255,255,.20) !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
-      background:rgba(255,255,255,.10) !important;
-      color:#fff !important;
-      border:1px solid rgba(255,255,255,.20) !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
-    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover{
-      color:rgba(255,255,255,.30) !important;
-      background:transparent !important;
-      border:1px solid transparent !important;
-    }
-    .dataTables_wrapper .dataTables_info,
-    .dataTables_wrapper .dataTables_length label,
-    .dataTables_wrapper .dataTables_filter label{ color:#fff !important; font-weight:800; }
-  </style>
+  
 </body>
 </html>

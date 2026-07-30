@@ -68,7 +68,9 @@ if ($estado === 'Enviado') {
 $secretarias = array_filter(array_map('trim', explode(',', (string)($p['secretaria'] ?? $p['nombre_secretaria'] ?? ''))));
 $metas = array_filter(array_map('trim', explode(',', (string)($p['meta_relacionada'] ?? $p['nombre_meta'] ?? ''))));
 ?>
-<body>
+<link rel="stylesheet" href="assets/css/detalle_proyecto_planeacion_alcaldia_gob360.css">
+
+<body class="gob360-project-detail">
   <div class="loader-bg">
     <div class="loader-track"><div class="loader-fill"></div></div>
   </div>
@@ -76,288 +78,227 @@ $metas = array_filter(array_map('trim', explode(',', (string)($p['meta_relaciona
   <?php include './admin/include/navbar.php'; ?>
   <?php include './admin/include/header.php'; ?>
 
-  <style>
-    :root{
-      --nav-blue:#20427F; --nav-blue-2:#132b52; --nav-blue-3:#2e58a8;
-      --radius-xl:22px; --radius-lg:16px; --radius-md:14px;
-      --shadow-soft: 0 14px 40px rgba(0,0,0,.28); --shadow-mid: 0 22px 70px rgba(0,0,0,.34);
-      --safe-top: 96px;
-    }
-    html, body{ overflow-x: hidden !important; }
-    .pcoded-content{ padding: calc(var(--safe-top) + 16px) 16px 18px !important; }
-    @media(min-width:768px){ :root{ --safe-top: 112px; } .pcoded-content{ padding: calc(var(--safe-top) + 18px) 24px 24px !important; } }
-    @media(min-width:1200px){ :root{ --safe-top: 120px; } .pcoded-content{ padding: calc(var(--safe-top) + 22px) 42px 34px !important; } }
-
-    .btn-brutal{
-      border-radius:14px !important; padding:.62rem 1.05rem !important;
-      font-weight:1000 !important; letter-spacing:.2px;
-      box-shadow:0 14px 34px rgba(0,0,0,.25);
-      transition:transform .16s ease, box-shadow .16s ease, filter .16s ease;
-      display:inline-flex; align-items:center; gap:8px; white-space:nowrap;
-      color:#fff !important;
-    }
-    .btn-brutal.btn-sm{ padding:.32rem .55rem !important; border-radius:10px !important; gap:4px; font-size:11px !important; box-shadow:0 8px 18px rgba(0,0,0,.18); }
-    .btn-brutal:hover{ transform:translateY(-1px); filter:brightness(1.04); box-shadow:0 18px 40px rgba(0,0,0,.28); }
-    .btn-primary.btn-brutal{ background:linear-gradient(135deg,#3b82f6,#4f46e5) !important; border:1px solid rgba(255,255,255,.14) !important; }
-    .btn-danger.btn-brutal{ background:linear-gradient(135deg,#ef4444,#b91c1c) !important; border:1px solid rgba(255,255,255,.14) !important; }
-    .btn-secondary.btn-brutal{ background:rgba(255,255,255,.09) !important; border:1px solid rgba(255,255,255,.17) !important; }
-    .btn-info.btn-brutal{ background:linear-gradient(135deg,#38bdf8,#0ea5e9) !important; border:1px solid rgba(255,255,255,.14) !important; }
-    .btn-warning.btn-brutal{ background:linear-gradient(135deg,#f6c23e,#f59e0b) !important; border:1px solid rgba(255,255,255,.14) !important; color:#111827 !important; }
-    .btn-success.btn-brutal{ background:linear-gradient(135deg,#0f766e,#16a34a) !important; border:1px solid rgba(255,255,255,.14) !important; }
-
-    .table-wrap{ display:flex; justify-content:center; padding:8px 0 2px; }
-    .table-shell{
-      width:min(100%,1520px);
-      background: rgba(255,255,255,.06) !important;
-      border-radius:24px; overflow:hidden;
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow:var(--shadow-mid);
-    }
-    .table-shell__top{
-      display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
-      padding:20px 24px 16px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.14);
-    }
-    .table-shell__eyebrow{
-      display:inline-flex; align-items:center; gap:8px; margin-bottom:6px;
-      color:rgba(255,255,255,.7); font-size:11px; font-weight:1000;
-      letter-spacing:.14em; text-transform:uppercase;
-    }
-    .table-shell__eyebrow:before{
-      content:""; width:9px; height:9px; border-radius:999px;
-      background:linear-gradient(135deg,#22c1ff,#20427F);
-      box-shadow:0 0 0 5px rgba(34,193,255,.12);
-    }
-    .table-shell__title{ margin:0; color:#fff; font-size:1.3rem; font-weight:1000; letter-spacing:-.02em; }
-    .table-shell__subtitle{ margin-top:4px; color:rgba(255,255,255,.6); font-size:.92rem; line-height:1.45; }
-    .table-shell__badge{
-      display:inline-flex; align-items:center; justify-content:center;
-      min-width:92px; padding:.7rem 1rem; border-radius:16px;
-      background:linear-gradient(135deg,#203e5c,#2f3f6e); color:#fff;
-      font-size:.78rem; font-weight:1000; letter-spacing:.06em; text-transform:uppercase;
-      box-shadow:0 16px 36px rgba(32,62,92,.20);
-    }
-    .table-shell__body{ padding:18px 18px 22px; }
-
-    .form-section{
-      background: rgba(255,255,255,.06) !important;
-      border-radius: var(--radius-xl) !important;
-      border: 1px solid rgba(255,255,255,.12) !important;
-      padding: 20px !important;
-      margin-bottom: 16px;
-    }
-    .form-section h6{
-      color:#fff !important; font-weight:1000 !important; letter-spacing:.04em;
-      text-transform:uppercase; font-size:.78rem; margin-bottom:12px;
-      display:flex; align-items:center; gap:8px;
-    }
-    .form-section h6:before{
-      content:""; width:8px; height:8px; border-radius:999px;
-      background:linear-gradient(135deg,#22c1ff,#20427F);
-      box-shadow:0 0 0 4px rgba(34,193,255,.12);
-    }
-    .meta-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap:12px;
-    }
-    .meta-tile{
-      background:rgba(0,0,0,.16);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:16px;
-      padding:12px 14px;
-    }
-    .meta-tile__label{
-      color:rgba(255,255,255,.55); font-size:10px; font-weight:1000;
-      letter-spacing:.12em; text-transform:uppercase; margin-bottom:4px;
-    }
-    .meta-tile__value{
-      color:#fff; font-weight:800; font-size:.95rem; word-break:break-word;
-    }
-    .rc-text-block{
-      white-space:pre-wrap; word-break:break-word; overflow-wrap:anywhere;
-      color:rgba(255,255,255,.88); font-weight:700; line-height:1.5;
-      background:rgba(0,0,0,.14);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:14px;
-      padding:14px 16px;
-    }
-    .brand-band{
-      display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
-      padding:16px 18px; margin-bottom:16px;
-      border-radius:18px;
-      background: linear-gradient(135deg, rgba(32,62,92,.55), rgba(47,63,110,.35));
-      border:1px solid rgba(255,255,255,.12);
-    }
-    .brand-band__titles{ text-align:right; }
-    .brand-band__titles h4{
-      margin:0; color:#fff; font-weight:1000; letter-spacing:.04em; text-transform:uppercase; font-size:1.05rem;
-    }
-    .brand-band__titles .sub{
-      color:rgba(255,255,255,.65); font-size:.8rem; font-weight:800; margin-top:4px;
-    }
-
-    .badge{ border-radius:999px !important; padding:.25rem .5rem !important; font-weight:1000 !important; letter-spacing:.2px; border:1px solid rgba(255,255,255,.12); font-size:10.5px !important; }
-    .badge-warning-soft{ background:rgba(245,158,11,.25) !important; color:#fbbf24 !important; }
-    .badge-success-soft{ background:rgba(22,163,74,.20) !important; color:#34d399 !important; }
-    .badge-danger-soft{ background:rgba(220,38,38,.20) !important; color:#ef4444 !important; }
-    .badge-secondary-soft{ background:rgba(148,163,184,.18) !important; color:#94a3b8 !important; }
-
-    .sec-pill{
-      display:inline-flex; align-items:center; gap:5px; padding:3px 7px;
-      border-radius:8px; font-weight:800 !important; font-size:10.5px !important;
-      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06);
-      color:rgba(255,255,255,.86); white-space:nowrap; margin:0 4px 4px 0;
-    }
-    .sec-dot{ flex-shrink:0; width:6px; height:6px; border-radius:50%; background:linear-gradient(135deg,#60a5fa,#4f46e5); }
-    .meta-pill{ background:rgba(52,211,153,.12); border-color:rgba(52,211,153,.20); color:#34d399; }
-    .meta-dot{ flex-shrink:0; width:6px; height:6px; border-radius:50%; background:linear-gradient(135deg,#34d399,#15803d); }
-
-    .pdf-pill{
-      display:inline-flex; align-items:center; gap:5px; padding:6px 10px; border-radius:10px;
-      border:1px solid rgba(239,68,68,.25); background:rgba(239,68,68,.10);
-      color:#fca5a5; font-weight:700; font-size:11px;
-      text-decoration:none; margin:0 6px 6px 0; transition:background .15s;
-    }
-    .pdf-pill:hover{ background:rgba(239,68,68,.18); color:#fca5a5; text-decoration:none; }
-    .pdf-pill .pdf-icon{
-      flex-shrink:0; width:18px; height:18px;
-      background:linear-gradient(135deg,#ef4444,#b91c1c); border-radius:4px;
-      display:flex; align-items:center; justify-content:center;
-      color:#fff; font-size:.65rem;
-    }
-    .foto-pill{
-      border-color:rgba(56,189,248,.30); background:rgba(56,189,248,.12); color:#7dd3fc;
-    }
-    .foto-pill .pdf-icon{ background:linear-gradient(135deg,#38bdf8,#0ea5e9); }
-
-    .log-entry{
-      background:rgba(255,255,255,.06) !important;
-      border:1px solid rgba(255,255,255,.10) !important;
-      border-radius:14px !important;
-      padding:12px 14px;
-      margin-bottom:10px;
-    }
-    .log-entry__head{
-      display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px;
-    }
-    .log-entry__obs{
-      color:rgba(255,255,255,.82); font-weight:700; font-size:.9rem;
-      white-space:pre-wrap; word-break:break-word;
-    }
-    .log-entry__meta{ color:rgba(255,255,255,.55); font-size:11px; font-weight:800; }
-
-    .hist-table{ width:100%; margin:0; font-size:12px; }
-    .hist-table thead th{
-      color:#fff !important;
-      background: linear-gradient(135deg, #203e5c, #2f3f6e) !important;
-      text-transform:uppercase; letter-spacing:.1px;
-      font-size:10px !important; white-space:nowrap;
-      text-align:center; vertical-align:middle !important;
-      padding:8px 6px !important;
-      border-color:rgba(255,255,255,.06) !important;
-    }
-    .hist-table tbody td{
-      color:rgba(255,255,255,.86) !important;
-      background:transparent !important;
-      border-top:1px solid rgba(255,255,255,.06) !important;
-      vertical-align:top; padding:8px 6px !important;
-      font-weight:700 !important;
-    }
-    .hist-table tbody tr:nth-child(even) td{ background:rgba(255,255,255,.03) !important; }
-    .hist-wrap{
-      border-radius:18px; border:1px solid rgba(255,255,255,.10); overflow:auto;
-    }
-
-    .help-muted{ color: rgba(255,255,255,.6) !important; font-size:.82rem !important; font-weight:800 !important; margin-top:.35rem !important; }
-    .file-pro{ padding:.65rem .75rem; border-radius:var(--radius-md); border:1px dashed rgba(255,255,255,.22); background:rgba(255,255,255,.06); }
-    .label-strong{ color:rgba(255,255,255,.78) !important; font-weight:900 !important; font-size:.82rem; margin-bottom:.35rem; display:block; }
-
-    .foto-preview{
-      max-width:100%; max-height:320px; border-radius:16px;
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow:0 14px 34px rgba(0,0,0,.28);
-    }
-
-    @media (max-width:576px){
-      .table-shell__top{ padding:16px; }
-      .table-shell__body{ padding:12px; }
-      .brand-band__titles{ text-align:left; }
-      .btn-brutal{ width:100% !important; justify-content:center !important; }
-      .header-actions{ width:100%; flex-direction:column; }
-    }
-  </style>
+  
 
   <div class="pcoded-main-container">
     <div class="pcoded-content">
 
-      <div class="page-header">
-        <div class="page-block">
-          <div class="row align-items-center">
-            <div class="col-md-12">
-              <div class="d-flex justify-content-between align-items-center flex-wrap" style="gap:10px;">
-                <h5 class="m-b-10">Detalle Proyecto Planeación</h5>
-                <div class="d-flex align-items-center header-actions" style="gap:8px; flex-wrap:wrap;">
-                  <?php if ($canManage && $estado === 'Enviado' && !$mostrarGestion): ?>
-                    <a class="btn btn-success btn-brutal btn-sm" href="reporte-proyecto-planeacion-alcaldia.php?id=<?= $id ?>&modo=gestionar">
-                      <i class="feather icon-check-square"></i> Gestionar
-                    </a>
-                  <?php endif; ?>
-                  <?php if ($canReopen && $estado === 'Aprobado'): ?>
-                    <button type="button" class="btn btn-warning btn-brutal btn-sm" id="btnReabrirDetalle">
-                      <i class="feather icon-refresh-cw"></i> Reabrir
-                    </button>
-                  <?php endif; ?>
-                  <a href="proyectos_planeacion_alcaldia.php" class="btn btn-secondary btn-brutal btn-sm">
-                    <i class="feather icon-list"></i> Listado
+      <section class="g360-detail-hero" aria-label="Detalle del proyecto de Planeación Municipal">
+        <div class="g360-detail-hero__grid">
+
+          <aside class="g360-detail-brand">
+            <span class="g360-detail-brand__eyebrow">
+              Plataforma institucional
+            </span>
+
+            <img
+              src="assets/img/gob360l.png"
+              alt="Logo GOB360"
+              class="g360-detail-brand__logo"
+            >
+
+            <span class="g360-detail-brand__caption">
+              Gestión pública inteligente y territorial
+            </span>
+
+            <div class="g360-detail-brand__status">
+              <span></span>
+              Expediente disponible
+            </div>
+          </aside>
+
+          <div class="g360-detail-hero__content">
+            <div class="g360-detail-hero__top">
+              <div>
+                <div class="g360-detail-hero__eyebrow">
+                  <i class="feather icon-file-text"></i>
+                  Planeación Municipal · Proyecto N.° <?= $id ?>
+                </div>
+
+                <h1 class="g360-detail-hero__title">
+                  Detalle y Gestión del Proyecto
+                </h1>
+
+                <p class="g360-detail-hero__description">
+                  Consulta la información radicada, soportes, secretarías,
+                  metas del Plan de Desarrollo, notas de gestión e historial
+                  completo del proyecto.
+                </p>
+              </div>
+
+              <div class="g360-detail-hero__actions">
+                <?php if ($canManage && $estado === 'Enviado' && !$mostrarGestion): ?>
+                  <a
+                    class="g360-hero-button g360-hero-button--success"
+                    href="reporte-proyecto-planeacion-alcaldia.php?id=<?= $id ?>&modo=gestionar"
+                  >
+                    <i class="feather icon-check-square"></i>
+                    Gestionar
                   </a>
+                <?php endif; ?>
+
+                <?php if ($canReopen && $estado === 'Aprobado'): ?>
+                  <button
+                    type="button"
+                    class="g360-hero-button g360-hero-button--warning"
+                    id="btnReabrirDetalle"
+                  >
+                    <i class="feather icon-refresh-cw"></i>
+                    Reabrir
+                  </button>
+                <?php endif; ?>
+
+                <a
+                  href="proyectos_planeacion_alcaldia.php"
+                  class="g360-hero-button g360-hero-button--secondary"
+                >
+                  <i class="feather icon-list"></i>
+                  Listado
+                </a>
+
+                <div class="g360-detail-back">
                   <?php include './admin/include/btn_back.php'; ?>
                 </div>
               </div>
-              <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="proyectos_planeacion_alcaldia.php">Proyectos Planeación</a></li>
-                <li class="breadcrumb-item"><a href="#!">Detalle #<?= $id ?></a></li>
-              </ul>
+            </div>
+
+            <div class="g360-detail-summary">
+              <article>
+                <span class="g360-detail-summary__icon">
+                  <i class="feather icon-activity"></i>
+                </span>
+
+                <div>
+                  <small>Estado actual</small>
+                  <strong><?= h($estado ?: 'Sin estado') ?></strong>
+                  <p>Situación registrada en Planeación</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-detail-summary__icon g360-detail-summary__icon--money">
+                  <i class="feather icon-dollar-sign"></i>
+                </span>
+
+                <div>
+                  <small>Valor del proyecto</small>
+                  <strong>$ <?= number_format((float)($p['valor_proyecto'] ?? 0), 0, ',', '.') ?></strong>
+                  <p>Presupuesto registrado</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-detail-summary__icon g360-detail-summary__icon--territory">
+                  <i class="feather icon-map-pin"></i>
+                </span>
+
+                <div>
+                  <small>Municipio</small>
+                  <strong><?= h($p['municipio'] ?? $p['nombre_municipio'] ?? '—') ?></strong>
+                  <p>Territorio beneficiado</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-detail-summary__icon g360-detail-summary__icon--bpin">
+                  <i class="feather icon-hash"></i>
+                </span>
+
+                <div>
+                  <small>Código BPIN</small>
+                  <strong><?= h(($p['bpin'] ?? '') !== '' ? $p['bpin'] : 'Pendiente') ?></strong>
+                  <p>Obligatorio al aprobar</p>
+                </div>
+              </article>
+            </div>
+
+            <div class="g360-detail-capabilities" aria-hidden="true">
+              <span>
+                <i class="feather icon-target"></i>
+                Metas PDD
+              </span>
+
+              <span>
+                <i class="feather icon-paperclip"></i>
+                Adjuntos
+              </span>
+
+              <span>
+                <i class="feather icon-message-square"></i>
+                Notas de gestión
+              </span>
+
+              <span>
+                <i class="feather icon-clock"></i>
+                Historial
+              </span>
+
+              <span>
+                <i class="feather icon-shield"></i>
+                Acceso autorizado
+              </span>
             </div>
           </div>
+
         </div>
-      </div>
+      </section>
 
       <div class="row">
         <div class="col-sm-12">
           <div class="table-wrap">
-            <div class="table-shell">
+            <div class="table-shell g360-project-record">
               <div class="table-shell__top">
                 <div>
-                  <div class="table-shell__eyebrow">Banco de proyectos</div>
-                  <h3 class="table-shell__title">Proyecto de Planeación Alcaldía</h3>
+                  <div class="table-shell__eyebrow">Expediente institucional</div>
+                  <h3 class="table-shell__title">Proyecto de Planeación Municipal</h3>
                   <div class="table-shell__subtitle">
-                    Consulta datos, adjuntos e historial.
+                    Información consolidada, soportes, gestión e historial.
                     <?php if ($estado === 'Aprobado'): ?>
                       <span class="badge badge-success-soft ml-1">Cerrado</span>
                     <?php endif; ?>
                   </div>
                 </div>
-                <div class="table-shell__badge">N° <?= $id ?></div>
+                <div class="table-shell__badge">
+                  <i class="feather icon-file-text"></i>
+                  N.° <?= $id ?>
+                </div>
               </div>
 
               <div class="table-shell__body">
 
-                <div class="brand-band">
-                  <div><?php include 'admin/include/generinc_brand_logo.php'; ?></div>
-                  <div class="brand-band__titles">
-                    <h4>Gobernación de Santander</h4>
-                    <div class="sub">República de Colombia · Planeación Alcaldía</div>
-                    <div class="mt-2">
-                      <span class="badge <?= $badgeCls ?>"><?= h($estado) ?></span>
+                <div class="brand-band g360-record-band">
+                  <div class="g360-record-band__identity">
+                    <span class="g360-record-band__logo">
+                      <img src="assets/img/gob360l.png" alt="GOB360">
+                    </span>
+
+                    <div>
+                      <span class="g360-record-band__eyebrow">
+                        Gestión pública inteligente
+                      </span>
+                      <h4>Expediente de Planeación Municipal</h4>
+                      <div class="sub">
+                        Proyecto N.° <?= $id ?> · Santander, Colombia
+                      </div>
                     </div>
+                  </div>
+
+                  <div class="g360-record-band__status">
+                    <span>Estado del proyecto</span>
+                    <strong class="badge <?= $badgeCls ?>"><?= h($estado) ?></strong>
                   </div>
                 </div>
 
-                <div class="form-section">
-                  <h6>Resumen</h6>
+                <div class="form-section g360-detail-section">
+                  <div class="g360-detail-section__header">
+                    <span class="g360-detail-section__icon">
+                      <i class="feather icon-grid"></i>
+                    </span>
+                    <div>
+                      <span>Información principal</span>
+                      <h6>Resumen del proyecto</h6>
+                    </div>
+                  </div>
                   <div class="meta-grid">
                     <div class="meta-tile">
                       <div class="meta-tile__label">Fecha</div>
@@ -378,13 +319,29 @@ $metas = array_filter(array_map('trim', explode(',', (string)($p['meta_relaciona
                   </div>
                 </div>
 
-                <div class="form-section">
-                  <h6>Proyecto</h6>
+                <div class="form-section g360-detail-section">
+                  <div class="g360-detail-section__header">
+                    <span class="g360-detail-section__icon g360-detail-section__icon--project">
+                      <i class="feather icon-briefcase"></i>
+                    </span>
+                    <div>
+                      <span>Objeto registrado</span>
+                      <h6>Nombre del proyecto</h6>
+                    </div>
+                  </div>
                   <div class="rc-text-block"><?= h($p['proyecto'] ?? '—') ?></div>
                 </div>
 
-                <div class="form-section">
-                  <h6>Secretarías y metas PDD</h6>
+                <div class="form-section g360-detail-section">
+                  <div class="g360-detail-section__header">
+                    <span class="g360-detail-section__icon g360-detail-section__icon--target">
+                      <i class="feather icon-target"></i>
+                    </span>
+                    <div>
+                      <span>Alineación institucional</span>
+                      <h6>Secretarías y metas del PDD</h6>
+                    </div>
+                  </div>
                   <div class="mb-2">
                     <?php if (empty($secretarias)): ?>
                       <span class="help-muted">Sin secretarías</span>
@@ -401,20 +358,44 @@ $metas = array_filter(array_map('trim', explode(',', (string)($p['meta_relaciona
                   </div>
                 </div>
 
-                <div class="form-section">
-                  <h6>Observaciones</h6>
+                <div class="form-section g360-detail-section">
+                  <div class="g360-detail-section__header">
+                    <span class="g360-detail-section__icon g360-detail-section__icon--notes">
+                      <i class="feather icon-align-left"></i>
+                    </span>
+                    <div>
+                      <span>Descripción complementaria</span>
+                      <h6>Observaciones</h6>
+                    </div>
+                  </div>
                   <div class="rc-text-block"><?= h(($p['observaciones'] ?? '') !== '' ? $p['observaciones'] : '—') ?></div>
                 </div>
 
                 <?php if (!empty($p['gestion_nota']) || !empty($p['secretario_planeacion'])): ?>
-                  <div class="form-section">
-                    <h6>Última nota de gestión</h6>
+                  <div class="form-section g360-detail-section g360-detail-section--management-note">
+                    <div class="g360-detail-section__header">
+                      <span class="g360-detail-section__icon g360-detail-section__icon--management">
+                        <i class="feather icon-message-square"></i>
+                      </span>
+                      <div>
+                        <span>Seguimiento de Planeación</span>
+                        <h6>Última nota de gestión</h6>
+                      </div>
+                    </div>
                     <div class="rc-text-block"><?= h($p['gestion_nota'] ?? $p['secretario_planeacion'] ?? '') ?></div>
                   </div>
                 <?php endif; ?>
 
-                <div class="form-section">
-                  <h6>Adjuntos del proyecto</h6>
+                <div class="form-section g360-detail-section">
+                  <div class="g360-detail-section__header">
+                    <span class="g360-detail-section__icon g360-detail-section__icon--attachments">
+                      <i class="feather icon-paperclip"></i>
+                    </span>
+                    <div>
+                      <span>Evidencia documental</span>
+                      <h6>Adjuntos del proyecto</h6>
+                    </div>
+                  </div>
                   <div class="d-flex flex-wrap align-items-start">
                     <?php if (!empty($p['foto2'])): ?>
                       <div class="w-100 mb-3">
@@ -444,8 +425,16 @@ $metas = array_filter(array_map('trim', explode(',', (string)($p['meta_relaciona
                 </div>
 
                 <?php if (!empty($adjuntosGestion)): ?>
-                  <div class="form-section">
-                    <h6>Adjuntos de gestión</h6>
+                  <div class="form-section g360-detail-section">
+                    <div class="g360-detail-section__header">
+                      <span class="g360-detail-section__icon g360-detail-section__icon--attachments">
+                        <i class="feather icon-folder-plus"></i>
+                      </span>
+                      <div>
+                        <span>Soportes del trámite</span>
+                        <h6>Adjuntos de gestión</h6>
+                      </div>
+                    </div>
                     <div class="d-flex flex-wrap">
                       <?php foreach ($adjuntosGestion as $adj): ?>
                         <a class="pdf-pill foto-pill" target="_blank" href="<?= h($adj['ruta']) ?>">
@@ -458,9 +447,21 @@ $metas = array_filter(array_map('trim', explode(',', (string)($p['meta_relaciona
                 <?php endif; ?>
 
                 <?php if ($mostrarGestion): ?>
-                  <div class="form-section" id="panelGestion">
-                    <h6>Gestionar proyecto</h6>
-                    <p class="help-muted mb-3">Al aprobar, el proyecto queda cerrado. El BPIN es obligatorio solo en aprobación.</p>
+                  <div class="form-section g360-detail-section g360-management-panel" id="panelGestion">
+                    <div class="g360-detail-section__header">
+                      <span class="g360-detail-section__icon g360-detail-section__icon--manage">
+                        <i class="feather icon-check-square"></i>
+                      </span>
+
+                      <div>
+                        <span>Decisión institucional</span>
+                        <h6>Gestionar proyecto</h6>
+                        <p>
+                          Al aprobar, el proyecto queda cerrado.
+                          El código BPIN es obligatorio únicamente para la aprobación.
+                        </p>
+                      </div>
+                    </div>
                     <form id="formGestionProyecto" enctype="multipart/form-data">
                       <input type="hidden" name="id" value="<?= $id ?>">
                       <div class="row">
@@ -487,21 +488,41 @@ $metas = array_filter(array_map('trim', explode(',', (string)($p['meta_relaciona
                           </div>
                           <div class="help-muted">Puede adjuntar uno o varios archivos de soporte.</div>
                         </div>
-                        <div class="col-12 d-flex flex-wrap" style="gap:8px;">
-                          <button type="submit" class="btn btn-primary btn-brutal">
-                            <i class="feather icon-save"></i> Guardar gestión
-                          </button>
-                          <a href="reporte-proyecto-planeacion-alcaldia.php?id=<?= $id ?>" class="btn btn-secondary btn-brutal">
-                            Cancelar
-                          </a>
+                        <div class="col-12">
+                          <div class="g360-management-actions">
+                            <div class="g360-management-actions__message">
+                              <i class="feather icon-shield"></i>
+                              <span>La decisión quedará registrada en el historial del proyecto.</span>
+                            </div>
+
+                            <div class="g360-management-actions__buttons">
+                              <a href="reporte-proyecto-planeacion-alcaldia.php?id=<?= $id ?>" class="btn btn-secondary btn-brutal">
+                                <i class="feather icon-x"></i>
+                                Cancelar
+                              </a>
+
+                              <button type="submit" class="btn btn-primary btn-brutal">
+                                <i class="feather icon-save"></i>
+                                Guardar gestión
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </form>
                   </div>
                 <?php endif; ?>
 
-                <div class="form-section mb-0">
-                  <h6>Historial de acciones</h6>
+                <div class="form-section g360-detail-section g360-detail-section--history mb-0">
+                  <div class="g360-detail-section__header">
+                    <span class="g360-detail-section__icon g360-detail-section__icon--history">
+                      <i class="feather icon-clock"></i>
+                    </span>
+                    <div>
+                      <span>Trazabilidad institucional</span>
+                      <h6>Historial de acciones</h6>
+                    </div>
+                  </div>
                   <?php if (empty($logs)): ?>
                     <div class="help-muted">Sin historial registrado.</div>
                   <?php else: ?>

@@ -16,50 +16,123 @@ if ($secretariaId == 0) {
 }
 
 $nav = 'NavAuthorization';
+
+$navFotoUsuario = SessionData::getFotoUsuario();
+$navImg = !empty($navFotoUsuario)
+    ? 'assets/img/admin/' . htmlspecialchars((string)$navFotoUsuario, ENT_QUOTES, 'UTF-8')
+    : 'assets/img/santander.png';
+
+$navNombreUsuario = trim((string)SessionData::getNombreUsuario());
+if ($navNombreUsuario === '') {
+    $navNombreUsuario = 'Usuario GOB360';
+}
+
+$navRolUsuario = trim((string)SessionData::getUserType());
+if ($navRolUsuario === '') {
+    $navRolUsuario = 'Usuario';
+}
+
+$navNombreUsuarioSeguro = htmlspecialchars($navNombreUsuario, ENT_QUOTES, 'UTF-8');
+$navRolUsuarioSeguro = htmlspecialchars($navRolUsuario, ENT_QUOTES, 'UTF-8');
+
 ?>
 
-<nav class="pcoded-navbar navbar-saaspro">
+<link rel="stylesheet" href="assets/css/navbar_gob360_premium.css">
+
+<nav
+    class="pcoded-navbar navbar-saaspro gob360-sidebar"
+    aria-label="Navegación principal GOB360"
+>
     <div class="navbar-wrapper">
         <div class="navbar-content scroll-div navbar-saaspro-scroll">
 
-            <ul class="nav pcoded-inner-navbar navbar-saaspro-inner">
+            <div class="g360-sidebar__top">
 
-                <!-- Perfil de Usuario -->
-                <div class="user-profile user-profile-saas d-flex flex-column align-items-center">
-                    <button onclick="toggleMenu()" id="menuToggleBtn" class="menu-toggle-btn" title="Minimizar menú">
+                <div class="g360-sidebar__brand">
+                    <a
+                        href="index.php"
+                        class="g360-sidebar__brand-link"
+                        aria-label="Ir al inicio de GOB360"
+                    >
+                        <img
+                            src="assets/img/gob360l.png"
+                            alt="Logo GOB360"
+                            class="g360-sidebar__brand-logo"
+                        >
+
+                        <span class="g360-sidebar__brand-copy">
+                            <small>Plataforma institucional</small>
+                            <strong>Gestión pública inteligente</strong>
+                        </span>
+                    </a>
+
+                    <button
+                        type="button"
+                        onclick="toggleMenu()"
+                        id="menuToggleBtn"
+                        class="g360-sidebar__toggle"
+                        title="Minimizar menú"
+                        aria-label="Minimizar menú"
+                    >
                         <i class="feather icon-chevrons-left"></i>
                     </button>
-                    <div class="profile-img mb-2">
-                        <?php
-                        $img = !empty(SessionData::getFotoUsuario())
-                            ? "assets/img/admin/" . htmlspecialchars(SessionData::getFotoUsuario())
-                            : 'assets/img/santander.png';
-                        ?>
-                        <img src="<?= $img ?>" alt="user" class="rounded-circle" width="60">
-                    </div>
-                    <h6 class="text-white fw-bold mb-0 text-center">
-                        <?php echo SessionData::getNombreUsuario(); ?>
-                    </h6>
-                    <span class="text-muted text-center" style="font-size: 12px;color: #ffffff !important;">
-                        <?php echo SessionData::getUserType(); ?>
-                    </span>
                 </div>
 
-                <!-- Buscador de menú -->
-                <li class="nav-item" style="padding: 0 15px 8px 15px;">
-                    <div style="position:relative;">
-                        <i class="feather icon-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.35);font-size:15px;pointer-events:none;"></i>
-                        <input type="text" id="menuSearch" placeholder="Buscar en el menú..."
-                            style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:9px 9px 9px 36px;font-size:13px;font-weight:500;outline:none;transition:border-color .15s,box-shadow .15s;"
-                            onfocus="this.style.borderColor='rgba(79,124,255,.50)';this.style.boxShadow='0 0 0 3px rgba(79,124,255,.15)'"
-                            onblur="this.style.borderColor='rgba(255,255,255,.10)';this.style.boxShadow='none'"
-                            oninput="filtrarMenu(this.value)">
-                        <span id="menuSearchClear" onclick="limpiarBusqueda()"
-                            style="position:absolute;right:8px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.35);cursor:pointer;font-size:16px;display:none;line-height:1;padding:2px 6px;border-radius:6px;transition:color .15s,background .15s;"
-                            onmouseover="this.style.color='#fff';this.style.background='rgba(255,255,255,.10)'"
-                            onmouseout="this.style.color='rgba(255,255,255,.35)';this.style.background='transparent'">&times;</span>
-                    </div>
-                </li>
+                <section class="user-profile user-profile-saas g360-sidebar-profile">
+                    <span class="g360-sidebar-profile__avatar">
+                        <img
+                            src="<?= $navImg ?>"
+                            alt="Foto de <?= $navNombreUsuarioSeguro ?>"
+                            width="58"
+                            height="58"
+                        >
+                        <span class="g360-sidebar-profile__status"></span>
+                    </span>
+
+                    <span class="g360-sidebar-profile__copy">
+                        <small>Sesión activa</small>
+                        <strong><?= $navNombreUsuarioSeguro ?></strong>
+                        <span><?= $navRolUsuarioSeguro ?></span>
+                    </span>
+                </section>
+
+                <div class="g360-sidebar-search">
+                    <label for="menuSearch" class="sr-only">
+                        Buscar en el menú
+                    </label>
+
+                    <span class="g360-sidebar-search__icon">
+                        <i class="feather icon-search"></i>
+                    </span>
+
+                    <input
+                        type="search"
+                        id="menuSearch"
+                        placeholder="Buscar módulo o función..."
+                        autocomplete="off"
+                        oninput="filtrarMenu(this.value)"
+                    >
+
+                    <button
+                        type="button"
+                        id="menuSearchClear"
+                        class="g360-sidebar-search__clear"
+                        onclick="limpiarBusqueda()"
+                        aria-label="Limpiar búsqueda"
+                        title="Limpiar búsqueda"
+                    >
+                        <i class="feather icon-x"></i>
+                    </button>
+                </div>
+
+                <div id="menuSearchEmpty" class="g360-sidebar-search__empty" hidden>
+                    <i class="feather icon-search"></i>
+                    <span>No encontramos opciones con ese nombre.</span>
+                </div>
+
+            </div>
+
+            <ul class="nav pcoded-inner-navbar navbar-saaspro-inner">
 
                 <!-- Menú -->
                 <li class="nav-item pcoded-menu-caption">
@@ -621,488 +694,311 @@ $nav = 'NavAuthorization';
                     <?php endif; ?>
                 <?php endif; ?>
 
+                <li class="g360-sidebar-footer">
+                    <div class="g360-sidebar-footer__status">
+                        <span></span>
+
+                        <div class="g360-sidebar-footer__copy">
+                            <small>Estado de plataforma</small>
+                            <strong>Sistema operativo</strong>
+                        </div>
+                    </div>
+
+                    <span class="g360-sidebar-footer__version">
+                        GOB360
+                    </span>
+                </li>
+
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- BOTTOM NAV (solo móvil/tablet) -->
-<nav class="mobile-navbar fixed-bottom">
-    <div class="container">
-        <div class="row align-items-center" style="margin:0;">
-            <div class="col text-center">
-                <a href="dashboard.php" class="mobile-nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>">
-                    <i class="feather icon-home"></i>
-                    <span class="d-block small">Inicio</span>
-                </a>
-            </div>
-            <div class="col text-center">
-                <a href="menu_mobile.php" class="mobile-nav-link" id="toggleMobileMenu">
-                    <i class="feather icon-menu"></i>
-                    <span class="d-block small">Menú</span>
-                </a>
-            </div>
-            <div class="col text-center">
-                <a href="logout.php" class="mobile-nav-link">
-                    <i class="feather icon-log-out"></i>
-                    <span class="d-block small">Salir</span>
-                </a>
-            </div>
-        </div>
-    </div>
+<!-- NAVEGACIÓN INFERIOR GOB360 · MÓVIL/TABLET -->
+<nav class="mobile-navbar fixed-bottom g360-mobile-nav" aria-label="Navegación móvil">
+    <a
+        href="dashboard.php"
+        class="mobile-nav-link <?= basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'active' : '' ?>"
+    >
+        <span class="g360-mobile-nav__icon">
+            <i class="feather icon-home"></i>
+        </span>
+        <span>Inicio</span>
+    </a>
+
+    <a
+        href="menu_mobile.php"
+        class="mobile-nav-link g360-mobile-nav__primary"
+        id="toggleMobileMenu"
+    >
+        <span class="g360-mobile-nav__icon">
+            <i class="feather icon-grid"></i>
+        </span>
+        <span>Menú</span>
+    </a>
+
+    <a href="logout.php" class="mobile-nav-link g360-mobile-nav__logout">
+        <span class="g360-mobile-nav__icon">
+            <i class="feather icon-log-out"></i>
+        </span>
+        <span>Salir</span>
+    </a>
 </nav>
 
-<style>
-/* ================================
-   NAVBAR PRO SaaS WOW (PCoded)
-   SOLO DISEÑO (NO FUNCIONALIDAD)
-==================================*/
-
-:root{
-  --nb-1:#050914;
-  --nb-2:#07162d;
-  --nb-3:#132b52;
-  --nb-4:#2e58a8;
-  --glass: rgba(255,255,255,.06);
-  --glass2: rgba(255,255,255,.10);
-  --stroke: rgba(255,255,255,.10);
-  --stroke2: rgba(255,255,255,.16);
-  --txt: rgba(255,255,255,.92);
-  --muted: rgba(255,255,255,.70);
-  --hover: rgba(255,255,255,.08);
-  --active: rgba(46,88,168,.30);
-  --shadow: 0 18px 40px rgba(2,6,23,.35);
-  --shadow2: 0 14px 28px rgba(2,6,23,.28);
-  --r-xl: 22px;
-  --r-lg: 16px;
-  --r-md: 12px;
-}
-
-/* Sidebar con aire (no pegado al body) */
-.pcoded-navbar.navbar-saaspro{
-  top: 12px !important;
-  left: 12px !important;
-  height: calc(100vh - 24px) !important;
-  width: 264px;
-  border-radius: var(--r-xl);
-  overflow: hidden !important;
-  border: 1px solid rgba(255,255,255,.10);
-  box-shadow: var(--shadow);
-  background: transparent !important;
-  z-index: 1030;
-}
-
-/* Fondo premium */
-.pcoded-navbar.navbar-saaspro::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:0;
-  background:
-    radial-gradient(900px 420px at 12% 8%, rgba(46,88,168,.38), transparent 55%),
-    radial-gradient(850px 520px at 88% 22%, rgba(19,43,82,.62), transparent 62%),
-    radial-gradient(700px 520px at 50% 120%, rgba(32,66,127,.45), transparent 55%),
-    linear-gradient(135deg, #050914 0%, #07162d 38%, #0c1733 68%, #050914 100%);
-}
-
-/* Velo */
-.pcoded-navbar.navbar-saaspro::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.06) 0%, rgba(255,255,255,.02) 45%, rgba(0,0,0,.18) 100%),
-    radial-gradient(600px 260px at 30% 15%, rgba(255,255,255,.10), transparent 60%);
-}
-
-/* Contenido por encima */
-.pcoded-navbar.navbar-saaspro .navbar-wrapper,
-.pcoded-navbar.navbar-saaspro .navbar-content{
-  position: relative;
-  z-index: 1;
-  height: 100% !important;
-}
-
-/* Scroll REAL interno */
-.pcoded-navbar.navbar-saaspro .navbar-saaspro-scroll{
-  height: 100% !important;
-  max-height: 100% !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  padding: 10px 10px 18px !important;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(46,88,168,.65) transparent;
-}
-
-.pcoded-navbar.navbar-saaspro .navbar-saaspro-scroll::-webkit-scrollbar{ width: 8px; }
-.pcoded-navbar.navbar-saaspro .navbar-saaspro-scroll::-webkit-scrollbar-track{ background: transparent; }
-.pcoded-navbar.navbar-saaspro .navbar-saaspro-scroll::-webkit-scrollbar-thumb{
-  background: linear-gradient(180deg, rgba(46,88,168,.55), rgba(255,255,255,.12));
-  border-radius: 999px;
-  border: 2px solid rgba(0,0,0,.15);
-}
-.pcoded-navbar.navbar-saaspro .navbar-saaspro-scroll::-webkit-scrollbar-thumb:hover{
-  background: linear-gradient(180deg, rgba(46,88,168,.85), rgba(255,255,255,.16));
-}
-
-/* Perfil sticky NO transparente (no se ve nada por debajo) */
-.user-profile-saas{
-  position: sticky !important;
-  top: 10px !important;
-  z-index: 999 !important;
-  width: calc(100% - 0px);
-  margin: 0 0 14px 0 !important;
-  padding: 18px 12px !important;
-  border-radius: 18px !important;
-  border: 1px solid rgba(255,255,255,.14);
-  background: linear-gradient(135deg, rgba(13,18,30,.92), rgba(18,38,78,.92)) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: var(--shadow2);
-  overflow: hidden !important;
-}
-
-.user-profile-saas::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(900px 260px at 20% 10%, rgba(86,132,255,.22), transparent 55%),
-    radial-gradient(700px 220px at 90% 40%, rgba(104,255,179,.10), transparent 55%);
-  z-index: 1;
-  pointer-events:none;
-}
-
-.user-profile-saas *{
-  position: relative;
-  z-index: 2;
-}
-
-.user-profile-saas .profile-img img{
-  width: 64px;
-  height: 64px;
-  object-fit: cover;
-  border-radius: 999px;
-  border: 2px solid rgba(255,255,255,.22);
-  box-shadow: 0 12px 26px rgba(2,6,23,.35);
-}
-
-.user-profile-saas h6{
-  color: var(--txt) !important;
-  font-weight: 900 !important;
-  margin-top: 10px !important;
-  text-shadow: 0 2px 10px rgba(0,0,0,.35);
-}
-
-.user-profile-saas span{
-  color: var(--muted) !important;
-  font-weight: 800 !important;
-}
-
-/* Botón minimizar */
-#menuToggleBtn{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.07);
-  color: var(--txt);
-  box-shadow: 0 10px 22px rgba(2,6,23,.30);
-  transition: transform .16s ease, background .16s ease, border-color .16s ease;
-}
-#menuToggleBtn:hover{
-  transform: translateY(-1px);
-  background: rgba(255,255,255,.10);
-  border-color: rgba(255,255,255,.22);
-}
-#menuToggleBtn i{ font-size: 16px; }
-
-/* Captions */
-.navbar-saaspro-inner .pcoded-menu-caption{
-  margin: 10px 0 6px !important;
-  padding: 8px 10px !important;
-  border-radius: 12px;
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.10);
-  letter-spacing: .12em;
-}
-.navbar-saaspro-inner .pcoded-menu-caption label{
-  color: rgba(255,255,255,.75) !important;
-  font-weight: 900 !important;
-  font-size: 11px !important;
-  text-transform: uppercase;
-}
-
-/* Items */
-.pcoded-navbar.navbar-saaspro .pcoded-inner-navbar > li.nav-item{
-  margin: 2px 0 !important;
-}
-.pcoded-navbar.navbar-saaspro .pcoded-inner-navbar > li > a{
-  border-radius: 14px !important;
-  padding: 10px 12px !important;
-  color: var(--txt) !important;
-  font-weight: 850 !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px;
-  border: 1px solid transparent;
-  transition: background .16s ease, transform .16s ease, border-color .16s ease;
-  text-shadow: 0 1px 8px rgba(0,0,0,.28);
-}
-.pcoded-navbar.navbar-saaspro .pcoded-inner-navbar > li > a .pcoded-micon i{
-  color: rgba(255,255,255,.92) !important;
-  font-size: 16px !important;
-}
-.pcoded-navbar.navbar-saaspro .pcoded-inner-navbar > li > a:hover{
-  background: var(--hover) !important;
-  border-color: rgba(255,255,255,.12);
-  transform: translateX(2px);
-}
-
-/* Active / Trigger */
-.pcoded-navbar.navbar-saaspro .pcoded-inner-navbar > li.active > a,
-.pcoded-navbar.navbar-saaspro .pcoded-inner-navbar > li.pcoded-trigger > a{
-  background: linear-gradient(135deg, rgba(46,88,168,.35), rgba(255,255,255,.06)) !important;
-  border-color: rgba(255,255,255,.16) !important;
-  box-shadow: 0 12px 26px rgba(2,6,23,.25);
-}
-
-/* Submenus */
-.pcoded-navbar.navbar-saaspro .pcoded-submenu{
-  margin: 6px 0 8px 14px !important;
-  padding: 8px !important;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.05);
-  backdrop-filter: blur(10px);
-  overflow: hidden;
-}
-.pcoded-navbar.navbar-saaspro .pcoded-submenu li a{
-  display: flex !important;
-  align-items: center;
-  border-radius: 12px !important;
-  padding: 8px 10px !important;
-  color: rgba(255,255,255,.86) !important;
-  font-weight: 800 !important;
-  border: 1px solid transparent;
-  transition: background .16s ease, border-color .16s ease, transform .16s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.pcoded-navbar.navbar-saaspro .pcoded-submenu li a:hover{
-  background: rgba(255,255,255,.08) !important;
-  border-color: rgba(255,255,255,.12);
-  transform: translateX(2px);
-}
-.pcoded-navbar.navbar-saaspro .pcoded-submenu li.active > a{
-  background: rgba(46,88,168,.28) !important;
-  border-color: rgba(255,255,255,.16);
-}
-
-/* Modo minimizado (tu lógica intacta) */
-body.menu-minimized .pcoded-navbar.navbar-saaspro{
-  width: 86px !important;
-  transition: width .25s ease;
-}
-body.menu-minimized .pcoded-navbar.navbar-saaspro .pcoded-mtext,
-body.menu-minimized .pcoded-navbar.navbar-saaspro .pcoded-menu-caption,
-body.menu-minimized .pcoded-navbar.navbar-saaspro .pcoded-submenu{
-  display: none !important;
-}
-body.menu-minimized .pcoded-navbar.navbar-saaspro .pcoded-inner-navbar > li > a{
-  justify-content: center !important;
-  padding: 12px 10px !important;
-}
-body.menu-minimized .pcoded-navbar.navbar-saaspro .pcoded-micon{
-  margin: 0 auto !important;
-}
-
-/* Separación del contenido principal (sin romper template) */
-@media (min-width: 992px){
-  .pcoded-main-container{
-    margin-left: calc(264px + 24px) !important;
-  }
-  .pcoded-header{
-    left: calc(264px + 24px) !important;
-    width: calc(100% - (264px + 24px)) !important;
-  }
-  body.menu-minimized .pcoded-main-container{
-    margin-left: calc(86px + 24px) !important;
-  }
-  body.menu-minimized .pcoded-header{
-    left: calc(86px + 24px) !important;
-    width: calc(100% - (86px + 24px)) !important;
-  }
-}
-
-/* En móvil/tablet oculta sidebar (usas menu_mobile.php + bottom nav) */
-@media (max-width: 991.98px){
-  .pcoded-navbar.navbar-saaspro{ display:none !important; }
-}
-
-/* Bottom nav PRO visible solo en móvil/tablet */
-.mobile-navbar{
-  z-index: 9999;
-  border-radius: 22px;
-  margin: 0 auto;
-  width: calc(100% - 18px);
-  max-width: 560px;
-  padding: 8px 10px;
-  border: 1px solid rgba(255,255,255,.16);
-  background:
-    radial-gradient(520px 220px at 10% 10%, rgba(46,88,168,.45), transparent 60%),
-    radial-gradient(520px 240px at 90% 20%, rgba(19,43,82,.55), transparent 62%),
-    linear-gradient(135deg, #050914 0%, #07162d 40%, #050914 100%);
-  box-shadow: 0 -14px 30px rgba(2,6,23,.35);
-  backdrop-filter: blur(10px);
-}
-.mobile-nav-link{
-  color: rgba(255,255,255,.82) !important;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none !important;
-  padding: 6px 6px;
-  border-radius: 14px;
-  border: 1px solid transparent;
-  transition: background .16s ease, border-color .16s ease, transform .16s ease;
-}
-.mobile-nav-link i{
-  font-size: 18px;
-  margin-bottom: 2px;
-  color: rgba(255,255,255,.92) !important;
-}
-.mobile-nav-link span{
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: .2px;
-}
-.mobile-nav-link:hover{
-  background: rgba(255,255,255,.07);
-  border-color: rgba(255,255,255,.14);
-  transform: translateY(-1px);
-}
-.mobile-nav-link.active{
-  background: rgba(46,88,168,.26);
-  border-color: rgba(255,255,255,.18);
-}
-
-/* Evita que el contenido quede tapado por el bottom nav */
-@media (max-width: 991.98px){
-  body{ padding-bottom: 92px !important; }
-}
-@media (min-width: 992px){
-  .mobile-navbar{ display:none !important; }
-}
-
-/* Buscador menú - texto + placeholder blanco forzado */
-#menuSearch{ color:#ffffff !important; }
-#menuSearch::placeholder{ color:rgba(255,255,255,.45) !important; }
-#menuSearch::-webkit-input-placeholder{ color:rgba(255,255,255,.45) !important; }
-#menuSearch::-moz-placeholder{ color:rgba(255,255,255,.45) !important; }
-#menuSearch:-ms-input-placeholder{ color:rgba(255,255,255,.45) !important; }
-
-/* Seguridad visual */
-html, body{ overflow-x: hidden; }
-.pcoded-main-container, .pcoded-content{ overflow: visible !important; }
-</style>
-
 <script>
-  function toggleMenu() {
-    const body = document.body;
-    const btn = document.getElementById("menuToggleBtn");
-    body.classList.toggle("menu-minimized");
+(function () {
+    'use strict';
 
-    if (body.classList.contains("menu-minimized")) {
-      btn.innerHTML = '<i class="feather icon-chevrons-right" title="Maximizar menú"></i>';
-    } else {
-      btn.innerHTML = '<i class="feather icon-chevrons-left" title="Minimizar menú"></i>';
-    }
-  }
-</script>
+    const STORAGE_KEY = 'gob360-navbar-minimized';
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    if (window.feather && typeof window.feather.replace === "function") {
-      window.feather.replace();
-    }
-  });
-
-  function limpiarBusqueda() {
-    const input = document.getElementById('menuSearch');
-    if (input) {
-      input.value = '';
-      input.focus();
-      filtrarMenu('');
-    }
-  }
-
-  function obtenerTextoItem(item) {
-    let texto = '';
-    // Buscar en pcoded-mtext (items principales)
-    item.querySelectorAll('.pcoded-mtext').forEach(el => { texto += el.textContent.toLowerCase() + ' '; });
-    // Buscar en <a> directo (submenu items sin pcoded-mtext)
-    item.querySelectorAll('a').forEach(el => { texto += el.textContent.toLowerCase() + ' '; });
-    return texto;
-  }
-
-  function filtrarMenu(query) {
-    query = query.toLowerCase().trim();
-    const items = document.querySelectorAll('.pcoded-inner-navbar > .nav-item');
-    const clearBtn = document.getElementById('menuSearchClear');
-    if (clearBtn) clearBtn.style.display = query ? 'block' : 'none';
-
-    const resultados = [];
-    items.forEach(item => {
-      if (item.querySelector('#menuSearch')) return;
-      const isCaption = item.classList.contains('pcoded-menu-caption');
-      const texto = obtenerTextoItem(item);
-      const match = texto.includes(query);
-
-      resultados.push({ item, isCaption, match, texto });
-    });
-
-    if (query === '') {
-      resultados.forEach(r => {
-        r.item.style.display = '';
-        const sub = r.item.querySelector('.pcoded-submenu');
-        if (sub) r.item.classList.remove('pcoded-trigger');
-      });
-      return;
+    function getToggleButton() {
+        return document.getElementById('menuToggleBtn');
     }
 
-    let lastCaptionIndex = -1;
-    resultados.forEach((r, i) => {
-      if (r.isCaption) {
-        r.item.style.display = 'none';
-        lastCaptionIndex = i;
-        return;
-      }
+    function syncToggleButton() {
+        const button = getToggleButton();
+        if (!button) {
+            return;
+        }
 
-      const isSubmenu = r.item.querySelector('.pcoded-submenu');
-      let visible = r.match;
+        const minimized = document.body.classList.contains('menu-minimized');
 
-      if (isSubmenu) {
-        const subs = r.item.querySelectorAll('.pcoded-submenu a');
-        subs.forEach(el => {
-          if (el.textContent.toLowerCase().includes(query)) visible = true;
+        button.innerHTML = minimized
+            ? '<i class="feather icon-chevrons-right"></i>'
+            : '<i class="feather icon-chevrons-left"></i>';
+
+        button.title = minimized ? 'Maximizar menú' : 'Minimizar menú';
+        button.setAttribute(
+            'aria-label',
+            minimized ? 'Maximizar menú' : 'Minimizar menú'
+        );
+
+        if (window.feather && typeof window.feather.replace === 'function') {
+            window.feather.replace();
+        }
+    }
+
+    window.toggleMenu = function toggleMenu() {
+        document.body.classList.toggle('menu-minimized');
+
+        try {
+            localStorage.setItem(
+                STORAGE_KEY,
+                document.body.classList.contains('menu-minimized') ? '1' : '0'
+            );
+        } catch (error) {
+            // El menú continúa funcionando aunque localStorage esté bloqueado.
+        }
+
+        syncToggleButton();
+
+        window.dispatchEvent(new Event('resize'));
+    };
+
+    window.limpiarBusqueda = function limpiarBusqueda() {
+        const input = document.getElementById('menuSearch');
+
+        if (!input) {
+            return;
+        }
+
+        input.value = '';
+        input.focus();
+        window.filtrarMenu('');
+    };
+
+    window.obtenerTextoItem = function obtenerTextoItem(item) {
+        let texto = '';
+
+        item.querySelectorAll('.pcoded-mtext').forEach(function (element) {
+            texto += element.textContent.toLowerCase() + ' ';
         });
-      }
 
-      if (visible) {
-        r.item.style.display = '';
-        if (isSubmenu) r.item.classList.add('pcoded-trigger');
-        if (lastCaptionIndex >= 0) resultados[lastCaptionIndex].item.style.display = '';
-      } else {
-        r.item.style.display = 'none';
-        if (isSubmenu) r.item.classList.remove('pcoded-trigger');
-      }
-    });
-  }
+        item.querySelectorAll('a').forEach(function (element) {
+            texto += element.textContent.toLowerCase() + ' ';
+        });
+
+        return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    };
+
+    window.filtrarMenu = function filtrarMenu(query) {
+        const normalizedQuery = String(query || '')
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .trim();
+
+        const items = document.querySelectorAll(
+            '.navbar-saaspro-inner > .nav-item, ' +
+            '.navbar-saaspro-inner > .g360-sidebar-footer'
+        );
+
+        const clearButton = document.getElementById('menuSearchClear');
+        const emptyState = document.getElementById('menuSearchEmpty');
+
+        if (clearButton) {
+            clearButton.classList.toggle(
+                'is-visible',
+                normalizedQuery.length > 0
+            );
+        }
+
+        const results = [];
+        let visibleItems = 0;
+
+        items.forEach(function (item) {
+            if (item.classList.contains('g360-sidebar-footer')) {
+                item.style.display = normalizedQuery ? 'none' : '';
+                return;
+            }
+
+            const isCaption = item.classList.contains('pcoded-menu-caption');
+            const text = window.obtenerTextoItem(item);
+            const match = text.includes(normalizedQuery);
+
+            results.push({
+                item: item,
+                isCaption: isCaption,
+                match: match
+            });
+        });
+
+        if (normalizedQuery === '') {
+            results.forEach(function (result) {
+                result.item.style.display = '';
+
+                const submenu = result.item.querySelector('.pcoded-submenu');
+                if (
+                    submenu &&
+                    !result.item.classList.contains('g360-current-parent')
+                ) {
+                    result.item.classList.remove('pcoded-trigger');
+                }
+            });
+
+            if (emptyState) {
+                emptyState.hidden = true;
+            }
+
+            return;
+        }
+
+        let lastCaptionIndex = -1;
+
+        results.forEach(function (result, index) {
+            if (result.isCaption) {
+                result.item.style.display = 'none';
+                lastCaptionIndex = index;
+                return;
+            }
+
+            const submenu = result.item.querySelector('.pcoded-submenu');
+            let visible = result.match;
+
+            if (submenu) {
+                submenu.querySelectorAll('a').forEach(function (link) {
+                    const linkText = link.textContent
+                        .toLowerCase()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '');
+
+                    if (linkText.includes(normalizedQuery)) {
+                        visible = true;
+                    }
+                });
+            }
+
+            if (visible) {
+                result.item.style.display = '';
+                visibleItems += 1;
+
+                if (submenu) {
+                    result.item.classList.add('pcoded-trigger');
+                }
+
+                if (lastCaptionIndex >= 0) {
+                    results[lastCaptionIndex].item.style.display = '';
+                }
+            } else {
+                result.item.style.display = '';
+
+                if (submenu) {
+                    result.item.classList.remove('pcoded-trigger');
+                }
+            }
+        });
+
+        if (emptyState) {
+            emptyState.hidden = visibleItems > 0;
+        }
+    };
+
+    function normalizePath(value) {
+        try {
+            const url = new URL(value, window.location.href);
+            return url.pathname.replace(/\/+$/, '').toLowerCase();
+        } catch (error) {
+            return '';
+        }
+    }
+
+    function markCurrentPage() {
+        const currentPath = normalizePath(window.location.href);
+        const links = document.querySelectorAll(
+            '.navbar-saaspro-inner a[href]:not([href="#!"]):not([href="javascript:void(0)"])'
+        );
+
+        links.forEach(function (link) {
+            const linkPath = normalizePath(link.getAttribute('href'));
+
+            if (!linkPath || linkPath !== currentPath) {
+                return;
+            }
+
+            link.classList.add('g360-current-link');
+
+            const parentItem = link.closest('li');
+            if (parentItem) {
+                parentItem.classList.add('active');
+            }
+
+            const parentMenu = link.closest('.pcoded-hasmenu');
+            if (parentMenu) {
+                parentMenu.classList.add(
+                    'active',
+                    'pcoded-trigger',
+                    'g360-current-parent'
+                );
+            }
+        });
+    }
+
+    function restoreMenuState() {
+        let minimized = false;
+
+        try {
+            minimized = localStorage.getItem(STORAGE_KEY) === '1';
+        } catch (error) {
+            minimized = false;
+        }
+
+        document.body.classList.toggle('menu-minimized', minimized);
+        syncToggleButton();
+    }
+
+    function initializeNavbar() {
+        restoreMenuState();
+        markCurrentPage();
+
+        if (window.feather && typeof window.feather.replace === 'function') {
+            window.feather.replace();
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeNavbar);
+    } else {
+        initializeNavbar();
+    }
+})();
 </script>

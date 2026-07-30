@@ -1,0 +1,787 @@
+:root{
+      --radius-xl:22px; --shadow-mid: 0 22px 70px rgba(0,0,0,.34); --safe-top: 96px;
+    }
+    .pcoded-content{ padding: calc(var(--safe-top) + 16px) 16px 18px !important; }
+    @media(min-width:768px){ :root{ --safe-top: 112px; } .pcoded-content{ padding: calc(var(--safe-top) + 18px) 24px 24px !important; } }
+    @media(min-width:1200px){ :root{ --safe-top: 120px; } .pcoded-content{ padding: calc(var(--safe-top) + 22px) 42px 34px !important; } }
+
+    .btn-brutal{
+      border-radius:14px !important; padding:.62rem 1.05rem !important;
+      font-weight:1000 !important; display:inline-flex; align-items:center; gap:8px;
+      box-shadow:0 14px 34px rgba(0,0,0,.25); color:#fff !important;
+    }
+    .btn-brutal.btn-sm{ padding:.32rem .55rem !important; border-radius:10px !important; font-size:11px !important; }
+    .btn-primary.btn-brutal{ background:linear-gradient(135deg,#3b82f6,#4f46e5) !important; border:1px solid rgba(255,255,255,.14) !important; }
+    .btn-info.btn-brutal{ background:linear-gradient(135deg,#38bdf8,#0ea5e9) !important; border:1px solid rgba(255,255,255,.14) !important; }
+    .btn-secondary.btn-brutal{ background:rgba(255,255,255,.09) !important; border:1px solid rgba(255,255,255,.17) !important; }
+
+    .table-wrap{ display:flex; justify-content:center; padding:8px 0 2px; }
+    .table-shell{
+      width:min(100%,1520px);
+      background: rgba(255,255,255,.06) !important;
+      border-radius:24px; overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--shadow-mid);
+    }
+    .table-shell__top{
+      display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
+      padding:20px 24px 16px; border-bottom:1px solid rgba(255,255,255,.10); background:rgba(0,0,0,.14);
+    }
+    .table-shell__eyebrow{
+      display:inline-flex; align-items:center; gap:8px; margin-bottom:6px;
+      color:rgba(255,255,255,.7); font-size:11px; font-weight:1000; letter-spacing:.14em; text-transform:uppercase;
+    }
+    .table-shell__eyebrow:before{
+      content:""; width:9px; height:9px; border-radius:999px;
+      background:linear-gradient(135deg,#22c1ff,#20427F); box-shadow:0 0 0 5px rgba(34,193,255,.12);
+    }
+    .table-shell__title{ margin:0; color:#fff; font-size:1.3rem; font-weight:1000; }
+    .table-shell__subtitle{ margin-top:4px; color:rgba(255,255,255,.6); font-size:.92rem; }
+    .table-shell__body{ padding:18px; }
+
+    .kpi-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:16px; }
+    .kpi-card{
+      border-radius:18px; padding:1rem 1.1rem;
+      background:rgba(0,0,0,.16); border:1px solid rgba(255,255,255,.10);
+    }
+    .kpi-label{ font-size:.72rem; opacity:.7; font-weight:1000; text-transform:uppercase; letter-spacing:.08em; color:#fff; }
+    .kpi-value{ font-size:1.6rem; font-weight:1000; margin-top:.25rem; color:#fff; }
+
+    .form-section{
+      background: rgba(255,255,255,.06) !important;
+      border-radius: 22px !important;
+      border: 1px solid rgba(255,255,255,.12) !important;
+      padding: 16px !important;
+      margin-bottom: 14px;
+    }
+    .form-section h6{
+      color:#fff !important; font-weight:1000 !important; letter-spacing:.04em;
+      text-transform:uppercase; font-size:.78rem; margin-bottom:12px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .form-section h6:before{
+      content:""; width:8px; height:8px; border-radius:999px;
+      background:linear-gradient(135deg,#22c1ff,#20427F); box-shadow:0 0 0 4px rgba(34,193,255,.12);
+    }
+
+    .hist-wrap{ border-radius:18px; border:1px solid rgba(255,255,255,.10); overflow:auto; }
+    .hist-table{ width:100%; margin:0; font-size:12px; }
+    .hist-table thead th{
+      color:#fff !important; background: linear-gradient(135deg, #203e5c, #2f3f6e) !important;
+      text-transform:uppercase; font-size:10px !important; text-align:center; padding:8px 6px !important;
+      border-color:rgba(255,255,255,.06) !important;
+    }
+    .hist-table tbody td{
+      color:rgba(255,255,255,.86) !important; border-top:1px solid rgba(255,255,255,.06) !important;
+      vertical-align:middle; padding:8px 6px !important; font-weight:700 !important;
+    }
+    .hist-table tbody tr:nth-child(even) td{ background:rgba(255,255,255,.03) !important; }
+    .help-muted{ color: rgba(255,255,255,.55) !important; font-size:.82rem !important; font-weight:800 !important; }
+
+/* ============================================================
+   GOB360 · DASHBOARD DE PLANEACIÓN MUNICIPAL
+============================================================ */
+:root{
+  --plan-bg-0:#030711;
+  --plan-bg-1:#061326;
+  --plan-bg-2:#082735;
+
+  --plan-panel:rgba(255,255,255,.062);
+  --plan-panel-strong:rgba(255,255,255,.092);
+  --plan-border:rgba(255,255,255,.125);
+  --plan-border-strong:rgba(255,255,255,.19);
+
+  --plan-text:rgba(255,255,255,.96);
+  --plan-muted:rgba(255,255,255,.65);
+  --plan-muted-soft:rgba(255,255,255,.46);
+
+  --plan-cyan:#28dcff;
+  --plan-blue:#3f7cff;
+  --plan-green:#39e6a3;
+  --plan-yellow:#ffd166;
+  --plan-red:#ff647f;
+  --plan-purple:#a78bfa;
+
+  --plan-radius-xl:29px;
+  --plan-radius-lg:21px;
+  --plan-radius-md:14px;
+
+  --plan-shadow-xl:0 31px 92px rgba(0,0,0,.45);
+  --plan-shadow-lg:0 19px 56px rgba(0,0,0,.33);
+  --plan-shadow-soft:0 13px 32px rgba(0,0,0,.22);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  min-height:100%;
+  overflow-x:hidden!important;
+}
+
+body.gob360-planning-dashboard{
+  min-height:100vh;
+  color:var(--plan-text)!important;
+  background:
+    radial-gradient(950px 520px at 6% 3%,rgba(63,124,255,.29),transparent 61%),
+    radial-gradient(850px 500px at 95% 8%,rgba(40,220,255,.14),transparent 61%),
+    radial-gradient(900px 570px at 48% 112%,rgba(57,230,163,.10),transparent 60%),
+    linear-gradient(150deg,var(--plan-bg-0),var(--plan-bg-1) 57%,var(--plan-bg-2))!important;
+  background-attachment:fixed!important;
+}
+
+body.gob360-planning-dashboard::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  opacity:.13;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:linear-gradient(to bottom,#000,transparent 96%);
+}
+
+/* Respeta el margen lateral nativo del menú */
+.gob360-planning-dashboard .pcoded-main-container,
+.gob360-planning-dashboard .pcoded-wrapper,
+.gob360-planning-dashboard .pcoded-content{
+  background:transparent!important;
+}
+
+.gob360-planning-dashboard .pcoded-main-container .pcoded-content{
+  width:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:18px 28px 48px!important;
+}
+
+/* Loader */
+.gob360-planning-dashboard .loader-bg{
+  z-index:999999!important;
+  background:#030711!important;
+}
+
+.gob360-planning-dashboard .loader-track{
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+}
+
+.gob360-planning-dashboard .loader-fill{
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--plan-blue),var(--plan-cyan),var(--plan-green))!important;
+  box-shadow:0 0 25px rgba(40,220,255,.42);
+}
+
+/* Hero */
+.g360-planning-hero{
+  position:relative;
+  overflow:hidden;
+  margin-bottom:18px;
+  padding:25px;
+  border:1px solid var(--plan-border);
+  border-radius:var(--plan-radius-xl);
+  background:
+    radial-gradient(720px 290px at 0% 0%,rgba(63,124,255,.30),transparent 67%),
+    radial-gradient(680px 290px at 100% 100%,rgba(57,230,163,.14),transparent 67%),
+    var(--plan-panel);
+  box-shadow:var(--plan-shadow-xl);
+  backdrop-filter:blur(19px);
+}
+
+.g360-planning-hero::before{
+  content:"";
+  position:absolute;
+  right:-110px;
+  top:-160px;
+  width:450px;
+  height:450px;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(40,220,255,.18),transparent 68%);
+}
+
+.g360-planning-hero__grid{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:minmax(245px,355px) 1fr;
+  align-items:stretch;
+  gap:27px;
+}
+
+.g360-planning-brand{
+  min-height:350px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:21px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  background:
+    radial-gradient(320px 180px at 50% 0%,rgba(40,220,255,.11),transparent 71%),
+    rgba(2,8,20,.29);
+  box-shadow:0 19px 40px rgba(0,0,0,.25);
+}
+
+.g360-planning-brand__eyebrow{
+  margin-bottom:13px;
+  color:var(--plan-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+.g360-planning-brand__logo{
+  display:block;
+  width:min(100%,335px);
+  height:auto;
+  border-radius:18px;
+  filter:
+    drop-shadow(0 18px 36px rgba(0,0,0,.44))
+    drop-shadow(0 0 30px rgba(40,220,255,.24));
+}
+
+.g360-planning-brand__caption{
+  margin-top:14px;
+  color:var(--plan-muted);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.15px;
+  text-transform:uppercase;
+}
+
+.g360-planning-brand__status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:18px;
+  padding:7px 11px;
+  color:#dfffee;
+  font-size:10.5px;
+  font-weight:900;
+  border:1px solid rgba(57,230,163,.23);
+  border-radius:999px;
+  background:rgba(57,230,163,.07);
+}
+
+.g360-planning-brand__status span{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--plan-green);
+  box-shadow:0 0 14px rgba(57,230,163,.58);
+}
+
+.g360-planning-hero__content{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.g360-planning-hero__top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.g360-planning-hero__eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:9px;
+  color:var(--plan-green);
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+}
+
+.g360-planning-hero__title{
+  max-width:900px;
+  margin:0;
+  color:#fff;
+  font-size:clamp(31px,4vw,50px);
+  font-weight:1000;
+  line-height:1.02;
+  letter-spacing:-1.35px;
+}
+
+.g360-planning-hero__description{
+  max-width:850px;
+  margin:13px 0 0;
+  color:var(--plan-muted);
+  font-size:14px;
+  line-height:1.68;
+}
+
+.g360-planning-hero__actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.g360-hero-button{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:9px 13px;
+  color:#06101d!important;
+  font-size:10.5px;
+  font-weight:950;
+  text-decoration:none!important;
+  border:0;
+  border-radius:13px;
+  box-shadow:0 10px 23px rgba(0,0,0,.17);
+}
+
+.g360-hero-button--primary{
+  background:linear-gradient(135deg,var(--plan-cyan),#83edff);
+}
+
+.g360-planning-summary{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-top:20px;
+}
+
+.g360-planning-summary article{
+  min-width:0;
+  min-height:126px;
+  display:grid;
+  grid-template-columns:45px 1fr;
+  align-items:start;
+  gap:11px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:17px;
+  background:rgba(3,10,23,.49);
+  box-shadow:0 12px 27px rgba(0,0,0,.18);
+}
+
+.g360-planning-summary__icon{
+  width:45px;
+  height:45px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:19px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--plan-cyan),#83edff);
+}
+
+.g360-planning-summary__icon--money{
+  background:linear-gradient(135deg,var(--plan-green),#96f4ce);
+}
+
+.g360-planning-summary__icon--approved{
+  background:linear-gradient(135deg,var(--plan-yellow),#ffe19a);
+}
+
+.g360-planning-summary__icon--pending{
+  color:#fff;
+  background:linear-gradient(135deg,var(--plan-blue),var(--plan-purple));
+}
+
+.g360-planning-summary small{
+  display:block;
+  margin-bottom:5px;
+  color:var(--plan-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:.52px;
+  text-transform:uppercase;
+}
+
+.g360-planning-summary strong{
+  display:block;
+  overflow:hidden;
+  color:#fff;
+  font-size:clamp(16px,1.7vw,23px);
+  font-weight:1000;
+  line-height:1.2;
+  text-overflow:ellipsis;
+}
+
+.g360-planning-summary p{
+  margin:7px 0 0;
+  color:var(--plan-muted-soft);
+  font-size:10.5px;
+  line-height:1.4;
+}
+
+.g360-planning-capabilities{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:13px;
+}
+
+.g360-planning-capabilities span{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:33px;
+  padding:7px 10px;
+  color:rgba(255,255,255,.82);
+  font-size:10.5px;
+  font-weight:850;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:999px;
+  background:rgba(255,255,255,.045);
+}
+
+.g360-planning-capabilities i{
+  color:var(--plan-cyan);
+}
+
+/* Workspace */
+.gob360-planning-dashboard .table-wrap{
+  padding:0!important;
+}
+
+.gob360-planning-dashboard .g360-planning-workspace{
+  width:100%!important;
+  border:1px solid var(--plan-border)!important;
+  border-radius:var(--plan-radius-xl)!important;
+  background:var(--plan-panel)!important;
+  box-shadow:var(--plan-shadow-xl)!important;
+  backdrop-filter:blur(18px);
+}
+
+.gob360-planning-dashboard .table-shell__top{
+  padding:18px 20px 15px!important;
+  background:
+    radial-gradient(390px 145px at 0% 0%,rgba(40,220,255,.08),transparent 70%),
+    linear-gradient(135deg,rgba(63,124,255,.19),rgba(3,10,23,.45))!important;
+}
+
+.gob360-planning-dashboard .table-shell__eyebrow{
+  color:var(--plan-green)!important;
+}
+
+.gob360-planning-dashboard .table-shell__title{
+  color:#fff!important;
+  font-size:18px!important;
+}
+
+.gob360-planning-dashboard .table-shell__subtitle{
+  color:var(--plan-muted)!important;
+  font-size:10.5px!important;
+}
+
+.gob360-planning-dashboard .table-shell__badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:linear-gradient(135deg,var(--plan-blue),var(--plan-purple))!important;
+}
+
+.gob360-planning-dashboard .table-shell__body{
+  padding:18px!important;
+}
+
+/* Section headings */
+.g360-kpi-section,
+.g360-analysis-section{
+  padding:16px;
+  border:1px solid var(--plan-border);
+  border-radius:20px;
+  background:rgba(3,10,23,.46);
+}
+
+.g360-analysis-section{
+  margin-top:16px;
+}
+
+.g360-section-heading{
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  margin-bottom:14px;
+}
+
+.g360-section-heading__icon{
+  width:42px;
+  height:42px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--plan-cyan),#83edff);
+}
+
+.g360-section-heading__icon--territory{
+  color:#fff;
+  background:linear-gradient(135deg,var(--plan-blue),var(--plan-purple));
+}
+
+.g360-section-heading span:not(.g360-section-heading__icon){
+  display:block;
+  margin-bottom:3px;
+  color:var(--plan-green);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.g360-section-heading h4{
+  margin:0;
+  color:#fff;
+  font-size:16px;
+  font-weight:1000;
+}
+
+.g360-section-heading p{
+  margin:4px 0 0;
+  color:var(--plan-muted);
+  font-size:10.5px;
+}
+
+/* KPIs */
+.gob360-planning-dashboard .kpi-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:11px!important;
+  margin:0!important;
+}
+
+.gob360-planning-dashboard .kpi-card{
+  min-height:152px;
+  padding:15px!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(250px 115px at 0% 0%,rgba(40,220,255,.07),transparent 70%),
+    rgba(255,255,255,.035)!important;
+  box-shadow:var(--plan-shadow-soft);
+}
+
+.g360-kpi-icon{
+  width:40px;
+  height:40px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:12px;
+  color:#06101d;
+  font-size:18px;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--plan-cyan),#83edff);
+}
+
+.g360-kpi-card--pending .g360-kpi-icon{
+  background:linear-gradient(135deg,var(--plan-yellow),#ffe19a);
+}
+
+.g360-kpi-card--approved .g360-kpi-icon{
+  background:linear-gradient(135deg,var(--plan-green),#96f4ce);
+}
+
+.g360-kpi-card--rejected .g360-kpi-icon{
+  color:#fff;
+  background:linear-gradient(135deg,var(--plan-red),#ff9aae);
+}
+
+.g360-kpi-card--money .g360-kpi-icon{
+  color:#fff;
+  background:linear-gradient(135deg,var(--plan-blue),var(--plan-purple));
+}
+
+.g360-kpi-card--alert .g360-kpi-icon{
+  background:linear-gradient(135deg,var(--plan-yellow),#ffe19a);
+}
+
+.g360-kpi-card--resend .g360-kpi-icon{
+  background:linear-gradient(135deg,#fb7185,var(--plan-purple));
+}
+
+.gob360-planning-dashboard .kpi-label{
+  color:var(--plan-muted)!important;
+  font-size:9.5px!important;
+}
+
+.gob360-planning-dashboard .kpi-value{
+  color:#fff!important;
+  font-size:clamp(23px,2.3vw,31px)!important;
+}
+
+.g360-kpi-value--money{
+  font-size:clamp(16px,1.6vw,22px)!important;
+}
+
+.g360-kpi-note{
+  margin-top:6px;
+  color:var(--plan-muted-soft);
+  font-size:10.5px;
+}
+
+/* Data panels */
+.gob360-planning-dashboard .g360-data-panel{
+  min-height:100%;
+  padding:15px!important;
+  border:1px solid var(--plan-border)!important;
+  border-radius:19px!important;
+  background:
+    radial-gradient(320px 130px at 0% 0%,rgba(40,220,255,.05),transparent 70%),
+    rgba(255,255,255,.03)!important;
+  box-shadow:var(--plan-shadow-soft);
+}
+
+.g360-data-panel__header{
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  margin-bottom:13px;
+}
+
+.g360-data-panel__icon{
+  width:40px;
+  height:40px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--plan-yellow),#ffe19a);
+}
+
+.g360-data-panel--municipality .g360-data-panel__icon{
+  background:linear-gradient(135deg,var(--plan-green),#96f4ce);
+}
+
+.g360-data-panel__header span:not(.g360-data-panel__icon){
+  display:block;
+  margin-bottom:3px;
+  color:var(--plan-green);
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.g360-data-panel__header h6{
+  margin:0!important;
+  color:#fff!important;
+  font-size:14px!important;
+  font-weight:1000!important;
+  text-transform:none!important;
+  letter-spacing:0!important;
+}
+
+.g360-data-panel__header h6::before{
+  display:none!important;
+}
+
+.g360-data-panel__header p{
+  margin:4px 0 0;
+  color:var(--plan-muted);
+  font-size:10.5px;
+  line-height:1.45;
+}
+
+.gob360-planning-dashboard .hist-wrap{
+  border:1px solid var(--plan-border)!important;
+  border-radius:16px!important;
+  background:rgba(2,8,20,.29);
+}
+
+.gob360-planning-dashboard .hist-table thead th{
+  background:linear-gradient(180deg,#183b68,#0e2544)!important;
+}
+
+.gob360-planning-dashboard .hist-table tbody td{
+  color:rgba(255,255,255,.82)!important;
+  border-color:rgba(255,255,255,.07)!important;
+}
+
+.gob360-planning-dashboard .hist-table tbody tr:nth-child(even) td{
+  background:rgba(255,255,255,.018)!important;
+}
+
+.gob360-planning-dashboard .btn-info.btn-brutal{
+  color:#06101d!important;
+  border:0!important;
+  background:linear-gradient(135deg,var(--plan-cyan),#83edff)!important;
+}
+
+/* Responsive */
+@media(max-width:1200px){
+  .g360-planning-hero__grid{
+    grid-template-columns:1fr;
+  }
+
+  .g360-planning-brand{
+    min-height:auto;
+  }
+
+  .g360-planning-brand__logo{
+    width:min(335px,90%);
+  }
+
+  .g360-planning-summary,
+  .gob360-planning-dashboard .kpi-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+
+@media(max-width:991px){
+  .g360-planning-hero__top{
+    flex-direction:column;
+  }
+
+  .g360-planning-hero__actions{
+    justify-content:flex-start;
+  }
+}
+
+@media(max-width:767.98px){
+  .gob360-planning-dashboard .pcoded-main-container .pcoded-content{
+    padding:14px 13px 42px!important;
+  }
+
+  .g360-planning-hero{
+    padding:18px;
+  }
+
+  .g360-planning-brand{
+    padding:16px;
+  }
+
+  .g360-planning-hero__title{
+    font-size:29px;
+  }
+
+  .g360-planning-summary,
+  .gob360-planning-dashboard .kpi-grid{
+    grid-template-columns:1fr!important;
+  }
+
+  .gob360-planning-dashboard .table-shell__body{
+    padding:12px!important;
+  }
+
+  .g360-kpi-section,
+  .g360-analysis-section{
+    padding:12px;
+  }
+}

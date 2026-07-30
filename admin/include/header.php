@@ -1,248 +1,323 @@
-<header class="navbar pcoded-header navbar-expand-lg navbar-light header-dark">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Tomorrow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
+<?php
+$fotoUsuario = SessionData::getFotoUsuario();
+$img = !empty($fotoUsuario)
+    ? 'assets/img/admin/' . htmlspecialchars((string)$fotoUsuario, ENT_QUOTES, 'UTF-8')
+    : 'assets/img/santander.png';
 
-    <?php
-    $img = !empty(SessionData::getFotoUsuario())
-        ? "assets/img/admin/" . htmlspecialchars(SessionData::getFotoUsuario())
-        : 'assets/img/santander.png';
-    ?>
+$nombreUsuario = trim((string)SessionData::getNombreUsuario());
+if ($nombreUsuario === '') {
+    $nombreUsuario = 'Usuario GOB360';
+}
 
-    <style>
-        .drp-user img.rounded-circle {
-            border: 2px solid #fff;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            object-fit: cover;
-        }
+$rolUsuario = trim((string)SessionData::getUserType());
+if ($rolUsuario === '') {
+    $rolUsuario = 'Usuario';
+}
 
-        /* =========================
-           MOBILE/TABLET HEADER WOW
-           Logo izq / Hamburguesa der
-           ========================= */
-        .header-mobile-row {
-            width: 100%;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 14px;
-        }
+$nombreUsuarioSeguro = htmlspecialchars($nombreUsuario, ENT_QUOTES, 'UTF-8');
+$rolUsuarioSeguro = htmlspecialchars($rolUsuario, ENT_QUOTES, 'UTF-8');
+?>
 
-        .brand-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            min-width: 0;
-            max-width: 80%;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800;900&family=Tomorrow:wght@500;600;700;800&family=Work+Sans:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+>
+<link rel="stylesheet" href="assets/css/header_gob360_corregido.css">
 
-        .brand-left img {
-            height: 40px;
-            width: auto;
-            max-width: 40px;
-            object-fit: contain;
-        }
+<header class="navbar pcoded-header navbar-expand-lg navbar-light header-dark gob360-header">
 
-        .brand-left .brand-title {
-            color: #fff;
-            font-size: 1.05rem;
-            font-weight: 800;
-            font-family: 'Work Sans', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    <!-- Valores de sesión conservados una sola vez para evitar IDs duplicados -->
+    <input
+        type="hidden"
+        id="municipioUsuario"
+        name="municipioUsuario"
+        value="<?= htmlspecialchars((string)SessionData::getCodigoMunicipio(), ENT_QUOTES, 'UTF-8') ?>"
+    >
+    <input
+        type="hidden"
+        id="tipoUsuario"
+        name="tipoUsuario"
+        value="<?= $rolUsuarioSeguro ?>"
+    >
 
-        .burger-right {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 46px;
-            height: 46px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, .10);
-            border: 1px solid rgba(255, 255, 255, .16);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, .22);
-            text-decoration: none;
-            position: relative;
-        }
+    <!-- =====================================================
+         HEADER MÓVIL Y TABLET
+    ====================================================== -->
+    <div class="g360-mobile-header">
+        <a href="index.php" class="g360-mobile-brand" aria-label="Ir al inicio de GOB360">
+            <img
+                src="assets/img/gob360l.png"
+                alt="Logo GOB360"
+                class="g360-mobile-brand__logo"
+            >
 
-        .burger-right span,
-        .burger-right span:before,
-        .burger-right span:after {
-            content: "";
-            display: block;
-            width: 18px;
-            height: 2px;
-            background: rgba(255, 255, 255, .95);
-            border-radius: 999px;
-            position: relative;
-        }
-
-        .burger-right span:before {
-            position: absolute;
-            top: -6px;
-            left: 0;
-        }
-
-        .burger-right span:after {
-            position: absolute;
-            top: 6px;
-            left: 0;
-        }
-
-        /* SOLO en mobile/tablet (<1200px) */
-        @media (max-width: 1199.98px) {
-            .header-mobile-row {
-                display: flex;
-            }
-
-            /* Oculta bloque desktop del template para NO duplicar hamburguesas */
-            .pcoded-header .m-header {
-                display: none !important;
-            }
-
-            /* Oculta colapsable desktop para que en mobile no se renderice doble */
-            .pcoded-header .collapse.navbar-collapse {
-                display: none !important;
-            }
-        }
-
-        /* PC >= 1200px: no se ve nada mobile */
-        @media (min-width: 1200px) {
-            .header-mobile-row {
-                display: none !important;
-            }
-        }
-        
-    </style>
-
-    <!-- =========================
-         MOBILE/TABLET HEADER
-         ========================= -->
-    <div class="header-mobile-row">
-        <!-- Logo izq -->
-        <a href="#!" class="brand-left">
-            <img src="assets/img/santander.png" alt="Logo">
-            <span class="brand-title">Acción Unificada</span>
-
-            <!-- Inputs ocultos (se conservan) -->
-            <input type="hidden" id="municipioUsuario" name="municipioUsuario" value="<?= SessionData::getCodigoMunicipio() ?>">
-            <input type="hidden" id="tipoUsuario" name="tipoUsuario" value="<?= SessionData::getUserType() ?>">
-        </a>
-
-        <!-- Hamburguesa der -> menu_mobile.php -->
-        <a class="burger-right" href="menu_mobile.php" aria-label="Menú">
-            <span></span>
-        </a>
-    </div>
-
-    <!-- =========================
-         DESKTOP HEADER (TU ORIGINAL)
-         ========================= -->
-    <div class="m-header d-none d-lg-flex align-items-center" style="margin-left: -30px;">
-        <!-- IMPORTANTE: este queda solo para PC -->
-        <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
-
-        <a href="#!" class="b-brand d-flex align-items-center flex-grow-1" style="text-decoration: none; margin-left: 60px;">
-            <img src="assets/img/santander.png" alt="Logo"
-                style="height: 40px; width: auto; margin-right: 8px; object-fit: contain; max-width: 40px;">
-
-            <span style="white-space: nowrap; font-size: 1.3rem; font-weight: 600; color: white; font-family: 'IBM Plex Sans', sans-serif;">
-                Acción Unificada
+            <span class="g360-mobile-brand__copy">
+                <small>Plataforma institucional</small>
+                <strong>Gestión pública inteligente</strong>
             </span>
-
-            <input type="hidden" id="municipioUsuario" name="municipioUsuario" value="<?= SessionData::getCodigoMunicipio() ?>">
-            <input type="hidden" id="tipoUsuario" name="tipoUsuario" value="<?= SessionData::getUserType() ?>">
         </a>
+
+        <div class="g360-mobile-actions">
+            <a
+                href="#"
+                class="g360-mobile-user"
+                id="g360-mobile-profile-trigger"
+                onclick="PROFILE.editData(<?= (int)SessionData::getUserId() ?>)"
+                data-toggle="modal"
+                data-target="#exampleModalLive"
+                aria-label="Abrir perfil de usuario"
+            >
+                <img
+                    src="<?= $img ?>"
+                    alt="Foto de <?= $nombreUsuarioSeguro ?>"
+                    width="38"
+                    height="38"
+                >
+            </a>
+
+            <a
+                class="g360-mobile-menu"
+                href="menu_mobile.php"
+                aria-label="Abrir menú principal"
+            >
+                <span></span>
+            </a>
+        </div>
     </div>
 
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item"></li>
-            <li class="nav-item">
-                <div class="dropdown mega-menu">
-                    <div class="dropdown-menu profile-notification ">
-                        <div class="row no-gutters">
-                            <div class="col"></div>
-                            <div class="col"></div>
-                            <div class="col"></div>
+    <!-- =====================================================
+         HEADER DE ESCRITORIO
+         No usa navbar-collapse/navbar-nav para evitar conflictos
+         con las reglas internas del template PCoded.
+    ====================================================== -->
+    <div class="g360-desktop-shell">
+
+        <div class="g360-desktop-brand">
+            <a
+                class="mobile-menu g360-sidebar-toggle"
+                id="mobile-collapse"
+                href="#!"
+                aria-label="Contraer o expandir menú lateral"
+            >
+                <span></span>
+            </a>
+
+            <a
+                href="index.php"
+                class="b-brand g360-brand-link"
+                aria-label="Ir al inicio de GOB360"
+            >
+                <img
+                    src="assets/img/gob360l.png"
+                    alt="Logo GOB360"
+                    class="g360-brand-link__logo"
+                >
+
+                <span class="g360-brand-link__copy">
+                    <small>Plataforma institucional</small>
+                    <strong>Gestión pública inteligente</strong>
+                </span>
+            </a>
+        </div>
+
+        <div class="g360-desktop-center">
+            <div class="g360-header-context">
+                <span class="g360-header-context__icon">
+                    <i class="feather icon-grid"></i>
+                </span>
+
+                <span class="g360-header-context__copy">
+                    <small>Centro de gestión territorial</small>
+                    <strong>Gobierno 360°</strong>
+                </span>
+            </div>
+        </div>
+
+        <div class="g360-desktop-actions">
+            <div class="g360-system-state">
+                <span class="g360-system-state__dot"></span>
+
+                <span class="g360-system-state__copy">
+                    <small>Estado del sistema</small>
+                    <strong>Operativo</strong>
+                </span>
+            </div>
+
+            <div class="dropdown drp-user g360-user-menu" id="drp-user-menu">
+                <a
+                    href="#"
+                    class="dropdown-toggle g360-user-trigger"
+                    id="drp-user-toggle"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                >
+                    <span class="g360-user-trigger__avatar">
+                        <img
+                            src="<?= $img ?>"
+                            alt="Foto de <?= $nombreUsuarioSeguro ?>"
+                            width="43"
+                            height="43"
+                        >
+                        <span></span>
+                    </span>
+
+                    <span class="g360-user-trigger__copy">
+                        <strong><?= $nombreUsuarioSeguro ?></strong>
+                        <small><?= $rolUsuarioSeguro ?></small>
+                    </span>
+
+                    <i class="feather icon-chevron-down g360-user-trigger__chevron"></i>
+                </a>
+
+                <div
+                    class="dropdown-menu dropdown-menu-right profile-notification perfil g360-profile-dropdown"
+                    id="drp-user-content"
+                >
+                    <div class="g360-profile-dropdown__header">
+                        <span class="g360-profile-dropdown__avatar">
+                            <img
+                                src="<?= $img ?>"
+                                alt="Foto de <?= $nombreUsuarioSeguro ?>"
+                            >
+                            <span></span>
+                        </span>
+
+                        <div>
+                            <small>Sesión activa</small>
+                            <strong><?= $nombreUsuarioSeguro ?></strong>
+                            <span><?= $rolUsuarioSeguro ?></span>
                         </div>
                     </div>
-                </div>
-            </li>
-        </ul>
 
-        <ul class="navbar-nav ml-auto">
-            <li><div></div></li>
-            <li>
-                <div class="dropdown drp-user" id="drp-user-menu">
-                    <a href="#" class="dropdown-toggle d-flex align-items-center" id="drp-user-toggle" aria-expanded="false">
-                        <img src="<?= $img ?>" alt="User-Profile" class="rounded-circle" width="40" height="40">
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-right profile-notification perfil" id="drp-user-content">
-                        <div class="pro-head">
-                            <img src="<?= $img ?>" class="img-radius" alt="User-Profile-Image">
-                        </div>
-                        <ul class="pro-body">
-                            <li>
-                                <a href="#" onclick="PROFILE.editData(<?php echo SessionData::getUserId(); ?>)"
-                                    class="dropdown-item" data-toggle="modal" data-target="#exampleModalLive">
-                                    <i class="feather icon-user"></i> Perfil
-                                </a>
-                            </li>
-                            <li><a href="#" class="dropdown-item"><i class="feather icon-mail"></i>
-                                    Rol: <?= htmlspecialchars(SessionData::getUserType()) ?></a></li>
-                            <li><a href="logout.php" class="dropdown-item"><i class="feather icon-lock"></i>
-                                    Cerrar sesión</a></li>
-                        </ul>
+                    <div class="g360-profile-dropdown__status">
+                        <i class="feather icon-shield"></i>
+                        Acceso institucional protegido
                     </div>
+
+                    <ul class="pro-body g360-profile-dropdown__menu">
+                        <li>
+                            <a
+                                href="#"
+                                onclick="PROFILE.editData(<?= (int)SessionData::getUserId() ?>)"
+                                class="dropdown-item"
+                                data-toggle="modal"
+                                data-target="#exampleModalLive"
+                            >
+                                <span class="g360-dropdown-icon">
+                                    <i class="feather icon-user"></i>
+                                </span>
+
+                                <span>
+                                    <strong>Mi perfil</strong>
+                                    <small>Actualizar información personal</small>
+                                </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <div class="dropdown-item g360-role-item">
+                                <span class="g360-dropdown-icon">
+                                    <i class="feather icon-briefcase"></i>
+                                </span>
+
+                                <span>
+                                    <strong>Rol institucional</strong>
+                                    <small><?= $rolUsuarioSeguro ?></small>
+                                </span>
+                            </div>
+                        </li>
+
+                        <li class="g360-profile-dropdown__separator"></li>
+
+                        <li>
+                            <a href="logout.php" class="dropdown-item g360-logout-item">
+                                <span class="g360-dropdown-icon">
+                                    <i class="feather icon-log-out"></i>
+                                </span>
+
+                                <span>
+                                    <strong>Cerrar sesión</strong>
+                                    <small>Salir de forma segura</small>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-            </li>
-        </ul>
+            </div>
+        </div>
+
     </div>
 </header>
 
 <script>
-(function() {
+(function () {
+    'use strict';
+
+    function closeUserMenu(toggle, menu) {
+        menu.classList.remove('show');
+        toggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('g360-profile-open');
+    }
+
+    function openUserMenu(toggle, menu) {
+        document.querySelectorAll('.dropdown-menu.show').forEach(function (element) {
+            if (element !== menu) {
+                element.classList.remove('show');
+            }
+        });
+
+        menu.classList.add('show');
+        toggle.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('g360-profile-open');
+    }
+
     function initDrpUser() {
+        var container = document.getElementById('drp-user-menu');
         var toggle = document.getElementById('drp-user-toggle');
-        var menu   = document.getElementById('drp-user-content');
-        if (!toggle || !menu) return;
+        var menu = document.getElementById('drp-user-content');
 
-        toggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var isOpen = menu.classList.contains('show');
-            // Cerrar cualquier otro dropdown abierto
-            document.querySelectorAll('.dropdown-menu.show').forEach(function(el) {
-                el.classList.remove('show');
-            });
-            if (!isOpen) {
-                menu.classList.add('show');
-                toggle.setAttribute('aria-expanded', 'true');
+        if (!container || !toggle || !menu) {
+            return;
+        }
+
+        toggle.addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (menu.classList.contains('show')) {
+                closeUserMenu(toggle, menu);
+                return;
+            }
+
+            openUserMenu(toggle, menu);
+        });
+
+
+        document.addEventListener('click', function (event) {
+            if (!container.contains(event.target)) {
+                closeUserMenu(toggle, menu);
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeUserMenu(toggle, menu);
+            }
+        });
+
+        window.addEventListener('resize', function () {
+            if (window.innerWidth < 1200 && menu.classList.contains('show')) {
+                menu.classList.add('g360-profile-dropdown--mobile');
             } else {
-                toggle.setAttribute('aria-expanded', 'false');
+                menu.classList.remove('g360-profile-dropdown--mobile');
             }
         });
 
-        // Cerrar al hacer clic fuera
-        document.addEventListener('click', function(e) {
-            if (!document.getElementById('drp-user-menu').contains(e.target)) {
-                menu.classList.remove('show');
-                toggle.setAttribute('aria-expanded', 'false');
-            }
-        });
-
-        // Cerrar al hacer clic en un item del menú (excepto links externos)
-        menu.querySelectorAll('.dropdown-item').forEach(function(item) {
-            item.addEventListener('click', function() {
-                menu.classList.remove('show');
-                toggle.setAttribute('aria-expanded', 'false');
+        menu.querySelectorAll('a.dropdown-item').forEach(function (item) {
+            item.addEventListener('click', function () {
+                closeUserMenu(toggle, menu);
             });
         });
     }
@@ -255,68 +330,221 @@
 })();
 </script>
 
-<!-- =========================
-     MODAL PERFIL (TU ORIGINAL)
-     ========================= -->
-<div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<!-- =========================================================
+     MODAL DE PERFIL
+========================================================== -->
+<div
+    id="exampleModalLive"
+    class="modal fade g360-profile-modal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLiveLabel"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
+
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLiveLabel">Perfil</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="g360-profile-modal__heading">
+                    <span class="g360-profile-modal__icon">
+                        <i class="feather icon-user"></i>
+                    </span>
+
+                    <div>
+                        <small>Configuración de cuenta</small>
+                        <h5 class="modal-title" id="exampleModalLiveLabel">
+                            Actualizar perfil
+                        </h5>
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Cerrar"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-12">
+                <div class="g360-profile-modal__intro">
+                    <span class="g360-profile-modal__avatar">
+                        <img
+                            src="<?= $img ?>"
+                            alt="Foto de <?= $nombreUsuarioSeguro ?>"
+                        >
+                    </span>
 
-                        <div class="card-header">
-                            <h5>Actualizar información de perfil</h5>
+                    <div>
+                        <strong><?= $nombreUsuarioSeguro ?></strong>
+                        <span><?= $rolUsuarioSeguro ?></span>
+                        <p>
+                            Actualiza tu información personal, usuario, fotografía
+                            o contraseña institucional.
+                        </p>
+                    </div>
+                </div>
+
+                <form id="formusuarios" role="form" autocomplete="off">
+                    <input type="hidden" name="op" id="op">
+                    <input type="hidden" name="id" id="id">
+
+                    <div id="mensajes" class="g360-profile-modal__messages"></div>
+
+                    <div class="g360-profile-form-section">
+                        <div class="g360-profile-form-section__heading">
+                            <span>
+                                <i class="feather icon-id-card"></i>
+                            </span>
+
+                            <div>
+                                <small>Información personal</small>
+                                <h6>Datos del usuario</h6>
+                            </div>
                         </div>
 
-                        <div class="card-body">
-                            <form id="formusuarios" role="form" autocomplete="false">
-                                <input type="hidden" name="op" id="op" />
-                                <input type="hidden" name="id" id="id" />
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="nombre_perfil">
+                                    Nombres completos
+                                    <span class="text-danger">*</span>
+                                </label>
 
-                                <span id="mensajes" class="text-danger mb-1"></span>
-                                <br><br>
-                                <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label for="validationCustom03">Nombres Completos<span class="text-danger mb-1">*</span></label>
-                                        <input type="text" class="form-control" id="nombre_perfil" name="nombre_perfil" placeholder="Ingrese nombres" value="" required>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="validationCustom04">Apellidos<span class="text-danger mb-1">*</span></label>
-                                        <input type="text" class="form-control" id="apellido_perfil" name="apellido_perfil" placeholder="Ingrese apellidos" value="" required>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="validationCustom05">Foto</label>
-                                        <iframe id='ifm' name='ifm' src="upload.php" width="200" height="60" scrolling="no" frameborder="0"></iframe>
-                                    </div>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="nombre_perfil"
+                                    name="nombre_perfil"
+                                    placeholder="Ingrese nombres"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="apellido_perfil">
+                                    Apellidos
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="apellido_perfil"
+                                    name="apellido_perfil"
+                                    placeholder="Ingrese apellidos"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="ifm">Fotografía</label>
+
+                                <div class="g360-upload-frame">
+                                    <iframe
+                                        id="ifm"
+                                        name="ifm"
+                                        src="upload.php"
+                                        title="Cargar fotografía de perfil"
+                                        scrolling="no"
+                                        frameborder="0"
+                                    ></iframe>
                                 </div>
-
-                                <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label for="validationCustom05">Usuario<span class="text-danger mb-1">*</span></label>
-                                        <input type="email" class="form-control" id="nickname_perfil" name="nickname_perfil" placeholder="Ingrese un formato de usuario valido" value="" required>
-                                    </div>
-
-                                    <div class="form-group col-md-4">
-                                        <label for="validationCustom05">Contraseña<span class="text-danger mb-1">*</span></label>
-                                        <input type="password" class="form-control" id="hashpass_perfil" name="hashpass_perfil" placeholder="Ingrese una contraseña" value="" required>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="validationCustom05">Repita la Contraseña<span class="text-danger mb-1">*</span></label>
-                                        <input type="password" autocomplete="new-password" class="form-control" id="hashpass1_perfil" name="hashpass1_perfil" placeholder="ngrese nuevamente contraseña" value="" required>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" onclick="PROFILE.validateData();" class="btn btn-primary">Actualizar Datos</button>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="g360-profile-form-section">
+                        <div class="g360-profile-form-section__heading">
+                            <span>
+                                <i class="feather icon-shield"></i>
+                            </span>
+
+                            <div>
+                                <small>Seguridad</small>
+                                <h6>Credenciales de acceso</h6>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="nickname_perfil">
+                                    Usuario
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="nickname_perfil"
+                                    name="nickname_perfil"
+                                    placeholder="Ingrese un usuario válido"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="hashpass_perfil">
+                                    Contraseña
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <input
+                                    type="password"
+                                    autocomplete="new-password"
+                                    class="form-control"
+                                    id="hashpass_perfil"
+                                    name="hashpass_perfil"
+                                    placeholder="Ingrese una contraseña"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="hashpass1_perfil">
+                                    Confirmar contraseña
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <input
+                                    type="password"
+                                    autocomplete="new-password"
+                                    class="form-control"
+                                    id="hashpass1_perfil"
+                                    name="hashpass1_perfil"
+                                    placeholder="Repita la contraseña"
+                                    required
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <div class="g360-profile-modal__footer-message">
+                    <i class="feather icon-lock"></i>
+                    Tus cambios se guardarán de forma segura.
+                </div>
+
+                <div class="g360-profile-modal__footer-actions">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="PROFILE.validateData();"
+                        class="btn btn-primary"
+                    >
+                        <i class="feather icon-save"></i>
+                        Actualizar datos
+                    </button>
                 </div>
             </div>
 
@@ -326,7 +554,3 @@
 
 <?php $nameCompleto = SessionData::getNombreUsuario(); ?>
 <?php $fechaHoraActual = (new DateTime())->format('Y-m-d H:i:s'); ?>
-
-
-
-
