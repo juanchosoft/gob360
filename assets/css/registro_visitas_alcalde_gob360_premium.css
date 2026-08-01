@@ -1,0 +1,1173 @@
+:root{
+      --au-primary:#20427F;
+      --au-primary-dark:#132b52;
+
+      --au-ink:#0f172a;
+      --au-muted:#64748b;
+
+      --au-radius-xl:22px;
+      --au-radius-lg:16px;
+
+      --au-border:1px solid rgba(255,255,255,.12);
+      --au-shadow-soft: 0 10px 30px rgba(0,0,0,.25);
+      --au-shadow-mid: 0 18px 45px rgba(0,0,0,.35);
+
+      /* ✅ evita que el header fijo tape el título */
+      --safe-top: 96px;
+
+      --ring: 0 0 0 .25rem rgba(46,88,168,.35);
+    }
+
+    /* ✅ FONDO DARK GRADIENT (igual al de la imagen) */
+    body.dashboard-body{
+      background:
+        radial-gradient(900px 360px at 50% 115%, rgba(12, 35, 39, .95) 0%, rgba(12, 35, 39, 0) 55%),
+        linear-gradient(135deg,
+          #0b1221 0%,
+          #0a1b24 35%,
+          #0c2327 50%,
+          #0b1321 75%,
+          #0a1121 100%
+        );
+      color: rgba(255,255,255,.92);
+    }
+
+    .pcoded-content{
+      padding: calc(var(--safe-top) + 16px) 16px 16px !important;
+    }
+    @media (min-width:768px){
+      :root{ --safe-top: 112px; }
+      .pcoded-content{ padding: calc(var(--safe-top) + 18px) 24px 24px !important; }
+    }
+    @media (min-width:1200px){
+      :root{ --safe-top: 120px; }
+      .pcoded-content{ padding: calc(var(--safe-top) + 22px) 42px 34px !important; }
+    }
+
+    /* Breadcrumb header PRO (dark glass) */
+    .page-header .page-block{
+      background: rgba(255,255,255,.06);
+      border: var(--au-border);
+      border-radius: var(--au-radius-xl);
+      box-shadow: var(--au-shadow-soft);
+      padding: 16px 16px;
+      backdrop-filter: blur(10px);
+    }
+    .page-header h5{
+      font-weight:1000 !important;
+      color: rgba(255,255,255,.95);
+      margin: 0;
+    }
+    .help-mini{
+      font-size:.82rem;
+      color: rgba(255,255,255,.70) !important;
+    }
+    .breadcrumb{
+      background: transparent !important;
+      padding: 0;
+      margin: .35rem 0 0 !important;
+    }
+    .breadcrumb a,
+    .breadcrumb-item,
+    .breadcrumb-item a{
+      color: rgba(255,255,255,.85) !important;
+    }
+    .breadcrumb-item.active{
+      color: rgba(255,255,255,.65) !important;
+    }
+
+    /* Card SaaS (glass dark) */
+    .au-card{
+      background: rgba(255,255,255,.06);
+      border: var(--au-border) !important;
+      border-radius: var(--au-radius-xl) !important;
+      box-shadow: var(--au-shadow-mid) !important;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    .au-card .card-header{
+      background: rgba(255,255,255,.06);
+      border-bottom: 1px solid rgba(255,255,255,.12) !important;
+      padding: 16px 18px !important;
+      color: rgba(255,255,255,.92);
+    }
+    .au-card .card-header .title{
+      font-weight:1000;
+      color: rgba(255,255,255,.95);
+      margin:0;
+      font-size: 1.05rem;
+    }
+    .au-card .card-header .sub{
+      margin: 6px 0 0;
+      color: rgba(255,255,255,.70);
+      font-size: .9rem;
+    }
+    .au-card .card-body{
+      padding: 18px !important;
+      color: rgba(255,255,255,.92);
+    }
+
+    /* Accent bar */
+    .au-accent::before{
+      content:"";
+      position:absolute;
+      top:0; left:0;
+      width:100%;
+      height:4px;
+      background: linear-gradient(90deg, var(--au-primary), rgba(32,66,127,.35));
+    }
+
+    /* Labels en blanco */
+    label{
+      font-weight: 800;
+      color: rgba(255,255,255,.92) !important;
+      margin-bottom: 6px;
+    }
+
+    /* Inputs/Selects dark + texto blanco */
+    .form-control, .custom-select, select.form-control, input.form-control, textarea.form-control{
+      border-radius: 14px !important;
+      border: 1px solid rgba(255,255,255,.14) !important;
+      min-height: 44px;
+      box-shadow: none !important;
+      background: rgba(10,17,33,.55) !important;
+      color: rgba(255,255,255,.95) !important;
+      transition: box-shadow .15s ease, transform .15s ease, border-color .15s ease;
+    }
+    .form-control::placeholder{
+      color: rgba(255,255,255,.55) !important;
+    }
+    .form-control:focus{
+      border-color: rgba(255,255,255,.22) !important;
+      box-shadow: var(--ring) !important;
+      transform: translateY(-1px);
+    }
+
+    /* Required asterisco visible */
+    .text-danger{ font-weight: 900; }
+
+    /* Section badge (dark) */
+    .au-badge{
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 900;
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.90);
+      border: 1px solid rgba(255,255,255,.14);
+      white-space: nowrap;
+    }
+
+    /* Form grid spacing */
+    .au-form-grid .form-group{
+      margin-bottom: 14px;
+    }
+
+    /* File input oscuro */
+    .form-control-file{
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      padding: 10px 12px;
+      background: rgba(10,17,33,.55);
+      color: rgba(255,255,255,.85);
+    }
+
+    /* Preview box dark */
+    #previewImage{
+      border-radius: 16px;
+      border: 1px dashed rgba(255,255,255,.18);
+      padding: 10px;
+      background: rgba(255,255,255,.04);
+      min-height: 58px;
+      color: rgba(255,255,255,.75);
+    }
+
+    /* Primary button SaaS */
+    .btn-au-primary{
+      border: none !important;
+      border-radius: 999px !important;
+      padding: 11px 18px !important;
+      font-weight: 950 !important;
+      letter-spacing: .2px;
+      background: linear-gradient(135deg, var(--au-primary), var(--au-primary-dark)) !important;
+      box-shadow: 0 14px 28px rgba(32,66,127,.22);
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+      min-width: 190px;
+      color:#fff !important;
+    }
+    .btn-au-primary:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      box-shadow: 0 18px 40px rgba(32,66,127,.28);
+    }
+    .btn-au-primary:active{
+      transform: translateY(0px);
+      box-shadow: 0 10px 22px rgba(32,66,127,.22);
+    }
+
+    /* Dropdown (3 punticos) dark */
+    .card-header-right .btn.btn-icon{
+      background: rgba(255,255,255,.08) !important;
+      border: 1px solid rgba(255,255,255,.12) !important;
+      color: rgba(255,255,255,.92) !important;
+      border-radius: 12px !important;
+    }
+    .dropdown-menu{
+      background: rgba(10,17,33,.96) !important;
+      border: 1px solid rgba(255,255,255,.12) !important;
+      box-shadow: 0 18px 45px rgba(0,0,0,.45) !important;
+    }
+    .dropdown-item,
+    .dropdown-item a,
+    .dropdown-menu a{
+      color: rgba(255,255,255,.90) !important;
+    }
+    .dropdown-item:hover{
+      background: rgba(255,255,255,.08) !important;
+    }
+
+    /* Responsive */
+    @media (max-width:576px){
+      .au-card .card-body{ padding: 14px !important; }
+      .btn-au-primary{ width: 100%; min-width: 100%; }
+    }
+
+    /* Optional: hide departamento select but keep value */
+    .ocultar-select{
+      display:none !important;
+    }
+
+/* ============================================================
+   GOB360 · REGISTRO DE VISITAS Y COMPROMISOS DEL ALCALDE
+============================================================ */
+:root{
+  --rv-bg-0:#030711;
+  --rv-bg-1:#061326;
+  --rv-bg-2:#082735;
+
+  --rv-panel:rgba(255,255,255,.062);
+  --rv-panel-strong:rgba(255,255,255,.092);
+  --rv-border:rgba(255,255,255,.125);
+  --rv-border-strong:rgba(255,255,255,.19);
+
+  --rv-text:rgba(255,255,255,.96);
+  --rv-muted:rgba(255,255,255,.65);
+  --rv-muted-soft:rgba(255,255,255,.46);
+
+  --rv-cyan:#28dcff;
+  --rv-blue:#3f7cff;
+  --rv-green:#39e6a3;
+  --rv-yellow:#ffd166;
+  --rv-red:#ff647f;
+  --rv-purple:#a78bfa;
+
+  --rv-radius-xl:29px;
+  --rv-radius-lg:21px;
+  --rv-radius-md:14px;
+
+  --rv-shadow-xl:0 31px 92px rgba(0,0,0,.45);
+  --rv-shadow-lg:0 19px 56px rgba(0,0,0,.33);
+  --rv-shadow-soft:0 13px 32px rgba(0,0,0,.22);
+
+  --rv-ring:0 0 0 .25rem rgba(40,220,255,.19);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  min-height:100%;
+  overflow-x:hidden!important;
+}
+
+body.gob360-mayor-visit-page{
+  min-height:100vh;
+  color:var(--rv-text)!important;
+  background:
+    radial-gradient(950px 520px at 6% 3%,rgba(63,124,255,.29),transparent 61%),
+    radial-gradient(850px 500px at 95% 8%,rgba(40,220,255,.14),transparent 61%),
+    radial-gradient(900px 570px at 48% 112%,rgba(57,230,163,.10),transparent 60%),
+    linear-gradient(150deg,var(--rv-bg-0),var(--rv-bg-1) 57%,var(--rv-bg-2))!important;
+  background-attachment:fixed!important;
+}
+
+body.gob360-mayor-visit-page::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  opacity:.13;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:linear-gradient(to bottom,#000,transparent 96%);
+}
+
+.gob360-mayor-visit-page .pcoded-main-container,
+.gob360-mayor-visit-page .pcoded-content{
+  background:transparent!important;
+}
+
+.gob360-mayor-visit-page .pcoded-main-container .pcoded-content{
+  width:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:18px 28px 48px!important;
+}
+
+/* Loader */
+.gob360-mayor-visit-page .loader-bg{
+  z-index:999999!important;
+  background:#030711!important;
+}
+
+.gob360-mayor-visit-page .loader-track{
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+}
+
+.gob360-mayor-visit-page .loader-fill{
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--rv-blue),var(--rv-cyan),var(--rv-green))!important;
+  box-shadow:0 0 25px rgba(40,220,255,.42);
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.g360-visit-hero{
+  position:relative;
+  overflow:hidden;
+  margin-bottom:18px;
+  padding:25px;
+  border:1px solid var(--rv-border);
+  border-radius:var(--rv-radius-xl);
+  background:
+    radial-gradient(720px 290px at 0% 0%,rgba(63,124,255,.30),transparent 67%),
+    radial-gradient(680px 290px at 100% 100%,rgba(57,230,163,.14),transparent 67%),
+    var(--rv-panel);
+  box-shadow:var(--rv-shadow-xl);
+  backdrop-filter:blur(19px);
+}
+
+.g360-visit-hero::before{
+  content:"";
+  position:absolute;
+  right:-110px;
+  top:-160px;
+  width:450px;
+  height:450px;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(40,220,255,.18),transparent 68%);
+}
+
+.g360-visit-hero__grid{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:minmax(245px,355px) 1fr;
+  align-items:stretch;
+  gap:27px;
+}
+
+.g360-visit-brand{
+  min-height:350px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:21px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  background:
+    radial-gradient(320px 180px at 50% 0%,rgba(40,220,255,.11),transparent 71%),
+    rgba(2,8,20,.29);
+  box-shadow:0 19px 40px rgba(0,0,0,.25);
+}
+
+.g360-visit-brand__eyebrow{
+  margin-bottom:13px;
+  color:var(--rv-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+.g360-visit-brand__logo{
+  display:block;
+  width:min(100%,335px);
+  height:auto;
+  border-radius:18px;
+  filter:
+    drop-shadow(0 18px 36px rgba(0,0,0,.44))
+    drop-shadow(0 0 30px rgba(40,220,255,.24));
+}
+
+.g360-visit-brand__caption{
+  margin-top:14px;
+  color:var(--rv-muted);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.15px;
+  text-transform:uppercase;
+}
+
+.g360-visit-brand__status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:18px;
+  padding:7px 11px;
+  color:#dfffee;
+  font-size:10.5px;
+  font-weight:900;
+  border:1px solid rgba(57,230,163,.23);
+  border-radius:999px;
+  background:rgba(57,230,163,.07);
+}
+
+.g360-visit-brand__status span{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--rv-green);
+  box-shadow:0 0 14px rgba(57,230,163,.58);
+}
+
+.g360-visit-hero__content{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.g360-visit-hero__top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.g360-visit-hero__eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:9px;
+  color:var(--rv-green);
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+}
+
+.g360-visit-hero__title{
+  max-width:900px;
+  margin:0;
+  color:#fff;
+  font-size:clamp(31px,4vw,50px);
+  font-weight:1000;
+  line-height:1.02;
+  letter-spacing:-1.35px;
+}
+
+.g360-visit-hero__description{
+  max-width:850px;
+  margin:13px 0 0;
+  color:var(--rv-muted);
+  font-size:14px;
+  line-height:1.68;
+}
+
+.g360-visit-hero__actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.g360-hero-button{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:9px 13px;
+  color:#fff!important;
+  font-size:10.5px;
+  font-weight:950;
+  text-decoration:none!important;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:13px;
+  cursor:pointer;
+  background:rgba(255,255,255,.055);
+  box-shadow:0 10px 23px rgba(0,0,0,.17);
+}
+
+.g360-visit-summary{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-top:20px;
+}
+
+.g360-visit-summary article{
+  min-width:0;
+  min-height:126px;
+  display:grid;
+  grid-template-columns:45px 1fr;
+  align-items:start;
+  gap:11px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:17px;
+  background:rgba(3,10,23,.49);
+  box-shadow:0 12px 27px rgba(0,0,0,.18);
+}
+
+.g360-visit-summary__icon{
+  width:45px;
+  height:45px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:19px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--rv-cyan),#83edff);
+}
+
+.g360-visit-summary__icon--territory{
+  background:linear-gradient(135deg,var(--rv-green),#96f4ce);
+}
+
+.g360-visit-summary__icon--secretariat{
+  background:linear-gradient(135deg,var(--rv-yellow),#ffe19a);
+}
+
+.g360-visit-summary__icon--components{
+  color:#fff;
+  background:linear-gradient(135deg,var(--rv-blue),var(--rv-purple));
+}
+
+.g360-visit-summary small{
+  display:block;
+  margin-bottom:5px;
+  color:var(--rv-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:.52px;
+  text-transform:uppercase;
+}
+
+.g360-visit-summary strong{
+  display:block;
+  overflow:hidden;
+  color:#fff;
+  font-size:clamp(16px,1.7vw,23px);
+  font-weight:1000;
+  line-height:1.2;
+  text-overflow:ellipsis;
+}
+
+.g360-visit-summary p{
+  margin:7px 0 0;
+  color:var(--rv-muted-soft);
+  font-size:10.5px;
+  line-height:1.4;
+}
+
+.g360-visit-capabilities{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:13px;
+}
+
+.g360-visit-capabilities span{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:33px;
+  padding:7px 10px;
+  color:rgba(255,255,255,.82);
+  font-size:10.5px;
+  font-weight:850;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:999px;
+  background:rgba(255,255,255,.045);
+}
+
+.g360-visit-capabilities i{
+  color:var(--rv-cyan);
+}
+
+/* ============================================================
+   TARJETA PRINCIPAL
+============================================================ */
+.gob360-mayor-visit-page .g360-visit-card{
+  overflow:hidden;
+  margin-bottom:18px;
+  border:1px solid var(--rv-border)!important;
+  border-radius:var(--rv-radius-xl)!important;
+  background:var(--rv-panel)!important;
+  box-shadow:var(--rv-shadow-xl)!important;
+  backdrop-filter:blur(18px);
+}
+
+.gob360-mayor-visit-page .g360-visit-card::before{
+  display:none!important;
+}
+
+.gob360-mayor-visit-page .g360-visit-card>.card-header{
+  min-height:88px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  padding:17px 20px!important;
+  border-bottom:1px solid var(--rv-border)!important;
+  background:
+    radial-gradient(440px 180px at 0% 0%,rgba(57,230,163,.13),transparent 68%),
+    linear-gradient(135deg,rgba(63,124,255,.27),rgba(8,22,42,.73))!important;
+}
+
+.gob360-mayor-visit-page .g360-visit-card>.card-body{
+  padding:20px!important;
+  color:var(--rv-text);
+  background:transparent!important;
+}
+
+.g360-card-heading{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.g360-card-heading__icon{
+  width:44px;
+  height:44px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:19px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--rv-green),#96f4ce);
+  box-shadow:0 10px 23px rgba(57,230,163,.14);
+}
+
+.g360-card-heading__eyebrow{
+  display:block;
+  margin-bottom:3px;
+  color:var(--rv-green);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.g360-card-heading h5{
+  margin:0!important;
+  color:#fff!important;
+  font-size:17px;
+  font-weight:1000!important;
+  text-align:left!important;
+}
+
+.g360-card-heading p{
+  margin:4px 0 0;
+  color:var(--rv-muted);
+  font-size:10.5px;
+  font-weight:750;
+  line-height:1.45;
+}
+
+.g360-card-header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.g360-required-status{
+  min-height:36px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 10px;
+  color:rgba(255,255,255,.82);
+  font-size:9.5px;
+  font-weight:900;
+  border:1px solid rgba(255,209,102,.18);
+  border-radius:999px;
+  background:rgba(255,209,102,.06);
+}
+
+.g360-required-status>span{
+  color:var(--rv-yellow);
+  font-size:15px;
+}
+
+.gob360-mayor-visit-page .card-header-right{
+  position:static!important;
+  margin:0!important;
+}
+
+.gob360-mayor-visit-page .card-option .btn{
+  width:40px;
+  min-width:40px;
+  height:40px;
+  padding:0!important;
+  color:#fff!important;
+  border:1px solid var(--rv-border)!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.06)!important;
+}
+
+.gob360-mayor-visit-page .card-option .dropdown-menu{
+  overflow:hidden;
+  padding:8px;
+  border:1px solid var(--rv-border)!important;
+  border-radius:15px!important;
+  background:rgba(5,13,28,.98)!important;
+  box-shadow:var(--rv-shadow-lg);
+}
+
+.gob360-mayor-visit-page .card-option .dropdown-item a{
+  display:block;
+  padding:8px 10px;
+  color:rgba(255,255,255,.82)!important;
+  font-size:12px;
+  font-weight:800;
+  border-radius:10px;
+}
+
+/* ============================================================
+   SECCIONES DEL FORMULARIO
+============================================================ */
+.g360-form-section{
+  margin-bottom:16px;
+  padding:17px;
+  border:1px solid var(--rv-border);
+  border-radius:18px;
+  background:rgba(3,10,23,.45);
+  box-shadow:var(--rv-shadow-soft);
+}
+
+.g360-form-section__heading{
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  margin-bottom:16px;
+  padding-bottom:12px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.g360-form-section__icon{
+  width:42px;
+  height:42px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:18px;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--rv-cyan),#83edff);
+}
+
+.g360-form-section__icon--territory{
+  background:linear-gradient(135deg,var(--rv-green),#96f4ce);
+}
+
+.g360-form-section__icon--management{
+  background:linear-gradient(135deg,var(--rv-yellow),#ffe19a);
+}
+
+.g360-form-section__icon--detail{
+  color:#fff;
+  background:linear-gradient(135deg,var(--rv-blue),var(--rv-purple));
+}
+
+.g360-form-section__heading small{
+  display:block;
+  margin-bottom:3px;
+  color:var(--rv-green);
+  font-size:8.5px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.g360-form-section__heading h6{
+  margin:0;
+  color:#fff;
+  font-size:14px;
+  font-weight:1000;
+}
+
+.g360-form-section__heading p{
+  margin:4px 0 0;
+  color:var(--rv-muted);
+  font-size:10.5px;
+  line-height:1.45;
+}
+
+.gob360-mayor-visit-page label{
+  display:block;
+  margin-bottom:7px;
+  color:rgba(255,255,255,.84)!important;
+  font-size:10px;
+  font-weight:950!important;
+  letter-spacing:.35px;
+  text-transform:uppercase;
+}
+
+.gob360-mayor-visit-page .text-danger{
+  color:var(--rv-yellow)!important;
+}
+
+.g360-input-shell{
+  position:relative;
+}
+
+.g360-input-shell__icon{
+  position:absolute;
+  left:13px;
+  top:50%;
+  z-index:3;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--rv-cyan);
+  transform:translateY(-50%);
+  pointer-events:none;
+}
+
+.g360-input-shell .form-control{
+  padding-left:40px!important;
+}
+
+.gob360-mayor-visit-page .form-control,
+.gob360-mayor-visit-page select.form-control,
+.gob360-mayor-visit-page textarea.form-control{
+  min-height:48px;
+  padding:10px 13px!important;
+  color:#fff!important;
+  font-size:13px;
+  font-weight:800;
+  border:1px solid rgba(255,255,255,.13)!important;
+  border-radius:13px!important;
+  outline:none;
+  background:rgba(3,10,23,.67)!important;
+  box-shadow:none!important;
+}
+
+.gob360-mayor-visit-page textarea.form-control{
+  min-height:132px;
+  resize:vertical;
+  line-height:1.55;
+}
+
+.gob360-mayor-visit-page .form-control:focus,
+.gob360-mayor-visit-page select.form-control:focus,
+.gob360-mayor-visit-page textarea.form-control:focus{
+  border-color:rgba(40,220,255,.42)!important;
+  box-shadow:var(--rv-ring)!important;
+  transform:none!important;
+}
+
+.gob360-mayor-visit-page select.form-control option{
+  color:#fff!important;
+  background:#0a1629!important;
+}
+
+.g360-fixed-territory{
+  min-height:64px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:10px 12px;
+  border:1px solid rgba(57,230,163,.16);
+  border-radius:14px;
+  background:rgba(57,230,163,.055);
+}
+
+.g360-fixed-territory__icon{
+  width:40px;
+  height:40px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:17px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--rv-green),#96f4ce);
+}
+
+.g360-fixed-territory small{
+  display:block;
+  color:var(--rv-muted);
+  font-size:8px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.g360-fixed-territory strong{
+  display:inline-block;
+  margin-right:6px;
+  color:#fff;
+  font-size:13px;
+  font-weight:1000;
+}
+
+.g360-fixed-territory div>span{
+  color:var(--rv-muted);
+  font-size:9.5px;
+}
+
+/* ============================================================
+   CARGA DE ARCHIVOS
+============================================================ */
+.g360-upload-zone{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:16px;
+  border:1px dashed rgba(40,220,255,.25);
+  border-radius:17px;
+  background:rgba(40,220,255,.045);
+}
+
+.g360-upload-zone__icon{
+  width:50px;
+  height:50px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:21px;
+  border-radius:15px;
+  background:linear-gradient(135deg,var(--rv-cyan),#83edff);
+}
+
+.g360-upload-zone__content{
+  min-width:0;
+  flex:1 1 auto;
+}
+
+.g360-upload-zone__content strong{
+  display:block;
+  color:#fff;
+  font-size:12px;
+  font-weight:1000;
+}
+
+.g360-upload-zone__content>span{
+  display:block;
+  margin:3px 0 9px;
+  color:var(--rv-muted);
+  font-size:9.5px;
+}
+
+.gob360-mayor-visit-page .form-control-file{
+  width:100%;
+  min-height:42px;
+  padding:8px 10px;
+  color:rgba(255,255,255,.82);
+  font-size:10px;
+  font-weight:750;
+  border:1px solid var(--rv-border);
+  border-radius:11px;
+  background:rgba(3,10,23,.55);
+}
+
+.gob360-mayor-visit-page #previewImage{
+  min-height:72px;
+  overflow:hidden;
+  padding:12px;
+  color:var(--rv-muted);
+  border:1px dashed var(--rv-border);
+  border-radius:16px;
+  background:rgba(3,10,23,.42);
+}
+
+.gob360-mayor-visit-page #previewImage:empty::before{
+  content:"La vista previa de la imagen aparecerá en este espacio.";
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  color:var(--rv-muted-soft);
+  font-size:9.5px;
+  font-weight:800;
+}
+
+/* ============================================================
+   BARRA DE GUARDADO
+============================================================ */
+.g360-save-bar{
+  position:sticky;
+  bottom:10px;
+  z-index:25;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:13px;
+  border:1px solid var(--rv-border);
+  border-radius:17px;
+  background:rgba(4,12,26,.94);
+  box-shadow:var(--rv-shadow-lg);
+  backdrop-filter:blur(16px);
+}
+
+.g360-save-bar__message{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:var(--rv-muted);
+  font-size:10.5px;
+  font-weight:750;
+  line-height:1.45;
+}
+
+.g360-save-bar__message i{
+  flex:0 0 auto;
+  color:var(--rv-green);
+  font-size:18px;
+}
+
+.gob360-mayor-visit-page .btn-au-primary{
+  min-width:190px;
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:9px 15px!important;
+  color:#06101d!important;
+  font-size:10.5px!important;
+  font-weight:1000!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:linear-gradient(135deg,var(--rv-cyan),#83edff)!important;
+  box-shadow:0 12px 25px rgba(40,220,255,.14)!important;
+}
+
+.gob360-mayor-visit-page .btn-au-primary:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.04);
+}
+
+/* Validaciones */
+.gob360-mayor-visit-page .was-validated .form-control:invalid,
+.gob360-mayor-visit-page .form-control.is-invalid{
+  border-color:rgba(255,100,127,.65)!important;
+  box-shadow:0 0 0 .22rem rgba(255,100,127,.11)!important;
+}
+
+.gob360-mayor-visit-page .was-validated .form-control:valid,
+.gob360-mayor-visit-page .form-control.is-valid{
+  border-color:rgba(57,230,163,.50)!important;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media(max-width:1200px){
+  .g360-visit-hero__grid{
+    grid-template-columns:1fr;
+  }
+
+  .g360-visit-brand{
+    min-height:auto;
+  }
+
+  .g360-visit-brand__logo{
+    width:min(335px,90%);
+  }
+
+  .g360-visit-summary{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:991px){
+  .g360-visit-hero__top{
+    flex-direction:column;
+  }
+
+  .g360-visit-hero__actions{
+    justify-content:flex-start;
+  }
+}
+
+@media(max-width:767.98px){
+  .gob360-mayor-visit-page .pcoded-main-container .pcoded-content{
+    padding:14px 13px 42px!important;
+  }
+
+  .g360-visit-hero{
+    padding:18px;
+  }
+
+  .g360-visit-brand{
+    padding:16px;
+  }
+
+  .g360-visit-hero__title{
+    font-size:29px;
+  }
+
+  .g360-visit-summary{
+    grid-template-columns:1fr;
+  }
+
+  .gob360-mayor-visit-page .g360-visit-card>.card-body{
+    padding:13px!important;
+  }
+
+  .g360-card-header-actions{
+    width:100%;
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .g360-required-status{
+    justify-content:center;
+  }
+
+  .g360-upload-zone{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .g360-save-bar{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .g360-save-bar .btn{
+    width:100%;
+  }
+
+  .gob360-mayor-visit-page input,
+  .gob360-mayor-visit-page select,
+  .gob360-mayor-visit-page textarea{
+    font-size:16px!important;
+  }
+}

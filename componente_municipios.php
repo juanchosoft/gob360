@@ -46,88 +46,11 @@ foreach ($arrDep as $val) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="./admin/js/datatables/jquery.dataTables.min.css" rel="stylesheet" />
-  <style>
-    :root{ --au-primary:#20427F; --au-primary-dark:#132b52; --au-radius-xl:22px; --au-radius-lg:16px; --safe-top:96px; }
-    html, body{ overflow-x:hidden !important; }
-
-    .header-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; width:100%; }
-    .header-title{ flex:1 1 auto; min-width:240px; }
-    .header-actions{ display:flex; align-items:center; gap:10px; margin-left:auto; flex:0 0 auto; }
-
-    .btn-saas{
-      background:linear-gradient(135deg,#3b82f6,#4f46e5) !important;
-      border:1px solid rgba(255,255,255,.14) !important;
-      border-radius:999px !important; padding:.56rem 1.0rem !important;
-      font-weight:1000 !important; letter-spacing:.2px;
-      display:flex; align-items:center; gap:.55rem;
-      transition:transform .15s ease,filter .2s ease;
-      color:#fff !important; white-space:nowrap;
-      box-shadow:0 12px 22px rgba(19,43,82,.22);
-    }
-    .btn-saas:hover{ transform:translateY(-1px); filter:brightness(1.03); color:#fff !important; }
-    .btn-saas:active{ transform:translateY(0); }
-
-    .search-wrap{
-      background:rgba(255,255,255,.06); backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,.18); border-radius:14px;
-      padding:6px 8px; width:320px; max-width:100%; margin:0 0 14px 0;
-    }
-    .search-wrap .input-group-text{ background:transparent !important; border:none !important; color:rgba(255,255,255,.7) !important; padding:0 10px 0 6px; }
-    #customSearch{ border:none !important; outline:none !important; box-shadow:none !important; padding:.45rem .25rem; font-weight:800; font-size:14px; color:#fff !important; background:transparent !important; }
-    #customSearch::placeholder{ color:rgba(255,255,255,.5); }
-
-    @media(max-width:576px){ .header-actions{ width:100%; justify-content:flex-end; } .search-wrap{ width:100%; } }
-
-    .table-responsive{ overflow-x:auto; }
-    #tableComponentes{ width:100% !important; table-layout:auto; white-space:normal; border-collapse:separate; border-spacing:0; }
-    #tableComponentes thead th{
-      position:sticky; top:0; z-index:2;
-      background: rgba(255,255,255,.08) !important;
-      color: #fff !important; font-weight:1000;
-      border-bottom: 1px solid rgba(255,255,255,.14) !important;
-      padding: 12px 12px !important; white-space:nowrap;
-    }
-    #tableComponentes tbody tr{ background: transparent !important; }
-    #tableComponentes td{
-      color: rgba(255,255,255,.86) !important;
-      white-space:normal !important; word-break:break-word !important;
-      max-width:320px; vertical-align:top;
-      padding: 12px 12px !important;
-      border-bottom: 1px solid rgba(255,255,255,.08) !important;
-      background: transparent !important;
-    }
-    #tableComponentes tbody tr:hover{ background: rgba(255,255,255,.06) !important; }
-    #tableComponentes .feather{ color: rgba(255,255,255,.8) !important; }
-    #tableComponentes .btn .feather{ color: #fff !important; }
-    #tableComponentes .btn-transparent{ color: rgba(255,255,255,.8) !important; background: transparent !important; border: none !important; }
-    #tableComponentes .btn-transparent:hover{ color: #fff !important; background: rgba(255,255,255,.1) !important; }
-    #tableComponentes span.text-muted{ color: rgba(255,255,255,.5) !important; }
-
-    .dataTables_wrapper .dataTables_length,
-    .dataTables_wrapper .dataTables_info{ color:rgba(255,255,255,.7) !important; font-weight:700 !important; }
-    .dataTables_wrapper .dataTables_length select{
-      border-radius:12px; border:1px solid rgba(255,255,255,.14);
-      padding:6px 10px; background:rgba(10,17,33,.55); color:#fff;
-    }
-    .dataTables_wrapper .dataTables_paginate{ margin-top:10px; }
-    .dataTables_wrapper .dataTables_paginate .paginate_button{
-      border-radius:999px !important; border:1px solid rgba(255,255,255,.18) !important;
-      margin:0 3px !important; background:rgba(255,255,255,.10) !important;
-      color:#fff !important; font-weight:800 !important; padding:0.4em 0.9em !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button:hover{ background:rgba(255,255,255,.18) !important; color:#fff !important; }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current{
-      background:linear-gradient(135deg,#3b82f6,#4f46e5) !important;
-      border-color:rgba(255,255,255,.25) !important; color:#fff !important; font-weight:900 !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled{
-      opacity:.35 !important; cursor:not-allowed !important;
-      background:transparent !important; border-color:transparent !important;
-    }
-  </style>
+  
+  <link rel="stylesheet" href="assets/css/componentes_municipales_gob360_premium.css">
 </head>
 
-<body>
+<body class="gob360-municipal-components-page">
   <!-- Preloader -->
   <div class="loader-bg">
     <div class="loader-track">
@@ -141,76 +64,264 @@ foreach ($arrDep as $val) {
   <div class="pcoded-main-container">
     <div class="pcoded-content">
 
-      <!-- Breadcrumb -->
-      <div class="page-header">
-        <div class="page-block">
-          <div class="row align-items-center">
-            <div class="col-md-12">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="m-b-10">Componentes Municipales</h5>
-                <?php include './admin/include/btn_back.php'; ?>
+      <section class="g360-municipal-components-hero" aria-label="Componentes municipales GOB360">
+        <div class="g360-municipal-components-hero__grid">
+
+          <aside class="g360-municipal-components-brand">
+            <span class="g360-municipal-components-brand__eyebrow">
+              Plataforma institucional
+            </span>
+
+            <img
+              src="assets/img/gob360l.png"
+              alt="Logo GOB360"
+              class="g360-municipal-components-brand__logo"
+            >
+
+            <span class="g360-municipal-components-brand__caption">
+              Gestión pública inteligente y territorial
+            </span>
+
+            <div class="g360-municipal-components-brand__status">
+              <span></span>
+              Configuración municipal activa
+            </div>
+          </aside>
+
+          <div class="g360-municipal-components-hero__content">
+            <div class="g360-municipal-components-hero__top">
+              <div>
+                <div class="g360-municipal-components-hero__eyebrow">
+                  <i class="feather icon-grid"></i>
+                  Configuración territorial
+                </div>
+
+                <h1 class="g360-municipal-components-hero__title">
+                  Componentes Municipales
+                </h1>
+
+                <p class="g360-municipal-components-hero__description">
+                  Administra los componentes institucionales asociados a cada
+                  municipio y controla su disponibilidad para los procesos,
+                  formularios y módulos territoriales de GOB360.
+                </p>
               </div>
-              <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#!">Configuración Sistema</a></li>
-                <li class="breadcrumb-item"><a href="#!">Componentes Municipales</a></li>
-              </ul>
+
+              <div class="g360-municipal-components-hero__actions">
+                <?php if ($create): ?>
+                  <button
+                    type="button"
+                    class="g360-hero-button g360-hero-button--primary"
+                    id="btnNuevoComponenteHero"
+                    onclick="abrirComponenteMunicipalDesdeHero()"
+                  >
+                    <i class="feather icon-plus-circle"></i>
+                    Nuevo componente
+                  </button>
+                <?php endif; ?>
+
+                <button
+                  type="button"
+                  class="g360-hero-button g360-hero-button--secondary"
+                  onclick="window.location.reload()"
+                >
+                  <i class="feather icon-refresh-cw"></i>
+                  Actualizar
+                </button>
+
+                <div class="g360-municipal-components-back">
+                  <?php include './admin/include/btn_back.php'; ?>
+                </div>
+              </div>
+            </div>
+
+            <div class="g360-municipal-components-summary">
+              <article>
+                <span class="g360-municipal-components-summary__icon">
+                  <i class="feather icon-grid"></i>
+                </span>
+
+                <div>
+                  <small>Módulo</small>
+                  <strong>Componentes</strong>
+                  <p>Configuración por municipio</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-municipal-components-summary__icon g360-municipal-components-summary__icon--territory">
+                  <i class="feather icon-map-pin"></i>
+                </span>
+
+                <div>
+                  <small>Territorio activo</small>
+                  <strong>
+                    <?= $isUsuarioMunicipal && $municipioUsuario !== '' ? htmlspecialchars((string)$municipioUsuario, ENT_QUOTES, 'UTF-8') : 'Todos' ?>
+                  </strong>
+                  <p><?= $isUsuarioMunicipal ? 'Municipio asignado al usuario' : 'Cobertura administrativa' ?></p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-municipal-components-summary__icon g360-municipal-components-summary__icon--create">
+                  <i class="feather icon-plus-square"></i>
+                </span>
+
+                <div>
+                  <small>Creación</small>
+                  <strong><?= $create ? 'Habilitada' : 'Restringida' ?></strong>
+                  <p>Según permisos de la sesión</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-municipal-components-summary__icon g360-municipal-components-summary__icon--profile">
+                  <i class="feather icon-shield"></i>
+                </span>
+
+                <div>
+                  <small>Perfil activo</small>
+                  <strong><?= $isAdmin ? 'Administrador' : 'Municipal' ?></strong>
+                  <p><?= htmlspecialchars((string)$userType, ENT_QUOTES, 'UTF-8') ?></p>
+                </div>
+              </article>
+            </div>
+
+            <div class="g360-municipal-components-capabilities" aria-hidden="true">
+              <span>
+                <i class="feather icon-map"></i>
+                Departamento y municipio
+              </span>
+
+              <span>
+                <i class="feather icon-layers"></i>
+                Componentes territoriales
+              </span>
+
+              <span>
+                <i class="feather icon-check-circle"></i>
+                Estado de habilitación
+              </span>
+
+              <span>
+                <i class="feather icon-edit-3"></i>
+                Creación y edición
+              </span>
+
+              <span>
+                <i class="feather icon-lock"></i>
+                Control por perfil
+              </span>
             </div>
           </div>
+
         </div>
-      </div>
+      </section>
 
       <!-- Card principal -->
-      <div class="card">
+      <div class="card g360-municipal-components-card">
         <div class="card-header">
-          <div class="header-row">
-            <div class="header-title">
-              <h5 class="mb-0">Ingreso y listado de componentes municipales</h5>
-            </div>
+          <div class="g360-card-heading">
+            <span class="g360-card-heading__icon">
+              <i class="feather icon-list"></i>
+            </span>
 
-            <div class="header-actions">
-              <!-- ✅ Abre modal 100% Bootstrap 4 -->
+            <div>
+              <span class="g360-card-heading__eyebrow">Matriz territorial</span>
+              <h5 class="mb-0">Listado de componentes municipales</h5>
+              <p>
+                Consulta el nombre del componente, municipio asociado y estado
+                de habilitación de cada registro.
+              </p>
+            </div>
+          </div>
+
+          <div class="g360-card-header-actions">
+            <?php if ($create): ?>
               <button
                 type="button"
-                class="btn btn-saas btn-sm"
+                class="btn btn-primary"
                 id="btnNuevoComponente"
                 data-toggle="modal"
                 data-target="#newModalComponente"
               >
-                <i class="feather icon-plus"></i> Nuevo Componente
+                <i class="feather icon-plus"></i>
+                Nuevo componente
               </button>
+            <?php endif; ?>
 
-              <div class="card-header-right ml-auto">
-                <div class="btn-group card-option">
-                  <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="feather icon-more-horizontal"></i>
-                  </button>
-                  <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> Maximizar</span><span style="display:none"><i class="feather icon-minimize"></i> Restaurar</span></a></li>
-                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> Colapsar</span><span style="display:none"><i class="feather icon-plus"></i> Expandir</span></a></li>
-                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> Recargar</a></li>
-                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> Eliminar</a></li>
-                  </ul>
-                </div>
+            <div class="card-header-right">
+              <div class="btn-group card-option">
+                <button
+                  type="button"
+                  class="btn dropdown-toggle btn-icon"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="feather icon-more-horizontal"></i>
+                </button>
+
+                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                  <li class="dropdown-item full-card">
+                    <a href="#!">
+                      <span><i class="feather icon-maximize"></i> Maximizar</span>
+                      <span style="display:none"><i class="feather icon-minimize"></i> Restaurar</span>
+                    </a>
+                  </li>
+
+                  <li class="dropdown-item minimize-card">
+                    <a href="#!">
+                      <span><i class="feather icon-minus"></i> Colapsar</span>
+                      <span style="display:none"><i class="feather icon-plus"></i> Expandir</span>
+                    </a>
+                  </li>
+
+                  <li class="dropdown-item reload-card">
+                    <a href="#!"><i class="feather icon-refresh-cw"></i> Recargar</a>
+                  </li>
+
+                  <li class="dropdown-item close-card">
+                    <a href="#!"><i class="feather icon-trash"></i> Eliminar</a>
+                  </li>
+                </ul>
               </div>
-
             </div>
           </div>
         </div>
 
         <div class="card-body table-border-style">
 
-          <!-- buscador compacto -->
-          <div class="search-wrap">
-            <div class="input-group">
-              <span class="input-group-text"><i class="feather icon-search"></i></span>
-              <input type="text" id="customSearch" class="form-control" placeholder="Buscar...">
+          <div class="g360-municipal-components-tools">
+            <div class="g360-municipal-components-search">
+              <span class="g360-municipal-components-search__icon">
+                <i class="feather icon-search"></i>
+              </span>
+
+              <div>
+                <label for="customSearch">Búsqueda rápida</label>
+                <input
+                  type="search"
+                  id="customSearch"
+                  class="form-control"
+                  placeholder="Buscar componente, municipio o estado..."
+                >
+              </div>
+            </div>
+
+            <div class="g360-municipal-components-tools__info">
+              <i class="feather icon-info"></i>
+
+              <span>
+                Los componentes permiten clasificar información y procesos
+                específicos dentro de cada municipio.
+              </span>
             </div>
           </div>
 
           <!-- tabla -->
-          <div class="table-responsive tabla-informacion tabla-scroll">
-            <table class="table table-hover mb-0" id="tableComponentes">
+          <div class="table-responsive tabla-informacion tabla-scroll g360-municipal-components-table">
+            <table class="table table-hover mb-0" id="tableComponentes" aria-label="Listado de componentes municipales">
               <thead>
                 <tr>
                   <th>Editar</th>
@@ -228,18 +339,58 @@ foreach ($arrDep as $val) {
       <!-- ✅ MODAL -->
       <div class="modal fade" id="newModalComponente" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-          <div class="modal-content">
+          <div class="modal-content g360-municipal-component-modal">
 
             <div class="modal-header">
-              <h5 class="modal-title">Ingresar Nuevo Componente Municipal</h5>
-              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+              <div class="g360-modal-heading">
+                <span class="g360-modal-heading__icon">
+                  <i class="feather icon-grid"></i>
+                </span>
+
+                <div>
+                  <small>Configuración territorial</small>
+                  <h5 class="modal-title">Componente municipal</h5>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="close text-white"
+                data-dismiss="modal"
+                aria-label="Cerrar"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
 
-            <div class="modal-body p-4">
+            <div class="modal-body">
+              <div class="g360-municipal-component-modal__intro">
+                <span>
+                  <i class="feather icon-shield"></i>
+                </span>
+
+                <div>
+                  <strong>Registro municipal controlado</strong>
+                  <p>
+                    Selecciona la ubicación territorial, asigna un nombre claro
+                    al componente y define si estará habilitado.
+                  </p>
+                </div>
+              </div>
+
               <form id="formNewComponente" autocomplete="off">
                 <input type="hidden" id="editId" name="editId">
+
+                <div class="g360-modal-section-heading">
+                  <span class="g360-modal-section-heading__icon">
+                    <i class="feather icon-map"></i>
+                  </span>
+
+                  <div>
+                    <small>Ubicación territorial</small>
+                    <h6>Departamento y municipio</h6>
+                  </div>
+                </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
@@ -254,6 +405,17 @@ foreach ($arrDep as $val) {
                     <select class="form-control" id="tbl_municipio_id" name="tbl_municipio_id" required>
                       <option value="">Seleccione un municipio</option>
                     </select>
+                  </div>
+                </div>
+
+                <div class="g360-modal-section-heading g360-modal-section-heading--component">
+                  <span class="g360-modal-section-heading__icon">
+                    <i class="feather icon-layers"></i>
+                  </span>
+
+                  <div>
+                    <small>Configuración</small>
+                    <h6>Nombre y disponibilidad del componente</h6>
                   </div>
                 </div>
 
@@ -276,8 +438,26 @@ foreach ($arrDep as $val) {
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button type="button" id="btnSaveComponente" class="btn btn-saas" onclick="saveNewComponente();">Guardar</button>
+              <div class="g360-modal-footer-message">
+                <i class="feather icon-lock"></i>
+                El componente quedará vinculado al municipio seleccionado.
+              </div>
+
+              <div class="g360-modal-footer-actions">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                  Cancelar
+                </button>
+
+                <button
+                  type="button"
+                  id="btnSaveComponente"
+                  class="btn btn-primary"
+                  onclick="saveNewComponente();"
+                >
+                  <i class="feather icon-save"></i>
+                  Guardar componente
+                </button>
+              </div>
             </div>
 
           </div>
@@ -305,6 +485,27 @@ foreach ($arrDep as $val) {
   <script type="text/javascript" src="./admin/js/datatables/jquery.dataTables.min.js"></script>
 
   <script>
+    function abrirComponenteMunicipalDesdeHero() {
+      const botonOriginal = document.getElementById('btnNuevoComponente');
+
+      if (botonOriginal) {
+        botonOriginal.click();
+        return;
+      }
+
+      if ($('#newModalComponente').length) {
+        try {
+          $('#newModalComponente').modal('show');
+        } catch (e) {}
+      }
+
+      if (typeof ingresarComponente === 'function') {
+        try {
+          ingresarComponente();
+        } catch (e) {}
+      }
+    }
+
     // ✅ Fallback: si por algún conflicto el data-toggle no engancha
     $(document).on('click', '#btnNuevoComponente', function () {
       if ($('#newModalComponente').length) {

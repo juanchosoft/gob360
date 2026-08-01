@@ -1,0 +1,1350 @@
+/* ===============================
+       GESTIÓN VEREDAS – GOVTECH WOW
+    ================================ */
+    :root{
+      --bg0:#070A12;
+      --bg1:#0B1222;
+      --stroke: rgba(255,255,255,.10);
+      --stroke2: rgba(255,255,255,.14);
+      --txt: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.66);
+      --brand:#4f7cff;
+      --brand2:#9b5cff;
+      --danger:#ff5b7a;
+      --ok:#18ff6d;
+      --radius-xl:22px;
+      --radius-lg:16px;
+      --shadow-soft: 0 14px 40px rgba(0,0,0,.25);
+      --shadow-mid: 0 22px 60px rgba(0,0,0,.35);
+      --safe-top: 96px;
+    }
+
+    body{
+      background:
+        radial-gradient(900px 420px at 10% 10%, rgba(79,124,255,.28), transparent 60%),
+        radial-gradient(900px 420px at 80% 20%, rgba(155,92,255,.22), transparent 60%),
+        radial-gradient(900px 520px at 50% 100%, rgba(24,255,109,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1)) !important;
+      color: var(--txt);
+      overflow-x:hidden;
+    }
+
+    .pcoded-main-container{ background: transparent !important; }
+    .pcoded-main-container .pcoded-content { padding: calc(var(--safe-top) + 16px) 16px 18px !important; }
+    @media(min-width:768px)  { :root { --safe-top: 112px; } .pcoded-main-container .pcoded-content { padding: calc(var(--safe-top) + 18px) 24px 24px !important; } }
+    @media(min-width:1200px) { :root { --safe-top: 120px; } .pcoded-main-container .pcoded-content { padding: calc(var(--safe-top) + 22px) 42px 34px !important; max-width: 1400px; margin: 0 auto; } }
+
+    /* page header */
+    .page-header .page-block{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      border-radius: var(--radius-lg);
+      padding: 14px 14px;
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      position: relative;
+    }
+    .page-header .page-block:before{
+      content:""; position:absolute; inset:-2px;
+      background: radial-gradient(320px 180px at 10% 10%, rgba(79,124,255,.25), transparent 65%), radial-gradient(320px 180px at 90% 20%, rgba(155,92,255,.18), transparent 65%);
+      pointer-events:none;
+    }
+    .page-header .page-block > *{ position:relative; z-index:1; }
+    .page-header h5, .breadcrumb .breadcrumb-item, .breadcrumb .breadcrumb-item a{
+      color: var(--txt) !important;
+    }
+    .breadcrumb .breadcrumb-item a{ color: var(--muted) !important; }
+
+    /* card */
+    .saas-card {
+      border: 1px solid var(--stroke) !important;
+      border-radius: var(--radius-xl) !important;
+      background: linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.04)) !important;
+      box-shadow: var(--shadow-mid);
+      overflow:hidden;
+      position:relative;
+    }
+    .saas-card:before{
+      content:""; position:absolute; inset:-2px;
+      background: radial-gradient(340px 200px at 4% 6%, rgba(79,124,255,.16), transparent 64%), radial-gradient(360px 200px at 96% 8%, rgba(155,92,255,.10), transparent 64%);
+      pointer-events:none;
+    }
+    .saas-card > *{ position:relative; z-index:1; }
+    .saas-card .card-header{
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.04)) !important;
+      border-bottom: 1px solid var(--stroke);
+      padding: 14px 16px;
+    }
+    .saas-card .card-header h5{ color: var(--txt) !important; font-weight: 1000 !important; margin: 0; }
+    .saas-card .card-body{ padding: 16px; }
+
+    /* filter panel */
+    .filter-panel{
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+    .filter-panel label{ font-weight: 800; color: var(--txt) !important; margin-bottom: 5px; }
+
+    /* form controls */
+    .form-control{
+      border: 1px solid var(--stroke) !important;
+      border-radius: 14px !important;
+      padding: 10px 12px;
+      font-weight: 700;
+      color: var(--txt) !important;
+      background: rgba(255,255,255,.06) !important;
+    }
+    .form-control::placeholder{ color: rgba(255,255,255,.50) !important; }
+    .form-control:focus{
+      border-color: var(--brand) !important;
+      box-shadow: 0 0 0 .2rem rgba(79,124,255,.18) !important;
+    }
+
+    /* buttons */
+    .btn{
+      border-radius: 14px !important;
+      padding: 10px 22px !important;
+      font-weight: 900 !important;
+      border: 1px solid rgba(255,255,255,.14) !important;
+      box-shadow: 0 10px 24px rgba(0,0,0,.25);
+    }
+    .btn-light{ background: rgba(255,255,255,.12) !important; color: #fff !important; }
+    .btn-light:hover{ background: rgba(255,255,255,.18) !important; color: #fff !important; }
+    .btn-secondary{ background: rgba(255,255,255,.08) !important; color: var(--txt) !important; border-color: rgba(255,255,255,.12) !important; }
+
+    /* table */
+    .table-responsive{
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      overflow-x: auto;
+      width: 100%;
+      background: transparent;
+    }
+    #tblVeredas{ margin-bottom: 0; }
+    #tblVeredas thead th{
+      background: rgba(255,255,255,.04) !important;
+      color: var(--txt) !important;
+      border-bottom: 1px solid var(--stroke) !important;
+      white-space: nowrap;
+      font-weight: 1000 !important;
+      vertical-align: middle;
+      font-size: .92rem;
+      padding: 10px 10px;
+    }
+    #tblVeredas tbody td{
+      color: var(--txt) !important;
+      font-weight: 700;
+      border-top: 1px solid var(--stroke) !important;
+      vertical-align: middle !important;
+      padding: 9px 10px;
+    }
+    #tblVeredas tbody tr{ background: transparent !important; }
+    #tblVeredas tbody tr:hover{ background: rgba(255,255,255,.05) !important; }
+
+    /* custom pagination */
+    #infoRegistros{ font-size:.88rem; font-weight:700; color: var(--txt); }
+    #paginacion .btn-outline-light{
+      background: rgba(255,255,255,.06) !important;
+      border: 1px solid rgba(255,255,255,.10) !important;
+      color: var(--txt) !important;
+      border-radius: 8px !important;
+      padding: 4px 10px !important;
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      box-shadow: none !important;
+    }
+    #paginacion .btn-outline-light:hover{
+      background: rgba(255,255,255,.12) !important;
+      border-color: rgba(255,255,255,.20) !important;
+      color: #fff !important;
+    }
+    #paginacion .btn-primary{
+      background: rgba(31,111,235,.35) !important;
+      border: 1px solid rgba(31,111,235,.50) !important;
+      color: #fff !important;
+      border-radius: 8px !important;
+      padding: 4px 10px !important;
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      box-shadow: none !important;
+    }
+    #paginacion .btn-secondary.disabled,
+    #paginacion .btn-secondary:disabled{
+      background: transparent !important;
+      border: 1px solid transparent !important;
+      color: rgba(255,255,255,.30) !important;
+      opacity: 1 !important;
+      box-shadow: none !important;
+    }
+
+    /* badges */
+    .badge-activo   { background: #28a745; color: #fff; padding: 3px 10px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
+    .badge-inactivo { background: #6c757d; color: #fff; padding: 3px 10px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
+    .badge-null     { background: rgba(255,255,255,.10); color: rgba(255,255,255,.60); padding: 3px 10px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
+
+    /* modal */
+    .modal-content{ border-radius: var(--radius-xl) !important; overflow: hidden; }
+    .modal-header{ background: linear-gradient(135deg, rgba(79,124,255,.40), rgba(155,92,255,.25)) !important; border-bottom: 1px solid rgba(255,255,255,.14) !important; }
+    .modal-header h5{ color: #fff !important; }
+    .modal .close{ color: #fff !important; opacity: .95; text-shadow: none; }
+    .modal-body{ background: transparent !important; color: var(--txt) !important; padding: 20px !important; }
+    .modal-footer{ background: transparent !important; border-top: 1px solid var(--stroke) !important; }
+    .modal-body label{ font-weight: 800; color: var(--txt); }
+
+table.dataTable tbody tr{
+        background-color: transparent !important;
+      }
+      table.dataTable.stripe tbody tr.odd,
+      table.dataTable.display tbody tr.odd{
+        background-color: rgba(255,255,255,.03) !important;
+      }
+      table.dataTable tbody td{
+        color: rgba(255,255,255,.86) !important;
+      }
+      table.dataTable tbody td a{
+        color: rgba(255,255,255,.86) !important;
+      }
+      table.dataTable tbody td i.feather,
+      table.dataTable tbody td i.bi{
+        color: rgba(255,255,255,.86) !important;
+      }
+      #tblVeredas td i.feather{
+        color: rgba(255,255,255,.86) !important;
+      }
+      .dataTables_wrapper .dataTables_paginate .paginate_button{
+        color: rgba(255,255,255,.86) !important;
+        background: rgba(255,255,255,.06) !important;
+        border: 1px solid rgba(255,255,255,.10) !important;
+        border-radius: 8px !important;
+      }
+      .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+      .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+        color: #fff !important;
+        background: rgba(31,111,235,.35) !important;
+        border: 1px solid rgba(31,111,235,.50) !important;
+      }
+      .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+        color: #fff !important;
+        background: rgba(255,255,255,.12) !important;
+        border: 1px solid rgba(255,255,255,.20) !important;
+      }
+      .dataTables_wrapper .dataTables_paginate .paginate_button.disabled{
+        color: rgba(255,255,255,.30) !important;
+        background: transparent !important;
+        border: 1px solid transparent !important;
+      }
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_length label{
+        color: #fff !important;
+      }
+      table.dataTable tbody tr.selected{
+        background-color: rgba(31,111,235,.25) !important;
+      }
+
+/* ============================================================
+   GOB360 · GESTIÓN DE VEREDAS
+============================================================ */
+:root{
+  --vil-bg-0:#030711;
+  --vil-bg-1:#061326;
+  --vil-bg-2:#082735;
+
+  --vil-panel:rgba(255,255,255,.062);
+  --vil-panel-strong:rgba(255,255,255,.092);
+  --vil-border:rgba(255,255,255,.125);
+  --vil-border-strong:rgba(255,255,255,.19);
+
+  --vil-text:rgba(255,255,255,.96);
+  --vil-muted:rgba(255,255,255,.65);
+  --vil-muted-soft:rgba(255,255,255,.46);
+
+  --vil-cyan:#28dcff;
+  --vil-blue:#3f7cff;
+  --vil-green:#39e6a3;
+  --vil-yellow:#ffd166;
+  --vil-red:#ff647f;
+  --vil-purple:#a78bfa;
+
+  --vil-radius-xl:29px;
+  --vil-radius-lg:21px;
+  --vil-radius-md:14px;
+
+  --vil-shadow-xl:0 31px 92px rgba(0,0,0,.45);
+  --vil-shadow-lg:0 19px 56px rgba(0,0,0,.33);
+  --vil-shadow-soft:0 13px 32px rgba(0,0,0,.22);
+
+  --vil-ring:0 0 0 .25rem rgba(40,220,255,.19);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  min-height:100%;
+  overflow-x:hidden!important;
+}
+
+body.gob360-villages-page{
+  min-height:100vh;
+  color:var(--vil-text)!important;
+  background:
+    radial-gradient(950px 520px at 6% 3%,rgba(63,124,255,.29),transparent 61%),
+    radial-gradient(850px 500px at 95% 8%,rgba(40,220,255,.14),transparent 61%),
+    radial-gradient(900px 570px at 48% 112%,rgba(57,230,163,.10),transparent 60%),
+    linear-gradient(150deg,var(--vil-bg-0),var(--vil-bg-1) 57%,var(--vil-bg-2))!important;
+  background-attachment:fixed!important;
+}
+
+body.gob360-villages-page::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  opacity:.13;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:linear-gradient(to bottom,#000,transparent 96%);
+}
+
+.gob360-villages-page .pcoded-main-container,
+.gob360-villages-page .pcoded-content{
+  background:transparent!important;
+}
+
+.gob360-villages-page .pcoded-main-container .pcoded-content{
+  width:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:18px 28px 48px!important;
+}
+
+/* Loader */
+.gob360-villages-page .loader-bg{
+  z-index:999999!important;
+  background:#030711!important;
+}
+
+.gob360-villages-page .loader-track{
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+}
+
+.gob360-villages-page .loader-fill{
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--vil-blue),var(--vil-cyan),var(--vil-green))!important;
+  box-shadow:0 0 25px rgba(40,220,255,.42);
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.g360-villages-hero{
+  position:relative;
+  overflow:hidden;
+  margin-bottom:18px;
+  padding:25px;
+  border:1px solid var(--vil-border);
+  border-radius:var(--vil-radius-xl);
+  background:
+    radial-gradient(720px 290px at 0% 0%,rgba(63,124,255,.30),transparent 67%),
+    radial-gradient(680px 290px at 100% 100%,rgba(57,230,163,.14),transparent 67%),
+    var(--vil-panel);
+  box-shadow:var(--vil-shadow-xl);
+  backdrop-filter:blur(19px);
+}
+
+.g360-villages-hero::before{
+  content:"";
+  position:absolute;
+  right:-110px;
+  top:-160px;
+  width:450px;
+  height:450px;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(40,220,255,.18),transparent 68%);
+}
+
+.g360-villages-hero__grid{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:minmax(245px,355px) 1fr;
+  align-items:stretch;
+  gap:27px;
+}
+
+.g360-villages-brand{
+  min-height:350px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:21px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  background:
+    radial-gradient(320px 180px at 50% 0%,rgba(40,220,255,.11),transparent 71%),
+    rgba(2,8,20,.29);
+  box-shadow:0 19px 40px rgba(0,0,0,.25);
+}
+
+.g360-villages-brand__eyebrow{
+  margin-bottom:13px;
+  color:var(--vil-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+.g360-villages-brand__logo{
+  display:block;
+  width:min(100%,335px);
+  height:auto;
+  border-radius:18px;
+  filter:
+    drop-shadow(0 18px 36px rgba(0,0,0,.44))
+    drop-shadow(0 0 30px rgba(40,220,255,.24));
+}
+
+.g360-villages-brand__caption{
+  margin-top:14px;
+  color:var(--vil-muted);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.15px;
+  text-transform:uppercase;
+}
+
+.g360-villages-brand__status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:18px;
+  padding:7px 11px;
+  color:#dfffee;
+  font-size:10.5px;
+  font-weight:900;
+  border:1px solid rgba(57,230,163,.23);
+  border-radius:999px;
+  background:rgba(57,230,163,.07);
+}
+
+.g360-villages-brand__status span{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--vil-green);
+  box-shadow:0 0 14px rgba(57,230,163,.58);
+}
+
+.g360-villages-hero__content{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.g360-villages-hero__top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.g360-villages-hero__eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:9px;
+  color:var(--vil-green);
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+}
+
+.g360-villages-hero__title{
+  max-width:900px;
+  margin:0;
+  color:#fff;
+  font-size:clamp(31px,4vw,50px);
+  font-weight:1000;
+  line-height:1.02;
+  letter-spacing:-1.35px;
+}
+
+.g360-villages-hero__description{
+  max-width:850px;
+  margin:13px 0 0;
+  color:var(--vil-muted);
+  font-size:14px;
+  line-height:1.68;
+}
+
+.g360-villages-hero__actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.g360-hero-button{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:9px 13px;
+  color:#fff!important;
+  font-size:10.5px;
+  font-weight:950;
+  text-decoration:none!important;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:13px;
+  cursor:pointer;
+  background:rgba(255,255,255,.055);
+  box-shadow:0 10px 23px rgba(0,0,0,.17);
+}
+
+.g360-hero-button--primary{
+  color:#06101d!important;
+  border-color:transparent!important;
+  background:linear-gradient(135deg,var(--vil-cyan),#83edff);
+}
+
+.g360-villages-summary{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-top:20px;
+}
+
+.g360-villages-summary article{
+  min-width:0;
+  min-height:126px;
+  display:grid;
+  grid-template-columns:45px 1fr;
+  align-items:start;
+  gap:11px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:17px;
+  background:rgba(3,10,23,.49);
+  box-shadow:0 12px 27px rgba(0,0,0,.18);
+}
+
+.g360-villages-summary__icon{
+  width:45px;
+  height:45px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:19px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--vil-cyan),#83edff);
+}
+
+.g360-villages-summary__icon--population{
+  background:linear-gradient(135deg,var(--vil-green),#96f4ce);
+}
+
+.g360-villages-summary__icon--code{
+  background:linear-gradient(135deg,var(--vil-yellow),#ffe19a);
+}
+
+.g360-villages-summary__icon--security{
+  color:#fff;
+  background:linear-gradient(135deg,var(--vil-blue),var(--vil-purple));
+}
+
+.g360-villages-summary small{
+  display:block;
+  margin-bottom:5px;
+  color:var(--vil-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:.52px;
+  text-transform:uppercase;
+}
+
+.g360-villages-summary strong{
+  display:block;
+  overflow:hidden;
+  color:#fff;
+  font-size:clamp(16px,1.7vw,23px);
+  font-weight:1000;
+  line-height:1.2;
+  text-overflow:ellipsis;
+}
+
+.g360-villages-summary p{
+  margin:7px 0 0;
+  color:var(--vil-muted-soft);
+  font-size:10.5px;
+  line-height:1.4;
+}
+
+.g360-villages-capabilities{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:13px;
+}
+
+.g360-villages-capabilities span{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:33px;
+  padding:7px 10px;
+  color:rgba(255,255,255,.82);
+  font-size:10.5px;
+  font-weight:850;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:999px;
+  background:rgba(255,255,255,.045);
+}
+
+.g360-villages-capabilities i{
+  color:var(--vil-cyan);
+}
+
+/* ============================================================
+   CARD PRINCIPAL
+============================================================ */
+.gob360-villages-page .g360-villages-card{
+  overflow:hidden;
+  margin-bottom:18px;
+  border:1px solid var(--vil-border)!important;
+  border-radius:var(--vil-radius-xl)!important;
+  background:var(--vil-panel)!important;
+  box-shadow:var(--vil-shadow-xl)!important;
+  backdrop-filter:blur(18px);
+}
+
+.gob360-villages-page .g360-villages-card::before{
+  display:none!important;
+}
+
+.gob360-villages-page .g360-villages-card>.card-header{
+  min-height:88px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  padding:17px 20px!important;
+  border-bottom:1px solid var(--vil-border)!important;
+  background:
+    radial-gradient(440px 180px at 0% 0%,rgba(57,230,163,.13),transparent 68%),
+    linear-gradient(135deg,rgba(63,124,255,.27),rgba(8,22,42,.73))!important;
+}
+
+.gob360-villages-page .g360-villages-card>.card-body{
+  padding:20px!important;
+  color:var(--vil-text);
+  background:transparent!important;
+}
+
+.g360-card-heading{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.g360-card-heading__icon{
+  width:44px;
+  height:44px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:19px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--vil-green),#96f4ce);
+  box-shadow:0 10px 23px rgba(57,230,163,.14);
+}
+
+.g360-card-heading__eyebrow{
+  display:block;
+  margin-bottom:3px;
+  color:var(--vil-green);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.g360-card-heading h5{
+  margin:0!important;
+  color:#fff!important;
+  font-size:17px;
+  font-weight:1000!important;
+  text-align:left!important;
+}
+
+.g360-card-heading p{
+  margin:4px 0 0;
+  color:var(--vil-muted);
+  font-size:10.5px;
+  font-weight:750;
+  line-height:1.45;
+}
+
+.g360-card-header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+/* ============================================================
+   FILTROS
+============================================================ */
+.gob360-villages-page .g360-villages-filters{
+  display:grid;
+  grid-template-columns:minmax(210px,.55fr) minmax(0,1.45fr);
+  gap:16px;
+  padding:15px!important;
+  border:1px solid var(--vil-border)!important;
+  border-radius:18px!important;
+  background:rgba(3,10,23,.48)!important;
+  box-shadow:var(--vil-shadow-soft)!important;
+}
+
+.g360-villages-filters__heading{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:8px;
+}
+
+.g360-villages-filters__heading-icon{
+  width:42px;
+  height:42px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:18px;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--vil-yellow),#ffe19a);
+}
+
+.g360-villages-filters__heading small{
+  display:block;
+  margin-bottom:3px;
+  color:var(--vil-green);
+  font-size:8.5px;
+  font-weight:950;
+  letter-spacing:.9px;
+  text-transform:uppercase;
+}
+
+.g360-villages-filters__heading h6{
+  margin:0;
+  color:#fff;
+  font-size:13px;
+  font-weight:1000;
+}
+
+.g360-villages-filters__heading p{
+  margin:4px 0 0;
+  color:var(--vil-muted);
+  font-size:10px;
+  line-height:1.45;
+}
+
+.g360-villages-filters__grid{
+  display:grid;
+  grid-template-columns:minmax(210px,1fr) minmax(260px,1.25fr) auto;
+  align-items:end;
+  gap:10px;
+}
+
+.g360-villages-filter-field label{
+  display:flex!important;
+  align-items:center;
+  gap:7px;
+}
+
+.g360-villages-filter-field label i{
+  color:var(--vil-cyan);
+}
+
+.g360-villages-filter-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* ============================================================
+   FORMULARIOS Y BOTONES
+============================================================ */
+.gob360-villages-page label{
+  display:block;
+  margin-bottom:7px;
+  color:rgba(255,255,255,.82)!important;
+  font-size:10.5px;
+  font-weight:950!important;
+  letter-spacing:.35px;
+  text-transform:uppercase;
+}
+
+.gob360-villages-page .form-control,
+.gob360-villages-page select.form-control{
+  min-height:47px;
+  padding:10px 13px!important;
+  color:#fff!important;
+  font-size:13px;
+  font-weight:800;
+  border:1px solid rgba(255,255,255,.13)!important;
+  border-radius:13px!important;
+  outline:none;
+  background:rgba(3,10,23,.67)!important;
+  box-shadow:none!important;
+}
+
+.gob360-villages-page .form-control:focus,
+.gob360-villages-page select.form-control:focus{
+  border-color:rgba(40,220,255,.42)!important;
+  box-shadow:var(--vil-ring)!important;
+}
+
+.gob360-villages-page select.form-control option{
+  color:#fff!important;
+  background:#0a1629!important;
+}
+
+.gob360-villages-page .btn{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:8px 13px!important;
+  font-size:10.5px!important;
+  font-weight:900!important;
+  border-radius:12px!important;
+}
+
+.gob360-villages-page .btn-primary{
+  color:#06101d!important;
+  border:0!important;
+  background:linear-gradient(135deg,var(--vil-cyan),#83edff)!important;
+}
+
+.gob360-villages-page .btn-secondary{
+  color:#fff!important;
+  border:1px solid var(--vil-border)!important;
+  background:rgba(255,255,255,.055)!important;
+}
+
+.gob360-villages-page .btn-warning{
+  color:#06101d!important;
+  border:0!important;
+  background:linear-gradient(135deg,var(--vil-yellow),#ffe19a)!important;
+}
+
+/* ============================================================
+   TABLA Y PAGINACIÓN
+============================================================ */
+.gob360-villages-page .g360-villages-table{
+  overflow:auto;
+  margin-top:0!important;
+  border:1px solid var(--vil-border)!important;
+  border-radius:17px!important;
+  background:rgba(3,10,23,.48)!important;
+  box-shadow:none!important;
+  -webkit-overflow-scrolling:touch;
+}
+
+.gob360-villages-page #tblVeredas{
+  min-width:1180px;
+  margin:0!important;
+  color:rgba(255,255,255,.86)!important;
+}
+
+.gob360-villages-page #tblVeredas thead th{
+  position:sticky;
+  top:0;
+  z-index:4;
+  padding:11px 9px!important;
+  color:#fff!important;
+  font-size:9.5px!important;
+  font-weight:950!important;
+  background:linear-gradient(180deg,#183b68,#0e2544)!important;
+  border-color:rgba(255,255,255,.08)!important;
+}
+
+.gob360-villages-page #tblVeredas tbody tr{
+  background:transparent!important;
+}
+
+.gob360-villages-page #tblVeredas tbody td{
+  padding:10px 9px!important;
+  color:rgba(255,255,255,.82)!important;
+  font-size:10.5px!important;
+  font-weight:750!important;
+  line-height:1.45!important;
+  border-color:rgba(255,255,255,.07)!important;
+  background:transparent!important;
+}
+
+.gob360-villages-page #tblVeredas tbody tr:nth-child(even) td{
+  background:rgba(255,255,255,.018)!important;
+}
+
+.gob360-villages-page #tblVeredas tbody tr:hover td{
+  color:#fff!important;
+  background:rgba(40,220,255,.055)!important;
+}
+
+.gob360-villages-page .badge-activo,
+.gob360-villages-page .badge-inactivo,
+.gob360-villages-page .badge-null{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:28px;
+  padding:5px 9px!important;
+  font-size:9px!important;
+  font-weight:950!important;
+  border-radius:999px!important;
+}
+
+.gob360-villages-page .badge-activo{
+  color:#06101d!important;
+  background:linear-gradient(135deg,var(--vil-green),#96f4ce)!important;
+}
+
+.gob360-villages-page .badge-inactivo{
+  color:#fff!important;
+  background:rgba(255,255,255,.10)!important;
+}
+
+.gob360-villages-page .badge-null{
+  color:var(--vil-muted)!important;
+  border:1px solid var(--vil-border);
+  background:rgba(255,255,255,.035)!important;
+}
+
+.g360-villages-pagination{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:14px;
+  padding:12px;
+  border:1px solid var(--vil-border);
+  border-radius:15px;
+  background:rgba(3,10,23,.43);
+}
+
+.gob360-villages-page #infoRegistros{
+  color:var(--vil-muted)!important;
+  font-size:10.5px!important;
+  font-weight:850!important;
+}
+
+.gob360-villages-page #paginacion{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  flex-wrap:wrap;
+}
+
+.gob360-villages-page #paginacion .btn{
+  min-width:35px;
+  min-height:35px;
+  padding:5px 9px!important;
+  font-size:9.5px!important;
+  border-radius:10px!important;
+}
+
+.gob360-villages-page #paginacion .btn-primary{
+  color:#06101d!important;
+  background:linear-gradient(135deg,var(--vil-cyan),#83edff)!important;
+}
+
+.gob360-villages-page #paginacion .btn-outline-light{
+  color:var(--vil-muted)!important;
+  border:1px solid var(--vil-border)!important;
+  background:rgba(255,255,255,.035)!important;
+}
+
+.gob360-villages-page #paginacion .btn-outline-light:hover{
+  color:#fff!important;
+  background:rgba(255,255,255,.08)!important;
+}
+
+.gob360-villages-page #paginacion .disabled{
+  opacity:.35!important;
+}
+
+/* ============================================================
+   MODAL
+============================================================ */
+.gob360-villages-page .modal-backdrop.show{
+  opacity:.78!important;
+}
+
+.gob360-villages-page .g360-village-modal{
+  overflow:hidden;
+  color:#fff!important;
+  border:1px solid var(--vil-border)!important;
+  border-radius:24px!important;
+  background:#071426!important;
+  box-shadow:0 36px 105px rgba(0,0,0,.60);
+}
+
+.g360-village-modal .modal-header{
+  min-height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:17px 20px!important;
+  border-bottom:1px solid var(--vil-border)!important;
+  background:
+    radial-gradient(390px 145px at 0% 0%,rgba(40,220,255,.17),transparent 70%),
+    linear-gradient(135deg,#143766,#08182f)!important;
+}
+
+.g360-modal-heading{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.g360-modal-heading__icon{
+  width:43px;
+  height:43px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:18px;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--vil-cyan),#83edff);
+}
+
+.g360-modal-heading small{
+  display:block;
+  margin-bottom:3px;
+  color:var(--vil-green);
+  font-size:8.5px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.g360-modal-heading h5{
+  margin:0;
+  color:#fff!important;
+  font-size:16px;
+  font-weight:1000!important;
+}
+
+.g360-village-modal .close,
+.g360-village-modal .close span{
+  color:#fff!important;
+  opacity:.95!important;
+  text-shadow:none!important;
+}
+
+.g360-village-modal .modal-body{
+  max-height:70vh;
+  overflow:auto;
+  padding:20px!important;
+  background:#071426!important;
+}
+
+.g360-village-modal__intro{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:15px;
+  padding:13px 14px;
+  border:1px solid rgba(57,230,163,.16);
+  border-radius:15px;
+  background:rgba(57,230,163,.055);
+}
+
+.g360-village-modal__intro>span{
+  width:39px;
+  height:39px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--vil-green),#96f4ce);
+}
+
+.g360-village-modal__intro strong{
+  display:block;
+  color:#fff;
+  font-size:11.5px;
+  font-weight:950;
+}
+
+.g360-village-modal__intro p{
+  margin:4px 0 0;
+  color:var(--vil-muted);
+  font-size:10.5px;
+  line-height:1.45;
+}
+
+.g360-modal-section-heading{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:15px 0 12px;
+  padding-bottom:9px;
+  border-bottom:1px solid var(--vil-border);
+}
+
+.g360-modal-section-heading__icon{
+  width:38px;
+  height:38px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--vil-yellow),#ffe19a);
+}
+
+.g360-modal-section-heading--population .g360-modal-section-heading__icon{
+  background:linear-gradient(135deg,var(--vil-green),#96f4ce);
+}
+
+.g360-modal-section-heading--status .g360-modal-section-heading__icon{
+  color:#fff;
+  background:linear-gradient(135deg,var(--vil-blue),var(--vil-purple));
+}
+
+.g360-modal-section-heading small{
+  display:block;
+  margin-bottom:2px;
+  color:var(--vil-green);
+  font-size:8px;
+  font-weight:950;
+  letter-spacing:.9px;
+  text-transform:uppercase;
+}
+
+.g360-modal-section-heading h6{
+  margin:0;
+  color:#fff;
+  font-size:13px;
+  font-weight:1000;
+}
+
+.gob360-villages-page #codigoPreview{
+  min-height:47px;
+  display:flex;
+  align-items:center;
+  color:var(--vil-cyan)!important;
+  font-weight:950!important;
+  letter-spacing:1px;
+  border:1px dashed rgba(40,220,255,.25)!important;
+  background:rgba(40,220,255,.055)!important;
+}
+
+.g360-village-modal .modal-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 20px!important;
+  border-top:1px solid var(--vil-border)!important;
+  background:#071426!important;
+}
+
+.g360-modal-footer-message{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--vil-muted);
+  font-size:9.5px;
+  font-weight:750;
+}
+
+.g360-modal-footer-message i{
+  color:var(--vil-green);
+}
+
+.g360-modal-footer-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* SweetAlert */
+.swal2-popup{
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  border-radius:23px!important;
+  background:#071426!important;
+  box-shadow:0 32px 90px rgba(0,0,0,.58)!important;
+}
+
+.swal2-title{
+  color:#fff!important;
+  font-weight:1000!important;
+}
+
+.swal2-html-container{
+  color:var(--vil-muted)!important;
+}
+
+.swal2-confirm{
+  color:#06101d!important;
+  border:0!important;
+  border-radius:12px!important;
+  font-weight:950!important;
+  background:linear-gradient(135deg,var(--vil-cyan),#83edff)!important;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media(max-width:1200px){
+  .g360-villages-hero__grid{
+    grid-template-columns:1fr;
+  }
+
+  .g360-villages-brand{
+    min-height:auto;
+  }
+
+  .g360-villages-brand__logo{
+    width:min(335px,90%);
+  }
+
+  .g360-villages-summary{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .gob360-villages-page .g360-villages-filters{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:991px){
+  .g360-villages-hero__top{
+    flex-direction:column;
+  }
+
+  .g360-villages-hero__actions{
+    justify-content:flex-start;
+  }
+
+  .g360-villages-filters__grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .g360-villages-filter-actions{
+    grid-column:1/-1;
+  }
+}
+
+@media(max-width:767.98px){
+  .gob360-villages-page .pcoded-main-container .pcoded-content{
+    padding:14px 13px 42px!important;
+  }
+
+  .g360-villages-hero{
+    padding:18px;
+  }
+
+  .g360-villages-brand{
+    padding:16px;
+  }
+
+  .g360-villages-hero__title{
+    font-size:29px;
+  }
+
+  .g360-villages-summary,
+  .g360-villages-filters__grid{
+    grid-template-columns:1fr;
+  }
+
+  .g360-villages-filter-actions{
+    grid-column:auto;
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .g360-villages-filter-actions .btn{
+    width:100%;
+  }
+
+  .gob360-villages-page .g360-villages-card>.card-body{
+    padding:13px!important;
+  }
+
+  .g360-card-header-actions{
+    width:100%;
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .g360-card-header-actions .btn{
+    width:100%;
+  }
+
+  .g360-villages-pagination{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .g360-village-modal .modal-dialog{
+    max-width:calc(100% - 18px);
+    margin:9px auto;
+  }
+
+  .g360-village-modal .modal-footer{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .g360-modal-footer-actions{
+    width:100%;
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .g360-modal-footer-actions .btn{
+    width:100%;
+  }
+
+  .gob360-villages-page input,
+  .gob360-villages-page select{
+    font-size:16px!important;
+  }
+}

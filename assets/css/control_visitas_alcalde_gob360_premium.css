@@ -1,0 +1,1194 @@
+.nav-tabs{
+      border-bottom: 1px solid rgba(255,255,255,.12) !important;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .nav-tabs .nav-link{
+      border: 1px solid rgba(255,255,255,.14) !important;
+      border-bottom: none !important;
+      border-radius: 999px !important;
+      padding: 10px 14px !important;
+      font-weight: 950;
+      color: rgba(255,255,255,.7) !important;
+      background: rgba(255,255,255,.06) !important;
+      transition: all .18s ease;
+      white-space: nowrap;
+    }
+    .nav-tabs .nav-link.active{
+      color: #fff !important;
+      background: rgba(32,66,127,.25) !important;
+      border-color: rgba(46,88,168,.35) !important;
+      box-shadow: 0 10px 22px rgba(32,66,127,.18);
+    }
+    @media (max-width:576px){
+      .nav-tabs{ overflow-x:auto; flex-wrap: nowrap; padding-bottom: 6px; }
+      .nav-tabs .nav-link{ font-size: 13px; padding: 9px 12px !important; }
+    }
+    .au-search{
+      max-width: 620px;
+      margin: 0 auto 14px auto;
+    }
+    .au-search .input-group{
+      border-radius: 999px; overflow: hidden;
+      box-shadow: 0 10px 24px rgba(0,0,0,.30);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      backdrop-filter: blur(10px);
+    }
+    .au-search input{
+      border: none !important; height: 44px; padding-left: 16px;
+      background: transparent !important; color: #fff !important;
+    }
+    .au-search input::placeholder{ color: rgba(255,255,255,.55) !important; }
+    .au-search input:focus{ box-shadow:none !important; }
+    .au-search .input-group-text{
+      border: none !important;
+      background: rgba(32,66,127,.30) !important;
+      color: #fff !important;
+      width: 52px; justify-content:center;
+    }
+    .au-search .input-group-text .feather{ color: #fff !important; }
+    #dynamictable{ width:100% !important; table-layout:auto; white-space:normal; border-collapse:separate; border-spacing:0; }
+    #dynamictable thead th{
+      position:sticky; top:0; z-index:2;
+      background: rgba(255,255,255,.08) !important;
+      color: #fff !important; font-weight:1000;
+      border-bottom: 1px solid rgba(255,255,255,.14) !important;
+      padding: 12px 12px !important; white-space:nowrap;
+    }
+    #dynamictable tbody tr{ background: transparent !important; }
+    #dynamictable td{
+      color: rgba(255,255,255,.86) !important;
+      white-space:normal !important; word-break:break-word !important;
+      max-width:320px; vertical-align:top;
+      padding: 12px 12px !important;
+      border-bottom: 1px solid rgba(255,255,255,.08) !important;
+      background: transparent !important;
+    }
+    #dynamictable tbody tr:hover{ background: rgba(255,255,255,.06) !important; }
+    #dynamictable .feather{ color: rgba(255,255,255,.8) !important; }
+    #dynamictable .btn .feather{ color: #fff !important; }
+    #dynamictable .btn-transparent{ color: rgba(255,255,255,.8) !important; background: transparent !important; border: none !important; }
+    #dynamictable .btn-transparent:hover{ color: #fff !important; background: rgba(255,255,255,.1) !important; }
+    #dynamictable .btn-success4{ color: #fff !important; background: rgba(52,211,153,.2) !important; border: 1px solid rgba(52,211,153,.3) !important; border-radius: 8px !important; }
+    #dynamictable .btn-success4:hover{ background: rgba(52,211,153,.35) !important; }
+    #dynamictable .btn-link.text-primary{ color: #60a5fa !important; padding: 0 !important; border: none !important; font-weight: 800 !important; }
+    #dynamictable .btn-link.text-primary:hover{ color: #93c5fd !important; text-decoration: underline !important; }
+    #dynamictable span.text-muted{ color: rgba(255,255,255,.5) !important; }
+    div.dataTables_wrapper .dataTables_filter{ display:none !important; }
+    div.dataTables_wrapper .dataTables_length select{
+      border-radius:12px; border:1px solid rgba(255,255,255,.14);
+      padding:6px 10px; background:rgba(10,17,33,.55); color:#fff;
+    }
+    .au-ind-card{
+      border-radius:22px; box-shadow:0 10px 30px rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.12); overflow:hidden;
+      background:rgba(255,255,255,.06); backdrop-filter:blur(10px);
+    }
+    .au-ind-card .card-header{
+      background:linear-gradient(135deg, #20427F, #132b52); color:#fff;
+      border-bottom:none; padding:14px 16px;
+    }
+    .au-ind-card .card-header h5{ font-weight:1000; margin:0; }
+    .modal{ z-index: 20060 !important; }
+    .modal-backdrop{ z-index: 20040 !important; }
+    html, body{ overflow-x:hidden !important; }
+
+/* ============================================================
+   GOB360 · CONTROL DE VISITAS DEL ALCALDE
+============================================================ */
+:root{
+  --cv-bg-0:#030711;
+  --cv-bg-1:#061326;
+  --cv-bg-2:#082735;
+
+  --cv-panel:rgba(255,255,255,.062);
+  --cv-panel-strong:rgba(255,255,255,.092);
+  --cv-border:rgba(255,255,255,.125);
+  --cv-border-strong:rgba(255,255,255,.19);
+
+  --cv-text:rgba(255,255,255,.96);
+  --cv-muted:rgba(255,255,255,.65);
+  --cv-muted-soft:rgba(255,255,255,.46);
+
+  --cv-cyan:#28dcff;
+  --cv-blue:#3f7cff;
+  --cv-green:#39e6a3;
+  --cv-yellow:#ffd166;
+  --cv-red:#ff647f;
+  --cv-purple:#a78bfa;
+
+  --cv-radius-xl:29px;
+  --cv-radius-lg:21px;
+  --cv-radius-md:14px;
+
+  --cv-shadow-xl:0 31px 92px rgba(0,0,0,.45);
+  --cv-shadow-lg:0 19px 56px rgba(0,0,0,.33);
+  --cv-shadow-soft:0 13px 32px rgba(0,0,0,.22);
+
+  --cv-ring:0 0 0 .25rem rgba(40,220,255,.19);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  min-height:100%;
+  overflow-x:hidden!important;
+}
+
+body.gob360-visit-control-page{
+  min-height:100vh;
+  color:var(--cv-text)!important;
+  background:
+    radial-gradient(950px 520px at 6% 3%,rgba(63,124,255,.29),transparent 61%),
+    radial-gradient(850px 500px at 95% 8%,rgba(40,220,255,.14),transparent 61%),
+    radial-gradient(900px 570px at 48% 112%,rgba(57,230,163,.10),transparent 60%),
+    linear-gradient(150deg,var(--cv-bg-0),var(--cv-bg-1) 57%,var(--cv-bg-2))!important;
+  background-attachment:fixed!important;
+}
+
+body.gob360-visit-control-page::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  opacity:.13;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:linear-gradient(to bottom,#000,transparent 96%);
+}
+
+.gob360-visit-control-page .pcoded-main-container,
+.gob360-visit-control-page .pcoded-content{
+  background:transparent!important;
+}
+
+.gob360-visit-control-page .pcoded-main-container .pcoded-content{
+  width:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:18px 28px 48px!important;
+}
+
+/* Loader */
+.gob360-visit-control-page .loader-bg{
+  z-index:999999!important;
+  background:#030711!important;
+}
+
+.gob360-visit-control-page .loader-track{
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+}
+
+.gob360-visit-control-page .loader-fill{
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--cv-blue),var(--cv-cyan),var(--cv-green))!important;
+  box-shadow:0 0 25px rgba(40,220,255,.42);
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.g360-control-hero{
+  position:relative;
+  overflow:hidden;
+  margin-bottom:18px;
+  padding:25px;
+  border:1px solid var(--cv-border);
+  border-radius:var(--cv-radius-xl);
+  background:
+    radial-gradient(720px 290px at 0% 0%,rgba(63,124,255,.30),transparent 67%),
+    radial-gradient(680px 290px at 100% 100%,rgba(57,230,163,.14),transparent 67%),
+    var(--cv-panel);
+  box-shadow:var(--cv-shadow-xl);
+  backdrop-filter:blur(19px);
+}
+
+.g360-control-hero::before{
+  content:"";
+  position:absolute;
+  right:-110px;
+  top:-160px;
+  width:450px;
+  height:450px;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(40,220,255,.18),transparent 68%);
+}
+
+.g360-control-hero__grid{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:minmax(245px,355px) 1fr;
+  align-items:stretch;
+  gap:27px;
+}
+
+.g360-control-brand{
+  min-height:350px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:21px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  background:
+    radial-gradient(320px 180px at 50% 0%,rgba(40,220,255,.11),transparent 71%),
+    rgba(2,8,20,.29);
+  box-shadow:0 19px 40px rgba(0,0,0,.25);
+}
+
+.g360-control-brand__eyebrow{
+  margin-bottom:13px;
+  color:var(--cv-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+.g360-control-brand__logo{
+  display:block;
+  width:min(100%,335px);
+  height:auto;
+  border-radius:18px;
+  filter:
+    drop-shadow(0 18px 36px rgba(0,0,0,.44))
+    drop-shadow(0 0 30px rgba(40,220,255,.24));
+}
+
+.g360-control-brand__caption{
+  margin-top:14px;
+  color:var(--cv-muted);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.15px;
+  text-transform:uppercase;
+}
+
+.g360-control-brand__status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:18px;
+  padding:7px 11px;
+  color:#dfffee;
+  font-size:10.5px;
+  font-weight:900;
+  border:1px solid rgba(57,230,163,.23);
+  border-radius:999px;
+  background:rgba(57,230,163,.07);
+}
+
+.g360-control-brand__status span{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--cv-green);
+  box-shadow:0 0 14px rgba(57,230,163,.58);
+}
+
+.g360-control-hero__content{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.g360-control-hero__top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.g360-control-hero__eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:9px;
+  color:var(--cv-green);
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+}
+
+.g360-control-hero__title{
+  max-width:900px;
+  margin:0;
+  color:#fff;
+  font-size:clamp(31px,4vw,50px);
+  font-weight:1000;
+  line-height:1.02;
+  letter-spacing:-1.35px;
+}
+
+.g360-control-hero__description{
+  max-width:850px;
+  margin:13px 0 0;
+  color:var(--cv-muted);
+  font-size:14px;
+  line-height:1.68;
+}
+
+.g360-control-hero__actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.g360-hero-button{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:9px 13px;
+  color:#fff!important;
+  font-size:10.5px;
+  font-weight:950;
+  text-decoration:none!important;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:13px;
+  cursor:pointer;
+  background:rgba(255,255,255,.055);
+  box-shadow:0 10px 23px rgba(0,0,0,.17);
+}
+
+.g360-hero-button--primary{
+  color:#06101d!important;
+  border-color:transparent!important;
+  background:linear-gradient(135deg,var(--cv-cyan),#83edff);
+}
+
+.g360-control-summary{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-top:20px;
+}
+
+.g360-control-summary article{
+  min-width:0;
+  min-height:126px;
+  display:grid;
+  grid-template-columns:45px 1fr;
+  align-items:start;
+  gap:11px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:17px;
+  background:rgba(3,10,23,.49);
+  box-shadow:0 12px 27px rgba(0,0,0,.18);
+}
+
+.g360-control-summary__icon{
+  width:45px;
+  height:45px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:19px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--cv-cyan),#83edff);
+}
+
+.g360-control-summary__icon--visits{
+  background:linear-gradient(135deg,var(--cv-green),#96f4ce);
+}
+
+.g360-control-summary__icon--indicators{
+  background:linear-gradient(135deg,var(--cv-yellow),#ffe19a);
+}
+
+.g360-control-summary__icon--evidence{
+  color:#fff;
+  background:linear-gradient(135deg,var(--cv-blue),var(--cv-purple));
+}
+
+.g360-control-summary small{
+  display:block;
+  margin-bottom:5px;
+  color:var(--cv-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:.52px;
+  text-transform:uppercase;
+}
+
+.g360-control-summary strong{
+  display:block;
+  overflow:hidden;
+  color:#fff;
+  font-size:clamp(16px,1.7vw,23px);
+  font-weight:1000;
+  line-height:1.2;
+  text-overflow:ellipsis;
+}
+
+.g360-control-summary p{
+  margin:7px 0 0;
+  color:var(--cv-muted-soft);
+  font-size:10.5px;
+  line-height:1.4;
+}
+
+.g360-control-capabilities{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:13px;
+}
+
+.g360-control-capabilities span{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:33px;
+  padding:7px 10px;
+  color:rgba(255,255,255,.82);
+  font-size:10.5px;
+  font-weight:850;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:999px;
+  background:rgba(255,255,255,.045);
+}
+
+.g360-control-capabilities i{
+  color:var(--cv-cyan);
+}
+
+/* ============================================================
+   TARJETA PRINCIPAL
+============================================================ */
+.gob360-visit-control-page .g360-control-card{
+  overflow:hidden;
+  margin-bottom:18px;
+  border:1px solid var(--cv-border)!important;
+  border-radius:var(--cv-radius-xl)!important;
+  background:var(--cv-panel)!important;
+  box-shadow:var(--cv-shadow-xl)!important;
+  backdrop-filter:blur(18px);
+}
+
+.gob360-visit-control-page .g360-control-card>.card-header{
+  min-height:88px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  padding:17px 20px!important;
+  border-bottom:1px solid var(--cv-border)!important;
+  background:
+    radial-gradient(440px 180px at 0% 0%,rgba(57,230,163,.13),transparent 68%),
+    linear-gradient(135deg,rgba(63,124,255,.27),rgba(8,22,42,.73))!important;
+}
+
+.gob360-visit-control-page .g360-control-card>.card-body{
+  padding:20px!important;
+  color:var(--cv-text);
+  background:transparent!important;
+}
+
+.g360-card-heading{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.g360-card-heading__icon{
+  width:44px;
+  height:44px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:19px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--cv-green),#96f4ce);
+  box-shadow:0 10px 23px rgba(57,230,163,.14);
+}
+
+.g360-card-heading__icon--indicator{
+  background:linear-gradient(135deg,var(--cv-yellow),#ffe19a);
+}
+
+.g360-card-heading__eyebrow{
+  display:block;
+  margin-bottom:3px;
+  color:var(--cv-green);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.g360-card-heading h5{
+  margin:0!important;
+  color:#fff!important;
+  font-size:17px;
+  font-weight:1000!important;
+}
+
+.g360-card-heading p{
+  margin:4px 0 0;
+  color:var(--cv-muted);
+  font-size:10.5px;
+  font-weight:750;
+  line-height:1.45;
+}
+
+.g360-card-header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.g360-control-live{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:36px;
+  padding:7px 10px;
+  color:#dfffee;
+  font-size:9.5px;
+  font-weight:900;
+  border:1px solid rgba(57,230,163,.20);
+  border-radius:999px;
+  background:rgba(57,230,163,.06);
+}
+
+.g360-control-live>span{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--cv-green);
+  box-shadow:0 0 12px rgba(57,230,163,.55);
+}
+
+.gob360-visit-control-page .card-header-right{
+  position:static!important;
+  margin:0!important;
+}
+
+.gob360-visit-control-page .card-option .btn{
+  width:40px;
+  min-width:40px;
+  height:40px;
+  padding:0!important;
+  color:#fff!important;
+  border:1px solid var(--cv-border)!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.06)!important;
+}
+
+.gob360-visit-control-page .card-option .dropdown-menu{
+  overflow:hidden;
+  padding:8px;
+  border:1px solid var(--cv-border)!important;
+  border-radius:15px!important;
+  background:rgba(5,13,28,.98)!important;
+  box-shadow:var(--cv-shadow-lg);
+}
+
+.gob360-visit-control-page .card-option .dropdown-item a{
+  display:block;
+  padding:8px 10px;
+  color:rgba(255,255,255,.82)!important;
+  font-size:12px;
+  font-weight:800;
+  border-radius:10px;
+}
+
+/* ============================================================
+   PESTAÑAS
+============================================================ */
+.g360-control-tabs{
+  margin-bottom:15px;
+}
+
+.gob360-visit-control-page .nav-tabs{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin:0!important;
+  padding:6px;
+  border:1px solid var(--cv-border)!important;
+  border-radius:17px;
+  background:rgba(3,10,23,.48);
+}
+
+.gob360-visit-control-page .nav-tabs .nav-item{
+  margin:0!important;
+}
+
+.gob360-visit-control-page .nav-tabs .nav-link{
+  width:100%;
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:11px;
+  padding:10px 12px!important;
+  text-align:left;
+  color:var(--cv-muted)!important;
+  border:1px solid transparent!important;
+  border-radius:13px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+.gob360-visit-control-page .nav-tabs .nav-link.active{
+  color:#fff!important;
+  border-color:rgba(40,220,255,.19)!important;
+  background:
+    radial-gradient(240px 100px at 0% 0%,rgba(40,220,255,.15),transparent 70%),
+    rgba(255,255,255,.055)!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.19)!important;
+}
+
+.g360-tab-icon{
+  width:42px;
+  height:42px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:18px;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--cv-cyan),#83edff);
+}
+
+.nav-link:not(.active) .g360-tab-icon{
+  color:var(--cv-cyan);
+  border:1px solid rgba(40,220,255,.16);
+  background:rgba(40,220,255,.055);
+}
+
+.gob360-visit-control-page .nav-tabs small{
+  display:block;
+  margin-bottom:3px;
+  color:var(--cv-muted-soft);
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+}
+
+.gob360-visit-control-page .nav-tabs strong{
+  display:block;
+  color:inherit;
+  font-size:11px;
+  font-weight:1000;
+}
+
+/* ============================================================
+   HERRAMIENTAS Y BUSCADOR
+============================================================ */
+.g360-control-tools{
+  display:grid;
+  grid-template-columns:minmax(320px,1.15fr) minmax(260px,.85fr);
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.g360-control-search,
+.g360-control-tools__message{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:13px;
+  border:1px solid var(--cv-border);
+  border-radius:16px;
+  background:rgba(3,10,23,.48);
+}
+
+.g360-control-search__icon{
+  width:42px;
+  height:42px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:18px;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--cv-cyan),#83edff);
+}
+
+.g360-control-search>div{
+  min-width:0;
+  flex:1 1 auto;
+}
+
+.g360-control-search label{
+  display:block;
+  margin-bottom:5px;
+  color:var(--cv-green);
+  font-size:8.5px;
+  font-weight:950;
+  letter-spacing:.9px;
+  text-transform:uppercase;
+}
+
+.g360-control-tools__message{
+  color:var(--cv-muted);
+  font-size:10.5px;
+  font-weight:750;
+  line-height:1.45;
+  border-color:rgba(255,209,102,.16);
+  background:rgba(255,209,102,.055);
+}
+
+.g360-control-tools__message i{
+  flex:0 0 auto;
+  color:var(--cv-yellow);
+  font-size:18px;
+}
+
+.gob360-visit-control-page .form-control{
+  min-height:47px;
+  padding:10px 13px!important;
+  color:#fff!important;
+  font-size:13px;
+  font-weight:800;
+  border:1px solid rgba(255,255,255,.13)!important;
+  border-radius:13px!important;
+  outline:none;
+  background:rgba(3,10,23,.67)!important;
+  box-shadow:none!important;
+}
+
+.gob360-visit-control-page .form-control:focus{
+  border-color:rgba(40,220,255,.42)!important;
+  box-shadow:var(--cv-ring)!important;
+}
+
+/* ============================================================
+   TABLA Y DATATABLES
+============================================================ */
+.gob360-visit-control-page .g360-control-table{
+  overflow:auto;
+  border:1px solid var(--cv-border)!important;
+  border-radius:17px!important;
+  background:rgba(3,10,23,.48)!important;
+  -webkit-overflow-scrolling:touch;
+}
+
+.gob360-visit-control-page #dynamictable{
+  min-width:1480px;
+  margin:0!important;
+  color:rgba(255,255,255,.86)!important;
+}
+
+.gob360-visit-control-page #dynamictable thead th{
+  position:sticky;
+  top:0;
+  z-index:4;
+  padding:12px 10px!important;
+  color:#fff!important;
+  font-size:9px!important;
+  font-weight:950!important;
+  letter-spacing:.3px;
+  text-transform:uppercase;
+  background:linear-gradient(180deg,#183b68,#0e2544)!important;
+  border-color:rgba(255,255,255,.08)!important;
+}
+
+.gob360-visit-control-page #dynamictable tbody tr{
+  background:transparent!important;
+}
+
+.gob360-visit-control-page #dynamictable tbody td{
+  max-width:300px;
+  padding:10px!important;
+  color:rgba(255,255,255,.83)!important;
+  font-size:10.5px!important;
+  font-weight:750!important;
+  line-height:1.45!important;
+  border-color:rgba(255,255,255,.07)!important;
+  background:transparent!important;
+}
+
+.gob360-visit-control-page #dynamictable tbody tr:nth-child(even) td{
+  background:rgba(255,255,255,.018)!important;
+}
+
+.gob360-visit-control-page #dynamictable tbody tr:hover td{
+  color:#fff!important;
+  background:rgba(40,220,255,.055)!important;
+}
+
+.gob360-visit-control-page #dynamictable .btn{
+  min-height:34px;
+  padding:6px 9px!important;
+  font-size:9px!important;
+  font-weight:900!important;
+  border-radius:10px!important;
+}
+
+.gob360-visit-control-page #dynamictable .btn-success4{
+  color:#06101d!important;
+  border:0!important;
+  background:linear-gradient(135deg,var(--cv-green),#96f4ce)!important;
+}
+
+.gob360-visit-control-page #dynamictable .btn-transparent{
+  color:var(--cv-cyan)!important;
+  border:1px solid rgba(40,220,255,.15)!important;
+  background:rgba(40,220,255,.045)!important;
+}
+
+.gob360-visit-control-page #dynamictable .btn-link.text-primary{
+  color:var(--cv-cyan)!important;
+  font-weight:900!important;
+}
+
+.gob360-visit-control-page .dataTables_wrapper{
+  padding:12px!important;
+}
+
+.gob360-visit-control-page .dataTables_wrapper .dataTables_filter{
+  display:none!important;
+}
+
+.gob360-visit-control-page .dataTables_wrapper .dataTables_length select{
+  min-height:39px;
+  padding:7px 10px!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.13)!important;
+  border-radius:11px!important;
+  background:rgba(4,12,26,.68)!important;
+}
+
+.gob360-visit-control-page .dataTables_wrapper .dataTables_length label,
+.gob360-visit-control-page .dataTables_wrapper .dataTables_info{
+  color:var(--cv-muted)!important;
+}
+
+.gob360-visit-control-page .dataTables_wrapper .dataTables_paginate .paginate_button{
+  color:var(--cv-muted)!important;
+  border:1px solid var(--cv-border)!important;
+  border-radius:10px!important;
+  background:rgba(255,255,255,.035)!important;
+}
+
+.gob360-visit-control-page .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.gob360-visit-control-page .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+  color:#06101d!important;
+  border-color:transparent!important;
+  background:linear-gradient(135deg,var(--cv-cyan),#83edff)!important;
+}
+
+/* ============================================================
+   INDICADORES
+============================================================ */
+.gob360-visit-control-page .g360-indicator-card{
+  overflow:hidden;
+  margin-top:0!important;
+  border:1px solid var(--cv-border)!important;
+  border-radius:18px!important;
+  background:rgba(3,10,23,.46)!important;
+  box-shadow:var(--cv-shadow-soft)!important;
+}
+
+.gob360-visit-control-page .g360-indicator-card>.card-header{
+  min-height:82px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  padding:15px 17px!important;
+  border-bottom:1px solid var(--cv-border)!important;
+  background:
+    radial-gradient(380px 150px at 0% 0%,rgba(255,209,102,.13),transparent 70%),
+    linear-gradient(135deg,rgba(63,124,255,.20),rgba(8,22,42,.72))!important;
+}
+
+.gob360-visit-control-page .g360-indicator-card>.card-body{
+  padding:17px!important;
+  background:transparent!important;
+}
+
+.g360-indicator-intro{
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  margin-bottom:14px;
+  padding:13px;
+  border:1px solid rgba(57,230,163,.16);
+  border-radius:15px;
+  background:rgba(57,230,163,.055);
+}
+
+.g360-indicator-intro__icon{
+  width:40px;
+  height:40px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:17px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--cv-green),#96f4ce);
+}
+
+.g360-indicator-intro strong{
+  display:block;
+  color:#fff;
+  font-size:11.5px;
+  font-weight:950;
+}
+
+.g360-indicator-intro p{
+  margin:4px 0 0;
+  color:var(--cv-muted);
+  font-size:10.5px;
+  line-height:1.45;
+}
+
+.gob360-visit-control-page #indicadoresContainer{
+  min-height:360px;
+  padding:14px;
+  border:1px solid var(--cv-border);
+  border-radius:16px;
+  background:rgba(3,10,23,.44);
+}
+
+/* ============================================================
+   MODALES
+============================================================ */
+.gob360-visit-control-page .modal{
+  z-index:20060!important;
+}
+
+.gob360-visit-control-page .modal-backdrop{
+  z-index:20040!important;
+}
+
+.gob360-visit-control-page .modal-backdrop.show{
+  opacity:.78!important;
+}
+
+.gob360-visit-control-page .g360-control-modal{
+  overflow:hidden;
+  color:#fff!important;
+  border:1px solid var(--cv-border)!important;
+  border-radius:24px!important;
+  background:#071426!important;
+  box-shadow:0 36px 105px rgba(0,0,0,.60);
+}
+
+.g360-control-modal .modal-header{
+  min-height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:17px 20px!important;
+  border-bottom:1px solid var(--cv-border)!important;
+  background:
+    radial-gradient(390px 145px at 0% 0%,rgba(40,220,255,.17),transparent 70%),
+    linear-gradient(135deg,#143766,#08182f)!important;
+}
+
+.g360-modal-heading{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.g360-modal-heading__icon{
+  width:43px;
+  height:43px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:18px;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--cv-cyan),#83edff);
+}
+
+.g360-modal-heading__icon--attachment{
+  background:linear-gradient(135deg,var(--cv-yellow),#ffe19a);
+}
+
+.g360-modal-heading small{
+  display:block;
+  margin-bottom:3px;
+  color:var(--cv-green);
+  font-size:8.5px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.g360-modal-heading h5{
+  margin:0;
+  color:#fff!important;
+  font-size:16px;
+  font-weight:1000!important;
+}
+
+.g360-control-modal .close,
+.g360-control-modal .close span{
+  color:#fff!important;
+  opacity:.95!important;
+  text-shadow:none!important;
+}
+
+.g360-control-modal .modal-body{
+  max-height:72vh;
+  overflow:auto;
+  padding:20px!important;
+  background:#071426!important;
+}
+
+.g360-commitment-content{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:15px;
+  border:1px solid var(--cv-border);
+  border-radius:16px;
+  background:rgba(3,10,23,.48);
+}
+
+.g360-commitment-content>span{
+  width:39px;
+  height:39px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--cv-green),#96f4ce);
+}
+
+.g360-commitment-content p{
+  margin:0;
+  color:rgba(255,255,255,.88);
+  font-size:13px;
+  font-weight:750;
+  line-height:1.65;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.gob360-visit-control-page #contenidoAdjunto{
+  min-height:360px;
+}
+
+.gob360-visit-control-page #contenidoAdjunto img,
+.gob360-visit-control-page #contenidoAdjunto video,
+.gob360-visit-control-page #contenidoAdjunto iframe{
+  max-width:100%;
+  border-radius:16px;
+  box-shadow:var(--cv-shadow-lg);
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media(max-width:1200px){
+  .g360-control-hero__grid{
+    grid-template-columns:1fr;
+  }
+
+  .g360-control-brand{
+    min-height:auto;
+  }
+
+  .g360-control-brand__logo{
+    width:min(335px,90%);
+  }
+
+  .g360-control-summary{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:991px){
+  .g360-control-hero__top{
+    flex-direction:column;
+  }
+
+  .g360-control-hero__actions{
+    justify-content:flex-start;
+  }
+
+  .g360-control-tools{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:767.98px){
+  .gob360-visit-control-page .pcoded-main-container .pcoded-content{
+    padding:14px 13px 42px!important;
+  }
+
+  .g360-control-hero{
+    padding:18px;
+  }
+
+  .g360-control-brand{
+    padding:16px;
+  }
+
+  .g360-control-hero__title{
+    font-size:29px;
+  }
+
+  .g360-control-summary{
+    grid-template-columns:1fr;
+  }
+
+  .gob360-visit-control-page .g360-control-card>.card-body{
+    padding:13px!important;
+  }
+
+  .g360-card-header-actions{
+    width:100%;
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .g360-control-live{
+    justify-content:center;
+  }
+
+  .gob360-visit-control-page .nav-tabs{
+    grid-template-columns:1fr;
+  }
+
+  .g360-control-modal .modal-dialog{
+    max-width:calc(100% - 18px);
+    margin:9px auto;
+  }
+
+  .gob360-visit-control-page input{
+    font-size:16px!important;
+  }
+}

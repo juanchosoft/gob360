@@ -1,0 +1,983 @@
+:root{
+      --ink:#EAF0FF; --muted:rgba(234,240,255,.72);
+      --glass: rgba(255,255,255,.08); --glass2: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.12); --stroke2: rgba(255,255,255,.08);
+      --radius-xl:22px; --radius-lg:16px;
+      --shadow-soft: 0 14px 40px rgba(0,0,0,.28); --shadow-mid: 0 22px 70px rgba(0,0,0,.34);
+      --safe-top: 96px;
+      --brand:#60A5FA; --brand2:#A78BFA; --ok:#34D399; --warn:#FBBF24; --danger:#FB7185; --cyan:#22D3EE;
+    }
+    body{
+      margin:0; color: var(--ink);
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(96,165,250,.22), transparent 55%),
+                  radial-gradient(900px 500px at 90% 15%, rgba(167,139,250,.18), transparent 55%),
+                  radial-gradient(900px 520px at 70% 90%, rgba(52,211,153,.14), transparent 55%),
+                  linear-gradient(135deg, #081226 0%, #0B1B38 45%, #070B16 100%);
+      min-height:100vh;
+    }
+    .pcoded-content{ padding: calc(var(--safe-top) + 16px) 16px 18px !important; }
+    @media(min-width:768px){ :root{ --safe-top: 112px; } .pcoded-content{ padding: calc(var(--safe-top) + 18px) 24px 24px !important; } }
+    @media(min-width:1200px){ :root{ --safe-top: 120px; } .pcoded-content{ padding: calc(var(--safe-top) + 22px) 42px 34px !important; } }
+    .au-topbar{ display:flex; flex-direction:column; gap:12px; margin-bottom:16px; }
+    @media(min-width:768px){ .au-topbar{ flex-direction:row; align-items:center; justify-content:space-between; } }
+    .au-title{ margin:0; font-weight:1000; font-size:1.62rem; letter-spacing:.2px; line-height:1.15; color: var(--ink); text-shadow: 0 18px 55px rgba(0,0,0,.38); }
+    .au-subtitle{ margin:6px 0 0; color: var(--muted); font-size:.96rem; max-width: 980px; }
+    .au-badge{ padding:8px 12px; border-radius:999px; font-size:.80rem; font-weight:900; color:rgba(255,255,255,.92); background:linear-gradient(135deg,rgba(96,165,250,.20),rgba(167,139,250,.16)); border:1px solid rgba(255,255,255,.16); box-shadow:0 10px 30px rgba(0,0,0,.22); white-space:nowrap; backdrop-filter:blur(10px); }
+    .au-chips{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+    .chip{ padding:8px 10px; border-radius:999px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:rgba(255,255,255,.86); font-weight:800; font-size:.80rem; backdrop-filter:blur(10px); }
+    .chip b{ color:#fff; }
+    .au-grid{ display:grid; gap:16px; }
+    @media(min-width:768px){ .au-grid.md-4{ grid-template-columns:repeat(4,1fr); } .au-grid.md-2{ grid-template-columns:repeat(2,1fr); } .au-grid.md-3{ grid-template-columns:repeat(3,1fr); } }
+    .au-card{ background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.06)); border:1px solid rgba(255,255,255,.12); border-radius:var(--radius-xl); box-shadow:var(--shadow-mid); overflow:hidden; backdrop-filter:blur(12px); position:relative; }
+    .au-card:before{ content:""; position:absolute; inset:-1px; background:radial-gradient(520px 160px at 10% 0%,rgba(96,165,250,.22),transparent 60%),radial-gradient(520px 160px at 90% 0%,rgba(167,139,250,.18),transparent 60%); pointer-events:none; opacity:.75; }
+    .au-card > *{ position:relative; }
+    .au-card-h{ padding:16px 18px; border-bottom:1px solid rgba(255,255,255,.10); display:flex; align-items:flex-start; justify-content:space-between; gap:12px; background:linear-gradient(180deg,rgba(0,0,0,.20),transparent); }
+    .au-card-h .t{ font-weight:1000; margin:0; color:#fff; font-size:1.02rem; letter-spacing:.15px; }
+    .au-card-h .s{ margin:4px 0 0; color:rgba(255,255,255,.68); font-size:.85rem; }
+    .au-card-b{ padding:16px 18px; }
+    .kpi{ display:flex; flex-direction:column; gap:8px; }
+    .kpi .label{ color:rgba(255,255,255,.72); font-weight:800; font-size:.86rem; }
+    .kpi .value{ font-size:1.55rem; font-weight:1000; color:#fff; line-height:1.05; letter-spacing:.2px; text-shadow:0 10px 30px rgba(0,0,0,.30); }
+    .kpi .hint{ color:rgba(255,255,255,.62); font-size:.80rem; }
+    .kpi-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .trend{ font-weight:1000; font-size:.82rem; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06); white-space:nowrap; }
+    .trend.up{ color:rgba(52,211,153,.98); }
+    .trend.down{ color:rgba(251,113,133,.98); }
+    .kpi-line{ height:10px; border-radius:999px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.10); overflow:hidden; margin-top:2px; }
+    .kpi-line > span{ display:block; height:100%; width:64%; background:linear-gradient(90deg,rgba(96,165,250,.92),rgba(167,139,250,.92)); border-radius:999px; box-shadow:0 8px 24px rgba(96,165,250,.25); }
+    .chart-wrap{ position:relative; width:100%; height:390px; }
+    @media(max-width:576px){ .chart-wrap{ height:300px; } }
+    .chart-sm{ height:180px; }
+    @media(max-width:576px){ .chart-sm{ height:160px; } }
+    .au-section{ margin-top:16px; }
+    .soft-divider{ height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent); margin:16px 0 6px; }
+    .au-breakdown{ margin-top:16px; display:grid; gap:12px; }
+    @media(min-width:768px){ .au-breakdown{ grid-template-columns:repeat(2,1fr); } }
+    @media(min-width:1200px){ .au-breakdown{ grid-template-columns:repeat(2,1fr); } }
+    .bd-item{ display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 16px; border-radius:16px; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.06); backdrop-filter:blur(10px); }
+    .bd-left{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .bd-dot{ width:12px; height:12px; border-radius:999px; flex:0 0 auto; box-shadow:0 8px 18px rgba(0,0,0,.25); }
+    .bd-name{ font-weight:900; font-size:.88rem; color:rgba(255,255,255,.92); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:260px; }
+    .bd-right{ text-align:right; flex:0 0 auto; }
+    .bd-p{ font-weight:1000; color:#fff; line-height:1.1; }
+    .bd-v{ font-size:.80rem; color:rgba(255,255,255,.66); }
+
+    .au-table{ width:100%; border-collapse:separate; border-spacing:0 10px; }
+    .au-table th{ text-align:left; color:rgba(255,255,255,.72); font-size:.82rem; font-weight:900; padding:0 10px; }
+    .au-table td{ padding:12px 12px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10); color:#fff; font-weight:800; }
+    .au-table tr td:first-child{ border-radius:14px 0 0 14px; }
+    .au-table tr td:last-child{ border-radius:0 14px 14px 0; }
+    .tag{ padding:6px 10px; border-radius:999px; font-weight:1000; font-size:.78rem; border:1px solid rgba(255,255,255,.14); display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,.06); white-space:nowrap; }
+    .tag.high{ color:#ef4444; background:rgba(239,68,68,.15); border-color:rgba(239,68,68,.25); }
+    .tag.med{ color:#fbbf24; background:rgba(251,191,36,.15); border-color:rgba(251,191,36,.25); }
+    .tag.low{ color:#34d399; background:rgba(52,211,153,.15); border-color:rgba(52,211,153,.25); }
+    .chart-inv-wrap{ position:relative; width:100%; height:420px; }
+    @media(max-width:768px){ .chart-inv-wrap{ height:340px; } }
+
+    /* Modal oscuro */
+    #modalPieSecretarias .modal-content{
+      background: linear-gradient(135deg, #0f172a, #1e293b) !important;
+      border: 1px solid rgba(255,255,255,.12) !important;
+      border-radius: 22px !important;
+      box-shadow: 0 22px 70px rgba(0,0,0,.5);
+    }
+    #modalPieSecretarias .modal-header{
+      border-bottom: 1px solid rgba(255,255,255,.10) !important;
+      padding: 18px 22px;
+    }
+    #modalPieSecretarias .modal-header .close{ color:#fff !important; opacity:.7; font-size:28px; }
+    #modalPieSecretarias .modal-header .close:hover{ opacity:1; }
+    #modalPieSecretarias .modal-body{ padding:0 22px 18px !important; }
+    #modalPieSecretarias .modal-body table{
+      width:100%; color:#e2e8f0; border-collapse:collapse;
+    }
+    #modalPieSecretarias .modal-body table th{
+      text-align:left; padding:10px 8px; font-size:12px; font-weight:900;
+      color:#94a3b8; text-transform:uppercase; letter-spacing:.5px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    #modalPieSecretarias .modal-body table td{
+      padding:10px 8px; font-size:13px; font-weight:700;
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    #modalPieSecretarias .modal-body table tr:last-child td{ border-bottom:none; }
+    #modalPieSecretarias .modal-backdrop{ background:rgba(0,0,0,.7); }
+    #modalVisitas .modal-content{ background:linear-gradient(135deg,#0f172a,#1e293b) !important; border:1px solid rgba(255,255,255,.12) !important; border-radius:22px !important; box-shadow:0 22px 70px rgba(0,0,0,.5); }
+    #modalVisitas .modal-header{ border-bottom:1px solid rgba(255,255,255,.10) !important; padding:18px 22px; }
+    #modalVisitas .modal-header .close{ color:#fff !important; opacity:.7; font-size:28px; }
+    #modalVisitas .modal-body{ padding:0 22px 18px !important; }
+    #modalVisitas .modal-body table{ width:100%; color:#e2e8f0; border-collapse:collapse; }
+    #modalVisitas .modal-body table th{ text-align:left; padding:10px 8px; font-size:12px; font-weight:900; color:#94a3b8; text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid rgba(255,255,255,.08); }
+    #modalVisitas .modal-body table td{ padding:10px 8px; font-size:13px; font-weight:700; border-bottom:1px solid rgba(255,255,255,.05); }
+    #modalVisitas .modal-body table tr:last-child td{ border-bottom:none; }
+
+/* ============================================================
+   GOB360 · DASHBOARD PRINCIPAL DE ALCALDÍA
+============================================================ */
+:root{
+  --may-bg-0:#030711;
+  --may-bg-1:#061326;
+  --may-bg-2:#082735;
+
+  --may-panel:rgba(255,255,255,.062);
+  --may-panel-strong:rgba(255,255,255,.092);
+  --may-border:rgba(255,255,255,.125);
+  --may-border-strong:rgba(255,255,255,.19);
+
+  --may-text:rgba(255,255,255,.96);
+  --may-muted:rgba(255,255,255,.65);
+  --may-muted-soft:rgba(255,255,255,.46);
+
+  --may-cyan:#28dcff;
+  --may-blue:#3f7cff;
+  --may-green:#39e6a3;
+  --may-yellow:#ffd166;
+  --may-red:#ff647f;
+  --may-purple:#a78bfa;
+
+  --may-radius-xl:29px;
+  --may-radius-lg:21px;
+  --may-radius-md:14px;
+
+  --may-shadow-xl:0 31px 92px rgba(0,0,0,.45);
+  --may-shadow-lg:0 19px 56px rgba(0,0,0,.33);
+  --may-shadow-soft:0 13px 32px rgba(0,0,0,.22);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  min-height:100%;
+  overflow-x:hidden!important;
+}
+
+body.gob360-mayor-dashboard-page{
+  min-height:100vh;
+  color:var(--may-text)!important;
+  background:
+    radial-gradient(950px 520px at 6% 3%,rgba(63,124,255,.29),transparent 61%),
+    radial-gradient(850px 500px at 95% 8%,rgba(40,220,255,.14),transparent 61%),
+    radial-gradient(900px 570px at 48% 112%,rgba(57,230,163,.10),transparent 60%),
+    linear-gradient(150deg,var(--may-bg-0),var(--may-bg-1) 57%,var(--may-bg-2))!important;
+  background-attachment:fixed!important;
+}
+
+body.gob360-mayor-dashboard-page::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  opacity:.13;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:linear-gradient(to bottom,#000,transparent 96%);
+}
+
+.gob360-mayor-dashboard-page .pcoded-main-container,
+.gob360-mayor-dashboard-page .pcoded-content{
+  background:transparent!important;
+}
+
+.gob360-mayor-dashboard-page .pcoded-main-container .pcoded-content{
+  width:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:18px 28px 48px!important;
+}
+
+/* Loader */
+.gob360-mayor-dashboard-page .loader-bg{
+  z-index:999999!important;
+  background:#030711!important;
+}
+
+.gob360-mayor-dashboard-page .loader-track{
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+}
+
+.gob360-mayor-dashboard-page .loader-fill{
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--may-blue),var(--may-cyan),var(--may-green))!important;
+  box-shadow:0 0 25px rgba(40,220,255,.42);
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.g360-mayor-hero{
+  position:relative;
+  overflow:hidden;
+  margin-bottom:18px;
+  padding:25px;
+  border:1px solid var(--may-border);
+  border-radius:var(--may-radius-xl);
+  background:
+    radial-gradient(720px 290px at 0% 0%,rgba(63,124,255,.30),transparent 67%),
+    radial-gradient(680px 290px at 100% 100%,rgba(57,230,163,.14),transparent 67%),
+    var(--may-panel);
+  box-shadow:var(--may-shadow-xl);
+  backdrop-filter:blur(19px);
+}
+
+.g360-mayor-hero::before{
+  content:"";
+  position:absolute;
+  right:-110px;
+  top:-160px;
+  width:450px;
+  height:450px;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(40,220,255,.18),transparent 68%);
+}
+
+.g360-mayor-hero__grid{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:minmax(245px,355px) 1fr;
+  align-items:stretch;
+  gap:27px;
+}
+
+.g360-mayor-brand{
+  min-height:350px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:21px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  background:
+    radial-gradient(320px 180px at 50% 0%,rgba(40,220,255,.11),transparent 71%),
+    rgba(2,8,20,.29);
+  box-shadow:0 19px 40px rgba(0,0,0,.25);
+}
+
+.g360-mayor-brand__eyebrow{
+  margin-bottom:13px;
+  color:var(--may-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+.g360-mayor-brand__logo{
+  display:block;
+  width:min(100%,335px);
+  height:auto;
+  border-radius:18px;
+  filter:
+    drop-shadow(0 18px 36px rgba(0,0,0,.44))
+    drop-shadow(0 0 30px rgba(40,220,255,.24));
+}
+
+.g360-mayor-brand__caption{
+  margin-top:14px;
+  color:var(--may-muted);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.15px;
+  text-transform:uppercase;
+}
+
+.g360-mayor-brand__status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:18px;
+  padding:7px 11px;
+  color:#dfffee;
+  font-size:10.5px;
+  font-weight:900;
+  border:1px solid rgba(57,230,163,.23);
+  border-radius:999px;
+  background:rgba(57,230,163,.07);
+}
+
+.g360-mayor-brand__status span{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--may-green);
+  box-shadow:0 0 14px rgba(57,230,163,.58);
+}
+
+.g360-mayor-hero__content{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.g360-mayor-hero__top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.g360-mayor-hero__eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:9px;
+  color:var(--may-green);
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+}
+
+.g360-mayor-hero__title{
+  max-width:900px;
+  margin:0;
+  color:#fff;
+  font-size:clamp(31px,4vw,50px);
+  font-weight:1000;
+  line-height:1.02;
+  letter-spacing:-1.35px;
+}
+
+.g360-mayor-hero__description{
+  max-width:850px;
+  margin:13px 0 0;
+  color:var(--may-muted);
+  font-size:14px;
+  line-height:1.68;
+}
+
+.g360-mayor-hero__actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.g360-hero-button,
+.g360-mayor-date{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:9px 13px;
+  color:#fff!important;
+  font-size:10.5px;
+  font-weight:950;
+  text-decoration:none!important;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:13px;
+  background:rgba(255,255,255,.055);
+  box-shadow:0 10px 23px rgba(0,0,0,.17);
+}
+
+.g360-hero-button{
+  cursor:pointer;
+}
+
+.g360-mayor-date i{
+  color:var(--may-cyan);
+}
+
+.g360-mayor-summary{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-top:20px;
+}
+
+.g360-mayor-summary article{
+  min-width:0;
+  min-height:126px;
+  display:grid;
+  grid-template-columns:45px 1fr;
+  align-items:start;
+  gap:11px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:17px;
+  background:rgba(3,10,23,.49);
+  box-shadow:0 12px 27px rgba(0,0,0,.18);
+}
+
+.g360-mayor-summary__icon{
+  width:45px;
+  height:45px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:19px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--may-cyan),#83edff);
+}
+
+.g360-mayor-summary__icon--investment{
+  background:linear-gradient(135deg,var(--may-green),#96f4ce);
+}
+
+.g360-mayor-summary__icon--secretariats{
+  background:linear-gradient(135deg,var(--may-yellow),#ffe19a);
+}
+
+.g360-mayor-summary__icon--visits{
+  color:#fff;
+  background:linear-gradient(135deg,var(--may-blue),var(--may-purple));
+}
+
+.g360-mayor-summary small{
+  display:block;
+  margin-bottom:5px;
+  color:var(--may-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:.52px;
+  text-transform:uppercase;
+}
+
+.g360-mayor-summary strong{
+  display:block;
+  overflow:hidden;
+  color:#fff;
+  font-size:clamp(16px,1.7vw,23px);
+  font-weight:1000;
+  line-height:1.2;
+  text-overflow:ellipsis;
+}
+
+.g360-mayor-summary p{
+  margin:7px 0 0;
+  color:var(--may-muted-soft);
+  font-size:10.5px;
+  line-height:1.4;
+}
+
+.g360-mayor-capabilities{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:13px;
+}
+
+.g360-mayor-capabilities span{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:33px;
+  padding:7px 10px;
+  color:rgba(255,255,255,.82);
+  font-size:10.5px;
+  font-weight:850;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:999px;
+  background:rgba(255,255,255,.045);
+}
+
+.g360-mayor-capabilities i{
+  color:var(--may-cyan);
+}
+
+/* ============================================================
+   KPIs
+============================================================ */
+.g360-kpi-grid{
+  margin-bottom:18px;
+}
+
+.gob360-mayor-dashboard-page .au-card{
+  border:1px solid var(--may-border)!important;
+  border-radius:var(--may-radius-lg)!important;
+  background:var(--may-panel)!important;
+  box-shadow:var(--may-shadow-lg)!important;
+  backdrop-filter:blur(18px);
+}
+
+.gob360-mayor-dashboard-page .au-card::before{
+  opacity:.55!important;
+}
+
+.gob360-mayor-dashboard-page .au-card-h{
+  min-height:72px;
+  padding:14px 16px!important;
+  border-bottom:1px solid var(--may-border)!important;
+  background:
+    radial-gradient(340px 130px at 0% 0%,rgba(57,230,163,.10),transparent 68%),
+    linear-gradient(135deg,rgba(63,124,255,.18),rgba(8,22,42,.70))!important;
+}
+
+.gob360-mayor-dashboard-page .au-card-h .t{
+  color:#fff!important;
+  font-size:13px!important;
+  font-weight:1000!important;
+}
+
+.gob360-mayor-dashboard-page .au-card-h .s{
+  color:var(--may-muted)!important;
+  font-size:9.5px!important;
+}
+
+.gob360-mayor-dashboard-page .au-card-b{
+  padding:16px!important;
+}
+
+.g360-card-symbol{
+  width:39px;
+  height:39px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:17px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--may-cyan),#83edff);
+}
+
+.g360-kpi-card--execution .g360-card-symbol{
+  background:linear-gradient(135deg,var(--may-yellow),#ffe19a);
+}
+
+.g360-kpi-card--completed .g360-card-symbol{
+  background:linear-gradient(135deg,var(--may-green),#96f4ce);
+}
+
+.g360-kpi-card--visits .g360-card-symbol{
+  color:#fff;
+  background:linear-gradient(135deg,var(--may-blue),var(--may-purple));
+}
+
+.g360-kpi-card{
+  min-height:242px;
+}
+
+.g360-kpi-card .kpi{
+  height:100%;
+}
+
+.g360-kpi-card .kpi .label{
+  color:var(--may-muted)!important;
+  font-size:10px!important;
+}
+
+.g360-kpi-card .kpi .value{
+  color:#fff!important;
+  font-size:clamp(25px,2.6vw,37px)!important;
+  font-weight:1000!important;
+}
+
+.g360-kpi-card .kpi .hint{
+  color:var(--may-muted)!important;
+  font-size:9.5px!important;
+}
+
+.g360-kpi-card .trend{
+  color:var(--may-green)!important;
+  font-size:9px!important;
+  border:1px solid rgba(57,230,163,.18)!important;
+  background:rgba(57,230,163,.06)!important;
+}
+
+.g360-kpi-card .kpi-line{
+  height:9px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  background:rgba(255,255,255,.055)!important;
+}
+
+.g360-kpi-card .kpi-line>span{
+  background:linear-gradient(90deg,var(--may-cyan),var(--may-blue),var(--may-purple))!important;
+}
+
+.g360-kpi-card--execution .kpi-line>span{
+  background:linear-gradient(90deg,var(--may-yellow),#ff9f43)!important;
+}
+
+.g360-kpi-card--completed .kpi-line>span{
+  background:linear-gradient(90deg,var(--may-green),#96f4ce)!important;
+}
+
+.g360-kpi-card--visits{
+  cursor:pointer;
+}
+
+.g360-kpi-card--visits .kpi-line>span{
+  background:linear-gradient(90deg,var(--may-blue),var(--may-purple))!important;
+}
+
+/* ============================================================
+   TARJETAS Y GRÁFICOS
+============================================================ */
+.g360-dashboard-row,
+.g360-dashboard-section{
+  margin-top:18px!important;
+}
+
+.g360-chart-card{
+  overflow:hidden;
+}
+
+.g360-chart-card>.au-card-h{
+  min-height:78px;
+}
+
+.g360-chart-type{
+  min-height:33px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:7px 10px;
+  color:rgba(255,255,255,.88);
+  font-size:9px;
+  font-weight:950;
+  border:1px solid var(--may-border);
+  border-radius:999px;
+  background:rgba(255,255,255,.045);
+}
+
+.g360-chart-type i{
+  color:var(--may-cyan);
+}
+
+.gob360-mayor-dashboard-page .chart-wrap,
+.gob360-mayor-dashboard-page .chart-inv-wrap{
+  min-height:340px;
+  height:390px;
+}
+
+.g360-chart-wrap--top-projects{
+  height:340px!important;
+}
+
+.g360-chart-wrap--ranking{
+  height:var(--chart-dynamic-height)!important;
+  min-height:240px!important;
+}
+
+.g360-chart-wrap--pie,
+.g360-chart-wrap--radar,
+.g360-chart-wrap--doughnut{
+  height:360px!important;
+}
+
+.g360-pie-layout{
+  display:grid;
+  grid-template-columns:minmax(320px,.85fr) minmax(300px,1.15fr);
+  align-items:start;
+  gap:20px;
+}
+
+.gob360-mayor-dashboard-page #pieSecretarias{
+  cursor:pointer;
+}
+
+.gob360-mayor-dashboard-page .au-breakdown{
+  max-height:360px;
+  overflow:auto;
+  margin-top:0!important;
+  padding-right:4px;
+}
+
+.gob360-mayor-dashboard-page .bd-item{
+  padding:11px 12px!important;
+  border:1px solid var(--may-border)!important;
+  border-radius:14px!important;
+  background:rgba(3,10,23,.47)!important;
+}
+
+.gob360-mayor-dashboard-page .bd-name{
+  color:rgba(255,255,255,.86)!important;
+  font-size:10px!important;
+}
+
+.gob360-mayor-dashboard-page .bd-p{
+  color:#fff!important;
+  font-size:12px!important;
+}
+
+.gob360-mayor-dashboard-page .bd-v{
+  color:var(--may-muted)!important;
+  font-size:9px!important;
+}
+
+.g360-metrics-grid,
+.g360-level-legend{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:8px;
+  margin-top:14px;
+  padding:14px;
+  border:1px solid var(--may-border);
+  border-radius:15px;
+  background:rgba(3,10,23,.48);
+}
+
+.g360-metrics-grid__title,
+.g360-level-legend__title{
+  grid-column:1/-1;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:2px;
+  color:var(--may-green);
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.9px;
+  text-transform:uppercase;
+}
+
+.g360-metric-item,
+.g360-level-item{
+  padding:9px;
+  color:rgba(255,255,255,.84);
+  font-size:10px;
+  font-weight:800;
+  line-height:1.45;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+  background:rgba(255,255,255,.025);
+}
+
+.g360-metric-item span,
+.g360-level-item span{
+  font-size:inherit!important;
+}
+
+/* ============================================================
+   TABLA EJECUTIVA
+============================================================ */
+.g360-executive-table{
+  overflow:auto;
+  border:1px solid var(--may-border);
+  border-radius:16px;
+  background:rgba(3,10,23,.45);
+}
+
+.gob360-mayor-dashboard-page .au-table{
+  min-width:760px;
+  margin:0;
+  border-spacing:0!important;
+}
+
+.gob360-mayor-dashboard-page .au-table th{
+  padding:11px 10px!important;
+  color:#fff!important;
+  font-size:9px!important;
+  font-weight:950!important;
+  text-transform:uppercase;
+  background:linear-gradient(180deg,#183b68,#0e2544);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.gob360-mayor-dashboard-page .au-table td{
+  padding:11px 10px!important;
+  color:rgba(255,255,255,.82)!important;
+  font-size:10px!important;
+  font-weight:750!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.07)!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+
+.gob360-mayor-dashboard-page .au-table tbody tr:nth-child(even) td{
+  background:rgba(255,255,255,.018)!important;
+}
+
+.gob360-mayor-dashboard-page .tag{
+  min-height:29px;
+  padding:5px 9px!important;
+  font-size:8.5px!important;
+}
+
+.gob360-mayor-dashboard-page .tag.low{
+  color:var(--may-green)!important;
+  border-color:rgba(57,230,163,.18)!important;
+  background:rgba(57,230,163,.07)!important;
+}
+
+.gob360-mayor-dashboard-page .tag.med{
+  color:var(--may-yellow)!important;
+  border-color:rgba(255,209,102,.18)!important;
+  background:rgba(255,209,102,.07)!important;
+}
+
+.gob360-mayor-dashboard-page .tag.high{
+  color:var(--may-red)!important;
+  border-color:rgba(255,100,127,.18)!important;
+  background:rgba(255,100,127,.07)!important;
+}
+
+/* ============================================================
+   MODALES
+============================================================ */
+.gob360-mayor-dashboard-page .modal-backdrop.show{
+  opacity:.78!important;
+}
+
+.gob360-mayor-dashboard-page .g360-dashboard-modal{
+  overflow:hidden;
+  color:#fff!important;
+  border:1px solid var(--may-border)!important;
+  border-radius:24px!important;
+  background:#071426!important;
+  box-shadow:0 36px 105px rgba(0,0,0,.60);
+}
+
+.g360-dashboard-modal .modal-header{
+  min-height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:17px 20px!important;
+  border-bottom:1px solid var(--may-border)!important;
+  background:
+    radial-gradient(390px 145px at 0% 0%,rgba(40,220,255,.17),transparent 70%),
+    linear-gradient(135deg,#143766,#08182f)!important;
+}
+
+.g360-modal-heading{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.g360-modal-heading__icon{
+  width:43px;
+  height:43px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:18px;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--may-cyan),#83edff);
+}
+
+.g360-modal-heading small{
+  display:block;
+  margin-bottom:3px;
+  color:var(--may-green);
+  font-size:8.5px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.g360-modal-heading h5{
+  margin:0;
+  color:#fff!important;
+  font-size:16px;
+  font-weight:1000!important;
+}
+
+.g360-dashboard-modal .close,
+.g360-dashboard-modal .close span{
+  color:#fff!important;
+  opacity:.95!important;
+  text-shadow:none!important;
+}
+
+.g360-dashboard-modal .modal-body{
+  max-height:70vh;
+  overflow:auto;
+  padding:18px 20px!important;
+  background:#071426!important;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media(max-width:1200px){
+  .g360-mayor-hero__grid{
+    grid-template-columns:1fr;
+  }
+
+  .g360-mayor-brand{
+    min-height:auto;
+  }
+
+  .g360-mayor-brand__logo{
+    width:min(335px,90%);
+  }
+
+  .g360-mayor-summary{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:991px){
+  .g360-mayor-hero__top{
+    flex-direction:column;
+  }
+
+  .g360-mayor-hero__actions{
+    justify-content:flex-start;
+  }
+
+  .g360-pie-layout{
+    grid-template-columns:1fr;
+  }
+
+  .gob360-mayor-dashboard-page .au-breakdown{
+    max-height:none;
+  }
+}
+
+@media(max-width:767.98px){
+  .gob360-mayor-dashboard-page .pcoded-main-container .pcoded-content{
+    padding:14px 13px 42px!important;
+  }
+
+  .g360-mayor-hero{
+    padding:18px;
+  }
+
+  .g360-mayor-brand{
+    padding:16px;
+  }
+
+  .g360-mayor-hero__title{
+    font-size:29px;
+  }
+
+  .g360-mayor-summary{
+    grid-template-columns:1fr;
+  }
+
+  .g360-kpi-card{
+    min-height:auto;
+  }
+
+  .gob360-mayor-dashboard-page .chart-wrap,
+  .gob360-mayor-dashboard-page .chart-inv-wrap,
+  .g360-chart-wrap--top-projects,
+  .g360-chart-wrap--pie,
+  .g360-chart-wrap--radar,
+  .g360-chart-wrap--doughnut{
+    height:310px!important;
+    min-height:310px!important;
+  }
+
+  .g360-chart-wrap--ranking{
+    height:max(300px,var(--chart-dynamic-height))!important;
+  }
+
+  .g360-dashboard-modal .modal-dialog{
+    max-width:calc(100% - 18px);
+    margin:9px auto;
+  }
+}

@@ -27,264 +27,11 @@ $modulo = 'Ministerios';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <style>
-    /* ==========================================
-       GOVTECH WOW – DARK GLASS (SOLO DISEÑO)
-       + MODALES PRO (NEGRO) + FIX BS4/BS5
-       ========================================== */
-    :root{
-      --bg0:#070A12;
-      --bg1:#0B1222;
-
-      --stroke: rgba(255,255,255,.10);
-      --stroke2: rgba(255,255,255,.14);
-
-      --txt: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.66);
-
-      --brand:#4f7cff;
-      --brand2:#9b5cff;
-
-      --r-xl:18px;
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-      --shadow2: 0 14px 40px rgba(0,0,0,.25);
-    }
-
-    body{
-      background:
-        radial-gradient(900px 420px at 10% 10%, rgba(79,124,255,.28), transparent 60%),
-        radial-gradient(900px 420px at 80% 20%, rgba(155,92,255,.22), transparent 60%),
-        radial-gradient(900px 520px at 50% 100%, rgba(24,255,109,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1)) !important;
-      color: var(--txt);
-      overflow-x:hidden;
-    }
-
-    .pcoded-main-container{ background: transparent !important; }
-    .pcoded-content{ padding: 16px 16px !important; }
-    @media(min-width:768px){ .pcoded-content{ padding: 24px 24px !important; } }
-    @media(min-width:1200px){ .pcoded-content{ padding: 34px 42px !important; } }
-
-    /* Breadcrumb readable */
-    .page-header h5, .breadcrumb .breadcrumb-item, .breadcrumb .breadcrumb-item a{
-      color: var(--txt) !important;
-    }
-    .breadcrumb .breadcrumb-item a{ color: var(--muted) !important; }
-
-    /* Header block premium */
-    .page-header .page-block{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.05);
-      border-radius: 16px;
-      padding: 14px 14px;
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-      position: relative;
-    }
-    .page-header .page-block:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(320px 180px at 10% 10%, rgba(79,124,255,.25), transparent 65%),
-        radial-gradient(320px 180px at 90% 20%, rgba(155,92,255,.18), transparent 65%);
-      pointer-events:none;
-    }
-    .page-header .page-block > *{ position:relative; z-index:1; }
-
-    /* Card pro */
-    .card{
-      border: 1px solid var(--stroke) !important;
-      border-radius: var(--r-xl) !important;
-      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.04)) !important;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
-    }
-    .card:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(320px 180px at 10% 10%, rgba(79,124,255,.35), transparent 65%),
-        radial-gradient(320px 180px at 90% 20%, rgba(155,92,255,.25), transparent 65%);
-      pointer-events:none;
-    }
-    .card > *{ position:relative; z-index:1; }
-
-    .card-header{
-      background: rgba(0,0,0,.14) !important;
-      border-bottom: 1px solid var(--stroke) !important;
-      padding: 18px 18px !important;
-    }
-    .card-header h5{
-      font-weight: 900 !important;
-      letter-spacing: .2px;
-      color: var(--txt) !important;
-      margin:0 !important;
-    }
-
-    /* card option button */
-    .btn-group.card-option .btn{
-      border-radius: 12px !important;
-      border: 1px solid var(--stroke2) !important;
-      background: rgba(0,0,0,.20) !important;
-      color: var(--txt) !important;
-      box-shadow: 0 10px 24px rgba(0,0,0,.25);
-    }
-
-    .card-body{ padding: 18px !important; }
-    @media(min-width:768px){ .card-body{ padding: 22px !important; } }
-
-    /* Search */
-    #customSearch{
-      border-radius: 14px 0 0 14px !important;
-      border: 1px solid var(--stroke2) !important;
-      background: rgba(0,0,0,.22) !important;
-      color: var(--txt) !important;
-      min-height: 44px;
-    }
-    #customSearch::placeholder{ color: rgba(255,255,255,.50) !important; }
-    .buscador-2 .input-group-text{
-      border-radius: 0 14px 14px 0 !important;
-      border: 1px solid var(--stroke2) !important;
-      background: rgba(0,0,0,.30) !important;
-      color: var(--txt) !important;
-      min-height: 44px;
-    }
-
-    /* Table wrapper */
-    .table-responsive{
-      border-radius: 16px;
-      border: 1px solid var(--stroke) !important;
-      background: rgba(0,0,0,.16);
-      overflow:auto;
-      margin-top: 14px;
-    }
-    .table{
-      margin-bottom: 0 !important;
-      color: var(--txt) !important;
-    }
-    .table thead th{
-      background: rgba(255,255,255,.06) !important;
-      color: rgba(255,255,255,.88) !important;
-      border-bottom: 1px solid var(--stroke) !important;
-      white-space: nowrap;
-    }
-
-    /* ====== TBODY (negro siempre + hover blanco) ====== */
-    .table tbody tr{
-      background: rgba(255,255,255,.92) !important;
-      transition: background .15s ease, color .15s ease;
-    }
-    .table tbody td{
-      color: rgba(255,255,255,.86) !important;
-      font-weight: 700;
-      border-top: 1px solid rgba(255,255,255,.06) !important;
-      vertical-align: middle !important;
-    }
-    .table-hover tbody tr:hover{
-      background: rgba(0,0,0,.55) !important;
-    }
-    .table-hover tbody tr:hover td{
-      color: #ffffff !important;
-    }
-
-    /* DataTables controls */
-    .dataTables_wrapper .dataTables_filter label,
-    .dataTables_wrapper .dataTables_length label,
-    .dataTables_wrapper .dataTables_info{
-      color: var(--muted) !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button{
-      color: var(--txt) !important;
-      border-radius: 12px !important;
-      border: 1px solid var(--stroke2) !important;
-      background: rgba(0,0,0,.20) !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current{
-      background: linear-gradient(135deg, rgba(79,124,255,.35), rgba(155,92,255,.22)) !important;
-      border-color: rgba(79,124,255,.45) !important;
-    }
-
-    /* ====== MODALES PRO (NEGRO) ====== */
-    .modal-backdrop{ background:#000 !important; }
-    .modal-backdrop.show{ opacity:.90 !important; }
-
-    .modal-content{
-      border-radius: 18px !important;
-      border: 1px solid rgba(255,255,255,.14) !important;
-      background: linear-gradient(135deg, rgba(10,12,18,.96), rgba(0,0,0,.94)) !important;
-      color: var(--txt) !important;
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .modal-header{
-      background: linear-gradient(135deg, rgba(79,124,255,.35), rgba(155,92,255,.22)) !important;
-      border-bottom: 1px solid rgba(255,255,255,.12) !important;
-    }
-    .modal-title{
-      font-weight: 900 !important;
-      letter-spacing: .2px;
-      color:#fff !important;
-      margin:0;
-    }
-    .close, .close span{
-      color:#fff !important;
-      opacity: 1 !important;
-      text-shadow:none !important;
-    }
-    .modal-body{ padding: 18px !important; }
-    @media(min-width:768px){ .modal-body{ padding: 22px !important; } }
-
-    label{ color: rgba(255,255,255,.72) !important; font-weight: 900; }
-
-    .form-control, select.form-control{
-      border-radius: 14px !important;
-      border: 1px solid rgba(255,255,255,.14) !important;
-      background: rgba(0,0,0,.35) !important;
-      color: var(--txt) !important;
-      padding: 12px 14px !important;
-      min-height: 44px;
-      box-shadow:none !important;
-    }
-    .form-control::placeholder{ color: rgba(255,255,255,.50) !important; }
-    .form-control:focus, select.form-control:focus{
-      outline: none !important;
-      border-color: rgba(79,124,255,.55) !important;
-      box-shadow: 0 0 0 .2rem rgba(79,124,255,.18) !important;
-    }
-
-    .modal-footer{
-      border-top: 1px solid rgba(255,255,255,.12) !important;
-      background: rgba(0,0,0,.35) !important;
-      padding: 14px 18px !important;
-    }
-
-    .btn{
-      border-radius: 14px !important;
-      padding: 10px 22px !important;
-      font-weight: 900 !important;
-      border: 1px solid rgba(255,255,255,.14) !important;
-      box-shadow: 0 10px 24px rgba(0,0,0,.25);
-    }
-    .btn-primary{
-      border-color: rgba(79,124,255,.45) !important;
-      background: linear-gradient(135deg, rgba(79,124,255,.35), rgba(155,92,255,.22)) !important;
-      color:#fff !important;
-    }
-    .btn-secondary{
-      background: rgba(255,255,255,.06) !important;
-      color: var(--txt) !important;
-    }
-
-    /* Fix: thead bg-light text-dark */
-    thead.bg-light.text-dark, thead.bg-light.text-dark th{
-      background: rgba(255,255,255,.06) !important;
-      color: rgba(255,255,255,.86) !important;
-    }
-  </style>
+  
+  <link rel="stylesheet" href="assets/css/ministerios_entidades_gob360_premium.css">
 </head>
 
-<body class="">
+<body class="gob360-ministries-page">
   <!-- [ Pre-loader ] start -->
   <div class="loader-bg">
     <div class="loader-track">
@@ -299,28 +46,180 @@ $modulo = 'Ministerios';
   <div class="pcoded-main-container">
     <div class="pcoded-content">
 
-      <div class="page-header">
-        <div class="page-block">
-          <div class="row align-items-center">
-            <div class="col-md-12">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="m-b-10">Ministerios o entidades</h5>
-                <?php include './admin/include/btn_back.php'; ?>
+      <section class="g360-ministries-hero" aria-label="Ministerios y entidades GOB360">
+        <div class="g360-ministries-hero__grid">
+
+          <aside class="g360-ministries-brand">
+            <span class="g360-ministries-brand__eyebrow">
+              Plataforma institucional
+            </span>
+
+            <img
+              src="assets/img/gob360l.png"
+              alt="Logo GOB360"
+              class="g360-ministries-brand__logo"
+            >
+
+            <span class="g360-ministries-brand__caption">
+              Gestión pública inteligente y territorial
+            </span>
+
+            <div class="g360-ministries-brand__status">
+              <span></span>
+              Directorio interinstitucional activo
+            </div>
+          </aside>
+
+          <div class="g360-ministries-hero__content">
+            <div class="g360-ministries-hero__top">
+              <div>
+                <div class="g360-ministries-hero__eyebrow">
+                  <i class="feather icon-layers"></i>
+                  Configuración institucional
+                </div>
+
+                <h1 class="g360-ministries-hero__title">
+                  Ministerios y Entidades
+                </h1>
+
+                <p class="g360-ministries-hero__description">
+                  Administra las entidades de articulación nacional, sus
+                  responsables y correos institucionales para fortalecer la
+                  coordinación interinstitucional dentro de GOB360.
+                </p>
               </div>
-              <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#!">Configuración General / Ministerios o entidades</a></li>
-              </ul>
+
+              <div class="g360-ministries-hero__actions">
+                <?php if ($create): ?>
+                  <button
+                    type="button"
+                    class="g360-hero-button g360-hero-button--primary"
+                    data-toggle="modal"
+                    data-target="#modalMinisterio"
+                  >
+                    <i class="feather icon-plus-circle"></i>
+                    Nueva entidad
+                  </button>
+                <?php endif; ?>
+
+                <div class="g360-ministries-back">
+                  <?php include './admin/include/btn_back.php'; ?>
+                </div>
+              </div>
+            </div>
+
+            <div class="g360-ministries-summary">
+              <article>
+                <span class="g360-ministries-summary__icon">
+                  <i class="feather icon-layers"></i>
+                </span>
+
+                <div>
+                  <small>Módulo</small>
+                  <strong>Entidades</strong>
+                  <p>Directorio interinstitucional</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-ministries-summary__icon g360-ministries-summary__icon--records">
+                  <i class="feather icon-database"></i>
+                </span>
+
+                <div>
+                  <small>Registros cargados</small>
+                  <strong><?= number_format(is_array($arr) ? count($arr) : 0, 0, ',', '.') ?></strong>
+                  <p>Ministerios y entidades disponibles</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-ministries-summary__icon g360-ministries-summary__icon--create">
+                  <i class="feather icon-plus-square"></i>
+                </span>
+
+                <div>
+                  <small>Creación</small>
+                  <strong><?= $create ? 'Habilitada' : 'Restringida' ?></strong>
+                  <p>Según permisos de la sesión</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-ministries-summary__icon g360-ministries-summary__icon--edit">
+                  <i class="feather icon-edit-3"></i>
+                </span>
+
+                <div>
+                  <small>Actualización</small>
+                  <strong><?= $edit ? 'Habilitada' : 'Consulta' ?></strong>
+                  <p><?= htmlspecialchars((string)$userType, ENT_QUOTES, 'UTF-8') ?></p>
+                </div>
+              </article>
+            </div>
+
+            <div class="g360-ministries-capabilities" aria-hidden="true">
+              <span>
+                <i class="feather icon-briefcase"></i>
+                Entidades nacionales
+              </span>
+
+              <span>
+                <i class="feather icon-user"></i>
+                Responsables
+              </span>
+
+              <span>
+                <i class="feather icon-mail"></i>
+                Correos institucionales
+              </span>
+
+              <span>
+                <i class="feather icon-edit"></i>
+                Actualización
+              </span>
+
+              <span>
+                <i class="feather icon-shield"></i>
+                Acceso autorizado
+              </span>
             </div>
           </div>
+
         </div>
-      </div>
+      </section>
 
       <div class="contenedor">
         <div class="contenido">
-          <div class="card">
+          <div class="card g360-ministries-card">
             <div class="card-header d-flex flex-wrap align-items-center justify-content-between py-3">
-              <h5 class="mb-0 text-center w-100">Ingreso y listado de ministerios o entidades</h5>
+              <div class="g360-card-heading">
+                <span class="g360-card-heading__icon">
+                  <i class="feather icon-list"></i>
+                </span>
+
+                <div>
+                  <span class="g360-card-heading__eyebrow">Directorio interinstitucional</span>
+                  <h5 class="mb-0">Listado de ministerios y entidades</h5>
+                  <p>
+                    Consulta responsables, correos oficiales y administra los
+                    registros disponibles.
+                  </p>
+                </div>
+              </div>
+
+              <?php if ($create): ?>
+                <button
+                  type="button"
+                  class="btn btn-primary g360-new-ministry-button"
+                  data-toggle="modal"
+                  data-target="#modalMinisterio"
+                  onclick="document.getElementById('formMinisterio').reset(); document.getElementById('ministerioId').value=''; document.getElementById('id').value='';"
+                >
+                  <i class="feather icon-plus"></i>
+                  Agregar entidad
+                </button>
+              <?php endif; ?>
 
               <div class="card-header-right ml-auto">
                 <div class="btn-group card-option">
@@ -353,26 +252,42 @@ $modulo = 'Ministerios';
             </div>
 
             <div class="card-body table-border-style">
-              <div class="navbar-form buscador-2">
-                <div class="input-group input-primary">
-                  <input type="text" id="customSearch" class="form-control" placeholder="Buscar">
-                  <div class="input-group-append">
-                    <span class="input-group-text">
-                      <i class="feather icon-edit"></i>
-                    </span>
+              <div class="g360-ministries-tools">
+                <div class="g360-ministries-search">
+                  <span class="g360-ministries-search__icon">
+                    <i class="feather icon-search"></i>
+                  </span>
+
+                  <div>
+                    <label for="customSearch">Búsqueda rápida</label>
+                    <input
+                      type="text"
+                      id="customSearch"
+                      class="form-control"
+                      placeholder="Buscar ministerio, entidad, responsable o correo..."
+                    >
                   </div>
+                </div>
+
+                <div class="g360-ministries-tools__info">
+                  <i class="feather icon-info"></i>
+
+                  <span>
+                    Utiliza este directorio para identificar entidades y
+                    responsables vinculados a procesos de articulación pública.
+                  </span>
                 </div>
               </div>
 
-              <div class="table-responsive tabla-informacion tabla-scroll">
-                <table class="table table-hover mb-0" id="dynamictable">
+              <div class="table-responsive tabla-informacion tabla-scroll g360-ministries-table">
+                <table class="table table-hover mb-0" id="dynamictable" aria-label="Directorio de ministerios y entidades">
                   <thead style="">
                     <tr class="border-1">
                       <th>Ingresar</th>
                       <th>Editar</th>
-                      <th>ministerio</th>
-                      <th>ministro</th>
-                      <th>correo</th>
+                      <th>Ministerio o entidad</th>
+                      <th>Responsable</th>
+                      <th>Correo institucional</th>
                     </tr>
                   </thead>
                 </table>
@@ -388,15 +303,57 @@ $modulo = 'Ministerios';
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
           <form id="formMinisterio" class="w-100" autocomplete="off">
             <input type="hidden" name="id" id="ministerioId" />
-            <div class="modal-content">
+            <div class="modal-content g360-ministry-modal">
               <div class="modal-header">
-                <h5 class="modal-title" id="modalMinisterioLabel">Ministerio</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                <div class="g360-modal-heading">
+                  <span class="g360-modal-heading__icon">
+                    <i class="feather icon-layers"></i>
+                  </span>
+
+                  <div>
+                    <small>Registro interinstitucional</small>
+                    <h5 class="modal-title" id="modalMinisterioLabel">
+                      Ministerio o entidad
+                    </h5>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Cerrar"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
 
               <div class="modal-body">
+                <div class="g360-ministry-modal__intro">
+                  <span>
+                    <i class="feather icon-shield"></i>
+                  </span>
+
+                  <div>
+                    <strong>Información institucional</strong>
+                    <p>
+                      Registre el nombre de la entidad, su responsable principal
+                      y el correo oficial de contacto.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="g360-modal-section-heading">
+                  <span class="g360-modal-section-heading__icon">
+                    <i class="feather icon-edit-3"></i>
+                  </span>
+
+                  <div>
+                    <small>Datos básicos</small>
+                    <h6>Identificación de la entidad</h6>
+                  </div>
+                </div>
+
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="ministerio">Nombre del Ministerio <span class="text-danger">*</span></label>
@@ -416,8 +373,25 @@ $modulo = 'Ministerios';
               </div>
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" id="btnGuardarMinisterio" class="btn btn-primary">Guardar</button>
+                <div class="g360-modal-footer-message">
+                  <i class="feather icon-lock"></i>
+                  Los cambios quedarán registrados en el directorio institucional.
+                </div>
+
+                <div class="g360-modal-footer-actions">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cancelar
+                  </button>
+
+                  <button
+                    type="button"
+                    id="btnGuardarMinisterio"
+                    class="btn btn-primary"
+                  >
+                    <i class="feather icon-save"></i>
+                    Guardar entidad
+                  </button>
+                </div>
               </div>
             </div>
           </form>
@@ -434,57 +408,7 @@ $modulo = 'Ministerios';
   <script type="text/javascript" src="admin/js/ministerios.js"></script>
   <script type="text/javascript" src="./admin/js/datatables/jquery.dataTables.min.js"></script>
   <link href="./admin/js/datatables/jquery.dataTables.min.css" rel="stylesheet" />
-                <style>
-      table.dataTable tbody tr{
-        background-color: transparent !important;
-      }
-      table.dataTable.stripe tbody tr.odd,
-      table.dataTable.display tbody tr.odd{
-        background-color: rgba(255,255,255,.03) !important;
-      }
-      table.dataTable tbody td{
-        color: rgba(255,255,255,.86) !important;
-      }
-      table.dataTable tbody td a{
-        color: rgba(255,255,255,.86) !important;
-      }
-      table.dataTable tbody td i.feather,
-      table.dataTable tbody td i.bi{
-        color: rgba(255,255,255,.86) !important;
-      }
-      #tblVeredas td i.feather{
-        color: rgba(255,255,255,.86) !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button{
-        color: rgba(255,255,255,.86) !important;
-        background: rgba(255,255,255,.06) !important;
-        border: 1px solid rgba(255,255,255,.10) !important;
-        border-radius: 8px !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-      .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
-        color: #fff !important;
-        background: rgba(31,111,235,.35) !important;
-        border: 1px solid rgba(31,111,235,.50) !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
-        color: #fff !important;
-        background: rgba(255,255,255,.12) !important;
-        border: 1px solid rgba(255,255,255,.20) !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button.disabled{
-        color: rgba(255,255,255,.30) !important;
-        background: transparent !important;
-        border: 1px solid transparent !important;
-      }
-      .dataTables_wrapper .dataTables_info,
-      .dataTables_wrapper .dataTables_length label{
-        color: #fff !important;
-      }
-      table.dataTable tbody tr.selected{
-        background-color: rgba(31,111,235,.25) !important;
-      }
-    </style>
+                
 
 
 

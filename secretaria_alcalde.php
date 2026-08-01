@@ -117,7 +117,7 @@ foreach ($proyectosPorEstado as $estado) {
 
 ?>
 
-<body class="dashboard-body au-dark">
+<body class="dashboard-body au-dark gob360-municipal-reports-page">
     <!-- [ Pre-loader ] start -->
     <div class="loader-bg">
         <div class="loader-track">
@@ -128,258 +128,179 @@ foreach ($proyectosPorEstado as $estado) {
 
     <?php include './admin/include/navbar.php'; ?>
     <?php include './admin/include/header.php'; ?>
+    <link rel="stylesheet" href="assets/css/informes_secretarias_alcaldias_gob360_premium.css">
 
-    <!-- ✅ ESTILO WOW (solo diseño) -->
-    <style>
-      :root{
-        --ink:#EAF0FF;
-        --muted:rgba(234,240,255,.72);
-        --glass: rgba(255,255,255,.08);
-        --glass2: rgba(255,255,255,.06);
-        --stroke: rgba(255,255,255,.12);
-        --stroke2: rgba(255,255,255,.08);
-        --shadow: 0 22px 70px rgba(0,0,0,.34);
-        --shadow2: 0 14px 40px rgba(0,0,0,.28);
-        --r-xl: 22px;
-        --r-lg: 16px;
-
-        --brand:#60A5FA;
-        --violet:#A78BFA;
-        --ok:#34D399;
-        --warn:#FBBF24;
-        --danger:#FB7185;
-        --cyan:#22D3EE;
-
-        --safe-top: 96px;
-      }
-
-      body.au-dark{
-        color: var(--ink);
-        background:
-          radial-gradient(1200px 600px at 10% 10%, rgba(96,165,250,.22), transparent 55%),
-          radial-gradient(900px 500px at 90% 15%, rgba(167,139,250,.18), transparent 55%),
-          radial-gradient(900px 520px at 70% 90%, rgba(52,211,153,.14), transparent 55%),
-          linear-gradient(135deg, #081226 0%, #0B1B38 45%, #070B16 100%);
-        min-height:100vh;
-      }
-
-      /* ✅ safe top (header fijo) */
-      .pcoded-content{
-        padding: calc(var(--safe-top) + 16px) 16px 18px !important;
-      }
-      @media(min-width:768px){
-        :root{ --safe-top: 112px; }
-        .pcoded-content{ padding: calc(var(--safe-top) + 18px) 24px 24px !important; }
-      }
-      @media(min-width:1200px){
-        :root{ --safe-top: 120px; }
-        .pcoded-content{ padding: calc(var(--safe-top) + 22px) 42px 34px !important; }
-      }
-
-      /* Header / breadcrumb modo dark */
-      .page-header .page-block{
-        background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.06)) !important;
-        border: 0.1px solid rgba(255,255,255,.12) !important;
-        border-radius: var(--r-xl) !important;
-        box-shadow: var(--shadow2);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        overflow:hidden;
-      }
-      .page-header-title h5{
-        color:#fff !important;
-        font-weight:1000 !important;
-        letter-spacing:.2px;
-      }
-      .breadcrumb{
-        background: transparent !important;
-      }
-      .breadcrumb-item a, .breadcrumb-item{
-        color: rgba(255,255,255,.78) !important;
-        font-weight: 800;
-      }
-      .breadcrumb-item.active{
-        color: rgba(255,255,255,.92) !important;
-      }
-
-      /* Cards wow (override bootstrap/tema) */
-      .card{
-        background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06)) !important;
-        border: 1px solid rgba(255,255,255,.12) !important;
-        border-radius: var(--r-xl) !important;
-        box-shadow: var(--shadow);
-        overflow:hidden;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-      }
-      .card .card-header{
-        background: linear-gradient(180deg, rgba(0,0,0,.20), rgba(0,0,0,0)) !important;
-        border-bottom: 1px solid rgba(255,255,255,.10) !important;
-        color:#fff !important;
-      }
-      .card .card-header h5{
-        color:#fff !important;
-        font-weight:1000 !important;
-        margin:0;
-      }
-      .card .card-body{
-        color: rgba(255,255,255,.86);
-      }
-
-      /* Botones */
-      .btn{
-        border-radius: 14px !important;
-        font-weight: 900 !important;
-      }
-      .btn-light{
-        background: rgba(255,255,255,.92) !important;
-        border: 1px solid rgba(255,255,255,.22) !important;
-      }
-
-      /* Select premium */
-      .form-control, select.form-control{
-        background: rgba(255,255,255,.06) !important;
-        border: 1px solid rgba(255,255,255,.14) !important;
-        color: #fff !important;
-        border-radius: 16px !important;
-        font-weight: 800 !important;
-        box-shadow: 0 10px 30px rgba(0,0,0,.18);
-        padding: .65rem .95rem !important;
-      }
-      .form-control:focus{
-        outline: none !important;
-        box-shadow: 0 0 0 .20rem rgba(96,165,250,.22) !important;
-        border-color: rgba(96,165,250,.45) !important;
-      }
-      select.form-control{
-        appearance: none;
-        background-image:
-          linear-gradient(45deg, transparent 50%, rgba(255,255,255,.85) 50%),
-          linear-gradient(135deg, rgba(255,255,255,.85) 50%, transparent 50%),
-          linear-gradient(to right, rgba(255,255,255,.14), rgba(255,255,255,.08));
-        background-position:
-          calc(100% - 18px) calc(1em + 3px),
-          calc(100% - 13px) calc(1em + 3px),
-          calc(100% - 2.2em) .55em;
-        background-size: 5px 5px, 5px 5px, 1px 1.8em;
-        background-repeat: no-repeat;
-        padding-right: 2.8em !important;
-      }
-      select.form-control option{
-        color:#0B1B38;
-      }
-
-      /* Panel “Resumen” más ejecutivo */
-      .card-body h6, .card-body small{
-        color: rgba(255,255,255,.75) !important;
-        font-weight: 900 !important;
-      }
-      .card-body hr{
-        border-top: 1px solid rgba(255,255,255,.12) !important;
-      }
-
-      /* Bloques de estado (estudios, ejecución, etc.) */
-      .card-body .border.rounded{
-        border: 1px solid rgba(255,255,255,.12) !important;
-        background: rgba(255,255,255,.06) !important;
-        border-radius: 16px !important;
-      }
-
-      /* Mapa frame */
-      #map-container{
-        border: 1px solid rgba(255,255,255,.12);
-        border-radius: var(--r-xl);
-        overflow:hidden;
-        box-shadow: var(--shadow);
-        background: rgba(255,255,255,.05);
-      }
-      #contenido-mapa{
-        background:
-          radial-gradient(800px 220px at 10% 0%, rgba(96,165,250,.14), transparent 60%),
-          radial-gradient(800px 220px at 90% 0%, rgba(167,139,250,.12), transparent 60%),
-          rgba(0,0,0,.10);
-      }
-
-      /* SVG interacciones bonitas */
-      svg polygon, svg path{
-        transition: transform .15s ease, filter .15s ease, opacity .15s ease;
-        cursor: pointer;
-      }
-      svg polygon:hover, svg path:hover{
-        transform: translateY(-1px);
-        filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
-        opacity: .95;
-      }
-      /* Labels del SVG (cuando vienen como tspan) */
-      svg text, svg tspan{
-        fill: rgba(255,255,255,.85) !important;
-        font-weight: 900 !important;
-      }
-
-      /* Indicadores derecha: cards compactas y premium */
-      #indicadoresSecretaria .card{
-        box-shadow: var(--shadow2);
-      }
-
-      /* Ajustes cards de color bootstrap para que se vean pro en dark */
-      .bg-primary, .bg-success, .bg-info, .bg-secondary, .bg-warning{
-        border: 1px solid rgba(255,255,255,.14) !important;
-        box-shadow: var(--shadow2) !important;
-      }
-      .bg-warning{ color:#0B1B38 !important; }
-
-      /* Modal pro */
-      .modal-content{
-        background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06)) !important;
-        border: 1px solid rgba(255,255,255,.14) !important;
-        border-radius: 22px !important;
-        box-shadow: var(--shadow);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-      }
-      .modal-header{
-        border-bottom: 1px solid rgba(255,255,255,.10) !important;
-      }
-      .modal-footer{
-        border-top: 1px solid rgba(255,255,255,.10) !important;
-      }
-      .modal-body{
-        background: rgba(0,0,0,.10);
-      }
-
-      /* Responsive: mapa sin scroll lateral */
-      @media(max-width: 576px){
-        #map-container{ height: 460px !important; }
-        svg{ height: 460px !important; }
-      }
-    </style>
 
     <div class="pcoded-main-container">
         <div class="pcoded-content">
 
-            <div class="page-header">
-                <div class="page-block">
-                    <div class="row align-items-center">
-                        <div class="col-md-12">
-                            <div class="page-header-title">
-                                <h5 class="m-b-10">Informes Secretarias</h5>
+            <section class="g360-reports-hero" aria-label="Informes territoriales GOB360">
+                <div class="g360-reports-hero__grid">
+
+                    <aside class="g360-reports-brand">
+                        <span class="g360-reports-brand__eyebrow">
+                            Plataforma institucional
+                        </span>
+
+                        <img
+                            src="assets/img/gob360l.png"
+                            alt="Logo GOB360"
+                            class="g360-reports-brand__logo"
+                        >
+
+                        <span class="g360-reports-brand__caption">
+                            Gestión pública inteligente y territorial
+                        </span>
+
+                        <div class="g360-reports-brand__status">
+                            <span></span>
+                            Inteligencia territorial activa
+                        </div>
+                    </aside>
+
+                    <div class="g360-reports-hero__content">
+                        <div class="g360-reports-hero__top">
+                            <div>
+                                <div class="g360-reports-hero__eyebrow">
+                                    <i class="feather icon-bar-chart-2"></i>
+                                    Información de alcaldías
+                                </div>
+
+                                <h1 class="g360-reports-hero__title">
+                                    Informes de Secretarías
+                                </h1>
+
+                                <p class="g360-reports-hero__description">
+                                    Analiza la inversión, el estado de los proyectos y
+                                    su distribución territorial por secretaría, municipio
+                                    y vereda desde un único tablero ejecutivo.
+                                </p>
                             </div>
-                            <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="#!">Información Secretarías Alcaldías</a></li>
-                            </ul>
+
+                            <div class="g360-reports-hero__actions">
+                                <button
+                                    type="button"
+                                    class="g360-hero-button g360-hero-button--primary"
+                                    data-toggle="modal"
+                                    data-target="#modalGeocalizacion"
+                                >
+                                    <i class="feather icon-map-pin"></i>
+                                    Ver geolocalización
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="g360-hero-button g360-hero-button--secondary"
+                                    onclick="window.location.reload()"
+                                >
+                                    <i class="feather icon-refresh-cw"></i>
+                                    Actualizar tablero
+                                </button>
+
+                                <div class="g360-reports-back">
+                                    <?php include './admin/include/btn_back.php'; ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="g360-reports-summary">
+                            <article>
+                                <span class="g360-reports-summary__icon">
+                                    <i class="feather icon-folder"></i>
+                                </span>
+
+                                <div>
+                                    <small>Total proyectos</small>
+                                    <strong><?= number_format((float)$totalProyectos, 0, ',', '.') ?></strong>
+                                    <p>Según los filtros activos</p>
+                                </div>
+                            </article>
+
+                            <article>
+                                <span class="g360-reports-summary__icon g360-reports-summary__icon--investment">
+                                    <i class="feather icon-dollar-sign"></i>
+                                </span>
+
+                                <div>
+                                    <small>Inversión total</small>
+                                    <strong>$<?= number_format((float)$valorTotalInversion, 0, ',', '.') ?></strong>
+                                    <p>Valor consolidado de proyectos</p>
+                                </div>
+                            </article>
+
+                            <article>
+                                <span class="g360-reports-summary__icon g360-reports-summary__icon--execution">
+                                    <i class="feather icon-settings"></i>
+                                </span>
+
+                                <div>
+                                    <small>En ejecución</small>
+                                    <strong><?= number_format((float)$totalEnEjecucion, 0, ',', '.') ?></strong>
+                                    <p>Proyectos activos o en trámite</p>
+                                </div>
+                            </article>
+
+                            <article>
+                                <span class="g360-reports-summary__icon g360-reports-summary__icon--completed">
+                                    <i class="feather icon-check-circle"></i>
+                                </span>
+
+                                <div>
+                                    <small>Finalizados</small>
+                                    <strong><?= number_format((float)($totalTerminados + $totalEntregado), 0, ',', '.') ?></strong>
+                                    <p>Terminados y entregados</p>
+                                </div>
+                            </article>
+                        </div>
+
+                        <div class="g360-reports-capabilities" aria-hidden="true">
+                            <span>
+                                <i class="feather icon-map"></i>
+                                Mapa territorial
+                            </span>
+
+                            <span>
+                                <i class="feather icon-briefcase"></i>
+                                Filtro por secretaría
+                            </span>
+
+                            <span>
+                                <i class="feather icon-map-pin"></i>
+                                Filtro por vereda
+                            </span>
+
+                            <span>
+                                <i class="feather icon-pie-chart"></i>
+                                Estados de proyectos
+                            </span>
+
+                            <span>
+                                <i class="feather icon-dollar-sign"></i>
+                                Inversión consolidada
+                            </span>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="row">
+                </div>
+            </section>
+
+            <div class="row g360-reports-dashboard">
 
                 <!-- Columna 1 -->
-                <div class="col-xl-3 col-md-6">
-                    <div class="card">
+                <div class="col-xl-3 col-lg-4 col-md-12 g360-reports-sidebar g360-reports-sidebar--left">
+                    <div class="card g360-report-card g360-report-card--summary">
                         <div class="card-header">
-                            <h5><i class="feather icon-info"></i> Resumen Información - Todas las Provincias</h5>
+                            <div class="g360-card-heading">
+                                <span class="g360-card-heading__icon">
+                                    <i class="feather icon-pie-chart"></i>
+                                </span>
+
+                                <div>
+                                    <small>Resumen ejecutivo</small>
+                                    <h5>Estado de los proyectos</h5>
+                                    <p>Consolidado según la selección activa.</p>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <h6 class="mb-3">$ Valores Financieros</h6>
@@ -395,7 +316,7 @@ foreach ($proyectosPorEstado as $estado) {
                             <h6 class="mb-3"><i class="feather icon-list"></i> Estados de Proyectos</h6>
 
                             <?php if ($totalEstudiosPrevios > 0): ?>
-                            <div class="text-center mb-3 p-2 border rounded">
+                            <div class="g360-project-status g360-project-status--previous">
                                 <i class="feather icon-file-text" style="font-size: 20px; color: rgba(255,255,255,.75);"></i>
                                 <h6 class="mt-1 mb-0">Estudios Previos</h6>
                                 <h4 class="mb-0" style="color: rgba(255,255,255,.92); font-weight:1000;"><?php echo $totalEstudiosPrevios; ?></h4>
@@ -403,7 +324,7 @@ foreach ($proyectosPorEstado as $estado) {
                             <?php endif; ?>
 
                             <?php if ($totalEnFormulacion > 0): ?>
-                            <div class="text-center mb-3 p-2 border rounded">
+                            <div class="g360-project-status g360-project-status--formulation">
                                 <i class="feather icon-edit" style="font-size: 20px; color: var(--warn);"></i>
                                 <h6 class="mt-1 mb-0">En Formulación</h6>
                                 <h4 class="mb-0" style="color: var(--warn); font-weight:1000;"><?php echo $totalEnFormulacion; ?></h4>
@@ -411,7 +332,7 @@ foreach ($proyectosPorEstado as $estado) {
                             <?php endif; ?>
 
                             <?php if ($totalEnEjecucion > 0): ?>
-                            <div class="text-center mb-3 p-2 border rounded">
+                            <div class="g360-project-status g360-project-status--execution">
                                 <i class="feather icon-settings" style="font-size: 20px; color: var(--cyan);"></i>
                                 <h6 class="mt-1 mb-0">En Ejecución</h6>
                                 <h4 class="mb-0" style="color: var(--cyan); font-weight:1000;"><?php echo $totalEnEjecucion; ?></h4>
@@ -419,7 +340,7 @@ foreach ($proyectosPorEstado as $estado) {
                             <?php endif; ?>
 
                             <?php if ($totalTerminados > 0): ?>
-                            <div class="text-center mb-3 p-2 border rounded">
+                            <div class="g360-project-status g360-project-status--finished">
                                 <i class="feather icon-check" style="font-size: 20px; color: var(--brand);"></i>
                                 <h6 class="mt-1 mb-0">Terminados</h6>
                                 <h4 class="mb-0" style="color: var(--brand); font-weight:1000;"><?php echo $totalTerminados; ?></h4>
@@ -427,7 +348,7 @@ foreach ($proyectosPorEstado as $estado) {
                             <?php endif; ?>
 
                             <?php if ($totalEntregado > 0): ?>
-                            <div class="text-center p-2 border rounded">
+                            <div class="g360-project-status g360-project-status--delivered">
                                 <i class="feather icon-check-circle" style="font-size: 20px; color: var(--ok);"></i>
                                 <h6 class="mt-1 mb-0">Entregado</h6>
                                 <h4 class="mb-0" style="color: var(--ok); font-weight:1000;"><?php echo $totalEntregado; ?></h4>
@@ -438,19 +359,41 @@ foreach ($proyectosPorEstado as $estado) {
                 </div>
 
                 <!-- Columna 2: Mapa -->
-                <div class="col-xl-6 col-md-12">
-                    <div class="card">
+                <div class="col-xl-6 col-lg-8 col-md-12 g360-reports-map-column">
+                    <div class="card g360-report-card g360-report-card--map">
                         <div class="card-header">
-                            <div class="d-flex align-items-center justify-content-between w-100">
-                              <h5 class="mb-0"><i class="feather icon-map"></i> Mapa de Actividades - Todas las Provincias</h5>
-                              <div class="card-header-right">
-                                  <button class="btn btn-sm btn-light" data-toggle="modal" data-target="#modalGeocalizacion">
-                                    <i class="feather icon-map-pin"></i> Geolocalización
-                                  </button>
-                              </div>
+                            <div class="g360-card-heading">
+                                <span class="g360-card-heading__icon g360-card-heading__icon--map">
+                                    <i class="feather icon-map"></i>
+                                </span>
+
+                                <div>
+                                    <small>Inteligencia territorial</small>
+                                    <h5>Mapa de proyectos y actividades</h5>
+                                    <p>
+                                        Selecciona una vereda para consultar el detalle territorial.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="g360-map-card-actions">
+                                <span class="g360-map-live-status">
+                                    <span></span>
+                                    Mapa interactivo
+                                </span>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#modalGeocalizacion"
+                                >
+                                    <i class="feather icon-map-pin"></i>
+                                    Geolocalización
+                                </button>
                             </div>
                         </div>
-                        <div class="card-body p-0">
+                        <div class="card-body p-0 g360-map-card-body">
                             <?php if ($isUsuarioMunicipal && !empty($municipioUsuario)): ?>
                                 <div id="map-container" style="height: 600px; position: relative;">
                                     <?php
@@ -547,11 +490,19 @@ foreach ($proyectosPorEstado as $estado) {
                 </div>
 
                 <!-- Columna 3 -->
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-3 col-lg-12 col-md-12 g360-reports-sidebar g360-reports-sidebar--right">
 
-                    <div class="card">
+                    <div class="card g360-report-card g360-filter-card g360-filter-card--secretariat">
                         <div class="card-header">
-                            <h5>Seleccionar Secretaría</h5>
+                            <div class="g360-card-heading g360-card-heading--compact">
+                                <span class="g360-card-heading__icon">
+                                    <i class="feather icon-briefcase"></i>
+                                </span>
+                                <div>
+                                    <small>Filtro institucional</small>
+                                    <h5>Seleccionar secretaría</h5>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <select id="selectSecretaria" class="form-control" onchange="updateUrlSecretaria(this)">
@@ -566,9 +517,17 @@ foreach ($proyectosPorEstado as $estado) {
                     </div>
 
                     <?php if ($isUsuarioMunicipal): ?>
-                    <div class="card">
+                    <div class="card g360-report-card g360-filter-card g360-filter-card--territory">
                         <div class="card-header">
-                            <h5>Seleccionar Vereda</h5>
+                            <div class="g360-card-heading g360-card-heading--compact">
+                                <span class="g360-card-heading__icon g360-card-heading__icon--territory">
+                                    <i class="feather icon-map-pin"></i>
+                                </span>
+                                <div>
+                                    <small>Filtro territorial</small>
+                                    <h5>Seleccionar vereda</h5>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <select id="selectVereda" class="form-control" onchange="cambiarVereda(this.value)">
@@ -587,9 +546,17 @@ foreach ($proyectosPorEstado as $estado) {
                         </div>
                     </div>
                     <?php else: ?>
-                    <div class="card">
+                    <div class="card g360-report-card g360-filter-card g360-filter-card--territory">
                         <div class="card-header">
-                            <h5>Seleccionar Provincia</h5>
+                            <div class="g360-card-heading g360-card-heading--compact">
+                                <span class="g360-card-heading__icon g360-card-heading__icon--territory">
+                                    <i class="feather icon-map"></i>
+                                </span>
+                                <div>
+                                    <small>Filtro territorial</small>
+                                    <h5>Seleccionar provincia</h5>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <select id="selectProvincia" class="form-control">
@@ -599,7 +566,7 @@ foreach ($proyectosPorEstado as $estado) {
                     </div>
                     <?php endif; ?>
 
-                    <div id="indicadoresSecretaria">
+                    <section id="indicadoresSecretaria" class="g360-secretariat-indicators" aria-label="Indicadores de la secretaría">
                         <?php if ($secretariaSeleccionada > 0): ?>
                             <?php
                             $porcentajeEstudiosPrevios = $totalProyectos > 0 ? round(($totalEstudiosPrevios / $totalProyectos) * 100, 1) : 0;
@@ -609,7 +576,7 @@ foreach ($proyectosPorEstado as $estado) {
                             $porcentajeEntregado = $totalProyectos > 0 ? round(($totalEntregado / $totalProyectos) * 100, 1) : 0;
                             ?>
 
-                            <div class="card mb-3" style="background: linear-gradient(135deg, rgba(96,165,250,.22), rgba(167,139,250,.16)) !important;">
+                            <div class="card g360-indicator-card mb-3" style="background: linear-gradient(135deg, rgba(96,165,250,.22), rgba(167,139,250,.16)) !important;">
                                 <div class="card-body p-2 text-center">
                                     <h4 class="mb-0" style="color:#fff; font-weight:1000;"><?php echo number_format($totalProyectos); ?></h4>
                                     <small style="color: rgba(255,255,255,.88); font-weight:900;">TOTAL PROYECTOS</small>
@@ -618,7 +585,7 @@ foreach ($proyectosPorEstado as $estado) {
                             </div>
 
                             <?php if ($totalTerminados > 0 || $totalEntregado > 0): ?>
-                            <div class="card mb-3" style="background: linear-gradient(135deg, rgba(52,211,153,.22), rgba(34,211,238,.10)) !important;">
+                            <div class="card g360-indicator-card g360-indicator-card--success mb-3" style="background: linear-gradient(135deg, rgba(52,211,153,.22), rgba(34,211,238,.10)) !important;">
                                 <div class="card-body p-2 text-center">
                                     <h4 class="mb-0" style="color:#fff; font-weight:1000;"><?php echo number_format($totalTerminados + $totalEntregado); ?></h4>
                                     <small style="color: rgba(255,255,255,.88); font-weight:900;">Terminados (<?php echo $porcentajeTerminados + $porcentajeEntregado; ?>%)</small>
@@ -627,7 +594,7 @@ foreach ($proyectosPorEstado as $estado) {
                             <?php endif; ?>
 
                             <?php if ($totalEnEjecucion > 0): ?>
-                            <div class="card mb-3" style="background: linear-gradient(135deg, rgba(251,191,36,.30), rgba(96,165,250,.10)) !important;">
+                            <div class="card g360-indicator-card g360-indicator-card--execution mb-3" style="background: linear-gradient(135deg, rgba(251,191,36,.30), rgba(96,165,250,.10)) !important;">
                                 <div class="card-body p-2 text-center">
                                     <h4 class="mb-0" style="color:#0B1B38; font-weight:1000;"><?php echo number_format($totalEnEjecucion); ?></h4>
                                     <small style="color:#0B1B38; font-weight:1000;">En ejecución (<?php echo $porcentajeEjecucion; ?>%)</small>
@@ -635,7 +602,7 @@ foreach ($proyectosPorEstado as $estado) {
                             </div>
                             <?php endif; ?>
 
-                            <div class="card mb-3" style="background: linear-gradient(135deg, rgba(34,211,238,.22), rgba(96,165,250,.12)) !important;">
+                            <div class="card g360-indicator-card g360-indicator-card--formulation mb-3" style="background: linear-gradient(135deg, rgba(34,211,238,.22), rgba(96,165,250,.12)) !important;">
                                 <div class="card-body p-2 text-center">
                                     <h4 class="mb-0" style="color:#fff; font-weight:1000;"><?php echo number_format($totalEnFormulacion); ?></h4>
                                     <small style="color: rgba(255,255,255,.88); font-weight:900;">En formulación (<?php echo $porcentajeFormulacion; ?>%)</small>
@@ -643,7 +610,7 @@ foreach ($proyectosPorEstado as $estado) {
                             </div>
 
                             <?php if ($totalEstudiosPrevios > 0): ?>
-                            <div class="card mb-3" style="background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(167,139,250,.10)) !important;">
+                            <div class="card g360-indicator-card g360-indicator-card--previous mb-3" style="background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(167,139,250,.10)) !important;">
                                 <div class="card-body p-2 text-center">
                                     <h4 class="mb-0" style="color:#fff; font-weight:1000;"><?php echo number_format($totalEstudiosPrevios); ?></h4>
                                     <small style="color: rgba(255,255,255,.88); font-weight:900;">Estudios Previos (<?php echo $porcentajeEstudiosPrevios; ?>%)</small>
@@ -651,7 +618,7 @@ foreach ($proyectosPorEstado as $estado) {
                             </div>
                             <?php endif; ?>
 
-                            <div class="card text-center mb-3" style="background: linear-gradient(135deg, rgba(52,211,153,.22), rgba(52,211,153,.10)) !important;">
+                            <div class="card g360-indicator-card g360-indicator-card--investment text-center mb-3" style="background: linear-gradient(135deg, rgba(52,211,153,.22), rgba(52,211,153,.10)) !important;">
                                 <div class="card-body p-2">
                                     <h5 class="mb-0" style="color:#fff; font-weight:1000;">
                                       $<?php echo number_format($valorTotalInversion, 0, ',', '.'); ?>
@@ -661,12 +628,12 @@ foreach ($proyectosPorEstado as $estado) {
                             </div>
 
                         <?php else: ?>
-                            <div class="text-center py-5" style="color: rgba(255,255,255,.70);">
+                            <div class="g360-indicators-empty">
                                 <i class="feather icon-info" style="font-size: 48px; color: rgba(255,255,255,.75);"></i>
                                 <p class="mt-3" style="font-weight:900;">Seleccione una secretaría para ver los indicadores</p>
                             </div>
                         <?php endif; ?>
-                    </div>
+                    </section>
 
                 </div>
             </div>
@@ -747,20 +714,43 @@ foreach ($proyectosPorEstado as $estado) {
     <!-- Modal de Geolocalización -->
     <div class="modal fade" id="modalGeocalizacion" tabindex="-1" role="dialog" aria-labelledby="modalGeocalizacionTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background: linear-gradient(135deg, rgba(96,165,250,.22), rgba(167,139,250,.16)) !important;">
-                    <h5 class="modal-title text-white" id="modalGeocalizacionTitle" style="font-weight:1000;">
-                        <i class="feather icon-map-pin"></i> Geolocalización - <?php echo $nombreMunicipio ?? 'Municipio'; ?>
-                    </h5>
+            <div class="modal-content g360-geolocation-modal">
+                <div class="modal-header">
+                    <div class="g360-modal-heading">
+                        <span class="g360-modal-heading__icon">
+                            <i class="feather icon-map-pin"></i>
+                        </span>
+
+                        <div>
+                            <small>Ubicación de proyectos</small>
+                            <h5 class="modal-title" id="modalGeocalizacionTitle">
+                                Geolocalización · <?php echo $nombreMunicipio ?? 'Municipio'; ?>
+                            </h5>
+                        </div>
+                    </div>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body p-0">
+                    <div class="g360-geolocation-map-toolbar">
+                        <span>
+                            <i class="feather icon-navigation"></i>
+                            Marcadores de proyectos con información territorial
+                        </span>
+                    </div>
                     <div id="map" style="height: 500px; width: 100%;"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal"><i class="feather icon-x"></i> Cerrar</button>
+                    <div class="g360-modal-footer-message">
+                        <i class="feather icon-info"></i>
+                        Selecciona un marcador para consultar proyecto, vereda, estado y valor.
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="feather icon-x"></i>
+                        Cerrar
+                    </button>
                 </div>
             </div>
         </div>

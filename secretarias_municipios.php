@@ -45,93 +45,11 @@ foreach ($arrDep as $val) {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <style>
-    :root{
-      --au-primary:#20427F; --au-primary-dark:#132b52; --au-accent:#2e58a8;
-      --au-radius-xl:22px; --au-radius-lg:16px;
-      --safe-top: 96px;
-    }
-    html, body{ overflow-x:hidden !important; }
-
-    .header-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; width:100%; }
-    .header-title{ flex:1 1 auto; min-width:240px; }
-    .header-actions{ display:flex; align-items:center; gap:10px; margin-left:auto; flex:0 0 auto; }
-
-    .btn-saas{
-      background:linear-gradient(135deg,#3b82f6,#4f46e5) !important;
-      border:1px solid rgba(255,255,255,.14) !important;
-      border-radius:999px !important; padding:.56rem 1.0rem !important;
-      font-weight:1000 !important; letter-spacing:.2px;
-      display:flex; align-items:center; gap:.55rem;
-      transition:transform .15s ease,filter .2s ease;
-      color:#fff !important; white-space:nowrap;
-      box-shadow:0 12px 22px rgba(19,43,82,.22);
-    }
-    .btn-saas:hover{ transform:translateY(-1px); filter:brightness(1.03); color:#fff !important; }
-    .btn-saas:active{ transform:translateY(0); }
-
-    .search-wrap{
-      background:rgba(255,255,255,.06); backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,.18); border-radius:14px;
-      padding:6px 8px; width:320px; max-width:100%; margin:0 0 14px 0;
-      box-shadow:0 14px 30px rgba(0,0,0,.18);
-    }
-    .search-wrap .input-group-text{ background:transparent !important; border:none !important; color:rgba(255,255,255,.7) !important; padding:0 10px 0 6px; }
-    #customSearch{ border:none !important; outline:none !important; box-shadow:none !important; padding:.45rem .25rem; font-weight:800; font-size:14px; color:#fff !important; background:transparent !important; }
-    #customSearch::placeholder{ color:rgba(255,255,255,.5); }
-
-    @media(max-width:576px){ .header-actions{ width:100%; justify-content:flex-end; } .search-wrap{ width:100%; } }
-
-    .table-responsive{ overflow-x:auto; }
-    #dynamictable{ width:100% !important; table-layout:auto; white-space:normal; border-collapse:separate; border-spacing:0; }
-    #dynamictable thead th{
-      position:sticky; top:0; z-index:2;
-      background: rgba(255,255,255,.08) !important;
-      color: #fff !important; font-weight:1000;
-      border-bottom: 1px solid rgba(255,255,255,.14) !important;
-      padding: 12px 12px !important; white-space:nowrap;
-    }
-    #dynamictable tbody tr{ background: transparent !important; }
-    #dynamictable td{
-      color: rgba(255,255,255,.86) !important;
-      white-space:normal !important; word-break:break-word !important;
-      max-width:320px; vertical-align:top;
-      padding: 12px 12px !important;
-      border-bottom: 1px solid rgba(255,255,255,.08) !important;
-      background: transparent !important;
-    }
-    #dynamictable tbody tr:hover{ background: rgba(255,255,255,.06) !important; }
-    #dynamictable .feather{ color: rgba(255,255,255,.8) !important; }
-    #dynamictable .btn .feather{ color: #fff !important; }
-    #dynamictable .btn-transparent{ color: rgba(255,255,255,.8) !important; background: transparent !important; border: none !important; }
-    #dynamictable .btn-transparent:hover{ color: #fff !important; background: rgba(255,255,255,.1) !important; }
-    #dynamictable span.text-muted{ color: rgba(255,255,255,.5) !important; }
-
-    .dataTables_wrapper .dataTables_length,
-    .dataTables_wrapper .dataTables_info{ color:rgba(255,255,255,.7) !important; font-weight:700 !important; }
-    .dataTables_wrapper .dataTables_length select{
-      border-radius:12px; border:1px solid rgba(255,255,255,.14);
-      padding:6px 10px; background:rgba(10,17,33,.55); color:#fff;
-    }
-    .dataTables_wrapper .dataTables_paginate{ margin-top:10px; }
-    .dataTables_wrapper .dataTables_paginate .paginate_button{
-      border-radius:999px !important; border:1px solid rgba(255,255,255,.18) !important;
-      margin:0 3px !important; background:rgba(255,255,255,.10) !important;
-      color:#fff !important; font-weight:800 !important; padding:0.4em 0.9em !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button:hover{ background:rgba(255,255,255,.18) !important; color:#fff !important; }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current{
-      background:linear-gradient(135deg,#3b82f6,#4f46e5) !important;
-      border-color:rgba(255,255,255,.25) !important; color:#fff !important; font-weight:900 !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled{
-      opacity:.35 !important; cursor:not-allowed !important;
-      background:transparent !important; border-color:transparent !important;
-    }
-  </style>
+  
+  <link rel="stylesheet" href="assets/css/secretarias_municipales_gob360_premium.css">
 </head>
 
-<body class="">
+<body class="gob360-municipal-secretariats-page">
   <!-- Preloader -->
   <div class="loader-bg">
     <div class="loader-track">
@@ -145,71 +63,262 @@ foreach ($arrDep as $val) {
   <div class="pcoded-main-container">
     <div class="pcoded-content">
 
-      <div class="page-header">
-        <div class="page-block">
-          <div class="row align-items-center">
-            <div class="col-md-12">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="m-b-10">Secretarías Municipales</h5>
-                <?php include './admin/include/btn_back.php'; ?>
+      <section class="g360-municipal-secretariats-hero" aria-label="Secretarías municipales GOB360">
+        <div class="g360-municipal-secretariats-hero__grid">
+
+          <aside class="g360-municipal-secretariats-brand">
+            <span class="g360-municipal-secretariats-brand__eyebrow">
+              Plataforma institucional
+            </span>
+
+            <img
+              src="assets/img/gob360l.png"
+              alt="Logo GOB360"
+              class="g360-municipal-secretariats-brand__logo"
+            >
+
+            <span class="g360-municipal-secretariats-brand__caption">
+              Gestión pública inteligente y territorial
+            </span>
+
+            <div class="g360-municipal-secretariats-brand__status">
+              <span></span>
+              Articulación municipal activa
+            </div>
+          </aside>
+
+          <div class="g360-municipal-secretariats-hero__content">
+            <div class="g360-municipal-secretariats-hero__top">
+              <div>
+                <div class="g360-municipal-secretariats-hero__eyebrow">
+                  <i class="feather icon-home"></i>
+                  Configuración territorial
+                </div>
+
+                <h1 class="g360-municipal-secretariats-hero__title">
+                  Secretarías Municipales
+                </h1>
+
+                <p class="g360-municipal-secretariats-hero__description">
+                  Administra las dependencias municipales, sus responsables,
+                  correos institucionales y estado de habilitación para fortalecer
+                  la articulación entre alcaldías y GOB360.
+                </p>
               </div>
-              <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#!">Configuración Sistema</a></li>
-                <li class="breadcrumb-item"><a href="#!">Secretarías Municipales</a></li>
-              </ul>
+
+              <div class="g360-municipal-secretariats-hero__actions">
+                <?php if ($create): ?>
+                  <button
+                    type="button"
+                    class="g360-hero-button g360-hero-button--primary"
+                    id="btnNuevaSecretariaHero"
+                    onclick="abrirSecretariaMunicipalDesdeHero()"
+                  >
+                    <i class="feather icon-plus-circle"></i>
+                    Nueva secretaría
+                  </button>
+                <?php endif; ?>
+
+                <button
+                  type="button"
+                  class="g360-hero-button g360-hero-button--secondary"
+                  onclick="window.location.reload()"
+                >
+                  <i class="feather icon-refresh-cw"></i>
+                  Actualizar
+                </button>
+
+                <div class="g360-municipal-secretariats-back">
+                  <?php include './admin/include/btn_back.php'; ?>
+                </div>
+              </div>
+            </div>
+
+            <div class="g360-municipal-secretariats-summary">
+              <article>
+                <span class="g360-municipal-secretariats-summary__icon">
+                  <i class="feather icon-home"></i>
+                </span>
+
+                <div>
+                  <small>Ámbito</small>
+                  <strong>Municipal</strong>
+                  <p>Dependencias de alcaldías</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-municipal-secretariats-summary__icon g360-municipal-secretariats-summary__icon--territory">
+                  <i class="feather icon-map-pin"></i>
+                </span>
+
+                <div>
+                  <small>Territorio activo</small>
+                  <strong>
+                    <?= $isUsuarioMunicipal && $municipioUsuario !== '' ? htmlspecialchars((string)$municipioUsuario, ENT_QUOTES, 'UTF-8') : 'Todos' ?>
+                  </strong>
+                  <p><?= $isUsuarioMunicipal ? 'Municipio asignado al usuario' : 'Cobertura administrativa' ?></p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-municipal-secretariats-summary__icon g360-municipal-secretariats-summary__icon--create">
+                  <i class="feather icon-plus-square"></i>
+                </span>
+
+                <div>
+                  <small>Creación</small>
+                  <strong><?= $create ? 'Habilitada' : 'Restringida' ?></strong>
+                  <p>Según permisos de la sesión</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-municipal-secretariats-summary__icon g360-municipal-secretariats-summary__icon--profile">
+                  <i class="feather icon-shield"></i>
+                </span>
+
+                <div>
+                  <small>Perfil activo</small>
+                  <strong><?= $isAdmin ? 'Administrador' : 'Municipal' ?></strong>
+                  <p><?= htmlspecialchars((string)$userType, ENT_QUOTES, 'UTF-8') ?></p>
+                </div>
+              </article>
+            </div>
+
+            <div class="g360-municipal-secretariats-capabilities" aria-hidden="true">
+              <span>
+                <i class="feather icon-map"></i>
+                Departamento y municipio
+              </span>
+
+              <span>
+                <i class="feather icon-briefcase"></i>
+                Dependencias
+              </span>
+
+              <span>
+                <i class="feather icon-user"></i>
+                Responsables
+              </span>
+
+              <span>
+                <i class="feather icon-mail"></i>
+                Correos institucionales
+              </span>
+
+              <span>
+                <i class="feather icon-check-circle"></i>
+                Estado de habilitación
+              </span>
             </div>
           </div>
+
         </div>
-      </div>
+      </section>
 
-      <div class="card">
+      <div class="card g360-municipal-secretariats-card">
         <div class="card-header">
-          <div class="header-row">
-            <div class="header-title">
-              <h5 class="mb-0">Ingreso y listado de secretarías municipales</h5>
-            </div>
+          <div class="g360-card-heading">
+            <span class="g360-card-heading__icon">
+              <i class="feather icon-list"></i>
+            </span>
 
-            <div class="header-actions">
+            <div>
+              <span class="g360-card-heading__eyebrow">Directorio territorial</span>
+              <h5 class="mb-0">Listado de secretarías municipales</h5>
+              <p>
+                Consulta municipio, dependencia, responsable, correo y estado
+                de cada registro institucional.
+              </p>
+            </div>
+          </div>
+
+          <div class="g360-card-header-actions">
+            <?php if ($create): ?>
               <button
                 type="button"
-                class="btn btn-saas btn-sm"
+                class="btn btn-primary"
                 id="btnNuevaSecretaria"
                 data-toggle="modal"
                 data-target="#newModalSecretaria"
               >
-                <i class="feather icon-plus"></i> Nueva Secretaría
+                <i class="feather icon-plus"></i>
+                Nueva secretaría
               </button>
+            <?php endif; ?>
 
-              <div class="card-header-right ml-auto">
-                <div class="btn-group card-option">
-                  <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="feather icon-more-horizontal"></i>
-                  </button>
-                  <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> Maximizar</span><span style="display:none"><i class="feather icon-minimize"></i> Restaurar</span></a></li>
-                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> Colapsar</span><span style="display:none"><i class="feather icon-plus"></i> Expandir</span></a></li>
-                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> Recargar</a></li>
-                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> Eliminar</a></li>
-                  </ul>
-                </div>
+            <div class="card-header-right">
+              <div class="btn-group card-option">
+                <button
+                  type="button"
+                  class="btn dropdown-toggle btn-icon"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="feather icon-more-horizontal"></i>
+                </button>
+
+                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                  <li class="dropdown-item full-card">
+                    <a href="#!">
+                      <span><i class="feather icon-maximize"></i> Maximizar</span>
+                      <span style="display:none"><i class="feather icon-minimize"></i> Restaurar</span>
+                    </a>
+                  </li>
+
+                  <li class="dropdown-item minimize-card">
+                    <a href="#!">
+                      <span><i class="feather icon-minus"></i> Colapsar</span>
+                      <span style="display:none"><i class="feather icon-plus"></i> Expandir</span>
+                    </a>
+                  </li>
+
+                  <li class="dropdown-item reload-card">
+                    <a href="#!"><i class="feather icon-refresh-cw"></i> Recargar</a>
+                  </li>
+
+                  <li class="dropdown-item close-card">
+                    <a href="#!"><i class="feather icon-trash"></i> Eliminar</a>
+                  </li>
+                </ul>
               </div>
-
             </div>
           </div>
         </div>
 
         <div class="card-body table-border-style">
 
-          <div class="search-wrap">
-            <div class="input-group">
-              <span class="input-group-text"><i class="feather icon-search"></i></span>
-              <input type="text" id="customSearch" class="form-control" placeholder="Buscar...">
+          <div class="g360-municipal-secretariats-tools">
+            <div class="g360-municipal-secretariats-search">
+              <span class="g360-municipal-secretariats-search__icon">
+                <i class="feather icon-search"></i>
+              </span>
+
+              <div>
+                <label for="customSearch">Búsqueda rápida</label>
+                <input
+                  type="search"
+                  id="customSearch"
+                  class="form-control"
+                  placeholder="Buscar municipio, secretaría, responsable o correo..."
+                >
+              </div>
+            </div>
+
+            <div class="g360-municipal-secretariats-tools__info">
+              <i class="feather icon-info"></i>
+
+              <span>
+                Los usuarios municipales visualizan y administran la información
+                correspondiente a su territorio asignado.
+              </span>
             </div>
           </div>
 
-          <div class="table-responsive tabla-informacion tabla-scroll">
-            <table class="table table-hover mb-0" id="dynamictable">
+          <div class="table-responsive tabla-informacion tabla-scroll g360-municipal-secretariats-table">
+            <table class="table table-hover mb-0" id="dynamictable" aria-label="Directorio de secretarías municipales">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -230,18 +339,58 @@ foreach ($arrDep as $val) {
       <!-- ✅ MODAL -->
       <div class="modal fade" id="newModalSecretaria" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-          <div class="modal-content">
+          <div class="modal-content g360-municipal-secretariat-modal">
 
             <div class="modal-header">
-              <h5 class="modal-title">Ingresar Nueva Secretaría Municipal</h5>
-              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+              <div class="g360-modal-heading">
+                <span class="g360-modal-heading__icon">
+                  <i class="feather icon-home"></i>
+                </span>
+
+                <div>
+                  <small>Registro territorial</small>
+                  <h5 class="modal-title">Secretaría municipal</h5>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="close text-white"
+                data-dismiss="modal"
+                aria-label="Cerrar"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
 
-            <div class="modal-body p-4">
+            <div class="modal-body">
+              <div class="g360-municipal-secretariat-modal__intro">
+                <span>
+                  <i class="feather icon-shield"></i>
+                </span>
+
+                <div>
+                  <strong>Registro institucional controlado</strong>
+                  <p>
+                    Define la ubicación territorial, la dependencia, su responsable,
+                    correo oficial y estado de habilitación.
+                  </p>
+                </div>
+              </div>
+
               <form id="formNewSecretaria" autocomplete="off">
                 <input type="hidden" id="editId" name="editId">
+
+                <div class="g360-modal-section-heading">
+                  <span class="g360-modal-section-heading__icon">
+                    <i class="feather icon-map"></i>
+                  </span>
+
+                  <div>
+                    <small>Ubicación territorial</small>
+                    <h6>Departamento y municipio</h6>
+                  </div>
+                </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
@@ -259,6 +408,17 @@ foreach ($arrDep as $val) {
                   </div>
                 </div>
 
+                <div class="g360-modal-section-heading g360-modal-section-heading--institution">
+                  <span class="g360-modal-section-heading__icon">
+                    <i class="feather icon-briefcase"></i>
+                  </span>
+
+                  <div>
+                    <small>Dependencia municipal</small>
+                    <h6>Secretaría y responsable</h6>
+                  </div>
+                </div>
+
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="newSecretaria">Secretaría <span class="text-danger">*</span></label>
@@ -268,6 +428,17 @@ foreach ($arrDep as $val) {
                   <div class="form-group col-md-6">
                     <label for="newSecretario">Secretario <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="newSecretario" name="newSecretario" required>
+                  </div>
+                </div>
+
+                <div class="g360-modal-section-heading g360-modal-section-heading--contact">
+                  <span class="g360-modal-section-heading__icon">
+                    <i class="feather icon-mail"></i>
+                  </span>
+
+                  <div>
+                    <small>Contacto y disponibilidad</small>
+                    <h6>Correo institucional y estado</h6>
                   </div>
                 </div>
 
@@ -291,8 +462,26 @@ foreach ($arrDep as $val) {
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button type="button" id="btnSaveSecretaria" class="btn btn-saas" onclick="saveNewSecretaria();">Guardar</button>
+              <div class="g360-modal-footer-message">
+                <i class="feather icon-lock"></i>
+                El registro quedará vinculado al municipio seleccionado.
+              </div>
+
+              <div class="g360-modal-footer-actions">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                  Cancelar
+                </button>
+
+                <button
+                  type="button"
+                  id="btnSaveSecretaria"
+                  class="btn btn-primary"
+                  onclick="saveNewSecretaria();"
+                >
+                  <i class="feather icon-save"></i>
+                  Guardar secretaría
+                </button>
+              </div>
             </div>
 
           </div>
@@ -314,57 +503,7 @@ foreach ($arrDep as $val) {
   <script src="assets/js/pcoded.min.js"></script>
 
   <link href="./admin/js/datatables/jquery.dataTables.min.css" rel="stylesheet" />
-  <style>
-    table.dataTable tbody tr{
-      background-color: transparent !important;
-    }
-    table.dataTable.stripe tbody tr.odd,
-    table.dataTable.display tbody tr.odd{
-      background-color: rgba(255,255,255,.03) !important;
-    }
-    table.dataTable tbody td{
-      color: rgba(255,255,255,.86) !important;
-    }
-    table.dataTable tbody td a{
-      color: rgba(255,255,255,.86) !important;
-    }
-    table.dataTable tbody td i.feather,
-    table.dataTable tbody td i.bi{
-      color: rgba(255,255,255,.86) !important;
-    }
-    #tblVeredas td i.feather{
-      color: rgba(255,255,255,.86) !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button{
-      color: rgba(255,255,255,.86) !important;
-      background: rgba(255,255,255,.06) !important;
-      border: 1px solid rgba(255,255,255,.10) !important;
-      border-radius: 8px !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
-      color: #fff !important;
-      background: rgba(31,111,235,.35) !important;
-      border: 1px solid rgba(31,111,235,.50) !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
-      color: #fff !important;
-      background: rgba(255,255,255,.12) !important;
-      border: 1px solid rgba(255,255,255,.20) !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled{
-      color: rgba(255,255,255,.30) !important;
-      background: transparent !important;
-      border: 1px solid transparent !important;
-    }
-    .dataTables_wrapper .dataTables_info,
-    .dataTables_wrapper .dataTables_length label{
-      color: #fff !important;
-    }
-    table.dataTable tbody tr.selected{
-      background-color: rgba(31,111,235,.25) !important;
-    }
-  </style>
+  
   <script type="text/javascript" src="./admin/js/datatables/jquery.dataTables.min.js"></script>
 
   <script src="<?php echo Util::versionar('./admin/js/departamento.js'); ?>"></script>
@@ -372,6 +511,27 @@ foreach ($arrDep as $val) {
 
 
   <script>
+    function abrirSecretariaMunicipalDesdeHero() {
+      const botonOriginal = document.getElementById('btnNuevaSecretaria');
+
+      if (botonOriginal) {
+        botonOriginal.click();
+        return;
+      }
+
+      if ($('#newModalSecretaria').length) {
+        try {
+          $('#newModalSecretaria').modal('show');
+        } catch (e) {}
+      }
+
+      if (typeof ingresarSecretaria === 'function') {
+        try {
+          ingresarSecretaria();
+        } catch (e) {}
+      }
+    }
+
     // ✅ Fallback por si el data-toggle no engancha por algún conflicto:
     $(document).on('click', '#btnNuevaSecretaria', function(){
       if ($('#newModalSecretaria').length) {

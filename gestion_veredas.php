@@ -5,8 +5,11 @@ require './admin/include/generic_classes.php';
 
 requirePermission('configuracion.veredas.manage');
 ?>
+<link rel="stylesheet" href="assets/css/gestion_veredas_gob360_premium.css">
+<?php
+?>
 
-<body class="dashboard-premium">
+<body class="dashboard-premium gob360-villages-page">
 
   <!-- [ Pre-loader ] start -->
   <div class="loader-bg">
@@ -17,267 +20,273 @@ requirePermission('configuracion.veredas.manage');
   <?php include './admin/include/navbar.php'; ?>
   <?php include './admin/include/header.php'; ?>
 
-    <style>
-    /* ===============================
-       GESTIÓN VEREDAS – GOVTECH WOW
-    ================================ */
-    :root{
-      --bg0:#070A12;
-      --bg1:#0B1222;
-      --stroke: rgba(255,255,255,.10);
-      --stroke2: rgba(255,255,255,.14);
-      --txt: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.66);
-      --brand:#4f7cff;
-      --brand2:#9b5cff;
-      --danger:#ff5b7a;
-      --ok:#18ff6d;
-      --radius-xl:22px;
-      --radius-lg:16px;
-      --shadow-soft: 0 14px 40px rgba(0,0,0,.25);
-      --shadow-mid: 0 22px 60px rgba(0,0,0,.35);
-      --safe-top: 96px;
-    }
-
-    body{
-      background:
-        radial-gradient(900px 420px at 10% 10%, rgba(79,124,255,.28), transparent 60%),
-        radial-gradient(900px 420px at 80% 20%, rgba(155,92,255,.22), transparent 60%),
-        radial-gradient(900px 520px at 50% 100%, rgba(24,255,109,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1)) !important;
-      color: var(--txt);
-      overflow-x:hidden;
-    }
-
-    .pcoded-main-container{ background: transparent !important; }
-    .pcoded-main-container .pcoded-content { padding: calc(var(--safe-top) + 16px) 16px 18px !important; }
-    @media(min-width:768px)  { :root { --safe-top: 112px; } .pcoded-main-container .pcoded-content { padding: calc(var(--safe-top) + 18px) 24px 24px !important; } }
-    @media(min-width:1200px) { :root { --safe-top: 120px; } .pcoded-main-container .pcoded-content { padding: calc(var(--safe-top) + 22px) 42px 34px !important; max-width: 1400px; margin: 0 auto; } }
-
-    /* page header */
-    .page-header .page-block{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.05);
-      border-radius: var(--radius-lg);
-      padding: 14px 14px;
-      box-shadow: var(--shadow-soft);
-      overflow:hidden;
-      position: relative;
-    }
-    .page-header .page-block:before{
-      content:""; position:absolute; inset:-2px;
-      background: radial-gradient(320px 180px at 10% 10%, rgba(79,124,255,.25), transparent 65%), radial-gradient(320px 180px at 90% 20%, rgba(155,92,255,.18), transparent 65%);
-      pointer-events:none;
-    }
-    .page-header .page-block > *{ position:relative; z-index:1; }
-    .page-header h5, .breadcrumb .breadcrumb-item, .breadcrumb .breadcrumb-item a{
-      color: var(--txt) !important;
-    }
-    .breadcrumb .breadcrumb-item a{ color: var(--muted) !important; }
-
-    /* card */
-    .saas-card {
-      border: 1px solid var(--stroke) !important;
-      border-radius: var(--radius-xl) !important;
-      background: linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.04)) !important;
-      box-shadow: var(--shadow-mid);
-      overflow:hidden;
-      position:relative;
-    }
-    .saas-card:before{
-      content:""; position:absolute; inset:-2px;
-      background: radial-gradient(340px 200px at 4% 6%, rgba(79,124,255,.16), transparent 64%), radial-gradient(360px 200px at 96% 8%, rgba(155,92,255,.10), transparent 64%);
-      pointer-events:none;
-    }
-    .saas-card > *{ position:relative; z-index:1; }
-    .saas-card .card-header{
-      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.04)) !important;
-      border-bottom: 1px solid var(--stroke);
-      padding: 14px 16px;
-    }
-    .saas-card .card-header h5{ color: var(--txt) !important; font-weight: 1000 !important; margin: 0; }
-    .saas-card .card-body{ padding: 16px; }
-
-    /* filter panel */
-    .filter-panel{
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius-lg);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadow-soft);
-      padding: 16px;
-      margin-bottom: 18px;
-    }
-    .filter-panel label{ font-weight: 800; color: var(--txt) !important; margin-bottom: 5px; }
-
-    /* form controls */
-    .form-control{
-      border: 1px solid var(--stroke) !important;
-      border-radius: 14px !important;
-      padding: 10px 12px;
-      font-weight: 700;
-      color: var(--txt) !important;
-      background: rgba(255,255,255,.06) !important;
-    }
-    .form-control::placeholder{ color: rgba(255,255,255,.50) !important; }
-    .form-control:focus{
-      border-color: var(--brand) !important;
-      box-shadow: 0 0 0 .2rem rgba(79,124,255,.18) !important;
-    }
-
-    /* buttons */
-    .btn{
-      border-radius: 14px !important;
-      padding: 10px 22px !important;
-      font-weight: 900 !important;
-      border: 1px solid rgba(255,255,255,.14) !important;
-      box-shadow: 0 10px 24px rgba(0,0,0,.25);
-    }
-    .btn-light{ background: rgba(255,255,255,.12) !important; color: #fff !important; }
-    .btn-light:hover{ background: rgba(255,255,255,.18) !important; color: #fff !important; }
-    .btn-secondary{ background: rgba(255,255,255,.08) !important; color: var(--txt) !important; border-color: rgba(255,255,255,.12) !important; }
-
-    /* table */
-    .table-responsive{
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-soft);
-      overflow-x: auto;
-      width: 100%;
-      background: transparent;
-    }
-    #tblVeredas{ margin-bottom: 0; }
-    #tblVeredas thead th{
-      background: rgba(255,255,255,.04) !important;
-      color: var(--txt) !important;
-      border-bottom: 1px solid var(--stroke) !important;
-      white-space: nowrap;
-      font-weight: 1000 !important;
-      vertical-align: middle;
-      font-size: .92rem;
-      padding: 10px 10px;
-    }
-    #tblVeredas tbody td{
-      color: var(--txt) !important;
-      font-weight: 700;
-      border-top: 1px solid var(--stroke) !important;
-      vertical-align: middle !important;
-      padding: 9px 10px;
-    }
-    #tblVeredas tbody tr{ background: transparent !important; }
-    #tblVeredas tbody tr:hover{ background: rgba(255,255,255,.05) !important; }
-
-    /* custom pagination */
-    #infoRegistros{ font-size:.88rem; font-weight:700; color: var(--txt); }
-    #paginacion .btn-outline-light{
-      background: rgba(255,255,255,.06) !important;
-      border: 1px solid rgba(255,255,255,.10) !important;
-      color: var(--txt) !important;
-      border-radius: 8px !important;
-      padding: 4px 10px !important;
-      font-size: 12px !important;
-      font-weight: 700 !important;
-      box-shadow: none !important;
-    }
-    #paginacion .btn-outline-light:hover{
-      background: rgba(255,255,255,.12) !important;
-      border-color: rgba(255,255,255,.20) !important;
-      color: #fff !important;
-    }
-    #paginacion .btn-primary{
-      background: rgba(31,111,235,.35) !important;
-      border: 1px solid rgba(31,111,235,.50) !important;
-      color: #fff !important;
-      border-radius: 8px !important;
-      padding: 4px 10px !important;
-      font-size: 12px !important;
-      font-weight: 700 !important;
-      box-shadow: none !important;
-    }
-    #paginacion .btn-secondary.disabled,
-    #paginacion .btn-secondary:disabled{
-      background: transparent !important;
-      border: 1px solid transparent !important;
-      color: rgba(255,255,255,.30) !important;
-      opacity: 1 !important;
-      box-shadow: none !important;
-    }
-
-    /* badges */
-    .badge-activo   { background: #28a745; color: #fff; padding: 3px 10px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
-    .badge-inactivo { background: #6c757d; color: #fff; padding: 3px 10px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
-    .badge-null     { background: rgba(255,255,255,.10); color: rgba(255,255,255,.60); padding: 3px 10px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
-
-    /* modal */
-    .modal-content{ border-radius: var(--radius-xl) !important; overflow: hidden; }
-    .modal-header{ background: linear-gradient(135deg, rgba(79,124,255,.40), rgba(155,92,255,.25)) !important; border-bottom: 1px solid rgba(255,255,255,.14) !important; }
-    .modal-header h5{ color: #fff !important; }
-    .modal .close{ color: #fff !important; opacity: .95; text-shadow: none; }
-    .modal-body{ background: transparent !important; color: var(--txt) !important; padding: 20px !important; }
-    .modal-footer{ background: transparent !important; border-top: 1px solid var(--stroke) !important; }
-    .modal-body label{ font-weight: 800; color: var(--txt); }
-  </style>
+    
 
   <div class="pcoded-main-container">
     <div class="pcoded-content">
 
-      <!-- Breadcrumb -->
-      <div class="page-header">
-        <div class="page-block">
-          <div class="row align-items-center">
-            <div class="col-md-12">
-              <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
-                <h5 class="mb-0">Gestión de Veredas — Santander</h5>
-                <?php include './admin/include/btn_back.php'; ?>
+      <section class="g360-villages-hero" aria-label="Gestión territorial de veredas GOB360">
+        <div class="g360-villages-hero__grid">
+
+          <aside class="g360-villages-brand">
+            <span class="g360-villages-brand__eyebrow">
+              Plataforma institucional
+            </span>
+
+            <img
+              src="assets/img/gob360l.png"
+              alt="Logo GOB360"
+              class="g360-villages-brand__logo"
+            >
+
+            <span class="g360-villages-brand__caption">
+              Gestión pública inteligente y territorial
+            </span>
+
+            <div class="g360-villages-brand__status">
+              <span></span>
+              Gestión territorial activa
+            </div>
+          </aside>
+
+          <div class="g360-villages-hero__content">
+            <div class="g360-villages-hero__top">
+              <div>
+                <div class="g360-villages-hero__eyebrow">
+                  <i class="feather icon-map"></i>
+                  Configuración territorial
+                </div>
+
+                <h1 class="g360-villages-hero__title">
+                  Gestión de Veredas
+                </h1>
+
+                <p class="g360-villages-hero__description">
+                  Administra la información territorial de las veredas de Santander,
+                  consulta su municipio, población, código oficial, estado electoral
+                  y observaciones institucionales.
+                </p>
               </div>
-              <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#!">Configuración / Veredas</a></li>
-              </ul>
+
+              <div class="g360-villages-hero__actions">
+                <button
+                  type="button"
+                  class="g360-hero-button g360-hero-button--primary"
+                  onclick="abrirModalNueva()"
+                >
+                  <i class="feather icon-plus-circle"></i>
+                  Nueva vereda
+                </button>
+
+                <button
+                  type="button"
+                  class="g360-hero-button g360-hero-button--secondary"
+                  onclick="cargarTabla()"
+                >
+                  <i class="feather icon-refresh-cw"></i>
+                  Actualizar
+                </button>
+
+                <div class="g360-villages-back">
+                  <?php include './admin/include/btn_back.php'; ?>
+                </div>
+              </div>
+            </div>
+
+            <div class="g360-villages-summary">
+              <article>
+                <span class="g360-villages-summary__icon">
+                  <i class="feather icon-map-pin"></i>
+                </span>
+
+                <div>
+                  <small>Cobertura</small>
+                  <strong>Santander</strong>
+                  <p>Gestión de veredas por municipio</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-villages-summary__icon g360-villages-summary__icon--population">
+                  <i class="feather icon-users"></i>
+                </span>
+
+                <div>
+                  <small>Información</small>
+                  <strong>Población</strong>
+                  <p>Hombres, mujeres y total</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-villages-summary__icon g360-villages-summary__icon--code">
+                  <i class="feather icon-hash"></i>
+                </span>
+
+                <div>
+                  <small>Identificación</small>
+                  <strong>Código</strong>
+                  <p>Generación automática por municipio</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-villages-summary__icon g360-villages-summary__icon--security">
+                  <i class="feather icon-shield"></i>
+                </span>
+
+                <div>
+                  <small>Administración</small>
+                  <strong>Autorizada</strong>
+                  <p>Permiso de gestión territorial</p>
+                </div>
+              </article>
+            </div>
+
+            <div class="g360-villages-capabilities" aria-hidden="true">
+              <span>
+                <i class="feather icon-search"></i>
+                Consulta territorial
+              </span>
+
+              <span>
+                <i class="feather icon-edit-3"></i>
+                Creación y edición
+              </span>
+
+              <span>
+                <i class="feather icon-users"></i>
+                Información poblacional
+              </span>
+
+              <span>
+                <i class="feather icon-check-circle"></i>
+                Estado electoral
+              </span>
+
+              <span>
+                <i class="feather icon-file-text"></i>
+                Observaciones
+              </span>
             </div>
           </div>
+
         </div>
-      </div>
+      </section>
 
       <div class="row">
         <div class="col-12">
-          <div class="card saas-card">
+          <div class="card saas-card g360-villages-card">
 
-            <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-              <h5><i class="feather icon-map-pin me-2"></i> Veredas · Departamento de Santander</h5>
-              <button class="btn btn-sm btn-light" onclick="abrirModalNueva()"
-                style="border-radius:10px; font-weight:700; padding:6px 16px;">
-                <i class="feather icon-plus me-1"></i> Nueva vereda
-              </button>
+            <div class="card-header">
+              <div class="g360-card-heading">
+                <span class="g360-card-heading__icon">
+                  <i class="feather icon-map-pin"></i>
+                </span>
+
+                <div>
+                  <span class="g360-card-heading__eyebrow">Directorio territorial</span>
+                  <h5>Veredas del departamento de Santander</h5>
+                  <p>
+                    Filtra por municipio, consulta información poblacional
+                    y actualiza los registros territoriales.
+                  </p>
+                </div>
+              </div>
+
+              <div class="g360-card-header-actions">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onclick="limpiarFiltros()"
+                >
+                  <i class="feather icon-refresh-cw"></i>
+                  Limpiar filtros
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="abrirModalNueva()"
+                >
+                  <i class="feather icon-plus"></i>
+                  Nueva vereda
+                </button>
+              </div>
             </div>
 
             <div class="card-body">
 
               <!-- Filtros -->
-              <div class="filter-panel">
-                <div class="row g-3 align-items-end">
-                  <div class="col-12 col-md-4">
-                    <label for="filtroMunicipio">Filtrar por Municipio</label>
-                    <select id="filtroMunicipio" class="form-control" onchange="cargarTabla()">
+              <section class="filter-panel g360-villages-filters" aria-label="Filtros territoriales">
+                <div class="g360-villages-filters__heading">
+                  <span class="g360-villages-filters__heading-icon">
+                    <i class="feather icon-filter"></i>
+                  </span>
+
+                  <div>
+                    <small>Consulta territorial</small>
+                    <h6>Filtrar veredas</h6>
+                    <p>Combina municipio, nombre o código para localizar registros.</p>
+                  </div>
+                </div>
+
+                <div class="g360-villages-filters__grid">
+                  <div class="g360-villages-filter-field">
+                    <label for="filtroMunicipio">
+                      <i class="feather icon-map"></i>
+                      Municipio
+                    </label>
+
+                    <select
+                      id="filtroMunicipio"
+                      class="form-control"
+                      onchange="cargarTabla()"
+                    >
                       <option value="">Todos los municipios</option>
                     </select>
                   </div>
-                  <div class="col-12 col-md-4">
-                    <label for="filtroBusqueda">Buscar por nombre o código</label>
-                    <input type="text" id="filtroBusqueda" class="form-control"
-                      placeholder="Ej: LA HONDA o 68001001" oninput="cargarTabla()">
+
+                  <div class="g360-villages-filter-field">
+                    <label for="filtroBusqueda">
+                      <i class="feather icon-search"></i>
+                      Nombre o código
+                    </label>
+
+                    <input
+                      type="search"
+                      id="filtroBusqueda"
+                      class="form-control"
+                      placeholder="Ejemplo: LA HONDA o 68001001"
+                      oninput="cargarTabla()"
+                    >
                   </div>
-                  <div class="col-12 col-md-2">
-                    <button class="btn btn-secondary w-100" onclick="limpiarFiltros()"
-                      style="border-radius:14px; font-weight:700;">
-                      <i class="feather icon-refresh-cw me-1"></i> Limpiar
+
+                  <div class="g360-villages-filter-actions">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      onclick="limpiarFiltros()"
+                    >
+                      <i class="feather icon-x"></i>
+                      Limpiar
+                    </button>
+
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      onclick="cargarTabla()"
+                    >
+                      <i class="feather icon-search"></i>
+                      Consultar
                     </button>
                   </div>
                 </div>
-              </div>
+              </section>
 
               <!-- Tabla -->
-              <div class="table-responsive tabla-informacion tabla-scroll">
-                <table class="table table-hover mb-0" id="tblVeredas">
+              <div class="table-responsive tabla-informacion tabla-scroll g360-villages-table">
+                <table class="table table-hover mb-0" id="tblVeredas" aria-label="Listado de veredas de Santander">
                   <thead>
                     <tr>
                       <th>#</th>
@@ -299,7 +308,7 @@ requirePermission('configuracion.veredas.manage');
               </div>
 
               <!-- Paginación -->
-              <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2" id="paginacionWrapper">
+              <div class="g360-villages-pagination" id="paginacionWrapper">
                 <span id="infoRegistros" class="text-white" style="font-size:.88rem;font-weight:700;"></span>
                 <div id="paginacion" class="d-flex gap-1 flex-wrap"></div>
               </div>
@@ -314,15 +323,51 @@ requirePermission('configuracion.veredas.manage');
     <!-- ── Modal Nueva / Editar Vereda ─────────────────────────────────── -->
     <div class="modal fade" id="modalVereda" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content g360-village-modal">
           <div class="modal-header">
-            <h5 class="modal-title" id="tituloModal">Nueva Vereda</h5>
+            <div class="g360-modal-heading">
+              <span class="g360-modal-heading__icon">
+                <i class="feather icon-map-pin"></i>
+              </span>
+
+              <div>
+                <small>Registro territorial</small>
+                <h5 class="modal-title" id="tituloModal">Nueva Vereda</h5>
+              </div>
+            </div>
+
             <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
+            <div class="g360-village-modal__intro">
+              <span>
+                <i class="feather icon-shield"></i>
+              </span>
+
+              <div>
+                <strong>Información territorial controlada</strong>
+                <p>
+                  Selecciona el municipio, registra el nombre y completa los
+                  datos poblacionales y electorales de la vereda.
+                </p>
+              </div>
+            </div>
+
             <input type="hidden" id="veredaId">
+
+            <div class="g360-modal-section-heading">
+              <span class="g360-modal-section-heading__icon">
+                <i class="feather icon-map"></i>
+              </span>
+
+              <div>
+                <small>Ubicación</small>
+                <h6>Municipio, código y nombre</h6>
+              </div>
+            </div>
+
             <div class="row g-3">
               <div class="col-md-6">
                 <label for="inputMunicipio">Municipio <span class="text-danger">*</span></label>
@@ -344,6 +389,19 @@ requirePermission('configuracion.veredas.manage');
                 <input type="text" id="inputNombre" class="form-control" placeholder="Ej: LA HONDA"
                   style="text-transform:uppercase;">
               </div>
+              <div class="col-12">
+                <div class="g360-modal-section-heading g360-modal-section-heading--population">
+                  <span class="g360-modal-section-heading__icon">
+                    <i class="feather icon-users"></i>
+                  </span>
+
+                  <div>
+                    <small>Población</small>
+                    <h6>Distribución de habitantes</h6>
+                  </div>
+                </div>
+              </div>
+
               <div class="col-md-4">
                 <label for="inputHombres">Hombres</label>
                 <input type="number" id="inputHombres" class="form-control" min="0" value="0">
@@ -356,6 +414,19 @@ requirePermission('configuracion.veredas.manage');
                 <label for="inputTotal">Total habitantes</label>
                 <input type="number" id="inputTotal" class="form-control" min="0" value="0">
               </div>
+              <div class="col-12">
+                <div class="g360-modal-section-heading g360-modal-section-heading--status">
+                  <span class="g360-modal-section-heading__icon">
+                    <i class="feather icon-check-circle"></i>
+                  </span>
+
+                  <div>
+                    <small>Estado y observaciones</small>
+                    <h6>Disponibilidad electoral e información adicional</h6>
+                  </div>
+                </div>
+              </div>
+
               <div class="col-md-6">
                 <label for="inputHabilitada">Habilitada para votar</label>
                 <select id="inputHabilitada" class="form-control">
@@ -371,12 +442,25 @@ requirePermission('configuracion.veredas.manage');
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"
-              style="border-radius:12px;font-weight:700;">Cancelar</button>
-            <button type="button" class="btn btn-primary" onclick="guardarVereda()"
-              style="border-radius:12px;font-weight:700;background:var(--au-primary);border-color:var(--au-primary);">
-              <i class="feather icon-save me-1"></i> Guardar
-            </button>
+            <div class="g360-modal-footer-message">
+              <i class="feather icon-lock"></i>
+              El código se genera automáticamente al crear una nueva vereda.
+            </div>
+
+            <div class="g360-modal-footer-actions">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                Cancelar
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-primary"
+                onclick="guardarVereda()"
+              >
+                <i class="feather icon-save"></i>
+                Guardar vereda
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -392,57 +476,7 @@ requirePermission('configuracion.veredas.manage');
   <script src="assets/js/pcoded.min.js"></script>
   <script type="text/javascript" src="admin/js/datatables/jquery.dataTables.min.js"></script>
   <link href="admin/js/datatables/jquery.dataTables.min.css" rel="stylesheet">
-                <style>
-      table.dataTable tbody tr{
-        background-color: transparent !important;
-      }
-      table.dataTable.stripe tbody tr.odd,
-      table.dataTable.display tbody tr.odd{
-        background-color: rgba(255,255,255,.03) !important;
-      }
-      table.dataTable tbody td{
-        color: rgba(255,255,255,.86) !important;
-      }
-      table.dataTable tbody td a{
-        color: rgba(255,255,255,.86) !important;
-      }
-      table.dataTable tbody td i.feather,
-      table.dataTable tbody td i.bi{
-        color: rgba(255,255,255,.86) !important;
-      }
-      #tblVeredas td i.feather{
-        color: rgba(255,255,255,.86) !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button{
-        color: rgba(255,255,255,.86) !important;
-        background: rgba(255,255,255,.06) !important;
-        border: 1px solid rgba(255,255,255,.10) !important;
-        border-radius: 8px !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-      .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
-        color: #fff !important;
-        background: rgba(31,111,235,.35) !important;
-        border: 1px solid rgba(31,111,235,.50) !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
-        color: #fff !important;
-        background: rgba(255,255,255,.12) !important;
-        border: 1px solid rgba(255,255,255,.20) !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button.disabled{
-        color: rgba(255,255,255,.30) !important;
-        background: transparent !important;
-        border: 1px solid transparent !important;
-      }
-      .dataTables_wrapper .dataTables_info,
-      .dataTables_wrapper .dataTables_length label{
-        color: #fff !important;
-      }
-      table.dataTable tbody tr.selected{
-        background-color: rgba(31,111,235,.25) !important;
-      }
-    </style>
+                
 
 
 

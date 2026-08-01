@@ -49,7 +49,7 @@ if ($isvalid && !empty($rows)) {
 }
 ?>
 
-<body class="">
+<body class="gob360-municipal-project-bank-page">
   <!-- [ Pre-loader ] start -->
   <div class="loader-bg">
     <div class="loader-track">
@@ -65,312 +65,273 @@ if ($isvalid && !empty($rows)) {
   <!-- [ Header ] start -->
   <?php include './admin/include/header.php'; ?>
   <!-- [ Header ] end -->
+  <link rel="stylesheet" href="assets/css/proyectos_secretarias_alcaldia_gob360_premium.css">
 
-  <style>
-    :root{
-      --radius-xl: 18px;
-      --radius-lg: 14px;
-      --radius-md: 12px;
-
-      --shadow-soft: 0 10px 28px rgba(2, 6, 23, .10);
-      --shadow-mid:  0 14px 34px rgba(2, 6, 23, .12);
-
-      --ink: #0f172a;
-      --muted: #64748b;
-      --line: rgba(2, 6, 23, .10);
-
-      --brand-1: #0d6efd;
-      --brand-2: #2e58a8;
-      --success:#16a34a;
-    }
-
-    /* Card pro */
-    .card{
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-    }
-    .card-header{
-      background: linear-gradient(180deg, #fff 0%, #fbfdff 100%);
-      border-bottom: 1px solid var(--line);
-    }
-    .card-header h5{
-      margin: 0;
-      font-weight: 900;
-      color: var(--ink);
-      letter-spacing: .2px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .subtitle-muted{
-      color: var(--muted);
-      font-weight: 700;
-      font-size: .9rem;
-      margin-top: 4px;
-    }
-
-    /* KPIs */
-    .kpi-wrap{
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-    .kpi{
-      border: 1px solid rgba(15,23,42,.10);
-      border-radius: var(--radius-lg);
-      box-shadow: 0 10px 24px rgba(2,6,23,.06);
-      padding: 12px 14px;
-      background: #fff;
-      position: relative;
-      overflow: hidden;
-    }
-    .kpi:before{
-      content:'';
-      position:absolute;
-      inset:0;
-      background: radial-gradient(900px 120px at 10% 0%, rgba(13,110,253,.14), transparent 60%);
-      pointer-events:none;
-    }
-    .kpi .label{
-      color: var(--muted);
-      font-weight: 800;
-      font-size: .82rem;
-      margin-bottom: 6px;
-    }
-    .kpi .value{
-      color: var(--ink);
-      font-weight: 1000;
-      font-size: 1.25rem;
-      letter-spacing: .2px;
-      line-height: 1.15;
-    }
-    .kpi .hint{
-      color: var(--muted);
-      font-weight: 700;
-      font-size: .78rem;
-      margin-top: 6px;
-    }
-    @media (max-width: 992px){
-      .kpi-wrap{ grid-template-columns: 1fr; }
-    }
-
-    /* Tabla pro + DataTables */
-    .table-responsive{
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(15,23,42,.10);
-      overflow: hidden;
-      box-shadow: 0 12px 26px rgba(2,6,23,.06);
-      background: #fff;
-    }
-
-    table.dataTable,
-    #dynamictable{
-      margin: 0 !important;
-      width: 100% !important;
-    }
-
-    #dynamictable thead th{
-      background: linear-gradient(135deg, rgba(13,110,253,.10), rgba(46,88,168,.08));
-      color: #0f172a;
-      font-weight: 1000;
-      border-bottom: 1px solid rgba(15,23,42,.10) !important;
-      vertical-align: middle;
-    }
-
-    #dynamictable tbody td{
-      vertical-align: middle;
-      font-weight: 700;
-      color: #0f172a;
-      border-top: 1px solid rgba(15,23,42,.06);
-      background: #fff;
-    }
-
-    #dynamictable tbody tr{
-      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-    }
-    #dynamictable tbody tr:hover{
-      background: rgba(13,110,253,.03);
-    }
-
-    /* Botón Ver brutal */
-    .btn-eye{
-      border-radius: 12px !important;
-      padding: .35rem .55rem !important;
-      font-weight: 900 !important;
-      box-shadow: 0 12px 26px rgba(2,6,23,.14);
-      background: linear-gradient(135deg, var(--brand-1), var(--brand-2)) !important;
-      border: 1px solid rgba(255,255,255,.18) !important;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      min-width: 42px;
-    }
-    .btn-eye:hover{ filter: brightness(1.03); transform: translateY(-1px); }
-    .btn-eye:active{ transform: translateY(0px); }
-
-    /* Badge dinero */
-    .money-badge{
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 999px;
-      padding: 6px 10px;
-      border: 1px solid rgba(22,163,74,.18);
-      background: rgba(22,163,74,.08);
-      color: #064e3b;
-      font-weight: 1000;
-      letter-spacing: .2px;
-      white-space: nowrap;
-    }
-    .money-badge i{ color: var(--success); }
-
-    /* DataTables (estilito sin romper include) */
-    .dataTables_wrapper .dataTables_filter input{
-      border-radius: 12px !important;
-      border: 1px solid rgba(15,23,42,.14) !important;
-      padding: .45rem .7rem !important;
-      box-shadow: 0 8px 18px rgba(2,6,23,.06);
-      font-weight: 700;
-      outline: none !important;
-    }
-    .dataTables_wrapper .dataTables_length select{
-      border-radius: 12px !important;
-      border: 1px solid rgba(15,23,42,.14) !important;
-      box-shadow: 0 8px 18px rgba(2,6,23,.06);
-      font-weight: 700;
-      outline: none !important;
-    }
-
-    /* Mensaje vacío pro */
-    .empty-state{
-      padding: 26px 16px;
-      text-align: center;
-      color: var(--muted);
-      background: linear-gradient(180deg, rgba(13,110,253,.04), #fff);
-    }
-    .empty-state i{
-      font-size: 34px;
-      color: rgba(13,110,253,.55);
-    }
-    .empty-state p{
-      margin: 10px 0 0;
-      font-weight: 800;
-    }
-
-    /* Ajustes en mobile */
-    @media (max-width: 576px){
-      #dynamictable thead th:nth-child(3),
-      #dynamictable tbody td:nth-child(3){
-        white-space: nowrap;
-      }
-    }
-  </style>
 
   <!-- [ Main Content ] start -->
   <div class="pcoded-main-container">
     <div class="pcoded-content">
 
-      <!-- [ breadcrumb ] start -->
-      <div class="page-header">
-        <div class="page-block">
-          <div class="row align-items-center">
-            <div class="col-md-12">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="m-b-10">
-                  <i data-feather="folder"></i> Proyectos Secretarías Alcaldía
-                </h5>
-                <?php include './admin/include/btn_back.php'; ?>
+      <section class="g360-project-bank-hero" aria-label="Banco de proyectos municipal GOB360">
+        <div class="g360-project-bank-hero__grid">
+
+          <aside class="g360-project-bank-brand">
+            <span class="g360-project-bank-brand__eyebrow">
+              Plataforma institucional
+            </span>
+
+            <img
+              src="assets/img/gob360l.png"
+              alt="Logo GOB360"
+              class="g360-project-bank-brand__logo"
+            >
+
+            <span class="g360-project-bank-brand__caption">
+              Gestión pública inteligente y territorial
+            </span>
+
+            <div class="g360-project-bank-brand__status">
+              <span></span>
+              Banco de proyectos activo
+            </div>
+          </aside>
+
+          <div class="g360-project-bank-hero__content">
+            <div class="g360-project-bank-hero__top">
+              <div>
+                <div class="g360-project-bank-hero__eyebrow">
+                  <i class="feather icon-folder"></i>
+                  Alcaldía municipal
+                </div>
+
+                <h1 class="g360-project-bank-hero__title">
+                  Proyectos por Secretaría
+                </h1>
+
+                <p class="g360-project-bank-hero__description">
+                  Consulta el consolidado de proyectos por dependencia municipal,
+                  identifica la inversión acumulada y accede al detalle de cada
+                  secretaría desde el banco de proyectos de GOB360.
+                </p>
               </div>
-              <ul class="breadcrumb">
-                <li class="breadcrumb-item">
-                  <a href="index.php"><i class="feather icon-home"></i></a>
-                </li>
-                <li class="breadcrumb-item">
-                  <a href="#!">Proyectos Secretaría / Seguimiento Proyectos Alcaldía</a>
-                </li>
-              </ul>
+
+              <div class="g360-project-bank-hero__actions">
+                <button
+                  type="button"
+                  class="g360-hero-button g360-hero-button--secondary"
+                  onclick="window.location.reload()"
+                >
+                  <i class="feather icon-refresh-cw"></i>
+                  Actualizar información
+                </button>
+
+                <div class="g360-project-bank-back">
+                  <?php include './admin/include/btn_back.php'; ?>
+                </div>
+              </div>
+            </div>
+
+            <div class="g360-project-bank-summary">
+              <article>
+                <span class="g360-project-bank-summary__icon">
+                  <i class="feather icon-map-pin"></i>
+                </span>
+
+                <div>
+                  <small>Municipio</small>
+                  <strong>
+                    <?= !empty($nombreMunicipio) ? htmlspecialchars($nombreMunicipio, ENT_QUOTES, 'UTF-8') : 'No identificado' ?>
+                  </strong>
+                  <p>Alcaldía asociada a la sesión</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-project-bank-summary__icon g360-project-bank-summary__icon--secretariats">
+                  <i class="feather icon-layers"></i>
+                </span>
+
+                <div>
+                  <small>Secretarías con proyectos</small>
+                  <strong><?= number_format((int)$totalSecretarias, 0, ',', '.') ?></strong>
+                  <p>Registros habilitados para mostrar</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-project-bank-summary__icon g360-project-bank-summary__icon--investment">
+                  <i class="feather icon-dollar-sign"></i>
+                </span>
+
+                <div>
+                  <small>Inversión consolidada</small>
+                  <strong>$<?= number_format((float)$totalProyectosCOP, 0, ',', '.') ?></strong>
+                  <p>Suma de proyectos en pesos colombianos</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-project-bank-summary__icon g360-project-bank-summary__icon--detail">
+                  <i class="feather icon-eye"></i>
+                </span>
+
+                <div>
+                  <small>Navegación</small>
+                  <strong>Detalle</strong>
+                  <p>Acceso por cada secretaría municipal</p>
+                </div>
+              </article>
+            </div>
+
+            <div class="g360-project-bank-capabilities" aria-hidden="true">
+              <span>
+                <i class="feather icon-briefcase"></i>
+                Dependencias municipales
+              </span>
+
+              <span>
+                <i class="feather icon-folder"></i>
+                Banco de proyectos
+              </span>
+
+              <span>
+                <i class="feather icon-dollar-sign"></i>
+                Inversión consolidada
+              </span>
+
+              <span>
+                <i class="feather icon-search"></i>
+                Consulta rápida
+              </span>
+
+              <span>
+                <i class="feather icon-arrow-right-circle"></i>
+                Acceso al detalle
+              </span>
             </div>
           </div>
+
         </div>
-      </div>
-      <!-- [ breadcrumb ] end -->
+      </section>
 
       <div class="row">
         <div class="col-xl-12 col-md-12">
-          <div class="card">
+          <div class="card g360-project-bank-card">
             <div class="card-header">
-              <div class="w-100">
-                <h5>
-                  Detalle Proyectos Secretarías<?php echo !empty($nombreMunicipio) ? ' - ' . htmlspecialchars($nombreMunicipio, ENT_QUOTES, 'UTF-8') : ''; ?>
-                </h5>
-                <div class="subtitle-muted">
-                  Consulta rápida por secretaría: ver el detalle y la suma total de proyectos por dependencia.
+              <div class="g360-card-heading">
+                <span class="g360-card-heading__icon">
+                  <i class="feather icon-briefcase"></i>
+                </span>
+
+                <div>
+                  <span class="g360-card-heading__eyebrow">
+                    Directorio de inversión municipal
+                  </span>
+
+                  <h5>
+                    Detalle de proyectos por secretaría
+                  </h5>
+
+                  <p>
+                    Selecciona una dependencia para consultar sus proyectos,
+                    valores y seguimiento detallado.
+                  </p>
                 </div>
               </div>
 
-              <div class="card-header-right">
-                <div class="btn-group card-option">
-                  <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="feather icon-more-horizontal"></i>
-                  </button>
-                  <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                    <li class="dropdown-item full-card">
-                      <a href="#!">
-                        <span><i class="feather icon-maximize"></i> maximize</span>
-                        <span style="display:none"><i class="feather icon-minimize"></i> Restore</span>
-                      </a>
-                    </li>
-                    <li class="dropdown-item minimize-card">
-                      <a href="#!">
-                        <span><i class="feather icon-minus"></i> collapse</span>
-                        <span style="display:none"><i class="feather icon-plus"></i> expand</span>
-                      </a>
-                    </li>
-                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
-                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
-                  </ul>
+              <div class="g360-card-header-actions">
+                <span class="g360-record-status">
+                  <span></span>
+                  <?= number_format((int)$totalSecretarias, 0, ',', '.') ?> dependencias
+                </span>
+
+                <div class="card-header-right">
+                  <div class="btn-group card-option">
+                    <button
+                      type="button"
+                      class="btn dropdown-toggle btn-icon"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <i class="feather icon-more-horizontal"></i>
+                    </button>
+
+                    <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                      <li class="dropdown-item full-card">
+                        <a href="#!">
+                          <span><i class="feather icon-maximize"></i> Maximizar</span>
+                          <span style="display:none"><i class="feather icon-minimize"></i> Restaurar</span>
+                        </a>
+                      </li>
+
+                      <li class="dropdown-item minimize-card">
+                        <a href="#!">
+                          <span><i class="feather icon-minus"></i> Colapsar</span>
+                          <span style="display:none"><i class="feather icon-plus"></i> Expandir</span>
+                        </a>
+                      </li>
+
+                      <li class="dropdown-item reload-card">
+                        <a href="#!"><i class="feather icon-refresh-cw"></i> Recargar</a>
+                      </li>
+
+                      <li class="dropdown-item close-card">
+                        <a href="#!"><i class="feather icon-trash"></i> Eliminar</a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div class="card-body">
 
-              <!-- KPIs (solo UI) -->
-              <div class="kpi-wrap">
-                <div class="kpi">
-                  <div class="label"><i class="feather icon-map-pin"></i> Municipio</div>
-                  <div class="value">
-                    <?php echo !empty($nombreMunicipio) ? htmlspecialchars($nombreMunicipio, ENT_QUOTES, 'UTF-8') : '—'; ?>
+              <section class="g360-project-bank-tools" aria-label="Resumen y búsqueda de proyectos">
+                <div class="g360-project-bank-tools__summary">
+                  <span class="g360-project-bank-tools__icon">
+                    <i class="feather icon-info"></i>
+                  </span>
+
+                  <div>
+                    <small>Consolidado municipal</small>
+                    <strong>
+                      <?= number_format((int)$totalSecretarias, 0, ',', '.') ?>
+                      secretarías ·
+                      $<?= number_format((float)$totalProyectosCOP, 0, ',', '.') ?>
+                    </strong>
+
+                    <p>
+                      Los valores corresponden únicamente a dependencias marcadas
+                      para visualizarse.
+                    </p>
                   </div>
-                  <div class="hint">Alcaldía logueada</div>
                 </div>
 
-                <div class="kpi">
-                  <div class="label"><i class="feather icon-layers"></i> Secretarías con proyectos</div>
-                  <div class="value"><?php echo (int)$totalSecretarias; ?></div>
-                  <div class="hint">Filtradas por “mostrar = si”</div>
-                </div>
+                <div class="g360-project-bank-search">
+                  <span class="g360-project-bank-search__icon">
+                    <i class="feather icon-search"></i>
+                  </span>
 
-                <div class="kpi">
-                  <div class="label"><i class="feather icon-dollar-sign"></i> Total (suma de proyectos)</div>
-                  <div class="value">
-                    <?php echo '$ ' . number_format((float)$totalProyectosCOP, 0, ',', '.'); ?>
+                  <div>
+                    <label for="customSearch">Búsqueda rápida</label>
+                    <input
+                      type="search"
+                      id="customSearch"
+                      class="form-control"
+                      placeholder="Buscar secretaría o valor de proyectos..."
+                    >
                   </div>
-                  <div class="hint">COP (sin decimales)</div>
                 </div>
-              </div>
+              </section>
 
-              <div class="table-responsive">
-                <table id="dynamictable" class="table table-hover mb-0">
+              <div class="table-responsive g360-project-bank-table">
+                <table id="dynamictable" class="table table-hover mb-0" aria-label="Proyectos por secretaría municipal">
                   <thead>
                     <tr>
-                      <th style="width:80px;">Ver</th>
+                      <th style="width:95px;">Detalle</th>
                       <th>Secretaría</th>
-                      <th style="width:220px;">Suma Proyectos</th>
+                      <th style="width:240px;">Inversión en proyectos</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -384,6 +345,7 @@ if ($isvalid && !empty($rows)) {
                                 <input type="hidden" name="secretaria" value="<?php echo htmlspecialchars($item['tbl_secretarias_id'], ENT_QUOTES, 'UTF-8'); ?>">
                                 <button type="submit" class="btn btn-sm btn-eye" title="Ver detalle">
                                   <i class="feather icon-eye"></i>
+                                  <span>Ver</span>
                                 </button>
                               </form>
                             </td>
@@ -458,8 +420,26 @@ if ($isvalid && !empty($rows)) {
         // Solo agrega un placeholder al buscador cuando aparezca.
         setTimeout(function(){
           const search = document.querySelector('.dataTables_filter input');
+          const customSearch = document.getElementById('customSearch');
+
           if(search && !search.getAttribute('placeholder')){
             search.setAttribute('placeholder', 'Buscar secretaría…');
+          }
+
+          if(customSearch){
+            customSearch.addEventListener('input', function(){
+              const value = this.value || '';
+
+              if(window.jQuery && $.fn.DataTable && $.fn.DataTable.isDataTable('#dynamictable')){
+                $('#dynamictable').DataTable().search(value).draw();
+                return;
+              }
+
+              if(search){
+                search.value = value;
+                search.dispatchEvent(new Event('keyup', { bubbles: true }));
+              }
+            });
           }
         }, 400);
 

@@ -19,306 +19,11 @@ $isAdmin = ($userType === Util::Administrador() || $userType === Util::SuperAdmi
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <style>
-    /* ==========================================
-       GOVTECH WOW – DARK GLASS (SOLO DISEÑO)
-       + TBODY NEGRO / HOVER BLANCO
-       + MODAL NEGRO PRO + FIX BS4/BS5
-       ========================================== */
-    :root{
-      --bg0:#070A12;
-      --bg1:#0B1222;
-
-      --stroke: rgba(255,255,255,.10);
-      --stroke2: rgba(255,255,255,.14);
-
-      --txt: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.66);
-
-      --brand:#4f7cff;
-      --brand2:#9b5cff;
-      --good:#18ff6d;
-      --warn:#ffd166;
-      --bad:#ff5b7a;
-
-      --r-xl:18px;
-      --r-lg:16px;
-
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-      --shadow2: 0 14px 40px rgba(0,0,0,.25);
-    }
-
-    body{
-      background:
-        radial-gradient(900px 420px at 10% 10%, rgba(79,124,255,.28), transparent 60%),
-        radial-gradient(900px 420px at 80% 20%, rgba(155,92,255,.22), transparent 60%),
-        radial-gradient(900px 520px at 50% 100%, rgba(24,255,109,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1)) !important;
-      color: var(--txt);
-      overflow-x:hidden;
-    }
-
-    .pcoded-main-container{ background: transparent !important; }
-    .pcoded-content{ padding: 16px 16px !important; }
-    @media(min-width:768px){ .pcoded-content{ padding: 24px 24px !important; } }
-    @media(min-width:1200px){ .pcoded-content{ padding: 34px 42px !important; } }
-
-    /* Header block premium */
-    .page-header .page-block{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.05);
-      border-radius: 16px;
-      padding: 14px 14px;
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-      position: relative;
-    }
-    .page-header .page-block:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(320px 180px at 10% 10%, rgba(79,124,255,.25), transparent 65%),
-        radial-gradient(320px 180px at 90% 20%, rgba(155,92,255,.18), transparent 65%);
-      pointer-events:none;
-    }
-    .page-header .page-block > *{ position:relative; z-index:1; }
-
-    .page-header h5, .breadcrumb .breadcrumb-item, .breadcrumb .breadcrumb-item a{
-      color: var(--txt) !important;
-    }
-    .breadcrumb .breadcrumb-item a{ color: var(--muted) !important; }
-
-    /* Tabs pro */
-    .nav-tabs{
-      border-bottom: 1px solid var(--stroke) !important;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .nav-tabs .nav-link{
-      border: 1px solid var(--stroke) !important;
-      background: rgba(0,0,0,.18) !important;
-      color: var(--muted) !important;
-      border-radius: 14px !important;
-      font-weight: 900;
-      padding: 10px 14px !important;
-    }
-    .nav-tabs .nav-link.active{
-      background: linear-gradient(135deg, rgba(79,124,255,.35), rgba(155,92,255,.22)) !important;
-      border-color: rgba(79,124,255,.45) !important;
-      color: #fff !important;
-      box-shadow: 0 14px 30px rgba(0,0,0,.25);
-    }
-
-    /* Card pro */
-    .card{
-      border: 1px solid var(--stroke) !important;
-      border-radius: var(--r-xl) !important;
-      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.04)) !important;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
-    }
-    .card:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(320px 180px at 10% 10%, rgba(79,124,255,.35), transparent 65%),
-        radial-gradient(320px 180px at 90% 20%, rgba(155,92,255,.25), transparent 65%),
-        radial-gradient(520px 220px at 50% 120%, rgba(24,255,109,.10), transparent 60%);
-      pointer-events:none;
-    }
-    .card > *{ position:relative; z-index:1; }
-
-    .card-header{
-      background: rgba(0,0,0,.14) !important;
-      border-bottom: 1px solid var(--stroke) !important;
-      padding: 18px 18px !important;
-    }
-    .card-header h5{
-      font-weight: 900 !important;
-      letter-spacing: .2px;
-      color: var(--txt) !important;
-      margin:0 !important;
-    }
-    .card-body{ padding: 18px !important; }
-    @media(min-width:768px){ .card-body{ padding: 22px !important; } }
-
-    /* card option button */
-    .btn-group.card-option .btn{
-      border-radius: 12px !important;
-      border: 1px solid var(--stroke2) !important;
-      background: rgba(0,0,0,.20) !important;
-      color: var(--txt) !important;
-      box-shadow: 0 10px 24px rgba(0,0,0,.25);
-    }
-
-    /* Inputs / Selects */
-    .form-control, select.form-control, textarea.form-control{
-      border-radius: 14px !important;
-      border: 1px solid rgba(255,255,255,.14) !important;
-      background: rgba(0,0,0,.28) !important;
-      color: var(--txt) !important;
-      padding: 12px 14px !important;
-      min-height: 46px;
-      box-shadow:none !important;
-    }
-    .form-control::placeholder{ color: rgba(255,255,255,.50) !important; }
-    .form-control:focus, select.form-control:focus{
-      border-color: rgba(79,124,255,.55) !important;
-      box-shadow: 0 0 0 .2rem rgba(79,124,255,.18) !important;
-      outline: none !important;
-    }
-    label{ color: rgba(255,255,255,.72) !important; font-weight: 900; }
-
-    /* Buttons */
-    .btn{
-      border-radius: 14px !important;
-      padding: 10px 22px !important;
-      font-weight: 900 !important;
-      border: 1px solid rgba(255,255,255,.14) !important;
-      box-shadow: 0 10px 24px rgba(0,0,0,.25);
-    }
-    .btn-primary{
-      border-color: rgba(79,124,255,.45) !important;
-      background: linear-gradient(135deg, rgba(79,124,255,.35), rgba(155,92,255,.22)) !important;
-      color:#fff !important;
-    }
-    .btn-danger{
-      border-color: rgba(255,91,122,.45) !important;
-      background: linear-gradient(135deg, rgba(255,91,122,.22), rgba(0,0,0,.22)) !important;
-      color:#fff !important;
-    }
-    .btn-secondary{
-      background: rgba(255,255,255,.06) !important;
-      color: var(--txt) !important;
-    }
-
-    /* Search */
-    #customSearch{
-      border-radius: 14px 0 0 14px !important;
-      border: 1px solid var(--stroke2) !important;
-      background: rgba(0,0,0,.22) !important;
-      color: var(--txt) !important;
-      min-height: 44px;
-    }
-    #customSearch::placeholder{ color: rgba(255,255,255,.50) !important; }
-    .buscador-2 .input-group-text{
-      border-radius: 0 14px 14px 0 !important;
-      border: 1px solid var(--stroke2) !important;
-      background: rgba(0,0,0,.30) !important;
-      color: var(--txt) !important;
-      min-height: 44px;
-    }
-
-    /* Table wrapper */
-    .table-responsive{
-      border-radius: 16px;
-      border: 1px solid var(--stroke) !important;
-      background: rgba(0,0,0,.16);
-      overflow:auto;
-      margin-top: 14px;
-    }
-    .table{
-      margin-bottom: 0 !important;
-      color: var(--txt) !important;
-    }
-    .table thead th{
-      background: rgba(255,255,255,.06) !important;
-      color: rgba(255,255,255,.88) !important;
-      border-bottom: 1px solid var(--stroke) !important;
-      white-space: nowrap;
-    }
-
-    /* ===== TBODY: negro siempre, hover blanco ===== */
-    .table tbody tr{
-      background: rgba(255,255,255,.92) !important;
-      transition: background .15s ease, color .15s ease;
-    }
-    .table tbody td{
-      color: rgba(255,255,255,.86) !important;
-      font-weight: 400;
-      border-top: 1px solid rgba(255,255,255,.06) !important;
-      vertical-align: middle !important;
-    }
-    .table-hover tbody tr:hover{
-      background: rgba(0,0,0,.55) !important;
-    }
-    .table-hover tbody tr:hover td{
-      color: #ffffff !important;
-    }
-
-    /* Datatables controls */
-    .dataTables_wrapper .dataTables_filter label,
-    .dataTables_wrapper .dataTables_length label,
-    .dataTables_wrapper .dataTables_info{
-      color: var(--muted) !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button{
-      color: var(--txt) !important;
-      border-radius: 12px !important;
-      border: 1px solid var(--stroke2) !important;
-      background: rgba(0,0,0,.20) !important;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current{
-      background: linear-gradient(135deg, rgba(79,124,255,.35), rgba(155,92,255,.22)) !important;
-      border-color: rgba(79,124,255,.45) !important;
-    }
-
-    /* ===== COLOR BOX PRO ===== */
-    #colorBox, #colorBoxEdit{
-      border: 1px solid rgba(255,255,255,.14) !important;
-      border-radius: 12px !important;
-      box-shadow: 0 10px 24px rgba(0,0,0,.25);
-    }
-
-    /* ===== MODAL PRO (NEGRO) ===== */
-    .modal-backdrop{ background:#000 !important; }
-    .modal-backdrop.show{ opacity:.90 !important; }
-
-    .modal-dialog.modal-xl{
-      max-width: 1100px; /* más pro en desktop */
-    }
-
-    .modal-content{
-      border-radius: 18px !important;
-      border: 1px solid rgba(255,255,255,.14) !important;
-      background: linear-gradient(135deg, rgba(10,12,18,.96), rgba(0,0,0,.94)) !important;
-      color: var(--txt) !important;
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .modal-header{
-      background: linear-gradient(135deg, rgba(79,124,255,.35), rgba(155,92,255,.22)) !important;
-      border-bottom: 1px solid rgba(255,255,255,.12) !important;
-    }
-    .modal-title{
-      font-weight: 900 !important;
-      letter-spacing: .2px;
-      color:#fff !important;
-      margin:0;
-    }
-    .close, .close span{
-      color:#fff !important;
-      opacity: 1 !important;
-      text-shadow:none !important;
-    }
-    .modal-footer{
-      border-top: 1px solid rgba(255,255,255,.12) !important;
-      background: rgba(0,0,0,.35) !important;
-    }
-
-    /* Fix thead bg-light text-dark */
-    thead.bg-light.text-dark, thead.bg-light.text-dark th{
-      background: rgba(255,255,255,.06) !important;
-      color: rgba(255,255,255,.86) !important;
-    }
-
-    /* Ajuste: NO romper selects global */
-    select{ font-size: 16px; }
-  </style>
+  
+  <link rel="stylesheet" href="assets/css/configuracion_puntajes_gob360_premium.css">
 </head>
 
-<body class="">
+<body class="gob360-score-config-page">
   <!-- [ Pre-loader ] start -->
   <div class="loader-bg">
     <div class="loader-track">
@@ -333,22 +38,145 @@ $isAdmin = ($userType === Util::Administrador() || $userType === Util::SuperAdmi
   <div class="pcoded-main-container">
     <div class="pcoded-content">
 
-      <div class="page-header">
-        <div class="page-block">
-          <div class="row align-items-center">
-            <div class="col-md-12">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="m-b-10">Configuración Puntaje</h5>
-                <?php include './admin/include/btn_back.php'; ?>
+      <section class="g360-score-hero" aria-label="Configuración de puntajes GOB360">
+        <div class="g360-score-hero__grid">
+
+          <aside class="g360-score-brand">
+            <span class="g360-score-brand__eyebrow">
+              Plataforma institucional
+            </span>
+
+            <img
+              src="assets/img/gob360l.png"
+              alt="Logo GOB360"
+              class="g360-score-brand__logo"
+            >
+
+            <span class="g360-score-brand__caption">
+              Gestión pública inteligente y territorial
+            </span>
+
+            <div class="g360-score-brand__status">
+              <span></span>
+              Motor de puntajes activo
+            </div>
+          </aside>
+
+          <div class="g360-score-hero__content">
+            <div class="g360-score-hero__top">
+              <div>
+                <div class="g360-score-hero__eyebrow">
+                  <i class="feather icon-sliders"></i>
+                  Acción Unificada
+                </div>
+
+                <h1 class="g360-score-hero__title">
+                  Configuración de Puntajes
+                </h1>
+
+                <p class="g360-score-hero__description">
+                  Define rangos, factores de inestabilidad, tipos de mapa,
+                  métodos de medición y colores para representar visualmente
+                  el comportamiento territorial dentro de GOB360.
+                </p>
               </div>
-              <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#!">Configuración Acción Unificada / Configuración Puntajes</a></li>
-              </ul>
+
+              <div class="g360-score-hero__actions">
+                <button
+                  type="button"
+                  class="g360-hero-button g360-hero-button--secondary"
+                  onclick="document.getElementById('profile-tab').click();"
+                >
+                  <i class="feather icon-list"></i>
+                  Ver configuraciones
+                </button>
+
+                <div class="g360-score-back">
+                  <?php include './admin/include/btn_back.php'; ?>
+                </div>
+              </div>
+            </div>
+
+            <div class="g360-score-summary">
+              <article>
+                <span class="g360-score-summary__icon">
+                  <i class="feather icon-map"></i>
+                </span>
+
+                <div>
+                  <small>Representación</small>
+                  <strong>Mapas</strong>
+                  <p>Configuración inicial y final</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-score-summary__icon g360-score-summary__icon--ranges">
+                  <i class="feather icon-bar-chart-2"></i>
+                </span>
+
+                <div>
+                  <small>Clasificación</small>
+                  <strong>Rangos</strong>
+                  <p>Valores desde y hasta</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-score-summary__icon g360-score-summary__icon--colors">
+                  <i class="feather icon-droplet"></i>
+                </span>
+
+                <div>
+                  <small>Semaforización</small>
+                  <strong>Colores</strong>
+                  <p>Lectura visual territorial</p>
+                </div>
+              </article>
+
+              <article>
+                <span class="g360-score-summary__icon g360-score-summary__icon--permissions">
+                  <i class="feather icon-shield"></i>
+                </span>
+
+                <div>
+                  <small>Administración</small>
+                  <strong><?= ($create || $edit) ? 'Habilitada' : 'Consulta' ?></strong>
+                  <p><?= htmlspecialchars((string)$userType, ENT_QUOTES, 'UTF-8') ?></p>
+                </div>
+              </article>
+            </div>
+
+            <div class="g360-score-capabilities" aria-hidden="true">
+              <span>
+                <i class="feather icon-activity"></i>
+                Factores de inestabilidad
+              </span>
+
+              <span>
+                <i class="feather icon-map-pin"></i>
+                Mapa inicial y final
+              </span>
+
+              <span>
+                <i class="feather icon-hash"></i>
+                Rangos numéricos
+              </span>
+
+              <span>
+                <i class="feather icon-pie-chart"></i>
+                Tipos de medición
+              </span>
+
+              <span>
+                <i class="feather icon-lock"></i>
+                Acceso autorizado
+              </span>
             </div>
           </div>
+
         </div>
-      </div>
+      </section>
 
       <div class="row">
         <div class="col-sm-12">
@@ -356,22 +184,41 @@ $isAdmin = ($userType === Util::Administrador() || $userType === Util::SuperAdmi
           <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
               <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#home" type="button"
-                role="tab" aria-controls="home" aria-selected="true">Ingresar configuración puntajes</button>
+                role="tab" aria-controls="home" aria-selected="true">
+                  <i class="feather icon-plus-circle"></i>
+                  <span>Ingresar configuración</span>
+                </button>
             </li>
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#profile" type="button"
-                role="tab" aria-controls="profile" aria-selected="false" onclick="cargaData()">Listado de configuración puntajes</button>
+                role="tab" aria-controls="profile" aria-selected="false" onclick="cargaData()">
+                  <i class="feather icon-list"></i>
+                  <span>Listado de configuraciones</span>
+                </button>
             </li>
           </ul>
 
-          <div class="tab-content" id="myTabContent">
+          <div class="tab-content g360-score-tabs-content" id="myTabContent">
 
             <!-- TAB 1 -->
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
               <br>
-              <div class="card">
+              <div class="card g360-score-card g360-score-card--create">
                 <div class="card-header d-flex flex-wrap align-items-center justify-content-between py-3">
-                  <h5 class="mb-0 text-center w-100">Ingresar configuración puntajes</h5>
+                  <div class="g360-card-heading">
+                    <span class="g360-card-heading__icon">
+                      <i class="feather icon-sliders"></i>
+                    </span>
+
+                    <div>
+                      <span class="g360-card-heading__eyebrow">Nueva regla territorial</span>
+                      <h5 class="mb-0">Ingresar configuración de puntajes</h5>
+                      <p>
+                        Define la clasificación, el rango y la representación
+                        visual que tendrá la configuración.
+                      </p>
+                    </div>
+                  </div>
                   <div class="card-header-right ml-auto">
                     <div class="btn-group card-option">
                       <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -401,10 +248,24 @@ $isAdmin = ($userType === Util::Administrador() || $userType === Util::SuperAdmi
                   </div>
                 </div>
 
-                <div class="card-body m-4">
+                <div class="card-body">
                   <form id="formupuntajes" role="form" autocomplete="off">
                     <input type="hidden" name="op" id="op" />
                     <input type="hidden" name="idPuntaje" id="idPuntaje" />
+
+                    <div class="g360-form-section-heading">
+                      <span class="g360-form-section-heading__icon">
+                        <i class="feather icon-tag"></i>
+                      </span>
+
+                      <div>
+                        <span>Clasificación</span>
+                        <h6>Identificación y tipo de configuración</h6>
+                        <p>
+                          Relaciona la regla con un factor, mapa y método de medición.
+                        </p>
+                      </div>
+                    </div>
 
                     <div class="form-row py-2">
                       <div class="form-group col-md-3">
@@ -436,6 +297,20 @@ $isAdmin = ($userType === Util::Administrador() || $userType === Util::SuperAdmi
                           <option value="Mantenimiento">Mantenimiento</option>
                           <option value="Creación">Creación</option>
                         </select>
+                      </div>
+                    </div>
+
+                    <div class="g360-form-section-heading">
+                      <span class="g360-form-section-heading__icon g360-form-section-heading__icon--range">
+                        <i class="feather icon-bar-chart"></i>
+                      </span>
+
+                      <div>
+                        <span>Rango y visualización</span>
+                        <h6>Valores y color de representación</h6>
+                        <p>
+                          Establece los límites numéricos y el color asociado.
+                        </p>
                       </div>
                     </div>
 
@@ -471,13 +346,32 @@ $isAdmin = ($userType === Util::Administrador() || $userType === Util::SuperAdmi
                       </div>
                     </div>
 
-                    <div class="form-row pt-3">
-                      <div class="col text-center">
-                        <button type="button" onclick="UTIL.clearForm('formupuntajes');" class="btn btn-danger mr-2">
+                    <div class="g360-score-save-bar">
+                      <div class="g360-score-save-bar__message">
+                        <i class="feather icon-info"></i>
+                        <span>
+                          Verifica que los rangos no se superpongan y que el color
+                          corresponda al nivel territorial configurado.
+                        </span>
+                      </div>
+
+                      <div class="g360-score-save-bar__actions">
+                        <button
+                          type="button"
+                          onclick="UTIL.clearForm('formupuntajes');"
+                          class="btn btn-danger"
+                        >
+                          <i class="feather icon-x"></i>
                           Cancelar
                         </button>
-                        <button type="button" onclick="save();" class="btn btn-primary">
-                          Guardar
+
+                        <button
+                          type="button"
+                          onclick="save();"
+                          class="btn btn-primary"
+                        >
+                          <i class="feather icon-save"></i>
+                          Guardar configuración
                         </button>
                       </div>
                     </div>
@@ -490,9 +384,21 @@ $isAdmin = ($userType === Util::Administrador() || $userType === Util::SuperAdmi
             <!-- TAB 2 -->
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
               <br>
-              <div class="card">
+              <div class="card g360-score-card g360-score-card--list">
                 <div class="card-header d-flex flex-wrap align-items-center justify-content-between py-3">
-                  <h5 class="mb-0 text-center w-100">Listado configuración puntajes</h5>
+                  <div class="g360-card-heading">
+                    <span class="g360-card-heading__icon g360-card-heading__icon--list">
+                      <i class="feather icon-list"></i>
+                    </span>
+
+                    <div>
+                      <span class="g360-card-heading__eyebrow">Matriz de configuración</span>
+                      <h5 class="mb-0">Listado de configuraciones</h5>
+                      <p>
+                        Filtra, consulta y edita las reglas de puntaje disponibles.
+                      </p>
+                    </div>
+                  </div>
                   <div class="card-header-right ml-auto">
                     <div class="btn-group card-option">
                       <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -523,29 +429,41 @@ $isAdmin = ($userType === Util::Administrador() || $userType === Util::SuperAdmi
                 </div>
 
                 <div class="card-body table-border-style">
-                  <div class="row align-items-end mb-3">
-                    <div class="col-md-4">
-                      <label for="filtroTipo">Filtrar por tipo mapa</label>
-                      <select id="filtroTipo" class="form-control">
-                        <option value="0">Todos</option>
-                        <option value="1">Inicial</option>
-                        <option value="2">Final</option>
-                      </select>
+                  <div class="g360-score-tools">
+                    <div class="g360-score-filter">
+                      <span class="g360-score-filter__icon">
+                        <i class="feather icon-filter"></i>
+                      </span>
+
+                      <div>
+                        <label for="filtroTipo">Tipo de mapa</label>
+                        <select id="filtroTipo" class="form-control">
+                          <option value="0">Todos</option>
+                          <option value="1">Inicial</option>
+                          <option value="2">Final</option>
+                        </select>
+                      </div>
                     </div>
-                    <div class="col-md-8">
-                      <div class="navbar-form buscador-2">
-                        <div class="input-group input-primary">
-                          <input type="text" id="customSearch" class="form-control" placeholder="Buscar">
-                          <div class="input-group-append">
-                            <span class="input-group-text"><i class="feather icon-edit"></i></span>
-                          </div>
-                        </div>
+
+                    <div class="g360-score-search">
+                      <span class="g360-score-search__icon">
+                        <i class="feather icon-search"></i>
+                      </span>
+
+                      <div>
+                        <label for="customSearch">Búsqueda rápida</label>
+                        <input
+                          type="text"
+                          id="customSearch"
+                          class="form-control"
+                          placeholder="Buscar nombre, factor, medición, rango o color..."
+                        >
                       </div>
                     </div>
                   </div>
 
-                  <div class="table-responsive tabla-informacion tabla-scroll">
-                    <table class="table table-hover mb-0" id="dynamictable" style="width: 100%;">
+                  <div class="table-responsive tabla-informacion tabla-scroll g360-score-table">
+                    <table class="table table-hover mb-0" id="dynamictable" aria-label="Configuraciones de puntajes">
                       <thead style="">
                         <tr class="border-1">
                           <th>Editar</th>
@@ -575,18 +493,55 @@ $isAdmin = ($userType === Util::Administrador() || $userType === Util::SuperAdmi
   <!-- MODAL -->
   <div class="modal fade" id="modalPuntaje" tabindex="-1" role="dialog" aria-labelledby="modalPuntajeLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-      <div class="modal-content">
+      <div class="modal-content g360-score-modal">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalPuntajeLabel">Editar Puntaje</h5>
+          <div class="g360-modal-heading">
+            <span class="g360-modal-heading__icon">
+              <i class="feather icon-edit-3"></i>
+            </span>
+
+            <div>
+              <small>Actualización de regla territorial</small>
+              <h5 class="modal-title" id="modalPuntajeLabel">
+                Editar puntaje
+              </h5>
+            </div>
+          </div>
+
           <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
 
-        <div class="modal-body" style="padding: 15px;">
+        <div class="modal-body">
+          <div class="g360-score-modal__intro">
+            <span>
+              <i class="feather icon-shield"></i>
+            </span>
+
+            <div>
+              <strong>Edición controlada</strong>
+              <p>
+                Actualiza el factor, tipo, rango o color sin modificar los
+                identificadores utilizados por la lógica actual.
+              </p>
+            </div>
+          </div>
+
           <form id="formEdit" role="form" autocomplete="off">
             <input type="hidden" name="op" id="opEdit" />
             <input type="hidden" name="idPuntajeEdit" id="idPuntajeEdit" />
+
+            <div class="g360-modal-section-heading">
+              <span class="g360-modal-section-heading__icon">
+                <i class="feather icon-sliders"></i>
+              </span>
+
+              <div>
+                <small>Configuración</small>
+                <h6>Datos del puntaje</h6>
+              </div>
+            </div>
 
             <div class="form-row py-2">
               <div class="form-group col-md-3">
@@ -654,9 +609,27 @@ $isAdmin = ($userType === Util::Administrador() || $userType === Util::SuperAdmi
           </form>
         </div>
 
-        <div class="modal-footer bg-light">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" id="btnGuardarEditar" class="btn btn-primary" onclick="editSave();">Actualizar</button>
+        <div class="modal-footer">
+          <div class="g360-modal-footer-message">
+            <i class="feather icon-lock"></i>
+            La actualización quedará aplicada a esta regla de puntaje.
+          </div>
+
+          <div class="g360-modal-footer-actions">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              Cancelar
+            </button>
+
+            <button
+              type="button"
+              id="btnGuardarEditar"
+              class="btn btn-primary"
+              onclick="editSave();"
+            >
+              <i class="feather icon-save"></i>
+              Actualizar configuración
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -670,57 +643,7 @@ $isAdmin = ($userType === Util::Administrador() || $userType === Util::SuperAdmi
   <script type="text/javascript" src="<?php echo Util::versionar('./admin/js/conf_puntajes.js'); ?>"></script>
   <script type="text/javascript" src="./admin/js/datatables/jquery.dataTables.min.js"></script>
   <link href="./admin/js/datatables/jquery.dataTables.min.css" rel="stylesheet" />
-                <style>
-      table.dataTable tbody tr{
-        background-color: transparent !important;
-      }
-      table.dataTable.stripe tbody tr.odd,
-      table.dataTable.display tbody tr.odd{
-        background-color: rgba(255,255,255,.03) !important;
-      }
-      table.dataTable tbody td{
-        color: rgba(255,255,255,.86) !important;
-      }
-      table.dataTable tbody td a{
-        color: rgba(255,255,255,.86) !important;
-      }
-      table.dataTable tbody td i.feather,
-      table.dataTable tbody td i.bi{
-        color: rgba(255,255,255,.86) !important;
-      }
-      #tblVeredas td i.feather{
-        color: rgba(255,255,255,.86) !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button{
-        color: rgba(255,255,255,.86) !important;
-        background: rgba(255,255,255,.06) !important;
-        border: 1px solid rgba(255,255,255,.10) !important;
-        border-radius: 8px !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-      .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
-        color: #fff !important;
-        background: rgba(31,111,235,.35) !important;
-        border: 1px solid rgba(31,111,235,.50) !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
-        color: #fff !important;
-        background: rgba(255,255,255,.12) !important;
-        border: 1px solid rgba(255,255,255,.20) !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button.disabled{
-        color: rgba(255,255,255,.30) !important;
-        background: transparent !important;
-        border: 1px solid transparent !important;
-      }
-      .dataTables_wrapper .dataTables_info,
-      .dataTables_wrapper .dataTables_length label{
-        color: #fff !important;
-      }
-      table.dataTable tbody tr.selected{
-        background-color: rgba(31,111,235,.25) !important;
-      }
-    </style>
+                
 
 
 
