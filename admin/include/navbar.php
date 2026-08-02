@@ -699,6 +699,12 @@ $navRolUsuarioSeguro = htmlspecialchars($navRolUsuario, ENT_QUOTES, 'UTF-8');
                             <span class="pcoded-mtext">Gobia 360</span>
                         </a>
                     </li>
+                     <li class="nav-item">
+                        <a href="calendario.php" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-map"></i></span>
+                            <span class="pcoded-mtext">Calendario</span>
+                        </a>
+                    </li>
                 <?php endif; ?>
 
                 <li class="g360-sidebar-footer">
