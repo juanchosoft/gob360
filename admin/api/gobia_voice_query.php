@@ -27,6 +27,16 @@ if (!is_array($input)) {
 
 $chatInput = trim((string) ($input['chatInput'] ?? ''));
 $sessionId = trim((string) ($input['sessionId'] ?? ''));
+$userName = trim((string) ($input['userName'] ?? 'Usuario'));
+$assistantName = trim((string) ($input['assistantName'] ?? 'ALMA'));
+
+if ($userName === '') {
+    $userName = 'Usuario';
+}
+
+if ($assistantName === '') {
+    $assistantName = 'ALMA';
+}
 
 if ($chatInput === '') {
     http_response_code(422);
@@ -56,14 +66,38 @@ if (!filter_var($webhookUrl, FILTER_VALIDATE_URL)) {
     exit;
 }
 
+$responseInstruction = <<<PROMPT
+INSTRUCCIONES OBLIGATORIAS PARA {$assistantName}:
+- Responde en español de Colombia.
+- Responde únicamente lo que el usuario preguntó.
+- Usa la extensión mínima necesaria para contestar correctamente.
+- No agregues saludos, introducciones, contexto no solicitado, conclusiones, recomendaciones, ofrecimientos ni preguntas de seguimiento.
+- No repitas la pregunta.
+- No digas frases como "claro", "con gusto", "por supuesto" o "espero haberte ayudado".
+- No anuncies que vas a revisar ni que vas a informar; la interfaz de voz administra ese aviso.
+- Cuando una sola oración sea suficiente, responde con una sola oración.
+- Si no cuentas con el dato solicitado, dilo directamente y sin inventar información.
+PROMPT;
+
+$agentInput = $responseInstruction
+    . "\n\nNOMBRE DEL USUARIO: "
+    . mb_substr($userName, 0, 150)
+    . "\nPREGUNTA EXACTA DEL USUARIO: "
+    . mb_substr($chatInput, 0, 5000);
+
 $requestPayload = json_encode([
     'action' => 'sendMessage',
     'sessionId' => $sessionId,
-    'chatInput' => mb_substr($chatInput, 0, 5000),
+    'chatInput' => $agentInput,
     'metadata' => [
         'channel' => 'gobia_voice',
-        'module' => 'GOBIA Asistente IA',
+        'module' => 'ALMA Asistente IA',
         'language' => 'es-CO',
+        'timeZone' => 'America/Bogota',
+        'userName' => mb_substr($userName, 0, 150),
+        'assistantName' => mb_substr($assistantName, 0, 50),
+        'responseMode' => 'strict_concise',
+        'originalQuestion' => mb_substr($chatInput, 0, 5000),
     ],
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 

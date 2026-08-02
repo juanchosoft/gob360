@@ -4,7 +4,20 @@ require './admin/include/generic_classes.php';
 include './admin/classes/Desarrollo.php';
 include './admin/classes/Secretarias.php';
 
-$modulo = 'GOBIA Asistente IA';
+$modulo = 'ALMA Asistente IA';
+
+/*
+|--------------------------------------------------------------------------
+| NOMBRE DEL USUARIO CAPTURADO DESDE LA SESIÓN
+|--------------------------------------------------------------------------
+*/
+$nombreUsuarioSesion = trim((string) SessionData::getNombreUsuario());
+
+if ($nombreUsuarioSesion === '') {
+    $nombreUsuarioSesion = 'Usuario';
+}
+
+$zonaHorariaAlma = 'America/Bogota';
 ?>
 
 <link href="assets/css/metas_plan_desarrollo_gob360_v2.css" rel="stylesheet">
@@ -48,7 +61,7 @@ $modulo = 'GOBIA Asistente IA';
           </header>
 
           <div class="gobia-interface-grid">
-            <aside class="gobia-telemetry" aria-label="Telemetría de GOBIA">
+            <aside class="gobia-telemetry" aria-label="Telemetría de ALMA">
               <article>
                 <small>Canal</small>
                 <strong>Voz bidireccional</strong>
@@ -74,93 +87,117 @@ $modulo = 'GOBIA Asistente IA';
               </article>
             </aside>
 
-            <section class="gobia-face-stage gobia-face-stage--premium" aria-label="Interfaz holográfica de GOBIA">
+            <section
+              class="gobia-face-stage gobia-face-stage--premium"
+              aria-label="Interfaz holográfica de ALMA"
+            >
+              <div class="gobia-hud-grid"></div>
+              <div class="gobia-hud-particles"></div>
 
-  <div class="gobia-hud-grid"></div>
-  <div class="gobia-hud-particles"></div>
+              <div class="gobia-orbit gobia-orbit--outer"></div>
+              <div class="gobia-orbit gobia-orbit--middle"></div>
+              <div class="gobia-orbit gobia-orbit--inner"></div>
+              <div class="gobia-orbit gobia-orbit--pulse"></div>
 
-  <div class="gobia-orbit gobia-orbit--outer"></div>
-  <div class="gobia-orbit gobia-orbit--middle"></div>
-  <div class="gobia-orbit gobia-orbit--inner"></div>
-  <div class="gobia-orbit gobia-orbit--pulse"></div>
+              <div class="gobia-side-data gobia-side-data--left">
+                <span>VISION AI</span>
+                <span>BIO SIGNAL</span>
+                <span>VOICE CORE</span>
+                <span>ANALYTICS</span>
+              </div>
 
-  <div class="gobia-side-data gobia-side-data--left">
-    <span>VISION AI</span>
-    <span>BIO SIGNAL</span>
-    <span>VOICE CORE</span>
-    <span>ANALYTICS</span>
-  </div>
+              <div class="gobia-side-data gobia-side-data--right">
+                <span>HUD ACTIVE</span>
+                <span>VOICE READY</span>
+                <span>NLP ONLINE</span>
+                <span>SESSION OK</span>
+              </div>
 
-  <div class="gobia-side-data gobia-side-data--right">
-    <span>HUD ACTIVE</span>
-    <span>VOICE READY</span>
-    <span>NLP ONLINE</span>
-    <span>SESSION OK</span>
-  </div>
+              <div
+                class="gobia-face-frame gobia-face-frame--premium"
+                id="gobiaFaceFrame"
+              >
+                <div class="gobia-core-light"></div>
+                <div class="gobia-face-border"></div>
 
-  <div class="gobia-face-frame gobia-face-frame--premium" id="gobiaFaceFrame">
-    <div class="gobia-core-light"></div>
-    <div class="gobia-face-border"></div>
+                <canvas
+                  id="gobiaFaceCanvas"
+                  class="gobia-face-canvas gobia-face-canvas--premium"
+                  aria-label="Rostro femenino holográfico de ALMA"
+                ></canvas>
 
-    <canvas
-      id="gobiaFaceCanvas"
-      class="gobia-face-canvas gobia-face-canvas--premium"
-      aria-label="Rostro femenino holográfico de GOBIA"
-    ></canvas>
+                <div class="gobia-scan-line"></div>
+                <div class="gobia-face-glow"></div>
+                <div class="gobia-face-reflection"></div>
+              </div>
 
-    <div class="gobia-scan-line"></div>
-    <div class="gobia-face-glow"></div>
-    <div class="gobia-face-reflection"></div>
-  </div>
+              <div class="gobia-wave-panel gobia-wave-panel--premium">
+                <div class="gobia-wave-panel__title">
+                  <span>VOICE FREQUENCY</span>
+                  <strong>ALMA AUDIO SPECTRUM</strong>
+                </div>
 
-  <div class="gobia-wave-panel gobia-wave-panel--premium">
-    <div class="gobia-wave-panel__title">
-      <span>VOICE FREQUENCY</span>
-      <strong>ALMA AUDIO SPECTRUM</strong>
-    </div>
+                <canvas
+                  id="gobiaWaveCanvas"
+                  class="gobia-wave-canvas"
+                  aria-label="Frecuencia de voz de ALMA"
+                ></canvas>
+              </div>
 
-    <canvas
-      id="gobiaWaveCanvas"
-      class="gobia-wave-canvas"
-      aria-label="Frecuencia de voz de GOBIA"
-    ></canvas>
-  </div>
+              <div class="gobia-status-copy" aria-live="polite">
+                <strong id="gobiaStatusTitle">
+                  Pulsa el micrófono para comenzar
+                </strong>
 
-  <div class="gobia-status-copy" aria-live="polite">
-    <strong id="gobiaStatusTitle">Pulsa el micrófono para comenzar</strong>
-    <span id="gobiaStatusText">
-      El navegador solicitará permiso para utilizar el micrófono.
-    </span>
-  </div>
+                <span id="gobiaStatusText">
+                  ALMA te saludará según la hora de Colombia y luego activará el micrófono.
+                </span>
+              </div>
 
-  <div class="gobia-live-caption" id="gobiaLiveCaption" hidden></div>
+              <div class="gobia-controls">
+                <button
+                  type="button"
+                  id="gobiaMicButton"
+                  class="gobia-mic-control gobia-mic-control--premium"
+                  aria-pressed="false"
+                >
+                  <span class="gobia-mic-control__rings"></span>
 
-  <div class="gobia-controls">
-    <button
-      type="button"
-      id="gobiaMicButton"
-      class="gobia-mic-control gobia-mic-control--premium"
-      aria-pressed="false"
-    >
-      <span class="gobia-mic-control__rings"></span>
-      <span class="gobia-mic-control__icon">
-        <i data-feather="mic"></i>
-      </span>
-      <span class="gobia-mic-control__label">Activar micrófono</span>
-    </button>
+                  <span class="gobia-mic-control__icon">
+                    <i data-feather="mic"></i>
+                  </span>
 
-    <label class="gobia-continuous-control" for="gobiaContinuousMode">
-      <input type="checkbox" id="gobiaContinuousMode" checked>
-      <span class="gobia-switch"></span>
-      <span>
-        <strong>Conversación continua</strong>
-        <small>ALMA vuelve a escuchar después de responder</small>
-      </span>
-    </label>
-  </div>
-</section>
+                  <span class="gobia-mic-control__label">
+                    Activar micrófono
+                  </span>
+                </button>
 
-            <aside class="gobia-diagnostics" aria-label="Diagnóstico de la conversación">
+                <label
+                  class="gobia-continuous-control"
+                  for="gobiaContinuousMode"
+                >
+                  <input
+                    type="checkbox"
+                    id="gobiaContinuousMode"
+                    checked
+                  >
+
+                  <span class="gobia-switch"></span>
+
+                  <span>
+                    <strong>Conversación continua</strong>
+                    <small>
+                      ALMA vuelve a escuchar después de responder
+                    </small>
+                  </span>
+                </label>
+              </div>
+            </section>
+
+            <aside
+              class="gobia-diagnostics"
+              aria-label="Diagnóstico de la conversación"
+            >
               <article>
                 <span><i data-feather="mic"></i></span>
                 <div>
@@ -201,7 +238,12 @@ $modulo = 'GOBIA Asistente IA';
               Para detener la escucha, vuelve a pulsar el micrófono.
             </span>
 
-            <button type="button" id="gobiaStopButton" class="gobia-stop-button" disabled>
+            <button
+              type="button"
+              id="gobiaStopButton"
+              class="gobia-stop-button"
+              disabled
+            >
               <i data-feather="square"></i>
               Detener
             </button>
@@ -219,7 +261,39 @@ $modulo = 'GOBIA Asistente IA';
   <script src="assets/js/vendor-all.min.js"></script>
   <script src="assets/js/plugins/bootstrap.min.js"></script>
   <script src="assets/js/pcoded.min.js"></script>
-  <script src="assets/js/gobia_voice_assistant_gob360.js"></script>
+
+  <!--
+      Configuración de la vista entregada al JavaScript.
+      El nombre se obtiene directamente de la sesión de GOB360.
+  -->
+  <script>
+    window.GOBIA_VOICE_CONFIG = Object.freeze({
+      userName: <?php
+        echo json_encode(
+          $nombreUsuarioSesion,
+          JSON_UNESCAPED_UNICODE
+          | JSON_UNESCAPED_SLASHES
+          | JSON_HEX_TAG
+          | JSON_HEX_APOS
+          | JSON_HEX_AMP
+          | JSON_HEX_QUOT
+        );
+      ?>,
+      assistantName: 'ALMA',
+      timeZone: <?php
+        echo json_encode(
+          $zonaHorariaAlma,
+          JSON_UNESCAPED_SLASHES
+          | JSON_HEX_TAG
+          | JSON_HEX_APOS
+          | JSON_HEX_AMP
+          | JSON_HEX_QUOT
+        );
+      ?>
+    });
+  </script>
+
+  <script src="<?php echo Util::versionar('assets/js/gobia_voice_assistant_gob360.js'); ?>"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
