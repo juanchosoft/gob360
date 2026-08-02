@@ -312,6 +312,112 @@ final class PagePermissions
     }
 
     /**
+     * URL de inicio post-login según permisos reales del rol.
+     * Evita mandar roles personalizados a dashboard.php sin dashboard.admin.view.
+     *
+     * @param string[] $permissionKeys
+     */
+    public static function resolveHomeUrl(
+        array $permissionKeys,
+        string $userType = '',
+        ?string $preferredRoute = null
+    ): string {
+        $keys = array_values(array_unique(array_map('strval', $permissionKeys)));
+        $has = static function (string $key) use ($keys): bool {
+            return in_array($key, $keys, true);
+        };
+        $canScript = static function (string $script) use ($has): bool {
+            if (!isset(self::PAGE_VIEW[$script])) {
+                return true;
+            }
+            $required = self::PAGE_VIEW[$script];
+            if (is_array($required)) {
+                foreach ($required as $key) {
+                    if ($has($key)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            return $has($required);
+        };
+        $canUrl = static function (string $url) use ($canScript): bool {
+            $path = parse_url($url, PHP_URL_PATH);
+            $script = basename((string) ($path !== null && $path !== '' ? $path : $url), '.php');
+            return $script !== '' && $canScript($script);
+        };
+
+        $candidates = [];
+
+        // Preferencias por tipo legacy (roles de sistema)
+        $isAlcalde = in_array($userType, ['Alcalde', 'Auxiliar_Alcalde'], true);
+        $isSecretario = in_array($userType, [
+            'Secretario_Despacho',
+            'Secretaria_Despacho_Gobernacion',
+            'Auxiliar',
+            'Auxiliar_secret_gob',
+        ], true);
+
+        if ($isAlcalde) {
+            $candidates[] = 'dahsboard_alcaldias.php';
+        }
+        if ($isSecretario) {
+            if ($preferredRoute) {
+                $candidates[] = $preferredRoute;
+            }
+            $candidates[] = 'dash_secretarias.php';
+        }
+        if (in_array($userType, ['Administrador', 'SuperAdministrador', 'Gobernador'], true)) {
+            $candidates[] = 'dashboard.php';
+        }
+
+        // Landing por permisos (roles personalizados / sin tipo legacy)
+        $byPermission = [
+            'dashboard.admin.view' => 'dashboard.php',
+            'dashboard.alcalde.view' => 'dahsboard_alcaldias.php',
+            'dashboard.secretario.view' => 'dash_secretarias.php',
+            'proyectos.alcaldias.planeacion.dashboard' => 'dashboard_proyectos_planeacion_alcaldia.php',
+            'proyectos.alcaldias.planeacion.view' => 'proyectos_planeacion_alcaldia.php',
+            'proyectos.alcaldias.planeacion.informes' => 'informes_proyectos_planeacion_alcaldia.php',
+            'proyectos.alcaldias.view' => 'proyectos_alcaldias.php',
+            'proyectos.alcaldias.resumen.view' => 'resumenalcaldias.php',
+            'plan_desarrollo.view' => 'plan_desarrollo.php',
+            'plan_desarrollo.mapa_comparativo.view' => 'mapa_comparativo.php',
+            'interior.formulario.view' => 'dashboard_interior_form.php',
+            'interior.boletin.view' => 'dash_interior.php',
+            'interior.contratos.view' => 'inversiones_interior.php',
+            'secretarias.resumen.view' => 'secretaria.php',
+            'accion_unificada.departamento.view' => 'departamentos.php',
+            'configuracion.usuarios.view' => 'usuarios.php',
+        ];
+        foreach ($byPermission as $perm => $url) {
+            if ($has($perm)) {
+                $candidates[] = $url;
+            }
+        }
+
+        if ($preferredRoute) {
+            $candidates[] = $preferredRoute;
+        }
+
+        foreach ($candidates as $url) {
+            if ($canUrl($url)) {
+                return $url;
+            }
+        }
+
+        // Cualquier vista mapeada a la que el rol sí pueda entrar
+        foreach (self::PAGE_VIEW as $script => $required) {
+            if ($canScript($script)) {
+                return $script . '.php';
+            }
+        }
+
+        // Sesión válida pero sin páginas accesibles
+        return 'menu_mobile.php';
+    }
+
+    /**
      * Flags CRUD para la vista actual según PAGE_CRUD_PREFIX.
      *
      * @return array{view: bool, create: bool, update: bool, delete: bool, edit: bool, permits: bool}

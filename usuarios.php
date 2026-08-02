@@ -6,6 +6,7 @@ require './admin/include/generic_classes.php';
 include './admin/classes/Usuario.php';
 include './admin/classes/Secretarias.php';
 include './admin/classes/Departamento.php';
+require_once './admin/classes/Role.php';
 
 // Permisos
 requirePermission('configuracion.usuarios.view');
@@ -16,6 +17,9 @@ $permits = SessionData::hasPermission('configuracion.usuarios.manage');
 
 $userType = SessionData::getUserType();
 $isAdmin = ($userType === Util::Administrador() || $userType === Util::SuperAdministrador());
+
+// Roles (select único — plan roles/permisos)
+$optionRoles = Role::buildUsuarioRoleOptionsHtml();
 
 // Secretarias
 $arrSecretarias = Secretarias::getAll(null);
@@ -40,13 +44,300 @@ foreach ($arrDep as $val) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<style>
+/* ===============================
+   ACCIÓN UNIFICADA – GOVTECH WOW
+   (SOLO VISTA, NO TOCA LÓGICA)
+================================ */
 
+/* ====== THEME DARK GLASS ====== */
+:root{
+  --bg0:#070A12;
+  --bg1:#0B1222;
 
+  --stroke: rgba(255,255,255,.10);
+  --stroke2: rgba(255,255,255,.14);
 
-  <link rel="stylesheet" href="assets/css/usuarios_gob360_premium.css">
+  --txt: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.66);
+
+  --brand:#4f7cff;
+  --brand2:#9b5cff;
+
+  --danger:#ff5b7a;
+  --ok:#18ff6d;
+
+  --radius-xl:22px;
+  --radius-lg:16px;
+
+  --shadow-soft: 0 14px 40px rgba(0,0,0,.25);
+  --shadow-mid: 0 22px 60px rgba(0,0,0,.35);
+}
+
+/* fondo */
+body{
+  background:
+    radial-gradient(900px 420px at 10% 10%, rgba(79,124,255,.28), transparent 60%),
+    radial-gradient(900px 420px at 80% 20%, rgba(155,92,255,.22), transparent 60%),
+    radial-gradient(900px 520px at 50% 100%, rgba(24,255,109,.10), transparent 60%),
+    linear-gradient(180deg, var(--bg0), var(--bg1)) !important;
+  color: var(--txt);
+  overflow-x:hidden;
+}
+
+/* spacing */
+.pcoded-main-container{ background: transparent !important; }
+.pcoded-content{ padding: 16px 16px !important; }
+@media(min-width:768px){ .pcoded-content{ padding: 24px 24px !important; } }
+@media(min-width:1200px){ .pcoded-content{ padding: 34px 42px !important; } }
+
+/* TOPBAR */
+.au-topbar{
+  display:flex; flex-direction:column; gap:10px;
+  margin-bottom:18px;
+  padding-top: 20px;
+}
+@media(min-width:768px){
+  .au-topbar{ flex-direction:row; align-items:center; justify-content:space-between; }
+}
+.au-title{
+  margin:0;
+  font-weight:900;
+  font-size:1.55rem;
+  letter-spacing:.2px;
+  color: #fff !important;
+}
+.au-subtitle{
+  margin:4px 0 0;
+  color: rgba(255,255,255,.70);
+  font-size:.92rem;
+}
+
+/* tabs */
+.au-tabs{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--stroke);
+  padding:6px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  width: fit-content;
+  margin-bottom: 18px;
+}
+.au-tabs .nav-link{
+  border:0 !important;
+  border-radius: 14px !important;
+  padding: 10px 18px !important;
+  font-weight:900;
+  color: var(--muted);
+  background: transparent;
+}
+.au-tabs .nav-link.active{
+  background: linear-gradient(135deg, rgba(79,124,255,.40), rgba(155,92,255,.25)) !important;
+  color:#fff !important;
+  box-shadow: 0 12px 26px rgba(0,0,0,.30);
+  border: 1px solid rgba(255,255,255,.14) !important;
+}
+
+/* cards */
+.card{
+  border: 1px solid var(--stroke) !important;
+  border-radius: var(--radius-xl) !important;
+  background: linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.04)) !important;
+  box-shadow: var(--shadow-mid);
+  overflow:hidden;
+  position:relative;
+}
+.card:before{
+  content:"";
+  position:absolute; inset:-2px;
+  background:
+    radial-gradient(320px 180px at 10% 10%, rgba(79,124,255,.30), transparent 65%),
+    radial-gradient(320px 180px at 90% 20%, rgba(155,92,255,.22), transparent 65%);
+  pointer-events:none;
+}
+.card > *{ position:relative; z-index:1; }
+
+.card-header{
+  background: rgba(0,0,0,.18) !important;
+  border-bottom: 1px solid var(--stroke) !important;
+  padding: 18px 22px !important;
+}
+.card-header h5{
+  font-weight:900 !important;
+  color: var(--txt) !important;
+  margin:0 !important;
+}
+.card-body{ padding: 22px !important; }
+
+/* form grid */
+.au-form-grid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media(min-width:768px){
+  .au-form-grid.md-3{ grid-template-columns: repeat(3, 1fr); }
+}
+
+/* inputs */
+.form-control, .form-control-file, select.form-control{
+  border-radius: 14px !important;
+  padding: 12px 14px !important;
+  border: 1px solid var(--stroke2) !important;
+  background: rgba(0,0,0,.22) !important;
+  color: var(--txt) !important;
+  min-height: 44px;
+}
+/* Evita opciones ilegibles (texto blanco sobre blanco) en el desplegable nativo */
+select.form-control option{
+  color: #0B1B38 !important;
+  background: #fff !important;
+}
+.form-control::placeholder{ color: rgba(255,255,255,.55) !important; }
+.form-control:focus, select.form-control:focus{
+  border-color: rgba(79,124,255,.55) !important;
+  box-shadow: 0 0 0 .15rem rgba(79,124,255,.18) !important;
+}
+label{
+  color: rgba(255,255,255,.72) !important;
+  font-weight: 900;
+}
+
+/* ojo password */
+.input-group .input-group-text{
+  border-radius: 0 14px 14px 0 !important;
+  cursor: pointer;
+  border: 1px solid var(--stroke2) !important;
+  background: rgba(0,0,0,.30) !important;
+  color: var(--txt) !important;
+}
+
+/* buttons */
+.btn{
+  border-radius: 14px !important;
+  padding: 10px 22px !important;
+  font-weight: 900 !important;
+  border: 1px solid var(--stroke2) !important;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+}
+.btn-primary{
+  border-color: rgba(79,124,255,.50) !important;
+  background: linear-gradient(135deg, rgba(79,124,255,.40), rgba(155,92,255,.25)) !important;
+  color:#fff !important;
+}
+.btn-danger{
+  border-color: rgba(255,91,122,.45) !important;
+  background: rgba(255,91,122,.14) !important;
+  color:#fff !important;
+}
+.btn-secondary{
+  background: rgba(255,255,255,.06) !important;
+  color: var(--txt) !important;
+}
+
+/* buscador */
+#customSearch{ border-radius: 14px 0 0 14px !important; }
+.buscador-2 .input-group-text{ border-radius: 0 14px 14px 0 !important; }
+
+/* tabla oscura → dark_theme + DT_OVERRIDE manejan esto */
+.table-responsive{
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  background: transparent !important;
+  overflow:auto;
+}
+.table{ color: rgba(255,255,255,.86) !important; }
+.table thead th{
+  background: rgba(255,255,255,.06) !important;
+  color: rgba(255,255,255,.88) !important;
+  border-bottom: 1px solid rgba(255,255,255,.10) !important;
+  white-space: nowrap;
+}
+.table tbody td{
+  border-top: 1px solid rgba(255,255,255,.06) !important;
+  vertical-align: middle !important;
+  color: rgba(255,255,255,.86) !important;
+}
+.table-hover tbody tr:hover{ background: rgba(79,124,255,.08) !important; }
+.table .btn-sm i{ color: #fff !important; }
+.table .btn-sm{
+  border-radius: 8px !important;
+  padding: 6px 10px !important;
+  min-width: 36px;
+}
+.table .btn-info{ background: #0d6efd !important; border-color: #0d6efd !important; }
+.table .btn-warning{ background: #fd7e14 !important; border-color: #fd7e14 !important; }
+.table .btn-danger{ background: #dc3545 !important; border-color: #dc3545 !important; }
+.table .btn-success{ background: #198754 !important; border-color: #198754 !important; }
+.table .btn-info:hover{ background: #0b5ed7 !important; }
+.table .btn-warning:hover{ background: #e8590c !important; }
+.table .btn-danger:hover{ background: #bb2d3b !important; }
+.table .btn-success:hover{ background: #157347 !important; }
+
+/* ====== MODALES NEGROS (TODOS) ====== */
+/* Overlay negro más fuerte */
+.modal-backdrop.show{
+  opacity: .85 !important;
+}
+.modal-backdrop{
+  background: #000 !important;
+}
+
+/* Modal base oscuro */
+.modal-content{
+  border-radius: 18px !important;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  background: linear-gradient(135deg, rgba(20,24,35,.92), rgba(10,12,18,.92)) !important;
+  color: var(--txt) !important;
+  box-shadow: var(--shadow-mid);
+  overflow:hidden;
+}
+.modal-header{
+  border-bottom: 1px solid rgba(255,255,255,.12) !important;
+  background: rgba(0,0,0,.35) !important;
+}
+.modal-title{
+  font-weight: 900 !important;
+  letter-spacing:.2px;
+  color:#fff !important;
+}
+.modal-footer{
+  border-top: 1px solid rgba(255,255,255,.12) !important;
+  background: rgba(0,0,0,.25) !important;
+}
+.close, .close span{
+  color:#fff !important;
+  opacity: 1 !important;
+  text-shadow:none !important;
+}
+
+/* Tu editModal tiene bg-dark y myModalPermisos tiene verde inline: no los tocamos,
+   pero garantizamos que el contenedor siga oscuro y legible */
+.modal-header.bg-dark{ background: rgba(0,0,0,.55) !important; }
+
+/* Permisos: conserva el verde por inline, solo mejoramos contraste interno */
+#myModalPermisos .modal-body{ color: var(--txt) !important; }
+#myModalPermisos table{ background: rgba(255,255,255,.06) !important; }
+#myModalPermisos thead th{ color: rgba(255,255,255,.90) !important; }
+
+/* Modal imagen: centrado con fondo negro real */
+#modalImagen .modal-content{
+  background: rgba(0,0,0,.92) !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+}
+#modalImagen .modal-body{ padding: 18px !important; }
+</style>
+
+<style>
+  /* preview legacy (se conserva) */
+  #preview { max-width: 50%; height: auto; display: none; margin-top: 10px; }
+</style>
 </head>
 
-<body class="gob360-users-page">
+<body class="">
 <!-- [ Pre-loader ] start -->
 <div class="loader-bg">
   <div class="loader-track">
@@ -61,201 +352,46 @@ foreach ($arrDep as $val) {
 <div class="pcoded-main-container">
   <div class="pcoded-content">
 
-    <section class="g360-users-hero" aria-label="Administración de usuarios GOB360">
-      <div class="g360-users-hero__grid">
-
-        <aside class="g360-users-brand">
-          <span class="g360-users-brand__eyebrow">
-            Plataforma institucional
-          </span>
-
-          <img
-            src="assets/img/gob360l.png"
-            alt="Logo GOB360"
-            class="g360-users-brand__logo"
-          >
-
-          <span class="g360-users-brand__caption">
-            Gestión pública inteligente y territorial
-          </span>
-
-          <div class="g360-users-brand__status">
-            <span></span>
-            Administración protegida
-          </div>
-        </aside>
-
-        <div class="g360-users-hero__content">
-          <div class="g360-users-hero__top">
-            <div>
-              <div class="g360-users-hero__eyebrow">
-                <i class="feather icon-users"></i>
-                Configuración general
-              </div>
-
-              <h1 class="g360-users-hero__title">
-                Administración de Usuarios
-              </h1>
-
-              <p class="g360-users-hero__description">
-                Crea, consulta y actualiza usuarios institucionales, asigna su tipo,
-                dependencia y municipio, y supervisa registros eliminados o duplicados
-                según las autorizaciones del perfil activo.
-              </p>
-            </div>
-
-            <div class="g360-users-hero__actions">
-              <?php if ($permits): ?>
-                <a href="roles_permisos.php" class="g360-hero-button g360-hero-button--primary">
-                  <i class="feather icon-shield"></i>
-                  Roles y permisos
-                </a>
-              <?php endif; ?>
-
-              <div class="g360-users-back">
-                <?php include './admin/include/btn_back.php'; ?>
-              </div>
-            </div>
-          </div>
-
-          <div class="g360-users-summary">
-            <article>
-              <span class="g360-users-summary__icon">
-                <i class="feather icon-user-check"></i>
-              </span>
-
-              <div>
-                <small>Perfil activo</small>
-                <strong><?= htmlspecialchars((string)$userType, ENT_QUOTES, 'UTF-8') ?></strong>
-                <p>Rol aplicado a la sesión actual</p>
-              </div>
-            </article>
-
-            <article>
-              <span class="g360-users-summary__icon g360-users-summary__icon--permissions">
-                <i class="feather icon-key"></i>
-              </span>
-
-              <div>
-                <small>Permisos de gestión</small>
-                <strong>
-                  <?= ($create || $edit || $permits) ? 'Habilitados' : 'Consulta' ?>
-                </strong>
-                <p>Creación, edición y administración</p>
-              </div>
-            </article>
-
-            <article>
-              <span class="g360-users-summary__icon g360-users-summary__icon--secretaries">
-                <i class="feather icon-briefcase"></i>
-              </span>
-
-              <div>
-                <small>Dependencias</small>
-                <strong><?= number_format(count($arrSecretarias), 0, ',', '.') ?></strong>
-                <p>Secretarías disponibles</p>
-              </div>
-            </article>
-
-            <article>
-              <span class="g360-users-summary__icon g360-users-summary__icon--territory">
-                <i class="feather icon-map-pin"></i>
-              </span>
-
-              <div>
-                <small>Cobertura territorial</small>
-                <strong><?= number_format(count($arrDep), 0, ',', '.') ?></strong>
-                <p>Departamentos configurados</p>
-              </div>
-            </article>
-          </div>
-
-          <div class="g360-users-capabilities" aria-hidden="true">
-            <span>
-              <i class="feather icon-user-plus"></i>
-              Creación de usuarios
-            </span>
-
-            <span>
-              <i class="feather icon-edit-3"></i>
-              Actualización
-            </span>
-
-            <span>
-              <i class="feather icon-lock"></i>
-              Seguridad de acceso
-            </span>
-
-            <span>
-              <i class="feather icon-archive"></i>
-              Auditoría
-            </span>
-
-            <span>
-              <i class="feather icon-database"></i>
-              Control de duplicados
-            </span>
-          </div>
-        </div>
-
+    <div class="au-topbar">
+      <div>
+        <h1 class="au-title">Usuarios</h1>
+        <div class="au-subtitle">Configuración general · Gestión y administración de usuarios</div>
       </div>
-    </section>
+      <div>
+        <?php include './admin/include/btn_back.php'; ?>
+      </div>
+    </div>
 
     <ul class="nav nav-tabs au-tabs" id="myTab" role="tablist">
       <?php if ($create): ?>
       <li class="nav-item" role="presentation">
         <button class="nav-link <?= $create ? 'active' : '' ?>" id="home-tab" data-toggle="tab" data-target="#home" type="button"
-          role="tab" aria-controls="home" aria-selected="<?= $create ? 'true' : 'false' ?>">
-          <i class="feather icon-user-plus"></i>
-          <span>Ingresar usuario</span>
-        </button>
+          role="tab" aria-controls="home" aria-selected="<?= $create ? 'true' : 'false' ?>">Ingresar usuario</button>
       </li>
       <?php endif; ?>
       <li class="nav-item" role="presentation">
         <button class="nav-link <?= $create ? '' : 'active' ?>" id="profile-tab" data-toggle="tab" data-target="#profile" type="button"
-          role="tab" aria-controls="profile" aria-selected="<?= $create ? 'false' : 'true' ?>" onclick="USUARIO.cargaData()">
-          <i class="feather icon-list"></i>
-          <span>Listado de usuarios</span>
-        </button>
+          role="tab" aria-controls="profile" aria-selected="<?= $create ? 'false' : 'true' ?>" onclick="USUARIO.cargaData()">Listado de usuarios</button>
       </li>
       <?php if ($userType === 'SuperAdministrador'): ?>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="deleted-tab" data-toggle="tab" data-target="#deleted" type="button"
-          role="tab" aria-controls="deleted" aria-selected="false" onclick="USUARIO.cargaDeleted()">
-          <i class="feather icon-trash-2"></i>
-          <span>Eliminados</span>
-        </button>
+          role="tab" aria-controls="deleted" aria-selected="false" onclick="USUARIO.cargaDeleted()">Eliminados</button>
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="duplicated-tab" data-toggle="tab" data-target="#duplicated" type="button"
-          role="tab" aria-controls="duplicated" aria-selected="false" onclick="USUARIO.cargaDuplicados()">
-          <i class="feather icon-copy"></i>
-          <span>Duplicados</span>
-        </button>
+          role="tab" aria-controls="duplicated" aria-selected="false" onclick="USUARIO.cargaDuplicados()">Duplicados</button>
       </li>
       <?php endif; ?>
     </ul>
 
-    <div class="tab-content g360-users-tabs-content" id="myTabContent">
+    <div class="tab-content" id="myTabContent">
 
       <?php if ($create): ?>
       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-        <div class="card mt-3 g360-user-card g360-user-card--create">
+        <div class="card mt-3">
           <div class="card-header d-flex flex-wrap align-items-center justify-content-between">
-            <div class="g360-card-heading">
-              <span class="g360-card-heading__icon">
-                <i class="feather icon-user-plus"></i>
-              </span>
-
-              <div>
-                <span class="g360-card-heading__eyebrow">Nuevo registro</span>
-                <h5 class="mb-0">Formulario de usuario</h5>
-                <p>
-                  Registra la identidad, vinculación institucional y credenciales
-                  de acceso del nuevo usuario.
-                </p>
-              </div>
-            </div>
+            <h5 class="mb-0">Formulario de usuario</h5>
 
             <div class="card-header-right ml-auto">
               <div class="btn-group card-option">
@@ -288,36 +424,15 @@ foreach ($arrDep as $val) {
           </div>
 
           <div class="card-body">
-            <div class="g360-users-alert mb-3" role="alert">
-              <span class="g360-users-alert__icon">
-                <i class="feather icon-info"></i>
-              </span>
-
-              <div>
-                <strong>Asignación mediante roles institucionales</strong>
-                <p>
-                  Los permisos se aplican según el tipo de usuario.
-                  Para una configuración personalizada, utilice
-                  <a href="roles_permisos.php" class="alert-link">Roles y Permisos</a>.
-                </p>
-              </div>
-            </div>
+            <div class="au-alert au-alert-info mb-3" role="alert">
+          <i class="feather icon-info"></i>
+          Los permisos de acceso se asignan mediante el <strong>rol</strong> del usuario.
+          Para personalizar permisos, use <a href="roles_permisos.php" class="alert-link">Roles y Permisos</a>.
+        </div>
 
         <form id="formusuarios" role="form" autocomplete="off" enctype="multipart/form-data">
               <input type="hidden" name="op" id="op" />
               <input type="hidden" name="id" id="id" />
-
-              <div class="g360-form-section-heading">
-                <span class="g360-form-section-heading__icon">
-                  <i class="feather icon-user"></i>
-                </span>
-
-                <div>
-                  <span>Identificación</span>
-                  <h6>Datos personales y tipo de usuario</h6>
-                  <p>Información básica para identificar el nuevo registro.</p>
-                </div>
-              </div>
 
               <div class="au-form-grid md-3">
                 <div class="form-group">
@@ -331,31 +446,10 @@ foreach ($arrDep as $val) {
                 </div>
 
                 <div class="form-group">
-                  <label for="tipo">Tipo de Usuario <span class="text-danger">*</span></label>
-                  <select class="form-control" id="tipo" name="tipo">
-                    <option value="">Seleccione</option>
-                    <option value="SuperAdministrador">Super Administrador</option>
-                    <option value="Gobernador">Gobernador</option>
-                    <option value="Secretaria_Despacho_Gobernacion">Secretario despacho Gobernación</option>
-                    <option value="Auxiliar_secret_gob">Auxiliar Secretario Gobernación</option>
-                    <option value="Alcalde">Alcalde</option>
-                    <option value="Auxiliar_Alcalde">Auxiliar Alcalde</option>
-                    <option value="Secretario_Despacho">Secretario Despacho Alcalde</option>
-                    <option value="Auxiliar">Auxiliar Secretario Despacho Alcalde</option>
-                    <option value="Administrador">Administrador</option>
+                  <label for="role_id">Rol <span class="text-danger">*</span></label>
+                  <select class="form-control" id="role_id" name="role_id">
+                    <?= $optionRoles ?>
                   </select>
-                </div>
-              </div>
-
-              <div class="g360-form-section-heading">
-                <span class="g360-form-section-heading__icon g360-form-section-heading__icon--institution">
-                  <i class="feather icon-briefcase"></i>
-                </span>
-
-                <div>
-                  <span>Vinculación institucional</span>
-                  <h6>Dependencia y territorio</h6>
-                  <p>Relaciona al usuario con su secretaría, entidad o alcaldía.</p>
                 </div>
               </div>
 
@@ -380,18 +474,6 @@ foreach ($arrDep as $val) {
                 </div>
               </div>
 
-              <div class="g360-form-section-heading">
-                <span class="g360-form-section-heading__icon g360-form-section-heading__icon--access">
-                  <i class="feather icon-at-sign"></i>
-                </span>
-
-                <div>
-                  <span>Cuenta institucional</span>
-                  <h6>Usuario, correo y estado</h6>
-                  <p>Define las credenciales visibles y si la cuenta queda habilitada.</p>
-                </div>
-              </div>
-
               <div class="au-form-grid md-3">
                 <div class="form-group">
                   <label for="nickname">Usuario <span class="text-danger">*</span></label>
@@ -410,18 +492,6 @@ foreach ($arrDep as $val) {
                     <option value="si">Sí</option>
                     <option value="no">No</option>
                   </select>
-                </div>
-              </div>
-
-              <div class="g360-form-section-heading">
-                <span class="g360-form-section-heading__icon g360-form-section-heading__icon--security">
-                  <i class="feather icon-lock"></i>
-                </span>
-
-                <div>
-                  <span>Seguridad</span>
-                  <h6>Contraseña e imagen del perfil</h6>
-                  <p>Configura una contraseña segura y una fotografía opcional.</p>
                 </div>
               </div>
 
@@ -457,35 +527,9 @@ foreach ($arrDep as $val) {
                 </div>
               </div>
 
-              <div class="g360-user-save-bar">
-                <div class="g360-user-save-bar__message">
-                  <i class="feather icon-shield"></i>
-                  <span>
-                    Verifica tipo de usuario, dependencia, territorio y credenciales
-                    antes de guardar.
-                  </span>
-                </div>
-
-                <div class="g360-user-save-bar__actions">
-                  <button
-                    type="button"
-                    onclick="UTIL.clearForm('formusuarios');"
-                    class="btn btn-danger"
-                  >
-                    <i class="feather icon-x"></i>
-                    Cancelar
-                  </button>
-
-                  <button
-                    type="button"
-                    id="createUser"
-                    onclick="USUARIO.validateData();"
-                    class="btn btn-primary"
-                  >
-                    <i class="feather icon-save"></i>
-                    Guardar usuario
-                  </button>
-                </div>
+              <div class="pt-2 text-center">
+                <button type="button" onclick="UTIL.clearForm('formusuarios');" class="btn btn-danger mr-2">Cancelar</button>
+                <button type="button" id="createUser" onclick="USUARIO.validateData();" class="btn btn-primary">Guardar</button>
               </div>
 
             </form>
@@ -496,22 +540,13 @@ foreach ($arrDep as $val) {
 
       <?php if ($userType === 'SuperAdministrador'): ?>
       <div class="tab-pane fade" id="deleted" role="tabpanel" aria-labelledby="deleted-tab">
-        <div class="card mt-3 g360-user-card g360-user-card--audit">
+        <div class="card mt-3">
           <div class="card-header">
-            <div class="g360-card-heading">
-              <span class="g360-card-heading__icon g360-card-heading__icon--deleted">
-                <i class="feather icon-trash-2"></i>
-              </span>
-
-              <div>
-                <span class="g360-card-heading__eyebrow">Auditoría de seguridad</span>
-                <h5 class="mb-0">Usuarios eliminados</h5>
-                <p>Consulta quién eliminó cada registro y la fecha de la acción.</p>
-              </div>
-            </div>
+            <h5 class="mb-0">Usuarios eliminados</h5>
+            <small style="color:var(--muted);">Auditoría de seguridad</small>
           </div>
           <div class="card-body table-border-style">
-            <div class="table-responsive tabla-informacion tabla-scroll g360-users-table">
+            <div class="table-responsive tabla-informacion tabla-scroll">
               <table class="table table-hover mb-0" id="dynamictable-deleted">
                 <thead>
                   <tr>
@@ -519,7 +554,7 @@ foreach ($arrDep as $val) {
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Email</th>
-                    <th>Tipo</th>
+                    <th>Rol</th>
                     <th>Eliminado</th>
                     <th>Eliminado por</th>
                   </tr>
@@ -530,22 +565,13 @@ foreach ($arrDep as $val) {
         </div>
       </div>
       <div class="tab-pane fade" id="duplicated" role="tabpanel" aria-labelledby="duplicated-tab">
-        <div class="card mt-3 g360-user-card g360-user-card--duplicates">
+        <div class="card mt-3">
           <div class="card-header">
-            <div class="g360-card-heading">
-              <span class="g360-card-heading__icon g360-card-heading__icon--duplicated">
-                <i class="feather icon-copy"></i>
-              </span>
-
-              <div>
-                <span class="g360-card-heading__eyebrow">Control de calidad</span>
-                <h5 class="mb-0">Usuarios duplicados</h5>
-                <p>Identifica registros que comparten el mismo nombre de usuario.</p>
-              </div>
-            </div>
+            <h5 class="mb-0">Usuarios duplicados</h5>
+            <small style="color:var(--muted);">Usuarios que comparten el mismo username</small>
           </div>
           <div class="card-body table-border-style">
-            <div class="table-responsive tabla-informacion tabla-scroll g360-users-table">
+            <div class="table-responsive tabla-informacion tabla-scroll">
               <table class="table table-hover mb-0" id="dynamictable-duplicated">
                 <thead>
                   <tr>
@@ -553,7 +579,7 @@ foreach ($arrDep as $val) {
                     <th>Username</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
-                    <th>Tipo</th>
+                    <th>Rol</th>
                     <th>Secretaría</th>
                     <th>Habilitado</th>
                     <th>Creado</th>
@@ -567,19 +593,9 @@ foreach ($arrDep as $val) {
       <?php endif; ?>
 
       <div class="tab-pane fade <?= $create ? '' : 'show active' ?>" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-        <div class="card mt-3 g360-user-card g360-user-card--list">
+        <div class="card mt-3">
           <div class="card-header d-flex flex-wrap align-items-center justify-content-between">
-            <div class="g360-card-heading">
-              <span class="g360-card-heading__icon g360-card-heading__icon--list">
-                <i class="feather icon-list"></i>
-              </span>
-
-              <div>
-                <span class="g360-card-heading__eyebrow">Directorio institucional</span>
-                <h5 class="mb-0">Listado de usuarios</h5>
-                <p>Consulta, filtra y gestiona las cuentas registradas en la plataforma.</p>
-              </div>
-            </div>
+            <h5 class="mb-0">Listado de usuarios</h5>
 
             <div class="card-header-right ml-auto">
               <div class="btn-group card-option">
@@ -612,23 +628,18 @@ foreach ($arrDep as $val) {
           </div>
 
           <div class="card-body table-border-style">
-            <div class="g360-users-search">
-              <span class="g360-users-search__icon">
-                <i class="feather icon-search"></i>
-              </span>
-
-              <div>
-                <label for="customSearch">Búsqueda rápida</label>
-                <input
-                  type="text"
-                  id="customSearch"
-                  class="form-control"
-                  placeholder="Buscar por nombre, usuario, tipo o dependencia..."
-                >
+            <div class="navbar-form buscador-2 mb-3">
+              <div class="input-group input-primary">
+                <input type="text" id="customSearch" class="form-control" placeholder="Buscar usuario">
+                <div class="input-group-append">
+                  <span class="input-group-text">
+                    <i class="feather icon-edit"></i>
+                  </span>
+                </div>
               </div>
             </div>
 
-            <div class="table-responsive tabla-informacion tabla-scroll g360-users-table g360-users-table--main">
+            <div class="table-responsive tabla-informacion tabla-scroll">
               <table class="table table-hover mb-0" id="dynamictable">
                 <thead>
                   <tr class="border-1">
@@ -637,7 +648,7 @@ foreach ($arrDep as $val) {
                     <th>Fecha creación</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
-                    <th>Tipo</th>
+                    <th>Rol</th>
                     <th>Secretaria o entidad</th>
                     <th>Usuario</th>
                     <th>Habilitado</th>
@@ -658,7 +669,7 @@ foreach ($arrDep as $val) {
 <!-- MODALES (solo diseño/compatibilidad) -->
 <div class="modal fade" id="modalImagen" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content text-center g360-image-modal">
+    <div class="modal-content text-center">
       <div class="modal-body">
         <img id="imagenGrande" src="" class="img-fluid rounded" alt="Foto">
       </div>
@@ -668,45 +679,13 @@ foreach ($arrDep as $val) {
 
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-    <div class="modal-content g360-edit-user-modal">
-      <div class="modal-header">
-        <div class="g360-modal-heading">
-          <span class="g360-modal-heading__icon">
-            <i class="feather icon-edit-3"></i>
-          </span>
-
-          <div>
-            <small>Actualización de cuenta</small>
-            <h5 class="modal-title" id="exampleModalLongTitle">Editar usuario</h5>
-          </div>
-        </div>
-
-        <button
-          onclick="UTIL.clearForm('formpermission');"
-          type="button"
-          class="close text-white"
-          data-dismiss="modal"
-          aria-label="Cerrar"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="exampleModalLongTitle">Editar Usuario</h5>
+        <button onclick="UTIL.clearForm('formpermission');" type="button" class="close text-white" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
 
       <div class="modal-body p-4">
-        <div class="g360-edit-modal-intro">
-          <span>
-            <i class="feather icon-shield"></i>
-          </span>
-
-          <div>
-            <strong>Actualización controlada</strong>
-            <p>
-              Modifica la información necesaria. Deja las contraseñas vacías
-              para conservar las credenciales actuales.
-            </p>
-          </div>
-        </div>
-
         <form id="editFormUser" role="form" autocomplete="false" class="w-100">
           <input type="hidden" name="editId" id="editId" />
 
@@ -722,18 +701,9 @@ foreach ($arrDep as $val) {
             </div>
 
             <div class="form-group col-md-4">
-              <label for="editTipo">Tipo de Usuario <span class="text-danger">*</span></label>
-              <select class="form-control" id="editTipo" name="editTipo">
-                <option value="">Seleccione</option>
-                <option value="SuperAdministrador">Super Administrador</option>
-                <option value="Gobernador">Gobernador</option>
-                <option value="Secretaria_Despacho_Gobernacion">Secretario despacho Gobernación</option>
-                <option value="Auxiliar_secret_gob">Auxiliar Secretario Gobernación</option>
-                <option value="Alcalde">Alcalde</option>
-                <option value="Auxiliar_Alcalde">Auxiliar Alcalde</option>
-                <option value="Secretario_Despacho">Secretario Despacho Alcalde</option>
-                <option value="Auxiliar">Auxiliar Secretario Despacho Alcalde</option>
-                <option value="Administrador">Administrador</option>
+              <label for="editRole_id">Rol <span class="text-danger">*</span></label>
+              <select class="form-control" id="editRole_id" name="editRole_id">
+                <?= $optionRoles ?>
               </select>
             </div>
           </div>
@@ -809,27 +779,9 @@ foreach ($arrDep as $val) {
         </form>
       </div>
 
-      <div class="modal-footer">
-        <div class="g360-modal-footer-message">
-          <i class="feather icon-lock"></i>
-          Los cambios quedarán registrados en el sistema.
-        </div>
-
-        <div class="g360-modal-footer-actions">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Cancelar
-          </button>
-
-          <button
-            type="button"
-            id="btnGuardarEditar"
-            class="btn btn-primary"
-            onclick="USUARIO.editUserSave();"
-          >
-            <i class="feather icon-save"></i>
-            Actualizar usuario
-          </button>
-        </div>
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" id="btnGuardarEditar" class="btn btn-primary" onclick="USUARIO.editUserSave();">Actualizar</button>
       </div>
     </div>
   </div>
@@ -846,7 +798,57 @@ foreach ($arrDep as $val) {
 
 <script type="text/javascript" src="./admin/js/datatables/jquery.dataTables.min.js"></script>
 <link href="./admin/js/datatables/jquery.dataTables.min.css" rel="stylesheet" />
-        
+        <style>
+      table.dataTable tbody tr{
+        background-color: transparent !important;
+      }
+      table.dataTable.stripe tbody tr.odd,
+      table.dataTable.display tbody tr.odd{
+        background-color: rgba(255,255,255,.03) !important;
+      }
+      table.dataTable tbody td{
+        color: rgba(255,255,255,.86) !important;
+      }
+      table.dataTable tbody td a{
+        color: rgba(255,255,255,.86) !important;
+      }
+      table.dataTable tbody td i.feather,
+      table.dataTable tbody td i.bi{
+        color: rgba(255,255,255,.86) !important;
+      }
+      #tblVeredas td i.feather{
+        color: rgba(255,255,255,.86) !important;
+      }
+      .dataTables_wrapper .dataTables_paginate .paginate_button{
+        color: rgba(255,255,255,.86) !important;
+        background: rgba(255,255,255,.06) !important;
+        border: 1px solid rgba(255,255,255,.10) !important;
+        border-radius: 8px !important;
+      }
+      .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+      .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+        color: #fff !important;
+        background: rgba(31,111,235,.35) !important;
+        border: 1px solid rgba(31,111,235,.50) !important;
+      }
+      .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+        color: #fff !important;
+        background: rgba(255,255,255,.12) !important;
+        border: 1px solid rgba(255,255,255,.20) !important;
+      }
+      .dataTables_wrapper .dataTables_paginate .paginate_button.disabled{
+        color: rgba(255,255,255,.30) !important;
+        background: transparent !important;
+        border: 1px solid transparent !important;
+      }
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_length label{
+        color: #fff !important;
+      }
+      table.dataTable tbody tr.selected{
+        background-color: rgba(31,111,235,.25) !important;
+      }
+    </style>
 <script>
   var currentUserType = '<?= $userType ?>';
   var USER_PERMS = {
