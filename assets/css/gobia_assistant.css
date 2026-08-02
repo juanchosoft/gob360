@@ -1,0 +1,1053 @@
+:root {
+  --gobia-bg-0: #02050b;
+  --gobia-bg-1: #07101f;
+  --gobia-bg-2: #0a2230;
+  --gobia-panel: rgba(7, 17, 31, 0.84);
+  --gobia-panel-strong: rgba(8, 24, 42, 0.94);
+  --gobia-border: rgba(76, 231, 255, 0.18);
+  --gobia-border-strong: rgba(76, 231, 255, 0.42);
+  --gobia-text: rgba(244, 253, 255, 0.98);
+  --gobia-muted: rgba(219, 247, 255, 0.62);
+  --gobia-cyan: #42e9ff;
+  --gobia-blue: #4c7dff;
+  --gobia-green: #49f6bd;
+  --gobia-purple: #a88cff;
+  --gobia-yellow: #ffe082;
+  --gobia-red: #ff6680;
+  --gobia-shadow: 0 34px 110px rgba(0, 0, 0, 0.52);
+  --gobia-soft-shadow: 0 18px 48px rgba(0, 0, 0, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  overflow-x: hidden !important;
+}
+
+body.gobia-voice-page {
+  min-height: 100vh;
+  color: var(--gobia-text) !important;
+  background:
+    radial-gradient(900px 520px at 8% 3%, rgba(76, 125, 255, 0.28), transparent 63%),
+    radial-gradient(860px 520px at 92% 8%, rgba(66, 233, 255, 0.17), transparent 61%),
+    radial-gradient(900px 620px at 48% 110%, rgba(73, 246, 189, 0.1), transparent 62%),
+    linear-gradient(150deg, var(--gobia-bg-0), var(--gobia-bg-1) 58%, var(--gobia-bg-2)) !important;
+  background-attachment: fixed !important;
+}
+
+body.gobia-voice-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  opacity: 0.17;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(85, 231, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(85, 231, 255, 0.07) 1px, transparent 1px);
+  background-size: 58px 58px;
+  mask-image: linear-gradient(to bottom, #000, transparent 96%);
+}
+
+body.gobia-voice-page::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.015) 0,
+      rgba(255, 255, 255, 0.015) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+}
+
+.gobia-voice-page .pcoded-main-container,
+.gobia-voice-page .pcoded-content {
+  background: transparent !important;
+}
+
+.gobia-voice-page .pcoded-main-container .pcoded-content {
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 18px 28px 44px !important;
+}
+
+.gobia-voice-shell {
+  width: 100%;
+  min-height: calc(100vh - 142px);
+}
+
+.gobia-hud-panel {
+  position: relative;
+  min-height: calc(100vh - 166px);
+  overflow: hidden;
+  padding: 23px;
+  border: 1px solid var(--gobia-border);
+  border-radius: 30px;
+  background:
+    radial-gradient(750px 330px at 50% 0%, rgba(66, 233, 255, 0.11), transparent 68%),
+    linear-gradient(155deg, rgba(9, 23, 41, 0.92), rgba(3, 10, 20, 0.92));
+  box-shadow: var(--gobia-shadow);
+  backdrop-filter: blur(22px);
+}
+
+.gobia-hud-panel::before,
+.gobia-hud-panel::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.gobia-hud-panel::before {
+  inset: 13px;
+  border: 1px solid rgba(66, 233, 255, 0.08);
+  border-radius: 23px;
+}
+
+.gobia-hud-panel::after {
+  top: -190px;
+  right: -160px;
+  width: 530px;
+  height: 530px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(66, 233, 255, 0.18), transparent 69%);
+}
+
+.gobia-hud-header,
+.gobia-hud-footer,
+.gobia-interface-grid {
+  position: relative;
+  z-index: 2;
+}
+
+.gobia-hud-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 4px 6px 19px;
+  border-bottom: 1px solid rgba(66, 233, 255, 0.12);
+}
+
+.gobia-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: var(--gobia-green);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.gobia-hud-header h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(29px, 4vw, 46px);
+  font-weight: 1000;
+  line-height: 1;
+  letter-spacing: -1.2px;
+  text-shadow: 0 0 30px rgba(66, 233, 255, 0.13);
+}
+
+.gobia-hud-header p {
+  max-width: 760px;
+  margin: 10px 0 0;
+  color: var(--gobia-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.gobia-system-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding: 9px 13px;
+  color: #ddfff1;
+  font-size: 10px;
+  font-weight: 900;
+  border: 1px solid rgba(73, 246, 189, 0.22);
+  border-radius: 999px;
+  background: rgba(73, 246, 189, 0.07);
+}
+
+.gobia-system-state > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gobia-green);
+  box-shadow: 0 0 13px rgba(73, 246, 189, 0.7);
+  animation: gobia-status-pulse 1.6s infinite;
+}
+
+.gobia-interface-grid {
+  display: grid;
+  grid-template-columns: minmax(205px, 0.75fr) minmax(460px, 2.25fr) minmax(205px, 0.75fr);
+  align-items: stretch;
+  gap: 17px;
+  min-height: 650px;
+  padding: 20px 0;
+}
+
+.gobia-telemetry,
+.gobia-diagnostics {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 11px;
+}
+
+.gobia-telemetry article,
+.gobia-diagnostics article {
+  position: relative;
+  overflow: hidden;
+  min-height: 108px;
+  padding: 14px;
+  border: 1px solid var(--gobia-border);
+  border-radius: 17px;
+  background:
+    radial-gradient(180px 90px at 0% 0%, rgba(66, 233, 255, 0.08), transparent 72%),
+    rgba(3, 11, 22, 0.55);
+  box-shadow: var(--gobia-soft-shadow);
+}
+
+.gobia-telemetry article::after,
+.gobia-diagnostics article::after {
+  content: "";
+  position: absolute;
+  right: -25px;
+  bottom: -25px;
+  width: 70px;
+  height: 70px;
+  border: 1px solid rgba(66, 233, 255, 0.11);
+  border-radius: 50%;
+}
+
+.gobia-telemetry small,
+.gobia-diagnostics small {
+  display: block;
+  color: var(--gobia-green);
+  font-size: 8px;
+  font-weight: 950;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+.gobia-telemetry strong,
+.gobia-diagnostics strong {
+  display: block;
+  margin-top: 5px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.gobia-telemetry article > span {
+  display: block;
+  margin-top: 5px;
+  color: var(--gobia-muted);
+  font-size: 9.5px;
+  line-height: 1.35;
+}
+
+.gobia-diagnostics article {
+  min-height: 92px;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.gobia-diagnostics article > span {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #06101d;
+  border-radius: 13px;
+  background: linear-gradient(135deg, var(--gobia-cyan), #9bf7ff);
+}
+
+.gobia-face-stage {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 22px 20px;
+  border: 1px solid var(--gobia-border-strong);
+  border-radius: 26px;
+  background:
+    radial-gradient(430px 300px at 50% 36%, rgba(66, 233, 255, 0.1), transparent 72%),
+    radial-gradient(360px 260px at 50% 53%, rgba(168, 140, 255, 0.09), transparent 72%),
+    rgba(2, 9, 18, 0.74);
+  box-shadow:
+    inset 0 0 55px rgba(66, 233, 255, 0.045),
+    0 26px 70px rgba(0, 0, 0, 0.36);
+}
+
+.gobia-face-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(66, 233, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(66, 233, 255, 0.12) 1px, transparent 1px);
+  background-size: 25px 25px;
+}
+
+.gobia-orbit {
+  position: absolute;
+  left: 50%;
+  top: 41%;
+  border-radius: 50%;
+  border: 1px solid rgba(66, 233, 255, 0.16);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.gobia-orbit--outer {
+  width: 510px;
+  height: 510px;
+  border-style: dashed;
+  animation: gobia-orbit-spin 30s linear infinite;
+}
+
+.gobia-orbit--middle {
+  width: 430px;
+  height: 430px;
+  border-color: rgba(168, 140, 255, 0.17);
+  animation: gobia-orbit-spin-reverse 24s linear infinite;
+}
+
+.gobia-orbit--inner {
+  width: 350px;
+  height: 350px;
+  border-color: rgba(73, 246, 189, 0.12);
+  border-style: dotted;
+  animation: gobia-orbit-spin 18s linear infinite;
+}
+
+.gobia-face-frame {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 570px);
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border: 1px solid rgba(66, 233, 255, 0.19);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(9, 34, 54, 0.84), rgba(1, 7, 15, 0.96) 71%);
+  box-shadow:
+    inset 0 0 85px rgba(66, 233, 255, 0.1),
+    0 0 65px rgba(66, 233, 255, 0.09);
+}
+
+.gobia-face-frame.is-listening {
+  border-color: rgba(73, 246, 189, 0.42);
+  box-shadow:
+    inset 0 0 95px rgba(73, 246, 189, 0.12),
+    0 0 70px rgba(73, 246, 189, 0.15);
+}
+
+.gobia-face-frame.is-speaking {
+  border-color: rgba(66, 233, 255, 0.56);
+  animation: gobia-speaking-frame 0.68s ease-in-out infinite alternate;
+}
+
+.gobia-face-canvas,
+.gobia-wave-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.gobia-scan-line {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: -15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(126, 244, 255, 0.85), transparent);
+  box-shadow: 0 0 18px rgba(66, 233, 255, 0.7);
+  animation: gobia-scan 4.8s linear infinite;
+}
+
+.gobia-face-glow {
+  position: absolute;
+  inset: 15%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(66, 233, 255, 0.065), transparent 70%);
+  pointer-events: none;
+}
+
+.gobia-wave-panel {
+  position: relative;
+  z-index: 3;
+  width: min(100%, 700px);
+  height: 86px;
+  margin-top: -26px;
+  overflow: hidden;
+  border: 1px solid rgba(66, 233, 255, 0.14);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(4, 19, 34, 0.9), rgba(2, 9, 18, 0.92));
+  box-shadow: 0 15px 38px rgba(0, 0, 0, 0.28);
+}
+
+.gobia-status-copy {
+  position: relative;
+  z-index: 3;
+  min-height: 58px;
+  margin-top: 13px;
+  text-align: center;
+}
+
+.gobia-status-copy strong {
+  display: block;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.gobia-status-copy span {
+  display: block;
+  max-width: 650px;
+  margin-top: 5px;
+  color: var(--gobia-muted);
+  font-size: 10.5px;
+  line-height: 1.45;
+}
+
+.gobia-live-caption {
+  position: relative;
+  z-index: 3;
+  max-width: 680px;
+  max-height: 48px;
+  overflow: hidden;
+  margin: 3px auto 0;
+  padding: 7px 12px;
+  color: rgba(220, 249, 255, 0.85);
+  font-size: 10px;
+  line-height: 1.4;
+  text-align: center;
+  border: 1px solid rgba(66, 233, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(66, 233, 255, 0.04);
+}
+
+.gobia-controls {
+  position: relative;
+  z-index: 3;
+  width: min(100%, 720px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 12px;
+}
+
+.gobia-mic-control {
+  position: relative;
+  min-width: 190px;
+  min-height: 66px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  padding: 11px 17px;
+  color: #06101d;
+  font-size: 11px;
+  font-weight: 1000;
+  border: 0;
+  border-radius: 20px;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--gobia-cyan), #9bf7ff);
+  box-shadow: 0 16px 38px rgba(66, 233, 255, 0.19);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gobia-mic-control:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 46px rgba(66, 233, 255, 0.27);
+}
+
+.gobia-mic-control.is-listening {
+  color: #06150f;
+  background: linear-gradient(135deg, var(--gobia-green), #a3f9d8);
+}
+
+.gobia-mic-control.is-processing {
+  color: #251d04;
+  background: linear-gradient(135deg, var(--gobia-yellow), #fff0b5);
+}
+
+.gobia-mic-control.is-speaking {
+  color: #fff;
+  background: linear-gradient(135deg, var(--gobia-blue), var(--gobia-purple));
+}
+
+.gobia-mic-control__icon {
+  width: 39px;
+  height: 39px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.gobia-mic-control__rings {
+  position: absolute;
+  inset: -8px;
+  opacity: 0;
+  border: 1px solid rgba(73, 246, 189, 0.42);
+  border-radius: 26px;
+  pointer-events: none;
+}
+
+.gobia-mic-control.is-listening .gobia-mic-control__rings {
+  opacity: 1;
+  animation: gobia-mic-rings 1.35s infinite;
+}
+
+.gobia-continuous-control {
+  min-width: 260px;
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 10px 12px;
+  cursor: pointer;
+  border: 1px solid var(--gobia-border);
+  border-radius: 16px;
+  background: rgba(3, 11, 22, 0.52);
+}
+
+.gobia-continuous-control input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gobia-switch {
+  position: relative;
+  width: 42px;
+  height: 23px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.11);
+  transition: 0.2s ease;
+}
+
+.gobia-switch::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #fff;
+  transition: 0.2s ease;
+}
+
+.gobia-continuous-control input:checked + .gobia-switch {
+  background: rgba(73, 246, 189, 0.5);
+}
+
+.gobia-continuous-control input:checked + .gobia-switch::after {
+  left: 22px;
+  background: var(--gobia-green);
+  box-shadow: 0 0 12px rgba(73, 246, 189, 0.7);
+}
+
+.gobia-continuous-control strong,
+.gobia-continuous-control small {
+  display: block;
+}
+
+.gobia-continuous-control strong {
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 900;
+}
+
+.gobia-continuous-control small {
+  margin-top: 3px;
+  color: var(--gobia-muted);
+  font-size: 8.5px;
+  line-height: 1.35;
+}
+
+.gobia-hud-footer {
+  min-height: 49px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 13px 7px 0;
+  border-top: 1px solid rgba(66, 233, 255, 0.1);
+}
+
+.gobia-hud-footer > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gobia-muted);
+  font-size: 9.5px;
+}
+
+.gobia-stop-button {
+  min-height: 37px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 900;
+  border: 1px solid rgba(255, 102, 128, 0.22);
+  border-radius: 11px;
+  background: rgba(255, 102, 128, 0.08);
+}
+
+.gobia-stop-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.gobia-stop-button:not(:disabled) {
+  cursor: pointer;
+}
+
+@keyframes gobia-status-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.28); opacity: 0.72; }
+}
+
+@keyframes gobia-orbit-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes gobia-orbit-spin-reverse {
+  from { transform: translate(-50%, -50%) rotate(360deg); }
+  to { transform: translate(-50%, -50%) rotate(0deg); }
+}
+
+@keyframes gobia-scan {
+  0% { top: -15%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 115%; opacity: 0; }
+}
+
+@keyframes gobia-speaking-frame {
+  from { transform: scale(1); box-shadow: inset 0 0 85px rgba(66, 233, 255, 0.1), 0 0 55px rgba(66, 233, 255, 0.1); }
+  to { transform: scale(1.008); box-shadow: inset 0 0 105px rgba(66, 233, 255, 0.16), 0 0 80px rgba(66, 233, 255, 0.2); }
+}
+
+@keyframes gobia-mic-rings {
+  0% { transform: scale(0.94); opacity: 0.82; }
+  100% { transform: scale(1.14); opacity: 0; }
+}
+
+@media (max-width: 1250px) {
+  .gobia-interface-grid {
+    grid-template-columns: minmax(180px, 0.7fr) minmax(420px, 2fr);
+  }
+
+  .gobia-diagnostics {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 991px) {
+  .gobia-hud-header {
+    flex-direction: column;
+  }
+
+  .gobia-interface-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gobia-telemetry,
+  .gobia-diagnostics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gobia-face-stage {
+    order: -1;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .gobia-voice-page .pcoded-main-container .pcoded-content {
+    padding: 13px 11px 38px !important;
+  }
+
+  .gobia-hud-panel {
+    min-height: auto;
+    padding: 16px;
+    border-radius: 23px;
+  }
+
+  .gobia-hud-header h1 {
+    font-size: 28px;
+  }
+
+  .gobia-interface-grid {
+    min-height: auto;
+    padding: 15px 0;
+  }
+
+  .gobia-telemetry,
+  .gobia-diagnostics {
+    grid-template-columns: 1fr;
+  }
+
+  .gobia-face-stage {
+    padding: 13px 11px 18px;
+  }
+
+  .gobia-orbit--outer { width: 390px; height: 390px; }
+  .gobia-orbit--middle { width: 330px; height: 330px; }
+  .gobia-orbit--inner { width: 270px; height: 270px; }
+
+  .gobia-wave-panel {
+    height: 70px;
+    margin-top: -15px;
+  }
+
+  .gobia-controls {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .gobia-mic-control,
+  .gobia-continuous-control {
+    width: 100%;
+  }
+
+  .gobia-hud-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .gobia-stop-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+/* =========================================
+   GOBIA · ESTILO FUTURISTA PREMIUM
+========================================= */
+.gobia-face-stage--premium{
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(0,238,255,.14);
+    background:
+        radial-gradient(circle at 50% 50%, rgba(0,238,255,.08), transparent 30%),
+        radial-gradient(circle at 50% 20%, rgba(60,125,255,.10), transparent 35%),
+        linear-gradient(180deg, rgba(6,14,26,.92), rgba(3,8,16,.96));
+    box-shadow:
+        inset 0 0 40px rgba(0,238,255,.04),
+        0 30px 80px rgba(0,0,0,.42);
+    border-radius:30px;
+    padding:24px 18px 20px;
+}
+
+.gobia-hud-grid{
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(rgba(0,238,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,238,255,.035) 1px, transparent 1px);
+    background-size:26px 26px;
+    opacity:.35;
+    pointer-events:none;
+    mask-image: radial-gradient(circle at center, #000 55%, transparent 100%);
+}
+
+.gobia-hud-particles{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background-image:
+        radial-gradient(circle, rgba(0,238,255,.55) 1.1px, transparent 1.2px),
+        radial-gradient(circle, rgba(61,244,193,.45) 1px, transparent 1.1px),
+        radial-gradient(circle, rgba(111,166,255,.4) 1px, transparent 1.1px);
+    background-size:160px 160px, 220px 220px, 300px 300px;
+    background-position:20px 30px, 90px 100px, 160px 80px;
+    opacity:.35;
+    animation:gobiaFloatParticles 10s linear infinite;
+}
+
+.gobia-side-data{
+    position:absolute;
+    top:88px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    z-index:2;
+}
+
+.gobia-side-data--left{
+    left:18px;
+}
+
+.gobia-side-data--right{
+    right:18px;
+    text-align:right;
+}
+
+.gobia-side-data span{
+    display:block;
+    padding:7px 10px;
+    border:1px solid rgba(0,238,255,.15);
+    background:rgba(0,238,255,.05);
+    color:#aaf8ff;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:1px;
+    border-radius:10px;
+    box-shadow:0 0 15px rgba(0,238,255,.06);
+}
+
+.gobia-orbit--pulse{
+    width:420px;
+    height:420px;
+    border:1px solid rgba(0,238,255,.12);
+    box-shadow:
+        0 0 30px rgba(0,238,255,.08),
+        inset 0 0 30px rgba(0,238,255,.04);
+    animation:gobiaOrbitPulse 3.6s ease-in-out infinite;
+}
+
+.gobia-face-frame--premium{
+    position:relative;
+    width:min(100%, 500px);
+    aspect-ratio:1/1.08;
+    margin:0 auto;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(0,238,255,.045), rgba(0,0,0,.02) 55%, transparent 75%);
+    box-shadow:
+        inset 0 0 80px rgba(0,238,255,.08),
+        0 0 60px rgba(0,238,255,.04);
+}
+
+.gobia-face-border{
+    position:absolute;
+    inset:18px;
+    border-radius:50%;
+    border:1px solid rgba(0,238,255,.16);
+    box-shadow:
+        0 0 25px rgba(0,238,255,.06),
+        inset 0 0 25px rgba(0,238,255,.04);
+}
+
+.gobia-core-light{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:110px;
+    height:110px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:
+        radial-gradient(circle,
+        rgba(174,250,255,.95) 0%,
+        rgba(0,238,255,.70) 22%,
+        rgba(0,238,255,.20) 48%,
+        rgba(0,238,255,0) 75%);
+    filter:blur(1px);
+    box-shadow:
+        0 0 50px rgba(0,238,255,.30),
+        0 0 120px rgba(0,238,255,.16);
+    animation:gobiaCoreBeat 2.2s ease-in-out infinite;
+}
+
+.gobia-face-canvas--premium{
+    position:relative;
+    z-index:2;
+    width:100%;
+    height:100%;
+    border-radius:50%;
+}
+
+.gobia-face-reflection{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    background:
+        linear-gradient(130deg,
+        rgba(255,255,255,.18) 0%,
+        rgba(255,255,255,.02) 18%,
+        transparent 32%);
+    opacity:.24;
+    pointer-events:none;
+}
+
+.gobia-face-glow{
+    filter:blur(22px);
+    opacity:.65;
+}
+
+.gobia-scan-line{
+    background:linear-gradient(
+        180deg,
+        rgba(0,238,255,0) 0%,
+        rgba(0,238,255,.24) 45%,
+        rgba(0,238,255,.50) 50%,
+        rgba(0,238,255,.24) 55%,
+        rgba(0,238,255,0) 100%
+    );
+    height:120px;
+    opacity:.55;
+    animation:gobiaScanUpDown 4.2s linear infinite;
+}
+
+.gobia-wave-panel--premium{
+    margin-top:18px;
+    padding:14px 14px 12px;
+    border-radius:18px;
+    border:1px solid rgba(0,238,255,.14);
+    background:linear-gradient(180deg, rgba(0,238,255,.05), rgba(255,255,255,.02));
+    box-shadow:inset 0 0 22px rgba(0,238,255,.04);
+}
+
+.gobia-wave-panel__title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+}
+
+.gobia-wave-panel__title span{
+    color:#87eefd;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:1.5px;
+}
+
+.gobia-wave-panel__title strong{
+    color:#ffffff;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.8px;
+}
+
+.gobia-wave-canvas{
+    width:100%;
+    height:90px;
+    display:block;
+}
+
+.gobia-mic-control--premium{
+    background:linear-gradient(135deg, rgba(0,238,255,.16), rgba(60,125,255,.15));
+    border:1px solid rgba(0,238,255,.22);
+    box-shadow:
+        0 0 25px rgba(0,238,255,.10),
+        inset 0 0 25px rgba(255,255,255,.02);
+}
+
+.gobia-mic-control--premium:hover{
+    box-shadow:
+        0 0 35px rgba(0,238,255,.18),
+        inset 0 0 30px rgba(255,255,255,.03);
+    transform:translateY(-2px);
+}
+
+.gobia-status-copy{
+    margin-top:16px;
+}
+
+.gobia-status-copy strong{
+    color:#fff;
+    font-size:18px;
+    font-weight:800;
+    display:block;
+}
+
+.gobia-status-copy span{
+    color:rgba(255,255,255,.68);
+    font-size:13px;
+    line-height:1.5;
+}
+
+@keyframes gobiaFloatParticles{
+    0%{ transform:translateY(0); }
+    50%{ transform:translateY(-8px); }
+    100%{ transform:translateY(0); }
+}
+
+@keyframes gobiaOrbitPulse{
+    0%,100%{
+        transform:translate(-50%,-50%) scale(1);
+        opacity:.9;
+    }
+    50%{
+        transform:translate(-50%,-50%) scale(1.03);
+        opacity:.55;
+    }
+}
+
+@keyframes gobiaCoreBeat{
+    0%,100%{
+        transform:translate(-50%,-50%) scale(1);
+    }
+    50%{
+        transform:translate(-50%,-50%) scale(1.08);
+    }
+}
+
+@keyframes gobiaScanUpDown{
+    0%{ top:10%; }
+    100%{ top:78%; }
+}
+
+@media (max-width: 1200px){
+    .gobia-side-data{
+        display:none;
+    }
+}
+
+@media (max-width: 768px){
+    .gobia-face-frame--premium{
+        width:min(100%, 360px);
+    }
+
+    .gobia-orbit--pulse{
+        width:300px;
+        height:300px;
+    }
+
+    .gobia-wave-panel__title{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}

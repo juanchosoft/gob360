@@ -184,128 +184,65 @@ if ($municipiosList['output']['valid'] ?? false) {
 
 function number_format_mun($num) { return number_format($num, 0, '.', ','); }
 function number_format_puntaje($num) { return number_format((float) $num, 2, '.', ','); }
+
+$hombres = (int) ($informacionMunicipio['hombres'] ?? 0);
+$mujeres = (int) ($informacionMunicipio['mujeres'] ?? 0);
+$poblacionTotal = $hombres + $mujeres;
+
+$totalVeredasMunicipio = count($tablaPuntajesVeredas);
+$totalEmpresasMunicipio = count($empresasMunicipio);
+$totalFactoresMunicipio = count($factoresParaAsociar);
+$variacionPuntajeMunicipio = $puntajeMunicipioActual - $puntajeMunicipioInicial;
+
+$nombreFactorActual = 'Todos los factores';
+if (
+    $inestabilidadId !== $codigoTodos
+    && !empty($responseInest['output']['valid'])
+) {
+    foreach ($responseInest['output']['response'] as $factorActual) {
+        if ((int) ($factorActual['id'] ?? 0) === $inestabilidadId) {
+            $nombreFactorActual = (string) (
+                $factorActual['nombre_categoria']
+                ?? 'Factor seleccionado'
+            );
+            break;
+        }
+    }
+}
+
+$diferencias = [];
+foreach ($veredasInicial as $veredaInicialComparacion) {
+    foreach ($veredasActual as $veredaActualComparacion) {
+        if (
+            ($veredaInicialComparacion['id'] ?? null)
+            === ($veredaActualComparacion['id'] ?? null)
+            && round(
+                (float) ($veredaInicialComparacion['cantidad'] ?? 0),
+                2
+            ) !== round(
+                (float) ($veredaActualComparacion['cantidad'] ?? 0),
+                2
+            )
+        ) {
+            $diferencias[] = [
+                'nombre' => $veredaInicialComparacion['nombre_vereda'] ?? '',
+                'inicial' => number_format_puntaje(
+                    $veredaInicialComparacion['cantidad'] ?? 0
+                ),
+                'actual' => number_format_puntaje(
+                    $veredaActualComparacion['cantidad'] ?? 0
+                ),
+            ];
+        }
+    }
+}
+
+$totalVeredasConCambios = count($diferencias);
 ?>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<style>
-:root{--au-bg-0:#070A12;--au-bg-1:#0B1020;--au-card:rgba(255,255,255,.06);--au-stroke:rgba(255,255,255,.10);--au-text:rgba(255,255,255,.92);--au-muted:rgba(255,255,255,.68);--au-primary:#2E6BFF;--au-shadow:0 18px 55px rgba(0,0,0,.55);--au-radius-lg:22px;}
-body{background:radial-gradient(1200px 900px at 12% 8%,rgba(46,107,255,.28),transparent 55%),radial-gradient(900px 700px at 88% 18%,rgba(25,211,255,.20),transparent 50%),linear-gradient(180deg,var(--au-bg-0),var(--au-bg-1));color:var(--au-text);}
-.card{border:1px solid var(--au-stroke)!important;background:linear-gradient(180deg,var(--au-card),rgba(255,255,255,.035))!important;box-shadow:var(--au-shadow);border-radius:var(--au-radius-lg)!important;}
-.card-header{border-bottom:1px solid rgba(255,255,255,.09)!important;background:linear-gradient(90deg,rgba(46,107,255,.20),rgba(25,211,255,.12),rgba(255,255,255,.02))!important;padding:1rem 1.15rem!important;border-radius:calc(var(--au-radius-lg)-1px) calc(var(--au-radius-lg)-1px) 0 0!important;}
-.card-body{padding:1.05rem!important;}
-.card-header h5,.card-header h4{color:#fff!important;font-weight:900!important;text-shadow:0 2px 10px rgba(0,0,0,.55);margin:0!important;}
-.breadcrumb{background:transparent!important;}.breadcrumb-item a{color:var(--au-muted)!important;}.breadcrumb-item.active{color:#fff!important;font-weight:700;}
-.form-control,select.form-control{background:rgba(255,255,255,.06)!important;border:1px solid var(--au-stroke)!important;color:var(--au-text)!important;border-radius:14px!important;padding:10px 14px!important;font-weight:600!important;}
-.form-control option{background:#0B1020!important;color:#fff!important;}
-label{color:var(--au-text)!important;font-weight:700!important;}
-.btn-primary{background:linear-gradient(135deg,rgba(79,124,255,.35),rgba(155,92,255,.22))!important;border:1px solid rgba(79,124,255,.45)!important;color:#fff!important;border-radius:14px!important;font-weight:800!important;}
-.btn-primary:hover{filter:brightness(1.1);}
-#contenido-mapa-inicial svg,#contenido-mapa-actual svg{width:100%;height:auto;max-height:600px;}
-#contenido-mapa-inicial polygon,#contenido-mapa-actual polygon,#contenido-mapa-inicial path,#contenido-mapa-actual path{transition:opacity .2s,filter .2s;cursor:pointer;}
-#contenido-mapa-inicial polygon:hover,#contenido-mapa-actual polygon:hover,#contenido-mapa-inicial path:hover,#contenido-mapa-actual path:hover{opacity:.75;filter:brightness(1.2);}
-.mapa-resumen-colores{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;margin-top:14px;margin-bottom:0;}
-.mapa-resumen-colores-total{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--au-muted);margin-bottom:10px;}
-.mapa-resumen-colores-grid{display:flex;flex-wrap:wrap;gap:8px 14px;}
-.mapa-resumen-colores-item{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--au-text);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:999px;padding:6px 12px;}
-.mapa-resumen-dot{width:12px;height:12px;border-radius:50%;border:1px solid rgba(255,255,255,.35);flex-shrink:0;}
-.mapa-resumen-etiqueta{font-weight:700;}
-.mapa-resumen-valor{font-weight:800;}
-.mapa-resumen-valor small{font-weight:600;color:var(--au-muted);}
-.municipio-info-block{display:flex;flex-wrap:wrap;gap:16px;padding:6px 0;}
-.municipio-info-item{flex:1;min-width:140px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;text-align:center;}
-.municipio-info-item strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--au-muted);margin-bottom:4px;}
-.municipio-info-item span{font-size:13px;font-weight:700;color:#ffffff!important;}
-.municipio-info-item .puntaje-valor{display:inline-flex;align-items:center;gap:8px;font-size:18px;font-weight:900;color:#ffffff!important;}
-.municipio-info-item .color-dot{width:12px;height:12px;border-radius:50%;border:1px solid rgba(255,255,255,.35);flex-shrink:0;}
-.table-responsive.tabla-puntajes-veredas{background:#ffffff;border:1px solid rgba(15,23,42,.12);border-radius:14px;overflow:hidden;margin-top:12px;}
-.table-responsive.tabla-puntajes-veredas .table{background:#ffffff;margin-bottom:0;}
-.table-responsive.tabla-puntajes-veredas .table th{background:#f1f5f9!important;color:#334155!important;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;text-align:center;padding:14px 10px;border:none!important;border-bottom:2px solid #e2e8f0!important;}
-.table-responsive.tabla-puntajes-veredas .table td{padding:12px 10px;vertical-align:middle;text-align:center;color:#0f172a!important;border-bottom:1px solid #e2e8f0!important;background:#ffffff!important;}
-.table-responsive.tabla-puntajes-veredas .table tbody tr:hover{background:#f8fafc!important;}
-.tabla-puntajes-veredas .vereda-link{color:#0f172a!important;font-weight:700;text-decoration:none;}
-.tabla-puntajes-veredas .vereda-link:hover{color:#1d4ed8!important;text-decoration:none;}
-.tabla-puntajes-veredas .puntaje-badge{font-size:13px;font-weight:700;color:#0f172a;padding:6px 16px;border-radius:8px;display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(15,23,42,.12);min-width:110px;justify-content:center;background:#f8fafc;}
-.tabla-puntajes-veredas .puntaje-badge .color-dot{width:12px;height:12px;border-radius:50%;border:1px solid rgba(15,23,42,.25);flex-shrink:0;}
-.card-header-detalle-puntajes{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-.btn-toggle-detalle-puntajes{background:rgba(79,124,255,.18)!important;border:1px solid rgba(79,124,255,.45)!important;color:#fff!important;border-radius:10px!important;font-weight:700!important;font-size:13px!important;padding:8px 14px!important;}
-.btn-toggle-detalle-puntajes:hover{filter:brightness(1.12);}
-.detalle-puntajes-resumen{color:var(--au-muted)!important;font-size:14px;margin:0;}
-.detalle-puntajes-wrap .tabla-puntajes-veredas{margin-top:12px;}
-.nav-tabs .nav-link{background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.08)!important;color:var(--au-muted)!important;border-radius:12px 12px 0 0!important;padding:10px 18px;font-weight:700;margin-right:4px;transition:all .2s;}
-.nav-tabs .nav-link.active,.nav-tabs .nav-link:hover{background:rgba(46,107,255,.20)!important;border-color:rgba(46,107,255,.35)!important;color:#fff!important;}
-.table-responsive.tabla-informacion{border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;margin-top:12px;}
-.table-responsive.tabla-informacion .table th{background:rgba(255,255,255,.04)!important;border-bottom:2px solid rgba(255,255,255,.10)!important;color:rgba(255,255,255,.60)!important;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;text-align:center;padding:14px 10px;border:none!important;}
-.table-responsive.tabla-informacion .table td{padding:12px 10px;vertical-align:middle;text-align:center;color:#ffffff!important;border-bottom:1px solid rgba(255,255,255,.06)!important;}
-.table-responsive.tabla-informacion .table tbody tr:hover{background:rgba(255,255,255,.04)!important;}
-.table{margin-bottom:0;}
-.table-veredas{width:100%;border-collapse:collapse;}
-.table-veredas th{padding:12px 10px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.60);text-align:center;border-bottom:2px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);}
-.table-veredas td{padding:10px;text-align:center;color:var(--au-text);border-bottom:1px solid rgba(255,255,255,.06);}
-.modal-content{background:linear-gradient(180deg,#10172b,#0b1120)!important;border:1px solid var(--au-stroke)!important;border-radius:var(--au-radius-lg)!important;}
-.modal-header{border-bottom:1px solid rgba(255,255,255,.09)!important;}
-.modal-header h5{color:#fff!important;}
-.modal-header .close{color:#fff!important;}
-.map-tooltip{position:fixed;z-index:9999;pointer-events:none;background:rgba(0,0,0,.88);color:#fff;padding:8px 16px;border-radius:10px;font-size:18px;font-weight:800;border:1px solid rgba(255,255,255,.15);box-shadow:0 8px 30px rgba(0,0,0,.5);display:none;white-space:nowrap;}
-.map-tooltip small{font-weight:400;font-size:13px;opacity:.6;margin-left:8px;}
-.btn-act-detalle{
-  background:rgba(0,229,255,.12)!important;
-  border:1px solid rgba(0,229,255,.35)!important;
-  color:#7defff!important;
-  border-radius:8px!important;
-  padding:2px 8px!important;
-  font-size:12px!important;
-  line-height:1.2!important;
-  display:inline-flex!important;
-  align-items:center;
-  cursor:pointer;
-}
-.btn-act-detalle:hover{filter:brightness(1.15);}
-#modalDetalleActualizacion .modal-dialog{max-width:860px;}
-#modalDetalleActualizacion .modal-body{padding:1.25rem 1.5rem!important;}
-#modalDetalleActualizacion .act-card{
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:14px;
-  background:rgba(0,0,0,.18);
-  padding:14px 16px;
-  margin-bottom:12px;
-}
-#modalDetalleActualizacion .act-card:last-child{margin-bottom:0;}
-#modalDetalleActualizacion .act-meta{
-  display:flex;flex-wrap:wrap;gap:8px 14px;
-  font-size:12px;color:rgba(255,255,255,.65);margin-bottom:10px;
-}
-#modalDetalleActualizacion .act-meta strong{color:rgba(255,255,255,.9);font-weight:800;}
-#modalDetalleActualizacion .act-obs{
-  color:#fff;font-size:13px;line-height:1.45;font-weight:600;
-  word-break:break-word;overflow-wrap:anywhere;
-  white-space:pre-wrap;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:10px;
-  padding:10px 12px;
-}
-#modalDetalleActualizacion .act-fotos{
-  display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;
-}
-#modalDetalleActualizacion .act-fotos img{
-  width:96px;height:96px;object-fit:cover;
-  border-radius:10px;cursor:pointer;
-  border:1px solid rgba(255,255,255,.16);
-  transition:transform .15s ease, box-shadow .15s ease;
-}
-#modalDetalleActualizacion .act-fotos img:hover{
-  transform:scale(1.04);
-  box-shadow:0 8px 24px rgba(0,0,0,.35);
-}
-#modalDetalleActualizacion .act-empty{
-  text-align:center;color:rgba(255,255,255,.55);padding:1.5rem;font-size:13px;
-}
-#modalFotoActualizacion .modal-body{padding:1rem!important;text-align:center;}
-#modalFotoActualizacion #imgFotoActualizacion{
-  max-width:100%;max-height:80vh;border-radius:12px;
-  border:1px solid rgba(255,255,255,.14);
-}
-</style>
-<body class="">
+<link rel="stylesheet" href="assets/css/municipios_inestabilidad_gob360_premium.css">
+<body class="gob360-instability-page">
     <div class="loader-bg"><div class="loader-track"><div class="loader-fill"></div></div></div>
     <?php include './admin/include/navbar.php'; ?>
     <?php include './admin/include/header.php'; ?>
@@ -315,60 +252,269 @@ label{color:var(--au-text)!important;font-weight:700!important;}
                 <div class="pcoded-inner-content">
                     <div class="main-body">
                         <div class="page-wrapper">
-                            <div class="page-header">
-                                <div class="page-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-md-12">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <h5 class="m-b-10"><?= htmlspecialchars($nombreMunicipio) ?></h5>
-                                                <?php include './admin/include/btn_back.php'; ?>
+                            <section class="g360-instability-hero" aria-label="Análisis territorial de factores de inestabilidad">
+                                <div class="g360-instability-hero__grid">
+
+                                    <aside class="g360-instability-brand">
+                                        <span class="g360-instability-brand__eyebrow">
+                                            Plataforma institucional
+                                        </span>
+
+                                        <img
+                                            src="assets/img/gob360l.png"
+                                            alt="Logo GOB360"
+                                            class="g360-instability-brand__logo"
+                                        >
+
+                                        <span class="g360-instability-brand__caption">
+                                            Gestión pública inteligente y territorial
+                                        </span>
+
+                                        <div class="g360-instability-brand__status">
+                                            <span></span>
+                                            Comparativo territorial activo
+                                        </div>
+                                    </aside>
+
+                                    <div class="g360-instability-hero__content">
+                                        <div class="g360-instability-hero__top">
+                                            <div>
+                                                <div class="g360-instability-hero__eyebrow">
+                                                    <i class="feather icon-map"></i>
+                                                    Análisis municipal por veredas
+                                                </div>
+
+                                                <h1 class="g360-instability-hero__title">
+                                                    Factores de Inestabilidad
+                                                </h1>
+
+                                                <p class="g360-instability-hero__description">
+                                                    Compara la línea base y el estado actual de
+                                                    <?= htmlspecialchars(
+                                                        $nombreMunicipio,
+                                                        ENT_QUOTES,
+                                                        'UTF-8'
+                                                    ) ?>, identifica cambios por vereda y consulta
+                                                    factores, empresas, actualizaciones,
+                                                    geolocalización y compromisos institucionales.
+                                                </p>
                                             </div>
-                                            <ul class="breadcrumb">
-                                                <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                                                <li class="breadcrumb-item"><a href="factores_inestabilidad_general.php?inestabilidad=<?= $inestabilidadId ?>">Mapa Factores Inestabilidad</a></li>
-                                                <li class="breadcrumb-item active"><?= htmlspecialchars($nombreMunicipio) ?></li>
-                                            </ul>
+
+                                            <div class="g360-instability-hero__actions">
+                                                <button
+                                                    type="button"
+                                                    class="g360-hero-button"
+                                                    onclick="window.location.reload()"
+                                                >
+                                                    <i class="feather icon-refresh-cw"></i>
+                                                    Actualizar análisis
+                                                </button>
+
+                                                <div class="g360-instability-back">
+                                                    <?php include './admin/include/btn_back.php'; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="g360-instability-summary">
+                                            <article>
+                                                <span class="g360-instability-summary__icon">
+                                                    <i class="feather icon-users"></i>
+                                                </span>
+
+                                                <div>
+                                                    <small>Población</small>
+                                                    <strong>
+                                                        <?= number_format_mun($poblacionTotal) ?>
+                                                    </strong>
+                                                    <p>
+                                                        H: <?= number_format_mun($hombres) ?>
+                                                        · M: <?= number_format_mun($mujeres) ?>
+                                                    </p>
+                                                </div>
+                                            </article>
+
+                                            <article>
+                                                <span class="g360-instability-summary__icon g360-instability-summary__icon--territory">
+                                                    <i class="feather icon-map-pin"></i>
+                                                </span>
+
+                                                <div>
+                                                    <small>Veredas analizadas</small>
+                                                    <strong>
+                                                        <?= number_format_mun($totalVeredasMunicipio) ?>
+                                                    </strong>
+                                                    <p>Comparación inicial y actual</p>
+                                                </div>
+                                            </article>
+
+                                            <article>
+                                                <span class="g360-instability-summary__icon g360-instability-summary__icon--initial">
+                                                    <i class="feather icon-clock"></i>
+                                                </span>
+
+                                                <div>
+                                                    <small>Puntaje inicial</small>
+                                                    <strong>
+                                                        <?= number_format_puntaje($puntajeMunicipioInicial) ?>
+                                                    </strong>
+                                                    <p>Línea base municipal</p>
+                                                </div>
+                                            </article>
+
+                                            <article>
+                                                <span class="g360-instability-summary__icon g360-instability-summary__icon--current">
+                                                    <i class="feather icon-activity"></i>
+                                                </span>
+
+                                                <div>
+                                                    <small>Puntaje actual</small>
+                                                    <strong>
+                                                        <?= number_format_puntaje($puntajeMunicipioActual) ?>
+                                                    </strong>
+                                                    <p>
+                                                        Variación:
+                                                        <?= $variacionPuntajeMunicipio >= 0 ? '+' : '' ?>
+                                                        <?= number_format_puntaje($variacionPuntajeMunicipio) ?>
+                                                    </p>
+                                                </div>
+                                            </article>
+                                        </div>
+
+                                        <div class="g360-instability-capabilities" aria-hidden="true">
+                                            <span>
+                                                <i class="feather icon-filter"></i>
+                                                <?= htmlspecialchars(
+                                                    $nombreFactorActual,
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ) ?>
+                                            </span>
+
+                                            <span>
+                                                <i class="feather icon-briefcase"></i>
+                                                <?= number_format_mun($totalEmpresasMunicipio) ?>
+                                                empresas
+                                            </span>
+
+                                            <span>
+                                                <i class="feather icon-grid"></i>
+                                                <?= number_format_mun($totalFactoresMunicipio) ?>
+                                                factores
+                                            </span>
+
+                                            <span>
+                                                <i class="feather icon-trending-up"></i>
+                                                <?= number_format_mun($totalVeredasConCambios) ?>
+                                                veredas con cambios
+                                            </span>
+
+                                            <span>
+                                                <i class="feather icon-layers"></i>
+                                                Mapas comparativos SVG
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </section>
+
+                            <section class="g360-territory-filter" aria-label="Filtros territoriales">
+                                <div class="g360-territory-filter__heading">
+                                    <span class="g360-territory-filter__icon">
+                                        <i class="feather icon-filter"></i>
+                                    </span>
+
+                                    <div>
+                                        <small>Consulta territorial</small>
+                                        <h5>Selecciona municipio y factor</h5>
+                                        <p>
+                                            Cambia el territorio o la categoría para
+                                            reconstruir los mapas y consolidados.
+                                        </p>
+                                    </div>
+
+                                    <a
+                                        href="factores_inestabilidad_general.php?inestabilidad=<?= $inestabilidadId ?>"
+                                        class="g360-filter-back-button"
+                                    >
+                                        <i class="bi bi-arrow-left"></i>
+                                        Volver al mapa general
+                                    </a>
+                                </div>
+
+                                <div class="row align-items-end">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group mb-0">
+                                            <label for="municipioSelector">
+                                                Municipio
+                                            </label>
+
+                                            <div class="g360-input-shell">
+                                                <span>
+                                                    <i class="feather icon-map-pin"></i>
+                                                </span>
+
+                                                <select
+                                                    id="municipioSelector"
+                                                    class="form-control"
+                                                    onchange="window.location.href='municipios_inestabilidad.php?mun='+this.value+'&inestabilidad=<?= $inestabilidadId ?>'"
+                                                >
+                                                    <?= $optionMunicipios ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group mb-0">
+                                            <label for="factorInestabilidadSelector">
+                                                Factor de inestabilidad
+                                            </label>
+
+                                            <div class="g360-input-shell">
+                                                <span>
+                                                    <i class="feather icon-grid"></i>
+                                                </span>
+
+                                                <select
+                                                    id="factorInestabilidadSelector"
+                                                    class="form-control"
+                                                    onchange="window.location.href='municipios_inestabilidad.php?mun=<?= $municipioId ?>&inestabilidad='+this.value"
+                                                >
+                                                    <?= $optionInest ?>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </section>
 
                             <div class="row mb-3">
                                 <div class="col-md-12">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row align-items-end">
-                                                <div class="col-md-4">
-                                                    <div class="form-group mb-0">
-                                                        <label class="floating-label">Municipio</label>
-                                                        <select class="form-control" onchange="window.location.href='municipios_inestabilidad.php?mun='+this.value+'&inestabilidad=<?= $inestabilidadId ?>'">
-                                                            <?= $optionMunicipios ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group mb-0">
-                                                        <label class="floating-label">Factor Inestabilidad</label>
-                                                        <select class="form-control" onchange="window.location.href='municipios_inestabilidad.php?mun=<?= $municipioId ?>&inestabilidad='+this.value">
-                                                            <?= $optionInest ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <a href="factores_inestabilidad_general.php?inestabilidad=<?= $inestabilidadId ?>" class="btn btn-primary px-4 py-2">
-                                                        <i class="bi bi-arrow-left"></i> Volver
-                                                    </a>
+                                    <div class="card g360-municipality-card">
+                                        <div class="card-header">
+                                            <div class="g360-section-heading">
+                                                <span>
+                                                    <i class="feather icon-info"></i>
+                                                </span>
+
+                                                <div>
+                                                    <small>Ficha territorial</small>
+                                                    <h5>
+                                                        <?= htmlspecialchars(
+                                                            $nombreMunicipio,
+                                                            ENT_QUOTES,
+                                                            'UTF-8'
+                                                        ) ?>
+                                                    </h5>
+                                                    <p>
+                                                        Información institucional y puntajes
+                                                        consolidados del municipio.
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <div class="card">
-                                        <div class="card-header"><h5 style="font-size:22px;font-weight:900;"><i class="bi bi-info-circle-fill"></i> <?= htmlspecialchars($nombreMunicipio) ?></h5></div>
                                         <div class="card-body">
                                             <div class="municipio-info-block">
                                                 <div class="municipio-info-item">
@@ -416,10 +562,23 @@ label{color:var(--au-text)!important;font-weight:700!important;}
 
                             <div class="row maps-grid">
                                 <div class="col-lg-6 mb-4">
-                                    <div class="card h-100 w-100 map-card">
-                                        <div class="card-header"><h5><i class="bi bi-map-fill"></i> Mapa Inicial</h5></div>
-                                        <div class="card-body map-body">
-                                            <div class="d-flex flex-wrap gap-2 justify-content-center mb-3">
+                                    <div class="card h-100 w-100 map-card g360-map-card g360-map-card--initial">
+                                        <div class="card-header">
+                                            <div class="g360-map-heading">
+                                                <span>
+                                                    <i class="feather icon-clock"></i>
+                                                </span>
+
+                                                <div>
+                                                    <small>Línea base territorial</small>
+                                                    <h5>Mapa inicial</h5>
+                                                </div>
+
+                                                <b>INICIAL</b>
+                                            </div>
+                                        </div>
+                                        <div class="card-body map-body g360-map-body">
+                                            <div class="d-flex flex-wrap gap-2 justify-content-center mb-3 g360-map-legend">
                                                 <?php foreach ($badgeRangesInicial as $label => $cfg): ?>
                                                     <?php if ($label != 'Neutro'): ?>
                                                     <span class="badge rounded-pill px-3 py-2" style="background:<?= $cfg['bg'] ?>;color:<?= $cfg['text'] ?>;border:1px solid <?= $cfg['border'] ?>;font-weight:800;display:inline-flex;flex-direction:column;align-items:center;line-height:1.3;">
@@ -429,8 +588,8 @@ label{color:var(--au-text)!important;font-weight:700!important;}
                                                     <?php endif; ?>
                                                 <?php endforeach; ?>
                                             </div>
-                                            <div class="map-frame">
-                                                <div id="contenido-mapa-inicial" class="cuerpoMapa w-100">
+                                            <div class="map-frame g360-map-frame">
+                                                <div id="contenido-mapa-inicial" class="cuerpoMapa w-100 g360-map-stage">
                                                     <svg viewBox="<?= htmlspecialchars($viewBoxActual) ?>" xmlns="http://www.w3.org/2000/svg" stroke-width="1.2px" stroke="#fff" preserveAspectRatio="xMidYMid meet">
                                                         <?php foreach ($veredasInicial as $v): ?>
                                                             <?php
@@ -454,10 +613,23 @@ label{color:var(--au-text)!important;font-weight:700!important;}
                                      </div>
                                  </div>
                                  <div class="col-lg-6 mb-4">
-                                     <div class="card h-100 w-100 map-card">
-                                         <div class="card-header"><h5><i class="bi bi-map-fill"></i> Mapa Actual</h5></div>
-                                         <div class="card-body map-body">
-                                            <div class="d-flex flex-wrap gap-2 justify-content-center mb-3">
+                                     <div class="card h-100 w-100 map-card g360-map-card g360-map-card--current">
+                                         <div class="card-header">
+                                            <div class="g360-map-heading">
+                                                <span>
+                                                    <i class="feather icon-activity"></i>
+                                                </span>
+
+                                                <div>
+                                                    <small>Estado territorial vigente</small>
+                                                    <h5>Mapa actual</h5>
+                                                </div>
+
+                                                <b>ACTUAL</b>
+                                            </div>
+                                        </div>
+                                         <div class="card-body map-body g360-map-body">
+                                            <div class="d-flex flex-wrap gap-2 justify-content-center mb-3 g360-map-legend">
                                                 <?php foreach ($badgeRangesFinal as $label => $cfg): ?>
                                                     <?php if ($label != 'Neutro'): ?>
                                                     <span class="badge rounded-pill px-3 py-2" style="background:<?= $cfg['bg'] ?>;color:<?= $cfg['text'] ?>;border:1px solid <?= $cfg['border'] ?>;font-weight:800;display:inline-flex;flex-direction:column;align-items:center;line-height:1.3;">
@@ -467,8 +639,8 @@ label{color:var(--au-text)!important;font-weight:700!important;}
                                                     <?php endif; ?>
                                                 <?php endforeach; ?>
                                             </div>
-                                            <div class="map-frame">
-                                                 <div id="contenido-mapa-actual" class="cuerpoMapa w-100">
+                                            <div class="map-frame g360-map-frame">
+                                                 <div id="contenido-mapa-actual" class="cuerpoMapa w-100 g360-map-stage">
                                                      <svg viewBox="<?= htmlspecialchars($viewBoxActual) ?>" xmlns="http://www.w3.org/2000/svg" stroke-width="1.2px" stroke="#fff" preserveAspectRatio="xMidYMid meet">
                                                          <?php foreach ($veredasActual as $v): ?>
                                                             <?php
@@ -495,7 +667,7 @@ label{color:var(--au-text)!important;font-weight:700!important;}
 
                             <div class="row mb-3">
                                 <div class="col-12">
-                                    <div class="card">
+                                    <div class="card g360-detail-card g360-score-detail-card">
                                         <div class="card-header card-header-detalle-puntajes">
                                             <h5 class="m-b-0"><i class="bi bi-table"></i> Totalizado de Puntajes por Vereda</h5>
                                             <?php if (!empty($tablaPuntajesVeredas)): ?>
@@ -560,7 +732,7 @@ label{color:var(--au-text)!important;font-weight:700!important;}
 
                             <div class="row mb-3">
                                 <div class="col-12">
-                                    <div class="card">
+                                    <div class="card g360-detail-card g360-company-card">
                                         <div class="card-header card-header-detalle-puntajes">
                                             <h5 class="m-b-0"><i class="bi bi-building"></i> Empresas adscritas al municipio</h5>
                                             <?php if (!empty($empresasMunicipio)): ?>
@@ -638,24 +810,11 @@ label{color:var(--au-text)!important;font-weight:700!important;}
                                 </div>
                             </div>
 
-                            <?php
-                            $diferencias = [];
-                            foreach ($veredasInicial as $vi) {
-                                foreach ($veredasActual as $va) {
-                                    if ($vi['id'] == $va['id'] && round((float) $vi['cantidad'], 2) != round((float) $va['cantidad'], 2)) {
-                                        $diferencias[] = [
-                                            'nombre' => $vi['nombre_vereda'],
-                                            'inicial' => number_format_puntaje($vi['cantidad'] ?? 0),
-                                            'actual' => number_format_puntaje($va['cantidad'] ?? 0)
-                                        ];
-                                    }
-                                }
-                            }
-                            ?>
+                            
                             <?php if (!empty($diferencias)): ?>
                             <div class="row mb-3">
                                 <div class="col-12">
-                                    <div class="card" style="border:1px solid rgba(255,193,7,.3);background:rgba(255,193,7,.05)!important;">
+                                    <div class="card g360-changes-card">
                                         <div class="card-body py-2">
                                             <strong style="color:#ffc107;">Veredas con cambios detectados (Inicial → Actual):</strong>
                                             <?php foreach ($diferencias as $d): ?>
@@ -671,8 +830,23 @@ label{color:var(--au-text)!important;font-weight:700!important;}
 
                             <div class="row mt-2">
                                 <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header"><h5><i class="bi bi-bar-chart-fill"></i> Avance por Factor Inestabilidad</h5></div>
+                                    <div class="card g360-detail-card g360-factor-progress-card">
+                                        <div class="card-header">
+                                            <div class="g360-section-heading">
+                                                <span>
+                                                    <i class="feather icon-bar-chart-2"></i>
+                                                </span>
+
+                                                <div>
+                                                    <small>Consolidado comparativo</small>
+                                                    <h5>Avance por factor de inestabilidad</h5>
+                                                    <p>
+                                                        Contrasta cantidades iniciales y actuales,
+                                                        geolocalización, empresas y actualizaciones.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="card-body" id="divConsolidado">
                                             <?php if (!empty($tabs)): ?>
                                                 <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
@@ -825,7 +999,7 @@ label{color:var(--au-text)!important;font-weight:700!important;}
     <!-- Modal detalle actualizaciones del factor -->
     <div class="modal fade" id="modalDetalleActualizacion" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content g360-instability-modal">
                 <div class="modal-header">
                     <h5 class="modal-title" id="tituloDetalleActualizacion">Detalle de actualización</h5>
                     <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal"><span>&times;</span></button>
@@ -843,7 +1017,7 @@ label{color:var(--au-text)!important;font-weight:700!important;}
     <!-- Modal foto ampliada -->
     <div class="modal fade" id="modalFotoActualizacion" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content g360-instability-modal">
                 <div class="modal-header">
                     <h5 class="modal-title">Foto</h5>
                     <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal"><span>&times;</span></button>
@@ -858,7 +1032,7 @@ label{color:var(--au-text)!important;font-weight:700!important;}
     <!-- Modal Geolocalización -->
     <div id="modalGeocalizacion" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-xl centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content g360-instability-modal">
                 <div class="modal-header"><h5 class="modal-title">Geolocalización: <span id="nombrePilar"></span></h5><button type="button" class="close" data-dismiss="modal"><span>&times;</span></button></div>
                 <div class="modal-body"><div id="map" style="height:600px;width:100%;border-radius:14px;overflow:hidden;"></div></div>
             </div>
@@ -868,13 +1042,13 @@ label{color:var(--au-text)!important;font-weight:700!important;}
     <!-- Modal Compromiso -->
     <div class="modal fade" id="modalSeleccionar" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
+            <div class="modal-content g360-instability-modal">
+                <div class="modal-header g360-modal-header-success">
                     <h5 class="modal-title w-100 text-center"><i class="feather icon-edit"></i> Asignar Compromiso</h5>
                     <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
                 </div>
                 <div id="alertaCompromiso" class="w-100 text-center p-2" style="display:none;"></div>
-                <div class="modal-body" style="padding:45px;">
+                <div class="modal-body g360-commitment-modal-body">
                     <form id="formCompromiso">
                         <input type="hidden" id="factorIdModal" name="factorIdModal">
                         <input type="hidden" id="veredaId" name="veredaId" value="0">
@@ -913,213 +1087,9 @@ label{color:var(--au-text)!important;font-weight:700!important;}
     </div>
 
     <!-- Modal formulario asociación Empresa ↔ Factor -->
-    <style>
-      #modalEmpresaFactorForm .modal-dialog{ max-width: 760px; }
-      #modalEmpresaFactorForm .modal-content{ overflow: visible; }
-      #modalEmpresaFactorForm .modal-body{
-        padding: 1.5rem 1.75rem 1.25rem !important;
-      }
-      #modalEmpresaFactorForm .modal-header,
-      #modalEmpresaFactorForm .modal-footer{
-        padding-left: 1.75rem !important;
-        padding-right: 1.75rem !important;
-      }
-      #modalEmpresaFactorForm .ef-field-label{
-        display:block;
-        margin-bottom: .45rem;
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: .02em;
-        color: rgba(255,255,255,.78);
-      }
-      #modalEmpresaFactorForm .ef-readonly-box{
-        background: rgba(255,255,255,.06);
-        border: 1px solid rgba(255,255,255,.14);
-        border-radius: 12px;
-        padding: 12px 14px;
-        color: #fff;
-        font-size: 13px;
-        font-weight: 650;
-        line-height: 1.4;
-        word-break: break-word;
-        overflow-wrap: anywhere;
-        white-space: normal;
-        max-height: 96px;
-        overflow-y: auto;
-      }
-      #modalEmpresaFactorForm .ef-hint{
-        font-size: 12px;
-        line-height: 1.35;
-        color: rgba(255,255,255,.62);
-        margin-bottom: 1rem;
-      }
-      #modalEmpresaFactorForm .form-group{ margin-bottom: 1rem; }
-      #modalEmpresaFactorForm .select2-container{ width: 100% !important; }
-      #modalEmpresaFactorForm .select2-container--default .select2-selection--single{
-        min-height: 44px;
-        border-radius: 12px !important;
-        border: 1px solid rgba(255,255,255,.14) !important;
-        background: rgba(0,0,0,.22) !important;
-        display:flex;
-        align-items:center;
-        padding: 4px 8px;
-      }
-      #modalEmpresaFactorForm .select2-container--default .select2-selection--single .select2-selection__rendered{
-        color: #fff !important;
-        font-size: 13px;
-        font-weight: 650;
-        line-height: 1.35;
-        padding-left: 4px;
-        white-space: normal;
-      }
-      #modalEmpresaFactorForm .select2-container--default .select2-selection--single .select2-selection__arrow{
-        height: 42px;
-      }
-      #modalEmpresaFactorForm .select2-dropdown,
-      .select2-container--open .select2-dropdown{
-        border: 1px solid rgba(255,255,255,.18);
-        background: #101826;
-        color: #fff;
-        z-index: 2060 !important;
-      }
-      #modalEmpresaFactorForm .select2-search__field{
-        background: rgba(255,255,255,.08) !important;
-        color: #fff !important;
-        border: 1px solid rgba(255,255,255,.18) !important;
-        border-radius: 8px !important;
-      }
-      #modalEmpresaFactorForm .select2-results__option{ font-size: 13px; line-height: 1.35; }
-      #modalEmpresaFactorForm .select2-container--default .select2-results__option--highlighted[aria-selected]{
-        background: rgba(79,124,255,.45) !important;
-      }
-      #modalEmpresaFactorForm #ef_compromiso{
-        min-height: 96px;
-        resize: vertical;
-      }
-
-      /* Modal listado asociaciones — tema oscuro alineado a la app */
-      #modalEmpresaFactorLista .modal-dialog{ max-width: 900px; }
-      #modalEmpresaFactorLista .modal-content{
-        background: linear-gradient(135deg, rgba(20,24,35,.96), rgba(10,12,18,.96)) !important;
-        color: #fff !important;
-      }
-      #modalEmpresaFactorLista .modal-body{
-        padding: 1.25rem 1.5rem !important;
-        background: transparent !important;
-        color: #fff !important;
-      }
-      #modalEmpresaFactorLista table,
-      #modalEmpresaFactorLista table tr,
-      #modalEmpresaFactorLista table th,
-      #modalEmpresaFactorLista table td{
-        background-color: transparent !important;
-        background-image: none !important;
-        color: #fff !important;
-      }
-      #modalEmpresaFactorLista .modal-header,
-      #modalEmpresaFactorLista .modal-footer{
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
-      }
-      #modalEmpresaFactorLista .modal-title{
-        color: #fff !important;
-        font-weight: 800;
-        line-height: 1.3;
-        word-break: break-word;
-        overflow-wrap: anywhere;
-        padding-right: 12px;
-      }
-      #modalEmpresaFactorLista .ef-lista-empty{
-        text-align: center;
-        color: rgba(255,255,255,.55);
-        padding: 1.5rem .75rem;
-        font-size: 13px;
-      }
-      #modalEmpresaFactorLista .ef-tabla-lista-wrap{
-        border: 1px solid rgba(255,255,255,.10);
-        border-radius: 14px;
-        overflow: hidden;
-        background: rgba(0,0,0,.18);
-      }
-      #modalEmpresaFactorLista .ef-tabla-lista{
-        width: 100%;
-        margin-bottom: 0 !important;
-        background: transparent !important;
-        color: rgba(255,255,255,.90) !important;
-      }
-      #modalEmpresaFactorLista .ef-tabla-lista thead th{
-        background: rgba(255,255,255,.06) !important;
-        color: rgba(255,255,255,.78) !important;
-        font-size: 11px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: .05em;
-        border: none !important;
-        border-bottom: 1px solid rgba(255,255,255,.12) !important;
-        padding: 12px 12px !important;
-        vertical-align: middle;
-        white-space: nowrap;
-      }
-      #modalEmpresaFactorLista .ef-tabla-lista tbody td{
-        background: transparent !important;
-        color: rgba(255,255,255,.90) !important;
-        border: none !important;
-        border-bottom: 1px solid rgba(255,255,255,.07) !important;
-        padding: 12px !important;
-        vertical-align: middle;
-        font-size: 13px;
-      }
-      #modalEmpresaFactorLista .ef-tabla-lista tbody tr:hover td{
-        background: rgba(255,255,255,.04) !important;
-      }
-      #modalEmpresaFactorLista .ef-tabla-lista tbody tr:last-child td{
-        border-bottom: none !important;
-      }
-      #modalEmpresaFactorLista .ef-col-nombre{
-        width: 42%;
-        min-width: 180px;
-        text-align: left !important;
-      }
-      #modalEmpresaFactorLista .ef-col-nit{
-        width: 14%;
-        text-align: center !important;
-        white-space: nowrap;
-      }
-      #modalEmpresaFactorLista .ef-col-comp{
-        width: 32%;
-        text-align: left !important;
-      }
-      #modalEmpresaFactorLista .ef-col-acciones{
-        width: 110px;
-        text-align: center !important;
-        white-space: nowrap;
-      }
-      #modalEmpresaFactorLista .ef-cell-text{
-        display: block;
-        color: rgba(255,255,255,.92);
-        font-weight: 650;
-        line-height: 1.35;
-        word-break: break-word;
-        overflow-wrap: anywhere;
-        white-space: normal;
-        max-width: 100%;
-      }
-      #modalEmpresaFactorLista .ef-col-comp .ef-cell-text{
-        font-weight: 500;
-        font-size: 12px;
-        color: rgba(255,255,255,.78);
-      }
-      #modalEmpresaFactorLista .ef-cell-muted{
-        color: rgba(255,255,255,.45) !important;
-      }
-      #modalEmpresaFactorLista .ef-btn-edit,
-      #modalEmpresaFactorLista .ef-btn-del{
-        margin: 0 2px;
-      }
-    </style>
     <div class="modal fade" id="modalEmpresaFactorForm" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content g360-instability-modal">
                 <div class="modal-header">
                     <h5 class="modal-title" id="efModalTitle">Asociar empresa a factor</h5>
                     <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal"><span>&times;</span></button>
@@ -1169,7 +1139,7 @@ label{color:var(--au-text)!important;font-weight:700!important;}
     <!-- Modal listado asociaciones (ver / editar / eliminar) -->
     <div class="modal fade" id="modalEmpresaFactorLista" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content g360-instability-modal">
                 <div class="modal-header">
                     <h5 class="modal-title" id="efListaTitulo">Asociaciones</h5>
                     <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal"><span>&times;</span></button>

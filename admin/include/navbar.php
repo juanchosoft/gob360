@@ -691,7 +691,14 @@ $navRolUsuarioSeguro = htmlspecialchars($navRolUsuario, ENT_QUOTES, 'UTF-8');
                             <span class="pcoded-mtext">Asesor Contrataciòn IA</span>
                         </a>
                     </li>
+                    
                     <?php endif; ?>
+                     <li class="nav-item">
+                        <a href="gobia.php" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-map"></i></span>
+                            <span class="pcoded-mtext">Gobia 360</span>
+                        </a>
+                    </li>
                 <?php endif; ?>
 
                 <li class="g360-sidebar-footer">

@@ -1,0 +1,1223 @@
+:root{
+      --au-primary:#20427F;
+      --au-primary-dark:#132b52;
+      --au-accent:#2e58a8;
+
+      --au-ink:#0f172a;
+      --au-muted:#64748b;
+
+      --au-radius-xl:22px;
+      --au-radius-lg:16px;
+
+      --au-border:1px solid rgba(255,255,255,.12);
+      --au-border-soft:1px solid rgba(2,6,23,.10);
+
+      --shadow-soft: 0 10px 30px rgba(0,0,0,.25);
+      --shadow-mid:  0 18px 45px rgba(0,0,0,.35);
+
+      --ring: 0 0 0 .25rem rgba(46,88,168,.35);
+
+      /* ✅ evita que header fijo tape títulos */
+      --safe-top: 96px;
+
+      /* tonos suaves headers estado */
+      --tone-warning: rgba(245,158,11,.18);
+      --tone-success: rgba(16,185,129,.18);
+      --tone-danger:  rgba(239,68,68,.16);
+
+      --bar-warning: rgba(245,158,11,.85);
+      --bar-success: rgba(16,185,129,.85);
+      --bar-danger:  rgba(239,68,68,.85);
+
+      /* medallas */
+      --gold:   rgba(245, 190, 60, .95);
+      --silver: rgba(203, 213, 225, .95);
+      --bronze: rgba(205, 127, 50, .95);
+    }
+
+    /* ✅ Fondo premium (como el gradiente que mostraste) */
+    body.dashboard-premium{
+      background:
+        radial-gradient(900px 360px at 50% 115%, rgba(12, 35, 39, .95) 0%, rgba(12, 35, 39, 0) 55%),
+        radial-gradient(700px 320px at 15% 15%, rgba(32,66,127,.35) 0%, rgba(32,66,127,0) 60%),
+        radial-gradient(700px 320px at 85% 10%, rgba(46,88,168,.22) 0%, rgba(46,88,168,0) 55%),
+        linear-gradient(135deg,
+          #0b1221 0%,
+          #0a1b24 35%,
+          #0c2327 50%,
+          #0b1321 75%,
+          #0a1121 100%
+        ) !important;
+      color: rgba(255,255,255,.92);
+    }
+
+    html, body{ overflow-x:hidden !important; }
+
+    /* ✅ Corrige solape por header fijo */
+    .pcoded-content{
+      padding: calc(var(--safe-top) + 16px) 16px 18px !important;
+    }
+    @media (min-width:768px){
+      :root{ --safe-top: 112px; }
+      .pcoded-content{ padding: calc(var(--safe-top) + 18px) 24px 24px !important; }
+    }
+    @media (min-width:1200px){
+      :root{ --safe-top: 120px; }
+      .pcoded-content{ padding: calc(var(--safe-top) + 22px) 42px 34px !important; }
+    }
+
+    /* ===== breadcrumb dark glass ===== */
+    .page-header .page-block{
+      background: rgba(255,255,255,.06) !important;
+      border: var(--au-border) !important;
+      border-radius: var(--au-radius-xl) !important;
+      box-shadow: var(--shadow-soft) !important;
+      padding: 16px 16px;
+      backdrop-filter: blur(10px);
+    }
+    .page-header h5{
+      font-weight: 1000 !important;
+      color: rgba(255,255,255,.96) !important;
+      margin: 0;
+    }
+    .breadcrumb{
+      background: transparent !important;
+      padding: 0;
+      margin: .35rem 0 0 !important;
+    }
+    .breadcrumb a,
+    .breadcrumb-item,
+    .breadcrumb-item a{ color: rgba(255,255,255,.78) !important; }
+    .breadcrumb-item.active{ color: rgba(255,255,255,.55) !important; }
+
+    /* ===== Card glass premium ===== */
+    .card{
+      background: rgba(255,255,255,.06) !important;
+      border: var(--au-border) !important;
+      border-radius: var(--au-radius-xl) !important;
+      box-shadow: var(--shadow-mid) !important;
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+    .card-header{
+      background: rgba(255,255,255,.06) !important;
+      border-bottom: 1px solid rgba(255,255,255,.12) !important;
+      position: relative;
+      font-weight: 1000;
+    }
+    .card-header::before{
+      content:"";
+      position:absolute;
+      top:0; left:0;
+      height:4px; width:100%;
+      background: linear-gradient(90deg, var(--au-primary), rgba(46,88,168,.35));
+    }
+    .card-header h5{ color: rgba(255,255,255,.96) !important; }
+
+    /* menu 3 puntos */
+    .card-header-right .btn.btn-icon{
+      background: rgba(255,255,255,.08) !important;
+      border: 1px solid rgba(255,255,255,.12) !important;
+      color: rgba(255,255,255,.92) !important;
+      border-radius: 12px !important;
+    }
+    .dropdown-menu{
+      background: rgba(10,17,33,.96) !important;
+      border: 1px solid rgba(255,255,255,.12) !important;
+      box-shadow: 0 18px 45px rgba(0,0,0,.45) !important;
+    }
+    .dropdown-item,
+    .dropdown-item a,
+    .dropdown-menu a{ color: rgba(255,255,255,.92) !important; }
+    .dropdown-item:hover{ background: rgba(255,255,255,.08) !important; }
+
+    /* ===== ✅ TABLA: fondo claro para contraste perfecto ===== */
+    .table-wrap{
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 18px 45px rgba(0,0,0,.25);
+    }
+
+    .table-responsive{ overflow-x:auto; width:100%; }
+    .table{
+      background: transparent !important;
+      margin: 0;
+    }
+
+    /* ✅ texto negro total dentro de tabla */
+    .table, .table *,
+    .table td, .table th{
+      color: var(--au-ink) !important;
+    }
+    .table a, .table a *{
+      color: var(--au-ink) !important;
+    }
+    .table i, .table svg, .table .feather{
+      color: var(--au-ink) !important;
+      fill: var(--au-ink) !important;
+      stroke: var(--au-ink) !important;
+    }
+
+    .table thead th{
+      position: relative;
+      background: linear-gradient(135deg, rgba(32,66,127,.12), rgba(255,255,255,.96)) !important;
+      font-weight: 1000;
+      border-bottom: 1px solid rgba(2,6,23,.10) !important;
+      white-space: nowrap;
+      text-align:center;
+      vertical-align: middle;
+      padding: 14px 10px 12px;
+      font-size: .90rem;
+    }
+
+    /* headers por estado */
+    .th-tramite{
+      background: linear-gradient(135deg, var(--tone-warning), rgba(255,255,255,.98)) !important;
+    }
+    .th-tramite::before{
+      content:"";
+      position:absolute; top:0; left:0;
+      height:4px; width:100%;
+      background: var(--bar-warning);
+    }
+    .th-cumplido{
+      background: linear-gradient(135deg, var(--tone-success), rgba(255,255,255,.98)) !important;
+    }
+    .th-cumplido::before{
+      content:"";
+      position:absolute; top:0; left:0;
+      height:4px; width:100%;
+      background: var(--bar-success);
+    }
+    .th-sincumplir{
+      background: linear-gradient(135deg, var(--tone-danger), rgba(255,255,255,.98)) !important;
+    }
+    .th-sincumplir::before{
+      content:"";
+      position:absolute; top:0; left:0;
+      height:4px; width:100%;
+      background: var(--bar-danger);
+    }
+
+    /* ✅ TD más pequeños */
+    .table tbody td{
+      vertical-align: middle;
+      border-top: 1px solid rgba(2,6,23,.06) !important;
+      font-size: .88rem;
+      line-height: 1.25;
+      padding: .72rem .65rem;
+      background: transparent !important;
+    }
+
+    .table-hover tbody tr:hover{
+      background: rgba(32,66,127,.06) !important;
+    }
+
+    /* entidad */
+    .entidad{ font-weight: 900; }
+
+    /* ranking + medallas */
+    .rank-badge{
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 1000;
+      background: rgba(32,66,127,.10);
+      border: 1px solid rgba(32,66,127,.18);
+      color: var(--au-primary) !important;
+      font-size: .85rem;
+      position: relative;
+    }
+    .rank-badge.medal{
+      color: #0b1221 !important;
+      border: 1px solid rgba(2,6,23,.14);
+      box-shadow: 0 12px 24px rgba(2,6,23,.12);
+    }
+    .rank-badge.medal::after{
+      content: "★";
+      position:absolute;
+      bottom: -10px;
+      font-size: 12px;
+      line-height: 1;
+      color: rgba(2,6,23,.55);
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.20));
+    }
+    .medal-gold{ background: linear-gradient(135deg, var(--gold), rgba(255,255,255,.65)); }
+    .medal-silver{ background: linear-gradient(135deg, var(--silver), rgba(255,255,255,.75)); }
+    .medal-bronze{ background: linear-gradient(135deg, var(--bronze), rgba(255,255,255,.75)); }
+
+    /* calificación: chip + barra progreso */
+    .score-wrap{
+      min-width: 190px;
+      display:flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+      justify-content:center;
+    }
+    .score-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width: 92px;
+      padding: .34rem .58rem;
+      border-radius: 999px;
+      font-weight: 1000;
+      letter-spacing: .2px;
+      border: 1px solid rgba(2,6,23,.10);
+      box-shadow: 0 8px 18px rgba(2,6,23,.10);
+      white-space: nowrap;
+      font-size: .85rem;
+    }
+    .score-bar{
+      width: 180px;
+      height: 10px;
+      background: rgba(2,6,23,.10);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(2,6,23,.10);
+    }
+    .score-bar > span{
+      display:block;
+      height: 100%;
+      width: var(--pct, 0%);
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(32,66,127,.35), rgba(32,66,127,.85));
+    }
+
+    /* texto de empty */
+    .empty-row{
+      text-align:center;
+      padding:18px !important;
+      color: var(--au-muted) !important;
+      font-weight: 900;
+    }
+
+    @media (max-width: 576px){
+      .table thead th{ font-size: .88rem; }
+      .table tbody td{ font-size: .84rem; }
+      .score-wrap{ min-width: 150px; }
+      .score-bar{ width: 150px; }
+    }
+
+/* ============================================================
+   GOB360 · VISOR DE GESTIÓN Y CUMPLIMIENTO DEL ALCALDE
+============================================================ */
+:root{
+  --vr-bg-0:#030711;
+  --vr-bg-1:#061326;
+  --vr-bg-2:#082735;
+
+  --vr-panel:rgba(255,255,255,.062);
+  --vr-panel-strong:rgba(255,255,255,.092);
+  --vr-border:rgba(255,255,255,.125);
+  --vr-border-strong:rgba(255,255,255,.19);
+
+  --vr-text:rgba(255,255,255,.96);
+  --vr-muted:rgba(255,255,255,.65);
+  --vr-muted-soft:rgba(255,255,255,.46);
+
+  --vr-cyan:#28dcff;
+  --vr-blue:#3f7cff;
+  --vr-green:#39e6a3;
+  --vr-yellow:#ffd166;
+  --vr-red:#ff647f;
+  --vr-purple:#a78bfa;
+
+  --vr-radius-xl:29px;
+  --vr-radius-lg:21px;
+  --vr-radius-md:14px;
+
+  --vr-shadow-xl:0 31px 92px rgba(0,0,0,.45);
+  --vr-shadow-lg:0 19px 56px rgba(0,0,0,.33);
+  --vr-shadow-soft:0 13px 32px rgba(0,0,0,.22);
+
+  --vr-ring:0 0 0 .25rem rgba(40,220,255,.19);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  min-height:100%;
+  overflow-x:hidden!important;
+}
+
+body.gob360-ranking-page{
+  min-height:100vh;
+  color:var(--vr-text)!important;
+  background:
+    radial-gradient(950px 520px at 6% 3%,rgba(63,124,255,.29),transparent 61%),
+    radial-gradient(850px 500px at 95% 8%,rgba(40,220,255,.14),transparent 61%),
+    radial-gradient(900px 570px at 48% 112%,rgba(57,230,163,.10),transparent 60%),
+    linear-gradient(150deg,var(--vr-bg-0),var(--vr-bg-1) 57%,var(--vr-bg-2))!important;
+  background-attachment:fixed!important;
+}
+
+body.gob360-ranking-page::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  opacity:.13;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:linear-gradient(to bottom,#000,transparent 96%);
+}
+
+.gob360-ranking-page .pcoded-main-container,
+.gob360-ranking-page .pcoded-wrapper,
+.gob360-ranking-page .pcoded-content,
+.gob360-ranking-page .pcoded-inner-content,
+.gob360-ranking-page .main-body,
+.gob360-ranking-page .page-wrapper{
+  background:transparent!important;
+}
+
+.gob360-ranking-page .pcoded-main-container .pcoded-content{
+  width:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:18px 28px 48px!important;
+}
+
+/* Loader */
+.gob360-ranking-page .loader-bg{
+  z-index:999999!important;
+  background:#030711!important;
+}
+
+.gob360-ranking-page .loader-track{
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+}
+
+.gob360-ranking-page .loader-fill{
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--vr-blue),var(--vr-cyan),var(--vr-green))!important;
+  box-shadow:0 0 25px rgba(40,220,255,.42);
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.g360-ranking-hero{
+  position:relative;
+  overflow:hidden;
+  margin-bottom:18px;
+  padding:25px;
+  border:1px solid var(--vr-border);
+  border-radius:var(--vr-radius-xl);
+  background:
+    radial-gradient(720px 290px at 0% 0%,rgba(63,124,255,.30),transparent 67%),
+    radial-gradient(680px 290px at 100% 100%,rgba(255,209,102,.12),transparent 67%),
+    var(--vr-panel);
+  box-shadow:var(--vr-shadow-xl);
+  backdrop-filter:blur(19px);
+}
+
+.g360-ranking-hero::before{
+  content:"";
+  position:absolute;
+  right:-110px;
+  top:-160px;
+  width:450px;
+  height:450px;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(40,220,255,.18),transparent 68%);
+}
+
+.g360-ranking-hero__grid{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:minmax(245px,355px) 1fr;
+  align-items:stretch;
+  gap:27px;
+}
+
+.g360-ranking-brand{
+  min-height:350px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:21px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  background:
+    radial-gradient(320px 180px at 50% 0%,rgba(255,209,102,.09),transparent 71%),
+    rgba(2,8,20,.29);
+  box-shadow:0 19px 40px rgba(0,0,0,.25);
+}
+
+.g360-ranking-brand__eyebrow,
+.g360-ranking-brand__caption{
+  color:var(--vr-muted);
+  font-size:9.5px;
+  font-weight:950;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
+}
+
+.g360-ranking-brand__eyebrow{
+  margin-bottom:13px;
+}
+
+.g360-ranking-brand__caption{
+  margin-top:14px;
+}
+
+.g360-ranking-brand__logo{
+  display:block;
+  width:min(100%,335px);
+  height:auto;
+  border-radius:18px;
+  filter:
+    drop-shadow(0 18px 36px rgba(0,0,0,.44))
+    drop-shadow(0 0 30px rgba(40,220,255,.24));
+}
+
+.g360-ranking-brand__status,
+.g360-live-status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 11px;
+  color:#dfffee;
+  font-size:10px;
+  font-weight:900;
+  border:1px solid rgba(57,230,163,.23);
+  border-radius:999px;
+  background:rgba(57,230,163,.07);
+}
+
+.g360-ranking-brand__status{
+  margin-top:18px;
+}
+
+.g360-ranking-brand__status span,
+.g360-live-status>span{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--vr-green);
+  box-shadow:0 0 14px rgba(57,230,163,.58);
+}
+
+.g360-ranking-hero__content{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.g360-ranking-hero__top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.g360-ranking-hero__eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:9px;
+  color:var(--vr-yellow);
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+}
+
+.g360-ranking-hero__title{
+  max-width:900px;
+  margin:0;
+  color:#fff;
+  font-size:clamp(31px,4vw,50px);
+  font-weight:1000;
+  line-height:1.02;
+  letter-spacing:-1.35px;
+}
+
+.g360-ranking-hero__description{
+  max-width:850px;
+  margin:13px 0 0;
+  color:var(--vr-muted);
+  font-size:14px;
+  line-height:1.68;
+}
+
+.g360-ranking-hero__actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.g360-hero-button{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:9px 13px;
+  color:#06101d!important;
+  font-size:10.5px;
+  font-weight:950;
+  border:0;
+  border-radius:13px;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--vr-cyan),#83edff);
+  box-shadow:0 12px 25px rgba(40,220,255,.16);
+}
+
+.g360-ranking-summary{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-top:20px;
+}
+
+.g360-ranking-summary article{
+  min-width:0;
+  min-height:126px;
+  display:grid;
+  grid-template-columns:45px 1fr;
+  align-items:start;
+  gap:11px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:17px;
+  background:rgba(3,10,23,.49);
+  box-shadow:0 12px 27px rgba(0,0,0,.18);
+}
+
+.g360-ranking-summary__icon{
+  width:45px;
+  height:45px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:19px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--vr-cyan),#83edff);
+}
+
+.g360-ranking-summary__icon--commitments{
+  background:linear-gradient(135deg,var(--vr-green),#96f4ce);
+}
+
+.g360-ranking-summary__icon--average{
+  background:linear-gradient(135deg,var(--vr-yellow),#ffe19a);
+}
+
+.g360-ranking-summary__icon--leader{
+  color:#fff;
+  background:linear-gradient(135deg,var(--vr-blue),var(--vr-purple));
+}
+
+.g360-ranking-summary small{
+  display:block;
+  margin-bottom:5px;
+  color:var(--vr-muted);
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.52px;
+  text-transform:uppercase;
+}
+
+.g360-ranking-summary strong{
+  display:block;
+  overflow:hidden;
+  color:#fff;
+  font-size:clamp(16px,1.7vw,23px);
+  font-weight:1000;
+  line-height:1.2;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.g360-ranking-summary p{
+  margin:7px 0 0;
+  color:var(--vr-muted-soft);
+  font-size:10.5px;
+  line-height:1.4;
+}
+
+.g360-ranking-capabilities{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:13px;
+}
+
+.g360-ranking-capabilities span{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  min-height:33px;
+  padding:7px 10px;
+  color:rgba(255,255,255,.82);
+  font-size:10.5px;
+  font-weight:850;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:999px;
+  background:rgba(255,255,255,.045);
+}
+
+.g360-ranking-capabilities i{
+  color:var(--vr-cyan);
+}
+
+/* ============================================================
+   TARJETA PRINCIPAL
+============================================================ */
+.gob360-ranking-page .g360-ranking-card{
+  overflow:hidden;
+  border:1px solid var(--vr-border)!important;
+  border-radius:var(--vr-radius-xl)!important;
+  background:var(--vr-panel)!important;
+  box-shadow:var(--vr-shadow-xl)!important;
+  backdrop-filter:blur(18px);
+}
+
+.gob360-ranking-page .g360-ranking-card>.card-header{
+  min-height:88px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  padding:17px 20px!important;
+  border-bottom:1px solid var(--vr-border)!important;
+  background:
+    radial-gradient(440px 180px at 0% 0%,rgba(255,209,102,.11),transparent 68%),
+    linear-gradient(135deg,rgba(63,124,255,.27),rgba(8,22,42,.73))!important;
+}
+
+.gob360-ranking-page .g360-ranking-card>.card-body{
+  padding:20px!important;
+  background:transparent!important;
+}
+
+.g360-card-heading{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.g360-card-heading__icon{
+  width:44px;
+  height:44px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:19px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--vr-yellow),#ffe19a);
+}
+
+.g360-card-heading__eyebrow{
+  display:block;
+  margin-bottom:3px;
+  color:var(--vr-yellow);
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.g360-card-heading h5{
+  margin:0!important;
+  color:#fff!important;
+  font-size:17px;
+  font-weight:1000!important;
+}
+
+.g360-card-heading p{
+  margin:4px 0 0;
+  color:var(--vr-muted);
+  font-size:10.5px;
+  line-height:1.45;
+}
+
+.g360-card-header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.gob360-ranking-page .card-header-right{
+  position:static!important;
+  margin:0!important;
+}
+
+.gob360-ranking-page .card-option .btn{
+  width:40px;
+  min-width:40px;
+  height:40px;
+  padding:0!important;
+  color:#fff!important;
+  border:1px solid var(--vr-border)!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.06)!important;
+}
+
+.gob360-ranking-page .card-option .dropdown-menu{
+  overflow:hidden;
+  padding:8px;
+  border:1px solid var(--vr-border)!important;
+  border-radius:15px!important;
+  background:rgba(5,13,28,.98)!important;
+  box-shadow:var(--vr-shadow-lg);
+}
+
+.gob360-ranking-page .card-option .dropdown-item a{
+  display:block;
+  padding:8px 10px;
+  color:rgba(255,255,255,.82)!important;
+  font-size:12px;
+  font-weight:800;
+  border-radius:10px;
+}
+
+/* ============================================================
+   RESUMEN DE ESTADOS
+============================================================ */
+.g360-state-overview{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:11px;
+  margin-bottom:14px;
+}
+
+.g360-state-card{
+  min-width:0;
+  display:grid;
+  grid-template-columns:44px 1fr;
+  gap:11px;
+  padding:14px;
+  border:1px solid var(--vr-border);
+  border-radius:17px;
+  background:rgba(3,10,23,.49);
+  box-shadow:var(--vr-shadow-soft);
+}
+
+.g360-state-card__icon{
+  width:44px;
+  height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:18px;
+  border-radius:13px;
+}
+
+.g360-state-card--process{
+  border-color:rgba(255,209,102,.20);
+}
+
+.g360-state-card--process .g360-state-card__icon{
+  background:linear-gradient(135deg,var(--vr-yellow),#ffe19a);
+}
+
+.g360-state-card--completed{
+  border-color:rgba(57,230,163,.20);
+}
+
+.g360-state-card--completed .g360-state-card__icon{
+  background:linear-gradient(135deg,var(--vr-green),#96f4ce);
+}
+
+.g360-state-card--pending{
+  border-color:rgba(255,100,127,.20);
+}
+
+.g360-state-card--pending .g360-state-card__icon{
+  color:#fff;
+  background:linear-gradient(135deg,var(--vr-red),#ff9aae);
+}
+
+.g360-state-card small{
+  display:block;
+  color:var(--vr-muted);
+  font-size:8.5px;
+  font-weight:950;
+  text-transform:uppercase;
+}
+
+.g360-state-card strong{
+  display:block;
+  margin-top:2px;
+  color:#fff;
+  font-size:24px;
+  font-weight:1000;
+}
+
+.g360-state-card p{
+  margin:4px 0 0;
+  color:var(--vr-muted-soft);
+  font-size:10px;
+}
+
+/* ============================================================
+   BUSCADOR
+============================================================ */
+.g360-ranking-tools{
+  display:grid;
+  grid-template-columns:minmax(300px,1fr) minmax(260px,.78fr);
+  gap:11px;
+  margin-bottom:13px;
+}
+
+.g360-ranking-search,
+.g360-ranking-tools__note{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:13px;
+  border:1px solid var(--vr-border);
+  border-radius:16px;
+  background:rgba(3,10,23,.48);
+}
+
+.g360-ranking-search>span{
+  width:42px;
+  height:42px;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#06101d;
+  font-size:18px;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--vr-cyan),#83edff);
+}
+
+.g360-ranking-search>div{
+  min-width:0;
+  flex:1;
+}
+
+.g360-ranking-search label{
+  display:block;
+  margin-bottom:5px;
+  color:var(--vr-green);
+  font-size:8.5px;
+  font-weight:950;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+}
+
+.gob360-ranking-page .g360-ranking-search .form-control{
+  min-height:46px;
+  padding:10px 12px!important;
+  color:#fff!important;
+  font-size:12px;
+  font-weight:800;
+  border:1px solid rgba(255,255,255,.13)!important;
+  border-radius:13px!important;
+  background:rgba(2,8,20,.62)!important;
+  box-shadow:none!important;
+}
+
+.gob360-ranking-page .g360-ranking-search .form-control:focus{
+  border-color:rgba(40,220,255,.42)!important;
+  box-shadow:var(--vr-ring)!important;
+}
+
+.g360-ranking-tools__note{
+  color:var(--vr-muted);
+  font-size:10.5px;
+  font-weight:750;
+  line-height:1.5;
+  border-color:rgba(255,209,102,.16);
+  background:rgba(255,209,102,.05);
+}
+
+.g360-ranking-tools__note i{
+  flex:0 0 auto;
+  color:var(--vr-yellow);
+  font-size:18px;
+}
+
+/* ============================================================
+   TABLA Y RANKING
+============================================================ */
+.gob360-ranking-page .g360-ranking-table{
+  overflow:hidden;
+  border:1px solid var(--vr-border)!important;
+  border-radius:18px!important;
+  background:rgba(3,10,23,.48)!important;
+  box-shadow:var(--vr-shadow-lg)!important;
+}
+
+.gob360-ranking-page .g360-ranking-table .table-responsive{
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+.gob360-ranking-page #dynamictable{
+  min-width:1050px;
+  margin:0!important;
+  background:transparent!important;
+}
+
+.gob360-ranking-page #dynamictable thead th{
+  position:sticky;
+  top:0;
+  z-index:4;
+  padding:13px 11px!important;
+  color:#fff!important;
+  font-size:9px!important;
+  font-weight:950!important;
+  letter-spacing:.25px;
+  text-transform:uppercase;
+  background:linear-gradient(180deg,#183b68,#0e2544)!important;
+  border-color:rgba(255,255,255,.08)!important;
+}
+
+.gob360-ranking-page #dynamictable thead .th-tramite{
+  background:linear-gradient(180deg,#645123,#392f1a)!important;
+}
+
+.gob360-ranking-page #dynamictable thead .th-cumplido{
+  background:linear-gradient(180deg,#14523e,#0d3327)!important;
+}
+
+.gob360-ranking-page #dynamictable thead .th-sincumplir{
+  background:linear-gradient(180deg,#6b2634,#401922)!important;
+}
+
+.gob360-ranking-page #dynamictable tbody tr{
+  background:transparent!important;
+}
+
+.gob360-ranking-page #dynamictable tbody td,
+.gob360-ranking-page #dynamictable tbody td *{
+  color:rgba(255,255,255,.86)!important;
+}
+
+.gob360-ranking-page #dynamictable tbody td{
+  padding:11px!important;
+  font-size:10.5px!important;
+  line-height:1.45!important;
+  border-color:rgba(255,255,255,.07)!important;
+  background:transparent!important;
+}
+
+.gob360-ranking-page #dynamictable tbody tr:nth-child(even) td{
+  background:rgba(255,255,255,.018)!important;
+}
+
+.gob360-ranking-page #dynamictable tbody tr:hover td{
+  background:rgba(40,220,255,.055)!important;
+}
+
+.gob360-ranking-page #dynamictable .entidad{
+  min-width:260px;
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:950!important;
+}
+
+.gob360-ranking-page .rank-badge{
+  width:38px;
+  height:38px;
+  color:#fff!important;
+  border:1px solid var(--vr-border)!important;
+  background:rgba(255,255,255,.055)!important;
+  box-shadow:0 9px 20px rgba(0,0,0,.22);
+}
+
+.gob360-ranking-page .rank-badge.medal{
+  color:#06101d!important;
+}
+
+.gob360-ranking-page .medal-gold{
+  background:linear-gradient(135deg,#f5be3c,#fff1a8)!important;
+}
+
+.gob360-ranking-page .medal-silver{
+  background:linear-gradient(135deg,#cbd5e1,#f8fafc)!important;
+}
+
+.gob360-ranking-page .medal-bronze{
+  background:linear-gradient(135deg,#cd7f32,#f4c28f)!important;
+}
+
+.gob360-ranking-page .g360-cell-status{
+  min-width:110px;
+  font-size:12px!important;
+  font-weight:1000!important;
+}
+
+.gob360-ranking-page .g360-cell-status--process{
+  color:#ffe8ad!important;
+}
+
+.gob360-ranking-page .g360-cell-status--completed{
+  color:#bff9df!important;
+}
+
+.gob360-ranking-page .g360-cell-status--pending{
+  color:#ffc0cb!important;
+}
+
+.gob360-ranking-page .score-wrap{
+  min-width:180px;
+}
+
+.gob360-ranking-page .score-chip{
+  color:#06101d!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  box-shadow:0 9px 20px rgba(0,0,0,.22)!important;
+}
+
+.gob360-ranking-page .score-bar{
+  width:175px;
+  height:9px;
+  border:1px solid rgba(255,255,255,.09)!important;
+  background:rgba(255,255,255,.09)!important;
+}
+
+.gob360-ranking-page .score-bar>span{
+  background:linear-gradient(90deg,var(--vr-blue),var(--vr-cyan),var(--vr-green))!important;
+}
+
+.gob360-ranking-page .empty-row{
+  padding:30px!important;
+  color:var(--vr-muted)!important;
+}
+
+/* DataTables */
+.gob360-ranking-page .dataTables_wrapper{
+  padding:12px!important;
+}
+
+.gob360-ranking-page .dataTables_wrapper .dataTables_filter{
+  display:none!important;
+}
+
+.gob360-ranking-page .dataTables_wrapper .dataTables_length select{
+  min-height:38px;
+  color:#fff!important;
+  border:1px solid var(--vr-border)!important;
+  border-radius:10px!important;
+  background:rgba(3,10,23,.65)!important;
+}
+
+.gob360-ranking-page .dataTables_wrapper .dataTables_info,
+.gob360-ranking-page .dataTables_wrapper .dataTables_length label{
+  color:var(--vr-muted)!important;
+}
+
+.gob360-ranking-page .dataTables_wrapper .dataTables_paginate .paginate_button{
+  color:var(--vr-muted)!important;
+  border:1px solid var(--vr-border)!important;
+  border-radius:10px!important;
+  background:rgba(255,255,255,.035)!important;
+}
+
+.gob360-ranking-page .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.gob360-ranking-page .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+  color:#06101d!important;
+  border-color:transparent!important;
+  background:linear-gradient(135deg,var(--vr-cyan),#83edff)!important;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media(max-width:1200px){
+  .g360-ranking-hero__grid{
+    grid-template-columns:1fr;
+  }
+
+  .g360-ranking-brand{
+    min-height:auto;
+  }
+
+  .g360-ranking-brand__logo{
+    width:min(335px,90%);
+  }
+
+  .g360-ranking-summary{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:991px){
+  .g360-ranking-hero__top{
+    flex-direction:column;
+  }
+
+  .g360-ranking-hero__actions{
+    justify-content:flex-start;
+  }
+
+  .g360-ranking-tools{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:767.98px){
+  .gob360-ranking-page .pcoded-main-container .pcoded-content{
+    padding:14px 13px 42px!important;
+  }
+
+  .g360-ranking-hero{
+    padding:18px;
+  }
+
+  .g360-ranking-brand{
+    padding:16px;
+  }
+
+  .g360-ranking-hero__title{
+    font-size:29px;
+  }
+
+  .g360-ranking-summary,
+  .g360-state-overview{
+    grid-template-columns:1fr;
+  }
+
+  .gob360-ranking-page .g360-ranking-card>.card-body{
+    padding:13px!important;
+  }
+
+  .g360-card-header-actions{
+    width:100%;
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .g360-live-status{
+    justify-content:center;
+  }
+
+  .gob360-ranking-page input{
+    font-size:16px!important;
+  }
+}
