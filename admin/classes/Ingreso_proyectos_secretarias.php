@@ -1866,6 +1866,19 @@ class Proyectos_Secretarias {
         }
     }
 
+    /**
+     * Fragmento SQL: usuario habilitado.
+     * En esta BD el campo suele ser 'si'/'no' (no solo 1/0).
+     */
+    private static function sqlUsuarioHabilitado(string $alias = 'u'): string
+    {
+        return "(
+            {$alias}.habilitado = 1
+            OR {$alias}.habilitado = '1'
+            OR LOWER(TRIM({$alias}.habilitado)) IN ('si', 's', 'yes', 'true')
+        )";
+    }
+
     /** Usuarios de la alcaldía con permiso manage (candidatos a asignar) */
     public static function getUsuariosAsignables(array $rqst = []): array
     {
@@ -1894,6 +1907,7 @@ class Proyectos_Secretarias {
         $db = new DbConection();
         $pdo = $db->openConect();
         try {
+            $habSql = self::sqlUsuarioHabilitado('u');
             $sql = "SELECT DISTINCT u.id, u.nombre, u.apellido, u.nickname, u.tipo
                     FROM " . $db->getTable('tbl_usuarios') . " u
                     INNER JOIN " . $db->getTable('tbl_role_has_permissions') . " rhp ON rhp.role_id = u.role_id
@@ -1901,7 +1915,7 @@ class Proyectos_Secretarias {
                     WHERE u.tbl_municipio_id = :mun
                       AND p.permission_key = 'proyectos.alcaldias.planeacion.manage'
                       AND p.is_active = 1
-                      AND (u.habilitado = 1 OR u.habilitado = '1')
+                      AND {$habSql}
                     ORDER BY u.nombre, u.apellido";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':mun' => $mun]);
@@ -1969,13 +1983,15 @@ class Proyectos_Secretarias {
             $validIds = [];
             if (!empty($usuarioIds)) {
                 $in = implode(',', array_fill(0, count($usuarioIds), '?'));
+                $habSql = self::sqlUsuarioHabilitado('u');
                 $sqlVal = "SELECT DISTINCT u.id
                            FROM " . $db->getTable('tbl_usuarios') . " u
                            INNER JOIN " . $db->getTable('tbl_role_has_permissions') . " rhp ON rhp.role_id = u.role_id
                            INNER JOIN " . $db->getTable('tbl_permissions') . " p ON p.id = rhp.permission_id
                            WHERE u.id IN ($in)
                              AND u.tbl_municipio_id = ?
-                             AND p.permission_key = 'proyectos.alcaldias.planeacion.manage'";
+                             AND p.permission_key = 'proyectos.alcaldias.planeacion.manage'
+                             AND {$habSql}";
                 $params = $usuarioIds;
                 $params[] = $munProy;
                 $st = $pdo->prepare($sqlVal);
@@ -2300,7 +2316,7 @@ class Proyectos_Secretarias {
                         'secretarias.proyectos.create'
                       )
                       AND p.is_active = 1
-                      AND (u.habilitado = 1 OR u.habilitado = '1')";
+                      AND " . self::sqlUsuarioHabilitado('u');
             $params = [];
             if (self::sessionHasMunicipio($munFiltro)) {
                 $sql .= " AND u.tbl_municipio_id = :mun";

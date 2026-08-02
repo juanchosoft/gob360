@@ -5,6 +5,13 @@
     "google/cloud-text-to-speech": "^1.2",
     "phpmailer/phpmailer": "^6.10",
     "phpoffice/phpspreadsheet": "^1.24",
-    "maennchen/zipstream-php": "^2.4" 
+    "maennchen/zipstream-php": "^2.4",
+    "anthropic-ai/sdk": "^0.40.0",
+    "composer/ca-bundle": "^1.5" 
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": false
+    }
   }
 }

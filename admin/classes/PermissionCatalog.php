@@ -260,9 +260,15 @@ final class PermissionCatalog
         $add('prensa.create', 'prensa', 'create', 'Prensa - Crear', 28);
         $add('prensa.update', 'prensa', 'update', 'Prensa - Editar', 27);
 
-        // ── Asistente IA ─────────────────────────────────────────────────
+        // ── Asistente IA (legacy) ─────────────────────────────────────────
         $add('ia.asesor_despacho.view', 'ia', 'view', 'Asesor despacho IA - Ver');
         $add('ia.contratacion.view', 'ia', 'view', 'Asesor contratación IA - Ver');
+
+        // ── Asistente IA Claude (widget nuevo) ───────────────────────────
+        $add('asistente_ia.chat.use',  'asistente_ia', 'view', 'Asistente IA - Usar chat de texto');
+        $add('asistente_ia.voz.use',   'asistente_ia', 'view', 'Asistente IA - Usar modo voz/en vivo');
+        $add('asistente_ia.pdf.use',   'asistente_ia', 'view', 'Asistente IA - Exportar informes a PDF');
+        $add('asistente_ia.logs.view', 'asistente_ia', 'view', 'Asistente IA - Ver logs de auditoría');
 
         return $items;
     }

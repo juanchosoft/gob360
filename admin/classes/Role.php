@@ -53,6 +53,102 @@ class Role
         return $id !== false ? (int) $id : null;
     }
 
+    /** Tipo legacy a partir del role_key (null si es rol personalizado). */
+    public static function resolveTipoByRoleKey(string $roleKey): ?string
+    {
+        $flip = array_flip(self::TIPO_TO_ROLE_KEY);
+        return $flip[$roleKey] ?? null;
+    }
+
+    /**
+     * Datos del rol por id: id, role_key, name, tipo_legacy (nullable).
+     * @return array{id:int,role_key:string,name:string,tipo_legacy:?string}|null
+     */
+    public static function resolveRoleById(PDO $pdo, DbConection $db, int $roleId): ?array
+    {
+        if ($roleId <= 0) {
+            return null;
+        }
+        $stmt = $pdo->prepare(
+            'SELECT id, role_key, name FROM ' . $db->getTable('tbl_roles') . ' WHERE id = :id LIMIT 1'
+        );
+        $stmt->execute([':id' => $roleId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$row) {
+            return null;
+        }
+        $roleKey = (string) $row['role_key'];
+        return [
+            'id' => (int) $row['id'],
+            'role_key' => $roleKey,
+            'name' => (string) $row['name'],
+            'tipo_legacy' => self::resolveTipoByRoleKey($roleKey),
+        ];
+    }
+
+    /**
+     * Resuelve role_id + tipo legacy desde el request de alta/edición de usuario.
+     * Prioriza role_id; si no viene, usa tipo (compatibilidad).
+     *
+     * @return array{role_id:?int, tipo:string, role_key:?string}
+     */
+    public static function resolveRoleFromRequest(PDO $pdo, DbConection $db, array $rqst): array
+    {
+        $roleId = isset($rqst['role_id']) ? (int) $rqst['role_id'] : 0;
+        $tipoReq = isset($rqst['tipo']) ? trim((string) $rqst['tipo']) : '';
+
+        if ($roleId > 0) {
+            $role = self::resolveRoleById($pdo, $db, $roleId);
+            if ($role === null) {
+                return ['role_id' => null, 'tipo' => '', 'role_key' => null];
+            }
+            // Mantener tipo legacy cuando exista; si no, usar role_key (roles personalizados)
+            $tipo = $role['tipo_legacy'] ?? $role['role_key'];
+            return [
+                'role_id' => $role['id'],
+                'tipo' => $tipo,
+                'role_key' => $role['role_key'],
+            ];
+        }
+
+        if ($tipoReq !== '' && $tipoReq !== 'Seleccione') {
+            return [
+                'role_id' => self::resolveRoleIdByTipo($pdo, $db, $tipoReq),
+                'tipo' => $tipoReq,
+                'role_key' => self::TIPO_TO_ROLE_KEY[$tipoReq] ?? null,
+            ];
+        }
+
+        return ['role_id' => null, 'tipo' => '', 'role_key' => null];
+    }
+
+    /** HTML de <option> para selects de usuario (value = role_id). */
+    public static function buildUsuarioRoleOptionsHtml(?int $selectedRoleId = null, ?string $selectedTipo = null): string
+    {
+        $html = '<option value="">Seleccione</option>';
+        $res = self::getAll();
+        $rows = ($res['output']['valid'] ?? false) ? ($res['output']['response'] ?? []) : [];
+        foreach ($rows as $r) {
+            $id = (int) ($r['id'] ?? 0);
+            $key = (string) ($r['role_key'] ?? '');
+            $name = (string) ($r['name'] ?? $key);
+            $legacy = self::resolveTipoByRoleKey($key) ?? '';
+            $sel = '';
+            if ($selectedRoleId !== null && $selectedRoleId > 0 && $id === $selectedRoleId) {
+                $sel = 'selected';
+            } elseif ($selectedTipo && $legacy !== '' && $legacy === $selectedTipo) {
+                $sel = 'selected';
+            }
+            $html .= '<option ' . $sel
+                . ' value="' . $id . '"'
+                . ' data-role-key="' . htmlspecialchars($key, ENT_QUOTES, 'UTF-8') . '"'
+                . ' data-legacy-tipo="' . htmlspecialchars($legacy, ENT_QUOTES, 'UTF-8') . '">'
+                . htmlspecialchars($name, ENT_QUOTES, 'UTF-8')
+                . '</option>';
+        }
+        return $html;
+    }
+
     public static function getAll($rqst = [])
     {
         $db = new DbConection();

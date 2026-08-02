@@ -163,8 +163,10 @@ class Usuario
                 }
 
 
+                $table_roles = $db->getTable('tbl_roles');
+
                 if (!empty($searchValue)) {
-                    $searchCondition = " (u.nombre LIKE :search OR u.apellido LIKE :search OR u.tipo LIKE :search OR s.secretaria LIKE :search OR u.nickname LIKE :search) ";
+                    $searchCondition = " (u.nombre LIKE :search OR u.apellido LIKE :search OR u.tipo LIKE :search OR r.name LIKE :search OR s.secretaria LIKE :search OR u.nickname LIKE :search) ";
                     if ($where) {
                         $where .= " AND " . $searchCondition;
                     } else {
@@ -177,15 +179,21 @@ class Usuario
                 $stmtTotal->execute();
                 $recordsTotal = $stmtTotal->fetchColumn();
 
-                $sqlFiltered = "SELECT COUNT(*) FROM $table u LEFT JOIN $table_secretaria s ON u.tbl_secretarias_id = s.id $where";
+                $sqlFiltered = "SELECT COUNT(*) FROM $table u
+                    LEFT JOIN $table_secretaria s ON u.tbl_secretarias_id = s.id
+                    LEFT JOIN $table_roles r ON u.role_id = r.id
+                    $where";
                 $stmtFiltered = $pdo->prepare($sqlFiltered);
                 $stmtFiltered->execute($params);
                 $recordsFiltered = $stmtFiltered->fetchColumn();
 
 
-                $sql = "SELECT u.id, u.nombre, u.apellido, u.tipo, s.secretaria, u.nickname, u.habilitado, u.img, u.email, u.dtcreate 
+                $sql = "SELECT u.id, u.nombre, u.apellido, u.tipo, u.role_id,
+                               COALESCE(r.name, u.tipo) AS rol_nombre,
+                               s.secretaria, u.nickname, u.habilitado, u.img, u.email, u.dtcreate 
                         FROM $table u 
                         LEFT JOIN $table_secretaria s ON u.tbl_secretarias_id = s.id 
+                        LEFT JOIN $table_roles r ON u.role_id = r.id
                         $where 
                         ORDER BY u.id DESC 
                         LIMIT :start, :length";
@@ -211,7 +219,8 @@ class Usuario
                         'id' => $row['id'],
                         'nombre' => $row['nombre'],
                         'apellido' => $row['apellido'],
-                        'tipo' => $row['tipo'],
+                        'tipo' => $row['rol_nombre'],
+                        'role_id' => $row['role_id'] ?? null,
                         'secretaria' => $row['secretaria'],
                         'email' => $row['nickname'],
                         'habilitado' => $row['habilitado'] ? 'Sí' : 'No',
@@ -281,7 +290,6 @@ class Usuario
             $passConfirm = isset($data['hashpass1']) ? trim($data['hashpass1']) : '';
             $nombre = isset($data['nombre']) ? trim($data['nombre']) : '';
             $apellido = isset($data['apellido']) ? trim($data['apellido']) : '';
-            $tipo = isset($data['tipo']) ? trim($data['tipo']) : '';
             $habilitado = isset($data['habilitado']) ? trim($data['habilitado']) : '';
             $email = isset($data['email']) ? trim($data['email']) : '';
             $departamento = isset($data['tbl_departamento_id']) ? intval($data['tbl_departamento_id']) : Util::getDepartamentoPrincipal();
@@ -331,7 +339,6 @@ class Usuario
                 'nombre',
                 'apellido',
                 'nickname',
-                'tipo',
                 'habilitado'
             ];
 
@@ -344,10 +351,11 @@ class Usuario
                 }
             }
 
-            if ($tipo === 'Seleccione') {
+            $roleIdReq = isset($data['role_id']) ? (int) $data['role_id'] : 0;
+            if ($roleIdReq <= 0 && (empty($data['tipo']) || $data['tipo'] === 'Seleccione')) {
                 return [
                     'error' => true,
-                    'message' => "Debe seleccionar un tipo válido."
+                    'message' => "Debe seleccionar un rol válido."
                 ];
             }
 
@@ -368,7 +376,13 @@ class Usuario
             $db = new DbConection();
             $pdo = $db->openConect();
 
-            $roleId = Role::resolveRoleIdByTipo($pdo, $db, $tipo);
+            $resolved = Role::resolveRoleFromRequest($pdo, $db, $data);
+            $roleId = $resolved['role_id'];
+            $tipo = $resolved['tipo'];
+            if ($roleId === null || $tipo === '') {
+                $db->closeConect();
+                return ['error' => true, 'message' => 'Debe seleccionar un rol válido.'];
+            }
 
             // Validar nickname duplicado solo si cambió realmente
             $stmtCur = $pdo->prepare("SELECT nickname FROM " . $db->getTable('tbl_usuarios') . " WHERE id = :id");
@@ -862,7 +876,6 @@ class Usuario
         $hashpass = isset($rqst['hashpass']) ? ($rqst['hashpass']) : '';
         $nombre = isset($rqst['nombre']) ? ($rqst['nombre']) : '';
         $apellido = isset($rqst['apellido']) ? ($rqst['apellido']) : '';
-        $tipo = isset($rqst['tipo']) ? ($rqst['tipo']) : '';
         $habilitado = isset($rqst['habilitado']) ? ($rqst['habilitado']) : '';
         $email = isset($rqst['email']) ? ($rqst['email']) : '';
         $tbl_departamento_id = isset($rqst['departamentoId']) ? intval($rqst['departamentoId']) : Util::getDepartamentoPrincipal();
@@ -909,7 +922,13 @@ class Usuario
         $db = new DbConection();
         $pdo = $db->openConect();
 
-        $roleId = Role::resolveRoleIdByTipo($pdo, $db, $tipo);
+        $resolved = Role::resolveRoleFromRequest($pdo, $db, $rqst);
+        $roleId = $resolved['role_id'];
+        $tipo = $resolved['tipo'];
+        if ($roleId === null || $tipo === '') {
+            $db->closeConect();
+            return ['state' => false, 'message' => 'Debe seleccionar un rol válido.'];
+        }
 
         if (strlen($hashpass) > 2) {
             $hashpass = Util::make_hash_pass($hashpass);
@@ -1325,12 +1344,13 @@ class Usuario
         try {
             $table = $db->getTable('tbl_usuarios');
             $table_secretaria = $db->getTable('tbl_secretarias');
+            $table_roles = $db->getTable('tbl_roles');
 
             $where = '';
             $params = [];
 
             if (!empty($searchValue)) {
-                $where = " AND (u.nombre LIKE :search OR u.apellido LIKE :search OR u.nickname LIKE :search OR u.tipo LIKE :search)";
+                $where = " AND (u.nombre LIKE :search OR u.apellido LIKE :search OR u.nickname LIKE :search OR u.tipo LIKE :search OR r.name LIKE :search)";
                 $params[':search'] = "%{$searchValue}%";
             }
 
@@ -1338,6 +1358,7 @@ class Usuario
             $recordsTotal = $stmtTotal->fetchColumn();
 
             $sqlFiltered = "SELECT COUNT(*) FROM {$table} u
+                LEFT JOIN {$table_roles} r ON u.role_id = r.id
                 INNER JOIN (
                     SELECT nickname FROM {$table} GROUP BY nickname HAVING COUNT(*) > 1
                 ) dup ON u.nickname = dup.nickname
@@ -1347,9 +1368,11 @@ class Usuario
             $recordsFiltered = $stmtFiltered->fetchColumn();
 
             $sql = "SELECT u.id, u.nombre, u.apellido, u.nickname, u.tipo, u.habilitado, u.dtcreate,
+                           COALESCE(r.name, u.tipo) AS rol_nombre,
                            COALESCE(s.secretaria, 'N/A') AS secretaria, u.tbl_municipio_id
                     FROM {$table} u
                     LEFT JOIN {$table_secretaria} s ON u.tbl_secretarias_id = s.id
+                    LEFT JOIN {$table_roles} r ON u.role_id = r.id
                     INNER JOIN (
                         SELECT nickname FROM {$table} GROUP BY nickname HAVING COUNT(*) > 1
                     ) dup ON u.nickname = dup.nickname
@@ -1373,7 +1396,7 @@ class Usuario
                     'nickname' => $row['nickname'],
                     'nombre' => $row['nombre'],
                     'apellido' => $row['apellido'],
-                    'tipo' => $row['tipo'],
+                    'tipo' => $row['rol_nombre'] ?? $row['tipo'],
                     'habilitado' => $row['habilitado'] ? 'Sí' : 'No',
                     'secretaria' => $row['secretaria'],
                     'dtcreate' => !empty($row['dtcreate']) ? date('Y-m-d H:i', strtotime($row['dtcreate'])) : '',
