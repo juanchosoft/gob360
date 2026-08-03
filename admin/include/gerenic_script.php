@@ -57,7 +57,7 @@ $_ia_puede_chat   = $_ia_tipo === 'SuperAdministrador'
 $_ia_puede_voz    = $_ia_tipo === 'SuperAdministrador'
                  || in_array('asistente_ia.voz.use', (array) $_ia_permission_keys, true);
 
-if (isset($_SESSION['session_user']) && $_ia_puede_chat):
+if (isset($_SESSION['session_user']) && $_ia_puede_chat && empty($ocultarWidgetIa)):
     require_once __DIR__ . '/../classes/ia/IaScope.php';
     $_ia_bienvenida = IaScope::mensajeBienvenida();
 ?>

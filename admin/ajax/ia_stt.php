@@ -1,20 +1,42 @@
 <?php
 /**
  * STT — Reconocimiento de voz.
- * Recibe el audio grabado por el widget, lo transcribe con ElevenLabs Scribe,
- * envía la transcripción a Claude y devuelve texto + respuesta en un solo viaje.
+ * Recibe el audio grabado, lo transcribe con ElevenLabs Scribe, envía la transcripción a
+ * Claude y devuelve texto + respuesta.
+ *
+ * Para canal=voz_gobia (interfaz de voz de gobia.php) la respuesta se entrega en streaming
+ * como líneas NDJSON: una línea opcional {"tipo":"aviso",...} tan pronto Claude decide que la
+ * operación va a tardar (antes de ejecutar la herramienta lenta), y una línea final
+ * {"tipo":"final",...} al terminar. El widget de chat (canal=widget, valor por defecto) sigue
+ * recibiendo un único objeto JSON, sin cambios de contrato.
  *
  * POST params (multipart/form-data):
  *   audio           file   Audio grabado (webm / mp4 / ogg / wav)
- *   conversacion_id int    0 = crear nueva conversación
+ *   conversacion_id int    0 = crear nueva conversación (ignorado si canal=voz_gobia:
+ *                          ese canal siempre usa/crea la sesión diaria del usuario)
+ *   canal           string 'widget' (default) | 'voz_gobia'
  */
+
+// Desactivar buffering ANTES que cualquier otra cosa para que el aviso rápido del canal de
+// voz llegue al navegador en cuanto se genera, sin esperar a que termine todo el turno.
+// zlib.output_compression debe desactivarse aquí mismo: si está activo en php.ini, PHP
+// junta toda la salida al final sin importar los flush() manuales.
+@ini_set('zlib.output_compression', '0');
+@ini_set('output_buffering', '0');
+while (ob_get_level() > 0) {
+    @ob_end_clean();
+}
+ob_implicit_flush(true);
 
 session_start();
 
-header('Content-Type: application/json; charset=utf-8');
-header('Cache-Control: no-store, no-cache');
+$canal = in_array($_POST['canal'] ?? '', ['widget', 'voz_gobia'], true) ? $_POST['canal'] : 'widget';
 
-set_time_limit(90);
+header('Content-Type: ' . ($canal === 'voz_gobia' ? 'application/x-ndjson; charset=utf-8' : 'application/json; charset=utf-8'));
+header('Cache-Control: no-store, no-cache');
+header('X-Accel-Buffering: no');
+
+set_time_limit(120);
 
 // ── Sesión ────────────────────────────────────────────────────────────────────
 if (empty($_SESSION['session_user'])) {
@@ -103,10 +125,10 @@ require_once __DIR__ . '/../classes/ia/herramientas/ToolDesarrollo.php';
 require_once __DIR__ . '/../classes/ia/herramientas/ToolGestionSocial.php';
 require_once __DIR__ . '/../classes/ia/herramientas/ToolEstadisticas.php';
 require_once __DIR__ . '/../classes/ia/herramientas/ToolBaseDeDatos.php';
+require_once __DIR__ . '/../classes/ia/herramientas/ToolReportes.php';
+require_once __DIR__ . '/../classes/ia/IaReporte.php';
 require_once __DIR__ . '/../classes/ia/IaToolRegistry.php';
 require_once __DIR__ . '/../classes/ia/AsistenteIA.php';
-
-$conversacionId = (int) ($_POST['conversacion_id'] ?? 0);
 
 // ── Transcribir ───────────────────────────────────────────────────────────────
 try {
@@ -119,7 +141,54 @@ try {
 
 @unlink($tmpPath);
 
-// ── Enviar transcripción a Claude ─────────────────────────────────────────────
+// ── Canal voz_gobia: sesión diaria + streaming aviso/final ────────────────────
+if ($canal === 'voz_gobia') {
+    $conversacionId = IaConversacion::obtenerOCrearSesionDiaria('voz_gobia');
+
+    $onAviso = static function (string $texto, int $mensajeId) use ($conversacionId): void {
+        echo json_encode([
+            'tipo'            => 'aviso',
+            'texto'           => $texto,
+            'mensaje_id'      => $mensajeId,
+            'conversacion_id' => $conversacionId,
+        ], JSON_UNESCAPED_UNICODE) . "\n";
+        @flush();
+    };
+
+    $asistente = new AsistenteIA();
+    $resultado = $asistente->chat($transcripcion, $conversacionId, 'voz', 'voz_gobia', $onAviso);
+
+    if (!($resultado['output']['valid'] ?? false)) {
+        echo json_encode([
+            'tipo'  => 'error',
+            'texto' => $resultado['output']['response'] ?? 'Error desconocido.',
+        ], JSON_UNESCAPED_UNICODE) . "\n";
+        exit;
+    }
+
+    $textoFinal = (string) $resultado['output']['response'];
+
+    // Si la respuesta incluye la URL de un informe PDF (tool generar_reporte_pdf), se extrae
+    // aparte para que el cliente pueda mostrar un panel/enlace sin tener que parsear el texto.
+    $pdfUrl = null;
+    if (preg_match('#https?://\S*ia_reporte_pdf\.php\?id=\d+#', $textoFinal, $m)) {
+        $pdfUrl = $m[0];
+    }
+
+    echo json_encode([
+        'tipo'            => 'final',
+        'texto'           => $textoFinal,
+        'transcripcion'   => $transcripcion,
+        'conversacion_id' => $resultado['output']['conversacion_id'],
+        'mensaje_id'      => $resultado['output']['mensaje_id'] ?? 0,
+        'pdf_url'         => $pdfUrl,
+    ], JSON_UNESCAPED_UNICODE) . "\n";
+    exit;
+}
+
+// ── Canal widget (comportamiento existente, sin cambios de contrato) ──────────
+$conversacionId = (int) ($_POST['conversacion_id'] ?? 0);
+
 $asistente = new AsistenteIA();
 $resultado = $asistente->chat($transcripcion, $conversacionId, 'voz');
 

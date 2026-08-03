@@ -413,10 +413,50 @@ final class IaToolRegistry
     }
 
     /**
-     * Retorna solo las tools que el usuario en sesión tiene permiso de usar.
-     * Esto es lo que se envía a Claude como lista de herramientas disponibles.
+     * Tools ejecutadas por el propio servidor de Anthropic (no pasan por
+     * IaToolRegistry::ejecutar — Claude nunca las devuelve como bloque `tool_use`, sino como
+     * `server_tool_use` + su resultado, ya resueltos dentro de la misma respuesta).
+     * Disponibles para cualquier sesión válida, igual que el resto del asistente.
      *
-     * @return array[] Definiciones en formato API (solo el campo 'definicion')
+     * @return array[]
+     */
+    private static function herramientasServidor(): array
+    {
+        $servidor = [
+            [
+                'type'     => 'web_search_20250305',
+                'name'     => 'web_search',
+                // Limitado a 3 (no el default de 5): cada búsqueda agrega latencia real y
+                // este asistente también se usa por voz, donde la respuesta se siente lenta
+                // si encadena demasiadas.
+                'max_uses' => 3,
+            ],
+        ];
+
+        // ── Placeholder MCP Google Calendar (DESHABILITADO — no implementar todavía) ──
+        // Ya existe una integración REST propia de Google Calendar, ajena a ALMA, en
+        // admin/lib/google_calendar.php + admin/api/calendar-events.php (OAuth ya resuelto).
+        // Cuando se decida conectar el calendario a ALMA, evaluar si conviene envolver esa
+        // capa REST como una tool normal (con 'ejecutor' en self::todas(), gated por RBAC)
+        // en vez de un MCP real, ya que el trabajo de autenticación ya está hecho ahí.
+        // No activar sin antes definir: qué calendario expone (personal del funcionario vs.
+        // institucional), y qué permiso RBAC lo protege.
+        if (false) {
+            $servidor[] = [
+                'type' => 'mcp_toolset',
+                'name' => 'google_calendar',
+            ];
+        }
+
+        return $servidor;
+    }
+
+    /**
+     * Retorna solo las tools que el usuario en sesión tiene permiso de usar, más las tools
+     * nativas de servidor (ej. acceso a internet). Esto es lo que se envía a Claude como
+     * lista de herramientas disponibles.
+     *
+     * @return array[] Definiciones en formato API
      */
     public static function paraUsuario(): array
     {
@@ -428,7 +468,9 @@ final class IaToolRegistry
         }
         // Ordenar alfabéticamente por nombre para que el cache de prompts sea determinista
         usort($visibles, static fn($a, $b) => strcmp($a['name'], $b['name']));
-        return $visibles;
+
+        // Las tools de servidor van al final, en orden fijo (no dependen de permisos RBAC)
+        return array_merge($visibles, self::herramientasServidor());
     }
 
     /**

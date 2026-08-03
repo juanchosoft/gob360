@@ -32,10 +32,20 @@ final class AsistenteIA
      * @param  string $textoUsuario  Mensaje del usuario
      * @param  int    $conversacionId  0 = crear nueva
      * @param  string $origen  'texto' | 'voz'
+     * @param  string $canal   'widget' | 'voz_gobia' — ajusta tono del prompt y habilita el
+     *                         aviso rápido antes de herramientas lentas (solo voz_gobia)
+     * @param  ?callable $onAviso  function(string $texto, int $mensajeId): void — se invoca
+     *                         UNA VEZ, antes de ejecutar herramientas, si Claude emitió un
+     *                         aviso hablado previo (solo relevante para canal voz_gobia)
      * @return array  Formato estándar ['output' => ['valid' => bool, 'response' => ...]]
      */
-    public function chat(string $textoUsuario, int $conversacionId, string $origen = 'texto'): array
-    {
+    public function chat(
+        string $textoUsuario,
+        int $conversacionId,
+        string $origen = 'texto',
+        string $canal = 'widget',
+        ?callable $onAviso = null
+    ): array {
         $textoUsuario = trim($textoUsuario);
         if ($textoUsuario === '') {
             return $this->error('El mensaje no puede estar vacío.');
@@ -69,17 +79,54 @@ final class AsistenteIA
         );
 
         // System prompt
-        $system = $this->construirSystem();
+        $system = $this->construirSystem($canal);
 
-        // Historial de la BD → incluye el mensaje que acabamos de guardar
+        // Historial de la BD → incluye el mensaje que acabamos de guardar. Se captura ANTES
+        // del aviso heurístico (más abajo) a propósito: si el aviso se persistiera primero,
+        // el turno enviado a Claude terminaría en un mensaje 'assistant' (el aviso) en vez de
+        // en el 'user' que acaba de escribir, y la API lo tomaría como un prefill a continuar
+        // en vez de generar una respuesta nueva.
         $mensajes = IaConversacion::cargarContextoApi($conversacionId, limite: 30);
 
         // Tools disponibles para este usuario
         $tools = IaToolRegistry::paraUsuario();
 
-        // Loop de tool-use
+        // Aviso heurístico previo (solo canal voz): `web_search` es una tool de SERVIDOR —
+        // Anthropic la ejecuta DENTRO de la misma llamada bloqueante a la API, así que Claude
+        // nunca pausa con stop_reason=tool_use para ese caso concreto y el aviso "real" que
+        // arma toolLoop() (basado en el texto que Claude deja antes de un tool_use normal)
+        // no tiene ninguna oportunidad de dispararse — la búsqueda y la respuesta final llegan
+        // juntas, en una sola respuesta. Mientras no se migre esta llamada a streaming (que sí
+        // permitiría ver el texto de Claude en tiempo real, tool sea del tipo que sea), esta
+        // heurística por palabras clave es la única forma de dar una señal rápida en ese caso.
+        // Se persiste DESPUÉS de capturar $mensajes (ver nota arriba) para no formar parte del
+        // turno que se envía a la API — solo queda en el historial para turnos futuros.
+        $avisoHeuristicoEnviado = false;
+        if ($canal === 'voz_gobia' && $onAviso !== null && self::pareceRequerirBusquedaWeb($textoUsuario)) {
+            $avisoHeuristicoEnviado = true;
+            $textoAviso     = 'Dame un momento, voy a revisar eso.';
+            $avisoMensajeId = IaConversacion::guardarMensaje(
+                conversacionId: $conversacionId,
+                rol: 'assistant',
+                contenido: $textoAviso,
+                contenidoApi: [['type' => 'text', 'text' => $textoAviso]],
+                tokensEntrada: 0,
+                tokensSalida: 0,
+                origen: $origen
+            );
+            $onAviso($textoAviso, $avisoMensajeId);
+        }
+
+        // Loop de tool-use (si ya se envió el aviso heurístico, no se envía un segundo aviso)
         try {
-            [$respuestaTexto, $tokensIn, $tokensOut] = $this->toolLoop($system, $mensajes, $tools);
+            [$respuestaTexto, $tokensIn, $tokensOut] = $this->toolLoop(
+                $system,
+                $mensajes,
+                $tools,
+                $conversacionId,
+                $origen,
+                ($canal === 'voz_gobia' && !$avisoHeuristicoEnviado) ? $onAviso : null
+            );
         } catch (RuntimeException $e) {
             return $this->error($e->getMessage());
         }
@@ -117,13 +164,23 @@ final class AsistenteIA
     /**
      * Ejecuta el loop tool-use con máximo MAX_ITER iteraciones.
      *
+     * @param  int       $conversacionId  Necesario solo para persistir el aviso rápido
+     * @param  string    $origen          'texto' | 'voz' — se propaga al aviso persistido
+     * @param  ?callable $onAviso         function(string $texto, int $mensajeId): void
      * @return array [string $textoFinal, int $tokensIn, int $tokensOut]
      * @throws RuntimeException si Claude responde con un error API
      */
-    private function toolLoop(array $system, array $mensajes, array $tools): array
-    {
-        $tokensIn  = 0;
-        $tokensOut = 0;
+    private function toolLoop(
+        array $system,
+        array $mensajes,
+        array $tools,
+        int $conversacionId = 0,
+        string $origen = 'texto',
+        ?callable $onAviso = null
+    ): array {
+        $tokensIn    = 0;
+        $tokensOut   = 0;
+        $avisoEnviado = false;
 
         for ($iter = 0; $iter < self::MAX_ITER; $iter++) {
             $respuesta = $this->claude->crearMensaje($system, $mensajes, $tools);
@@ -154,6 +211,37 @@ final class AsistenteIA
                     $tokensIn,
                     $tokensOut,
                 ];
+            }
+
+            // Aviso rápido (solo canal voz): si Claude dejó un texto hablado ANTES del
+            // tool_use (ej. "Dame un momento, ya te preparo eso"), se persiste como mensaje
+            // propio y se entrega al llamador de inmediato — antes de ejecutar la/s tool/s,
+            // que pueden tardar varios segundos (ej. generar_reporte_pdf).
+            if (!$avisoEnviado && $onAviso !== null && $conversacionId > 0) {
+                $avisoEnviado = true;
+                $tieneTexto = false;
+                foreach ($respuesta->content as $bloque) {
+                    $tipo = is_array($bloque) ? ($bloque['type'] ?? '') : ($bloque->type ?? '');
+                    if ($tipo === 'text') {
+                        $tieneTexto = true;
+                        break;
+                    }
+                }
+                if ($tieneTexto) {
+                    $textoAviso = $this->extraerTexto($respuesta->content ?? []);
+                    if ($textoAviso !== '') {
+                        $avisoMensajeId = IaConversacion::guardarMensaje(
+                            conversacionId: $conversacionId,
+                            rol: 'assistant',
+                            contenido: $textoAviso,
+                            contenidoApi: [['type' => 'text', 'text' => $textoAviso]],
+                            tokensEntrada: 0,
+                            tokensSalida: 0,
+                            origen: $origen
+                        );
+                        $onAviso($textoAviso, $avisoMensajeId);
+                    }
+                }
             }
 
             // Procesar todas las tool_use blocks de esta respuesta
@@ -214,7 +302,7 @@ final class AsistenteIA
 
     // ── System prompt ─────────────────────────────────────────────────────────
 
-    private function construirSystem(): array
+    private function construirSystem(string $canal = 'widget'): array
     {
         $fechaHoy = Util::date();
 
@@ -235,6 +323,12 @@ proyectos, visitas y gestión territorial del departamento.
 - Respondes siempre en español colombiano, con tono formal y profesional.
 
 ## USO DE HERRAMIENTAS
+- Tienes acceso a internet (`web_search`) para preguntas que no dependen de los datos internos
+  de la plataforma: noticias, clima, fechas de eventos públicos, normativa, cifras externas,
+  etc. Úsala quirúrgicamente y solo cuando realmente lo necesites — para todo lo relacionado
+  con compromisos, proyectos, visitas, PAE, hacienda, factores de inestabilidad, plan de
+  desarrollo o gestión social de Santander, usa SIEMPRE las herramientas internas de la
+  plataforma, nunca internet (esos datos no existen en la web pública).
 - Usa las herramientas especializadas cuando existan (compromisos, visitas, proyectos, etc.).
 - Cuando las herramientas especializadas no sean suficientes, usa `consultar_base_de_datos` con SQL SELECT directo.
 - En `consultar_base_de_datos`, incluye siempre filtros WHERE apropiados basados en el scope territorial del usuario (municipio_id, secretaria_id). El sistema aplica filtros server-side automáticamente, pero si los incluyes en el SQL se obtienen resultados más precisos.
@@ -713,8 +807,52 @@ LIMIT 250;
 ```
 PROMPT;
 
-        // Bloque dinámico (por usuario, sin cache): contexto territorial
-        $dinamico = "Fecha actual: {$fechaHoy}\n\n"
+        // Bloque de tono para el canal de voz de gobia.php (no aplica al widget de texto):
+        // Claude debe hablar como en una llamada real, sin markdown, y avisar rápido antes
+        // de operaciones que tomen varios segundos.
+        if ($canal === 'voz_gobia') {
+            $estable .= "\n\n" . <<<'PROMPT'
+## MODO VOZ (interfaz hablada — gobia.php)
+Esta conversación ocurre completamente por voz: el usuario te habla y escucha tu respuesta en
+audio, no la lee en pantalla. Ajusta tu forma de responder:
+- Habla como lo haría una persona real por teléfono: natural, cálida, directa. Nunca suenes
+  como un sistema o como si estuvieras leyendo un documento.
+- NUNCA uses formato markdown (nada de **negrilla**, tablas, listas con guiones o numeradas,
+  encabezados #): se lee literal en voz alta y suena mal. Si necesitas enumerar varias cosas,
+  dilas en una frase fluida ("primero... luego... y por último...").
+- Sé breve SIEMPRE, en TODA respuesta, sin importar de dónde salga la información (datos
+  internos de la plataforma, un ranking, una búsqueda web, lo que sea): 2 a 4 frases en total.
+  Si la fuente trae muchos datos (ej. un ranking de varios municipios, una lista larga de
+  factores, resultados de una búsqueda), elige los 2 o 3 puntos más relevantes o el patrón
+  general, y resúmelos en una idea fluida — NUNCA enumeres uno por uno ni narres todo lo que
+  encontraste con detalle. Si la pregunta es amplia o no específica un municipio/secretaría
+  (ej. "factores de inestabilidad" sin decir de qué municipio), responde con el panorama
+  general en 2-3 frases y pregunta si quiere que profundices en algo puntual, en vez de leer
+  todos los registros. Ampliar solo si el usuario pide explícitamente más detalle.
+- Aviso antes de usar una herramienta: dilo PRIMERO, en una frase corta y natural ("Dame un
+  momento, ya reviso eso" / "Déjame consultarlo"), ANTES de usar la herramienta — SIEMPRE que
+  vayas a usar cualquier herramienta interna de consulta de datos (compromisos, proyectos,
+  visitas, factores, hacienda, PAE, plan de desarrollo, reportes, base de datos, etc.), excepto
+  búsquedas triviales e inmediatas como `buscar_municipio` o `listar_secretarias`. Esa frase se
+  reproduce de inmediato mientras trabajas, así que debe ir siempre como el primer bloque de
+  texto de tu respuesta, antes del bloque de uso de herramienta.
+- NUNCA agregues una frase de aviso antes de usar `web_search` específicamente: el sistema ya
+  avisa por fuera de tu respuesta cuando corresponde. Si igual la agregaras, quedaría pegada al
+  inicio de tu respuesta final (no se puede separar en ese caso), así que directamente no la
+  escribas — ve derecho a responder, breve y resumido, en cuanto tengas el resultado.
+- Cuando termines de generar un informe en PDF, anuncia en voz que ya está listo y que puede
+  verlo en pantalla; nunca leas la URL en voz alta letra por letra.
+PROMPT;
+        }
+
+        // Bloque dinámico (por usuario, sin cache): identidad del usuario y contexto territorial
+        $scope          = IaScope::actual();
+        $nombreCompleto = trim(($scope['nombre'] ?? '') . ' ' . ($scope['apellido'] ?? ''));
+        $identidad      = $nombreCompleto !== ''
+            ? "Hablas con {$nombreCompleto} (rol: {$scope['rol']})."
+            : "Rol del usuario en sesión: {$scope['rol']}.";
+
+        $dinamico = "Fecha actual: {$fechaHoy}\n\n{$identidad}\n"
                    . IaScope::descripcionParaPrompt();
 
         return [
@@ -752,23 +890,26 @@ PROMPT;
     }
 
     /**
-     * Convierte los bloques de respuesta (objeto SDK) a arrays para la API.
-     * Solo incluye bloques de texto y thinking (no tool_use, que se maneja aparte).
+     * Convierte los bloques de respuesta (objetos SDK) a arrays para reenviar a la API en el
+     * siguiente turno. Incluye TODOS los tipos de bloque excepto `tool_use` (que se maneja
+     * aparte, ya reconstruido a mano en el loop): texto, thinking, y también los bloques de
+     * herramientas ejecutadas por el propio servidor de Anthropic (`server_tool_use`,
+     * `web_search_tool_result`, etc. — necesarios desde que se agregó la tool `web_search`).
+     * La API exige que esos bloques se reenvíen tal cual los devolvió, o la siguiente llamada
+     * falla; por eso se usa `jsonSerialize()` del SDK en vez de reconstruir campo por campo.
      */
     private function extraerBloques(array $bloques): array
     {
         $resultado = [];
         foreach ($bloques as $bloque) {
-            $tipo = $bloque->type ?? '';
-            if ($tipo === 'text') {
-                $resultado[] = ['type' => 'text', 'text' => $bloque->text ?? ''];
-            } elseif ($tipo === 'thinking') {
-                // La API exige devolver el thinking block con su signature intacta
-                $resultado[] = [
-                    'type'      => 'thinking',
-                    'thinking'  => $bloque->thinking ?? '',
-                    'signature' => $bloque->signature ?? '',
-                ];
+            $tipo = is_array($bloque) ? ($bloque['type'] ?? '') : ($bloque->type ?? '');
+            if ($tipo === 'tool_use') {
+                continue;
+            }
+            if (is_array($bloque)) {
+                $resultado[] = $bloque;
+            } elseif ($bloque instanceof \JsonSerializable) {
+                $resultado[] = $bloque->jsonSerialize();
             }
         }
         return $resultado;
@@ -783,5 +924,36 @@ PROMPT;
     private function error(string $mensaje): array
     {
         return ['output' => ['valid' => false, 'response' => $mensaje]];
+    }
+
+    /**
+     * Heurística por palabras clave: ¿esta pregunta probablemente necesita `web_search`
+     * (info externa/actual) en vez de datos internos de la plataforma? Ver nota en chat()
+     * sobre por qué esto es necesario mientras la llamada a Claude no sea streaming.
+     * Es deliberadamente conservadora (prefiere no avisar a avisar de más): falsos negativos
+     * solo cuestan el aviso, falsos positivos suenan raro si Claude termina respondiendo de
+     * su conocimiento general sin buscar nada.
+     */
+    private static function pareceRequerirBusquedaWeb(string $texto): bool
+    {
+        $texto = mb_strtolower($texto, 'UTF-8');
+
+        $palabrasClave = [
+            'noticia', 'noticias', 'actualidad', 'última hora', 'ultima hora',
+            'clima', 'pronóstico', 'pronostico', 'temperatura',
+            'partido', 'resultado', 'marcador', 'campeonato', 'mundial',
+            'precio del dólar', 'precio del dolar', 'cotización', 'cotizacion', 'trm',
+            'elecciones', 'quién ganó', 'quien gano',
+            'qué pasó', 'que paso', 'qué está pasando', 'que esta pasando',
+            'hoy en', 'esta semana', 'este fin de semana',
+        ];
+
+        foreach ($palabrasClave as $clave) {
+            if (str_contains($texto, $clave)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

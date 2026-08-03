@@ -2,24 +2,23 @@
   'use strict';
 
   const VIEW_CONFIG = Object.freeze({
-    userName: String(window.GOBIA_VOICE_CONFIG?.userName || 'Usuario').trim(),
-    assistantName: String(window.GOBIA_VOICE_CONFIG?.assistantName || 'ALMA').trim(),
-    timeZone: String(window.GOBIA_VOICE_CONFIG?.timeZone || 'America/Bogota').trim(),
+    assistantName: String(window.ALMA_VOICE_CONFIG?.assistantName || 'ALMA').trim(),
   });
 
   const ASSISTANT_NAME = VIEW_CONFIG.assistantName || 'ALMA';
-  const USER_FULL_NAME = VIEW_CONFIG.userName || 'Usuario';
-  const USER_FIRST_NAME = getFirstName(USER_FULL_NAME);
 
   const CONFIG = Object.freeze({
-    sttEndpoint: 'admin/api/gobia_elevenlabs_stt.php',
-    queryEndpoint: 'admin/api/gobia_voice_query.php',
-    ttsEndpoint: 'admin/api/gobia_elevenlabs_tts.php',
+    sttEndpoint: 'admin/ajax/ia_stt.php',
+    ttsEndpoint: 'admin/ajax/ia_tts.php',
+    saludoEndpoint: 'admin/ajax/ia_historial.php',
     maxRecordingMs: 20000,
     waitForVoiceMs: 7500,
-    silenceAfterVoiceMs: 1250,
+    silenceAfterVoiceMs: 3000,
     voiceThreshold: 0.026,
-    delayedNoticeMs: 2500,
+    // Barge-in: umbral y confirmación más estrictos que en modo escucha normal, para no
+    // confundir la propia voz de ALMA (vía altavoces) con una interrupción real del usuario.
+    bargeInThreshold: 0.055,
+    bargeInConfirmMs: 260,
   });
 
   const State = Object.freeze({
@@ -47,6 +46,9 @@
     processDiagnostic: document.getElementById('gobiaProcessDiagnostic'),
     voiceDiagnostic: document.getElementById('gobiaVoiceDiagnostic'),
     sessionDiagnostic: document.getElementById('gobiaSessionDiagnostic'),
+    pdfPanel: document.getElementById('almaPdfPanel'),
+    pdfLink: document.getElementById('almaPdfLink'),
+    pdfCerrar: document.getElementById('almaPdfCerrar'),
   };
 
   if (!elements.faceCanvas || !elements.waveCanvas || !elements.micButton) {
@@ -75,29 +77,20 @@
   let hasDeliveredGreeting = false;
   let currentAudioPurpose = 'idle';
   let activeQuerySequence = 0;
-  let pendingAnswerAfterNotice = '';
-  let delayNoticeFinished = false;
+  let pendingAnswerAfterNotice = 0; // mensaje_id de la respuesta final en espera del aviso
+  let delayNoticeFinished = true;
+  let conversacionIdActual = 0;
+  let bargeInVoiceStartedAt = 0;
+  let bargeInEnCurso = false;
 
-  const sessionId = getOrCreateSessionId();
+  elements.sessionDiagnostic.textContent = '—';
 
-  elements.sessionDiagnostic.textContent = sessionId.slice(-8).toUpperCase();
-
-  function getOrCreateSessionId() {
-    const storageKey = 'gobia_voice_session_id';
-    const existing = window.localStorage.getItem(storageKey);
-
-    if (existing) {
-      return existing;
+  function actualizarSessionDiagnostic(conversacionId) {
+    if (!conversacionId) {
+      return;
     }
-
-    const generated = (
-      window.crypto && typeof window.crypto.randomUUID === 'function'
-        ? window.crypto.randomUUID()
-        : `gobia-${Date.now()}-${Math.random().toString(16).slice(2)}`
-    );
-
-    window.localStorage.setItem(storageKey, generated);
-    return generated;
+    conversacionIdActual = conversacionId;
+    elements.sessionDiagnostic.textContent = String(conversacionId).padStart(6, '0');
   }
 
   function setState(nextState, title, description) {
@@ -166,58 +159,27 @@
     elements.liveCaption.style.display = 'none';
   }
 
-  function getFirstName(value) {
-    const normalized = String(value || '')
-      .replace(/\s+/g, ' ')
-      .trim();
+  // El saludo lo genera y persiste el servidor (hora de Colombia + nombre real de sesión),
+  // para poder sintetizarlo con ia_tts.php igual que cualquier otro mensaje del asistente
+  // (ese endpoint solo sintetiza mensajes ya guardados y verificados por propiedad).
+  async function obtenerSaludoInicial() {
+    const response = await fetch(CONFIG.saludoEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      credentials: 'same-origin',
+      body: new URLSearchParams({ op: 'saludo_voz' }),
+    });
 
-    if (!normalized) {
-      return 'Usuario';
+    const payload = await readJsonResponse(response);
+
+    if (!response.ok || !payload.output || !payload.output.valid) {
+      throw new Error((payload.output && payload.output.response) || 'No fue posible preparar el saludo.');
     }
 
-    const firstName = normalized.split(' ')[0].toLocaleLowerCase('es-CO');
-
-    return firstName.charAt(0).toLocaleUpperCase('es-CO') + firstName.slice(1);
-  }
-
-  function getColombiaHour() {
-    try {
-      const parts = new Intl.DateTimeFormat('en-GB', {
-        timeZone: VIEW_CONFIG.timeZone,
-        hour: '2-digit',
-        hourCycle: 'h23',
-      }).formatToParts(new Date());
-
-      const hourPart = parts.find((part) => part.type === 'hour');
-      const hour = Number.parseInt(hourPart?.value || '', 10);
-
-      return Number.isFinite(hour) ? hour : new Date().getHours();
-    } catch (error) {
-      console.warn('[ALMA] No fue posible leer la hora de Colombia.', error);
-      return new Date().getHours();
-    }
-  }
-
-  function getColombiaDayPart() {
-    const hour = getColombiaHour();
-
-    if (hour >= 5 && hour < 12) {
-      return 'Buenos días';
-    }
-
-    if (hour >= 12 && hour < 19) {
-      return 'Buenas tardes';
-    }
-
-    return 'Buenas noches';
-  }
-
-  function buildActivationGreeting() {
-    return `${getColombiaDayPart()}, ${USER_FIRST_NAME}. Soy ${ASSISTANT_NAME}. ¿En qué puedo ayudarte?`;
-  }
-
-  function buildDelayNotice() {
-    return `Ya voy a revisar y te informo, ${USER_FIRST_NAME}.`;
+    return payload.output;
   }
 
   async function ensureAudioContext() {
@@ -385,6 +347,93 @@
     recordingMonitorFrame = window.requestAnimationFrame(monitorRecordingLevel);
   }
 
+  /**
+   * Barge-in: mientras ALMA está hablando, vigila el micrófono con un umbral y una
+   * confirmación más estrictos que en modo escucha normal (CONFIG.bargeInThreshold/
+   * bargeInConfirmMs) para no confundir la propia voz de ALMA (por altavoces, pese a la
+   * cancelación de eco del navegador) con una interrupción real del usuario.
+   */
+  function monitorSpeakingLevel() {
+    if (currentState !== State.SPEAKING || !microphoneAnalyser || bargeInEnCurso) {
+      return;
+    }
+
+    const data = new Uint8Array(microphoneAnalyser.fftSize);
+    microphoneAnalyser.getByteTimeDomainData(data);
+
+    let sum = 0;
+    for (let index = 0; index < data.length; index += 1) {
+      const normalized = (data[index] - 128) / 128;
+      sum += normalized * normalized;
+    }
+    const rms = Math.sqrt(sum / data.length);
+    const now = performance.now();
+
+    if (rms >= CONFIG.bargeInThreshold) {
+      if (!bargeInVoiceStartedAt) {
+        bargeInVoiceStartedAt = now;
+      } else if (now - bargeInVoiceStartedAt >= CONFIG.bargeInConfirmMs) {
+        bargeInVoiceStartedAt = 0;
+        handleBargeIn();
+        return;
+      }
+    } else {
+      bargeInVoiceStartedAt = 0;
+    }
+
+    window.requestAnimationFrame(monitorSpeakingLevel);
+  }
+
+  /**
+   * El usuario interrumpió a ALMA mientras hablaba: corta el audio, dice una frase corta y
+   * amable, y vuelve a escuchar. No se procesa lo que el usuario dijo DURANTE la respuesta
+   * (eso lo captura el siguiente ciclo normal de escucha) — solo se corta la reproducción.
+   */
+  async function handleBargeIn() {
+    bargeInEnCurso = true;
+    activeQuerySequence += 1;
+    pendingAnswerAfterNotice = 0;
+    delayNoticeFinished = true;
+    currentAudioPurpose = 'idle';
+
+    await stopPlayback(false);
+    bargeInEnCurso = false;
+
+    try {
+      const cortesia = await obtenerFraseCortesia();
+      if (cortesia && cortesia.mensaje_id) {
+        // Reutiliza el purpose 'greeting': su listener 'ended' ya vuelve a escuchar solo en
+        // cuanto termina de sonar, sin necesidad de otro temporizador aquí.
+        await speakText(cortesia.mensaje_id, 'greeting');
+        return;
+      }
+    } catch (error) {
+      console.warn('[ALMA] No se pudo reproducir la frase de interrupción.', error);
+    }
+
+    window.setTimeout(startListening, 150);
+  }
+
+  async function obtenerFraseCortesia() {
+    const response = await fetch(CONFIG.saludoEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      credentials: 'same-origin',
+      body: new URLSearchParams({ op: 'frase_interrupcion' }),
+    });
+
+    const payload = await readJsonResponse(response);
+
+    if (!response.ok || !payload.output || !payload.output.valid) {
+      return null;
+    }
+
+    return payload.output;
+  }
+
   function stopListening(processAudio = true) {
     shouldContinue = processAudio;
 
@@ -435,90 +484,37 @@
     const blob = new Blob(recorderChunks, { type });
     recorderChunks = [];
 
+    const querySequence = ++activeQuerySequence;
+    pendingAnswerAfterNotice = 0;
+    // true = "no hay aviso pendiente": si nunca llega un aviso real del servidor, la
+    // respuesta final se reproduce de inmediato en cuanto llega (mismo criterio que si el
+    // aviso ya hubiera terminado de sonar).
+    delayNoticeFinished = true;
+
     try {
       setState(
         State.PROCESSING,
         'Interpretando tu instrucción',
-        `${ASSISTANT_NAME} está transcribiendo y analizando el comando de voz.`
+        `${ASSISTANT_NAME} está transcribiendo y analizando tu consulta.`
       );
-
-      const transcript = await transcribeAudio(blob);
-
-      if (!transcript) {
-        throw new Error('No se pudo reconocer una instrucción clara.');
-      }
-
       setCaption('');
 
-      setState(
-        State.PROCESSING,
-        'Consultando GOB360',
-        `${ASSISTANT_NAME} está revisando la información solicitada.`
-      );
-
-      const querySequence = ++activeQuerySequence;
-      let delayNoticeStarted = false;
-      let delayNoticePromise = null;
-      delayNoticeFinished = false;
-      pendingAnswerAfterNotice = '';
-
-      const delayTimer = window.setTimeout(() => {
-        if (
-          querySequence !== activeQuerySequence
-          || currentState !== State.PROCESSING
-        ) {
-          return;
-        }
-
-        delayNoticeStarted = true;
-        delayNoticePromise = speakText(
-          buildDelayNotice(),
-          'delay_notice'
-        ).catch((error) => {
-          console.warn('[ALMA] No se pudo reproducir el aviso de espera.', error);
-          delayNoticeFinished = true;
-        });
-      }, CONFIG.delayedNoticeMs);
-
-      let answer;
-
-      try {
-        answer = await requestAssistantAnswer(transcript);
-      } finally {
-        window.clearTimeout(delayTimer);
-      }
-
-      if (querySequence !== activeQuerySequence) {
-        return;
-      }
-
-      if (!answer) {
-        throw new Error(`El agente de ${ASSISTANT_NAME} no devolvió una respuesta de voz.`);
-      }
-
-      if (delayNoticeStarted && delayNoticePromise) {
-        await delayNoticePromise;
-
-        if (querySequence !== activeQuerySequence) {
-          return;
-        }
-
-        if (delayNoticeFinished) {
-          await speakAnswer(answer);
-        } else {
-          pendingAnswerAfterNotice = answer;
-        }
-
-        return;
-      }
-
-      await speakAnswer(answer);
+      await enviarAudioAAlma(blob, querySequence);
     } catch (error) {
-      handleError(error, 'No fue posible completar la consulta.');
+      if (querySequence === activeQuerySequence) {
+        handleError(error, 'No fue posible completar la consulta.');
+      }
     }
   }
 
-  async function transcribeAudio(blob) {
+  /**
+   * Envía el audio a ia_stt.php (canal voz_gobia) y lee la respuesta en streaming NDJSON:
+   * una línea opcional {"tipo":"aviso",...} — se reproduce de inmediato, antes de que la
+   * herramienta lenta termine — y una línea final {"tipo":"final",...} con la respuesta
+   * definitiva. Reutiliza el mecanismo ya existente de pendingAnswerAfterNotice/
+   * delayNoticeFinished para encadenar aviso → respuesta sin pisarse.
+   */
+  async function enviarAudioAAlma(blob, querySequence) {
     const extension = blob.type.includes('mp4')
       ? 'm4a'
       : blob.type.includes('ogg')
@@ -526,7 +522,8 @@
         : 'webm';
 
     const data = new FormData();
-    data.append('audio', blob, `gobia-command.${extension}`);
+    data.append('audio', blob, `alma-command.${extension}`);
+    data.append('canal', 'voz_gobia');
 
     const response = await fetch(CONFIG.sttEndpoint, {
       method: 'POST',
@@ -534,48 +531,135 @@
       credentials: 'same-origin',
     });
 
-    const payload = await readJsonResponse(response);
-
-    if (!response.ok || !payload.ok) {
-      throw new Error(payload.message || 'Error al transcribir el audio.');
+    if (!response.ok || !response.body) {
+      const payload = await readJsonResponse(response);
+      throw new Error(
+        (payload.output && payload.output.response) || payload.message || 'Error al procesar el audio.'
+      );
     }
 
-    return String(payload.text || '').trim();
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let buffer = '';
+    let recibioFinal = false;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        break;
+      }
+
+      buffer += decoder.decode(value, { stream: true });
+
+      let newlineIndex = buffer.indexOf('\n');
+      while (newlineIndex >= 0) {
+        const line = buffer.slice(0, newlineIndex).trim();
+        buffer = buffer.slice(newlineIndex + 1);
+        newlineIndex = buffer.indexOf('\n');
+
+        if (!line) {
+          continue;
+        }
+
+        if (querySequence !== activeQuerySequence) {
+          // El usuario canceló/interrumpió mientras llegaba la respuesta.
+          return;
+        }
+
+        let payload;
+        try {
+          payload = JSON.parse(line);
+        } catch (error) {
+          continue;
+        }
+
+        if (payload.tipo === 'aviso') {
+          manejarAviso(payload, querySequence);
+        } else if (payload.tipo === 'final') {
+          recibioFinal = true;
+          manejarRespuestaFinal(payload, querySequence);
+        } else if (payload.tipo === 'error') {
+          throw new Error(payload.texto || 'Error al procesar la respuesta.');
+        }
+      }
+    }
+
+    if (!recibioFinal) {
+      throw new Error(`${ASSISTANT_NAME} no devolvió una respuesta.`);
+    }
   }
 
-  async function requestAssistantAnswer(transcript) {
-    const response = await fetch(CONFIG.queryEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify({
-        chatInput: transcript,
-        sessionId,
-        userName: USER_FULL_NAME,
-        assistantName: ASSISTANT_NAME,
-      }),
+  function manejarAviso(payload, querySequence) {
+    const mensajeId = Number.parseInt(payload.mensaje_id, 10) || 0;
+    if (!mensajeId) {
+      return;
+    }
+
+    actualizarSessionDiagnostic(payload.conversacion_id);
+    delayNoticeFinished = false;
+
+    speakText(mensajeId, 'delay_notice').catch((error) => {
+      console.warn('[ALMA] No se pudo reproducir el aviso rápido.', error);
+      delayNoticeFinished = true;
+
+      // Si la respuesta final ya había llegado mientras el aviso fallaba, no debe quedar
+      // atrapada esperando un evento 'ended' que nunca ocurrirá (el audio nunca llegó a sonar).
+      if (pendingAnswerAfterNotice && querySequence === activeQuerySequence) {
+        const pendiente = pendingAnswerAfterNotice;
+        pendingAnswerAfterNotice = 0;
+        speakText(pendiente, 'answer').catch((err) => {
+          if (querySequence === activeQuerySequence) {
+            handleError(err, 'No fue posible reproducir la respuesta.');
+          }
+        });
+      }
     });
-
-    const payload = await readJsonResponse(response);
-
-    if (!response.ok || !payload.ok) {
-      throw new Error(payload.message || `Error al consultar el agente de ${ASSISTANT_NAME}.`);
-    }
-
-    return String(payload.response || '').trim();
   }
 
-  async function speakText(text, purpose = 'answer') {
-    const normalizedText = String(text || '').trim();
+  function manejarRespuestaFinal(payload, querySequence) {
+    const mensajeId = Number.parseInt(payload.mensaje_id, 10) || 0;
+    actualizarSessionDiagnostic(payload.conversacion_id);
 
-    if (!normalizedText) {
-      throw new Error('No hay texto para generar la voz.');
+    if (payload.pdf_url) {
+      mostrarPanelPdf(payload.pdf_url);
+    }
+
+    if (!mensajeId) {
+      throw new Error(`${ASSISTANT_NAME} no devolvió una respuesta de voz.`);
+    }
+
+    if (!delayNoticeFinished) {
+      // El aviso todavía está sonando: el listener 'ended' del audio recoge este valor.
+      pendingAnswerAfterNotice = mensajeId;
+      return;
+    }
+
+    speakText(mensajeId, 'answer').catch((error) => {
+      if (querySequence === activeQuerySequence) {
+        handleError(error, 'No fue posible reproducir la respuesta.');
+      }
+    });
+  }
+
+  /**
+   * Sintetiza y reproduce un mensaje ya persistido (identificado por su mensaje_id — nunca
+   * texto crudo: ia_tts.php solo sintetiza mensajes guardados y verificados por propiedad).
+   */
+  async function speakText(mensajeId, purpose = 'answer') {
+    if (!mensajeId) {
+      throw new Error('No hay mensaje para generar la voz.');
     }
 
     await ensureAudioContext();
+
+    // Deja el micrófono listo desde la primera respuesta que suena (incluido el saludo), para
+    // poder detectar una interrupción por voz mientras ALMA habla (ver monitorSpeakingLevel).
+    try {
+      await ensureMicrophone();
+    } catch (error) {
+      console.warn('[ALMA] Micrófono no disponible para detectar interrupciones por voz.', error);
+    }
+
     setCaption('');
 
     currentAudioPurpose = purpose;
@@ -612,11 +696,11 @@
     const response = await fetch(CONFIG.ttsEndpoint, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
         'X-Requested-With': 'XMLHttpRequest',
       },
       credentials: 'same-origin',
-      body: JSON.stringify({ text: normalizedText }),
+      body: new URLSearchParams({ mensaje_id: String(mensajeId) }),
     });
 
     if (!response.ok) {
@@ -652,10 +736,6 @@
     await elements.audio.play();
   }
 
-  async function speakAnswer(answer) {
-    await speakText(answer, 'answer');
-  }
-
   async function stopPlayback(returnToIdle = true) {
     if (!elements.audio.paused) {
       elements.audio.pause();
@@ -677,7 +757,7 @@
   async function stopEverything() {
     shouldContinue = false;
     activeQuerySequence += 1;
-    pendingAnswerAfterNotice = '';
+    pendingAnswerAfterNotice = 0;
     delayNoticeFinished = true;
     currentAudioPurpose = 'idle';
 
@@ -729,6 +809,26 @@
     }
   }
 
+  function mostrarPanelPdf(url) {
+    if (!elements.pdfPanel || !elements.pdfLink || !url) {
+      return;
+    }
+
+    elements.pdfLink.href = url;
+    elements.pdfPanel.hidden = false;
+  }
+
+  function ocultarPanelPdf() {
+    if (!elements.pdfPanel) {
+      return;
+    }
+    elements.pdfPanel.hidden = true;
+  }
+
+  if (elements.pdfCerrar) {
+    elements.pdfCerrar.addEventListener('click', ocultarPanelPdf);
+  }
+
   function truncateText(text, maxLength) {
     const normalized = String(text || '').replace(/\s+/g, ' ').trim();
     return normalized.length > maxLength
@@ -744,7 +844,7 @@
 
     if (currentState === State.SPEAKING) {
       activeQuerySequence += 1;
-      pendingAnswerAfterNotice = '';
+      pendingAnswerAfterNotice = 0;
       delayNoticeFinished = true;
       currentAudioPurpose = 'idle';
       await stopPlayback(false);
@@ -760,7 +860,9 @@
       hasDeliveredGreeting = true;
 
       try {
-        await speakText(buildActivationGreeting(), 'greeting');
+        const saludo = await obtenerSaludoInicial();
+        actualizarSessionDiagnostic(saludo.conversacion_id);
+        await speakText(saludo.mensaje_id, 'greeting');
       } catch (error) {
         hasDeliveredGreeting = false;
         handleError(error, 'No fue posible reproducir el saludo.');
@@ -799,6 +901,9 @@
       currentLabels.title,
       currentLabels.text
     );
+
+    bargeInVoiceStartedAt = 0;
+    window.requestAnimationFrame(monitorSpeakingLevel);
   });
 
   elements.audio.addEventListener('ended', () => {
@@ -828,10 +933,10 @@
       delayNoticeFinished = true;
 
       if (pendingAnswerAfterNotice) {
-        const answer = pendingAnswerAfterNotice;
-        pendingAnswerAfterNotice = '';
+        const mensajeIdFinal = pendingAnswerAfterNotice;
+        pendingAnswerAfterNotice = 0;
 
-        speakAnswer(answer).catch((error) => {
+        speakText(mensajeIdFinal, 'answer').catch((error) => {
           handleError(error, 'No fue posible reproducir la respuesta.');
         });
 

@@ -2,9 +2,12 @@
 /**
  * Endpoint del historial de conversaciones IA.
  *
- * POST op=listar  → devuelve las últimas 30 conversaciones del usuario
- * POST op=cargar  → devuelve los mensajes de una conversación (conversacion_id requerido)
- * POST op=nueva   → crea una conversación vacía y devuelve su ID
+ * POST op=listar     → devuelve las últimas 30 conversaciones del usuario (canal widget)
+ * POST op=cargar      → devuelve los mensajes de una conversación (conversacion_id requerido)
+ * POST op=nueva       → crea una conversación vacía y devuelve su ID (canal widget)
+ * POST op=saludo_voz  → saludo inicial de la sesión diaria de voz de gobia.php: lo genera y
+ *                       persiste el servidor (con hora de Colombia y nombre real de sesión)
+ *                       para poder sintetizarlo con ia_tts.php como cualquier otro mensaje
  */
 
 session_start();
@@ -78,6 +81,71 @@ switch ($op) {
                 'conversacion_id' => $conversacionId,
             ],
         ]);
+        break;
+
+    case 'saludo_voz':
+        $conversacionId = IaConversacion::obtenerOCrearSesionDiaria('voz_gobia');
+
+        $hora = (int) (new DateTime('now', new DateTimeZone('America/Bogota')))->format('G');
+        $saludoHora = match (true) {
+            $hora >= 5 && $hora < 12  => 'Buenos días',
+            $hora >= 12 && $hora < 19 => 'Buenas tardes',
+            default                   => 'Buenas noches',
+        };
+
+        $nombreCompleto = trim((string) SessionData::getNombreUsuario());
+        $primerNombre   = $nombreCompleto !== '' ? explode(' ', $nombreCompleto)[0] : 'Usuario';
+        $primerNombre   = mb_convert_case(mb_strtolower($primerNombre, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+
+        $texto = "{$saludoHora}, {$primerNombre}. Soy ALMA. ¿En qué puedo ayudarte?";
+
+        $mensajeId = IaConversacion::guardarMensaje(
+            conversacionId: $conversacionId,
+            rol: 'assistant',
+            contenido: $texto,
+            contenidoApi: [['type' => 'text', 'text' => $texto]],
+            tokensEntrada: 0,
+            tokensSalida: 0,
+            origen: 'voz'
+        );
+
+        echo json_encode([
+            'output' => [
+                'valid'           => true,
+                'response'        => $texto,
+                'conversacion_id' => $conversacionId,
+                'mensaje_id'      => $mensajeId,
+            ],
+        ], JSON_UNESCAPED_UNICODE);
+        break;
+
+    case 'frase_interrupcion':
+        // Frase corta y amable que ALMA dice al ser interrumpida por voz (barge-in) mientras
+        // está hablando, antes de volver a escuchar. Se persiste igual que el saludo para
+        // poder sintetizarla con ia_tts.php (que solo trabaja con mensajes ya guardados).
+        $conversacionId = IaConversacion::obtenerOCrearSesionDiaria('voz_gobia');
+
+        $frases = ['Dime, te escucho.', 'Claro, adelante.', 'Perdón, continúa.', 'Te escucho.'];
+        $texto  = $frases[array_rand($frases)];
+
+        $mensajeId = IaConversacion::guardarMensaje(
+            conversacionId: $conversacionId,
+            rol: 'assistant',
+            contenido: $texto,
+            contenidoApi: [['type' => 'text', 'text' => $texto]],
+            tokensEntrada: 0,
+            tokensSalida: 0,
+            origen: 'voz'
+        );
+
+        echo json_encode([
+            'output' => [
+                'valid'           => true,
+                'response'        => $texto,
+                'conversacion_id' => $conversacionId,
+                'mensaje_id'      => $mensajeId,
+            ],
+        ], JSON_UNESCAPED_UNICODE);
         break;
 
     default:

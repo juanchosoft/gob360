@@ -6,22 +6,13 @@ include './admin/classes/Secretarias.php';
 
 $modulo = 'ALMA Asistente IA';
 
-/*
-|--------------------------------------------------------------------------
-| NOMBRE DEL USUARIO CAPTURADO DESDE LA SESIÓN
-|--------------------------------------------------------------------------
-*/
-$nombreUsuarioSesion = trim((string) SessionData::getNombreUsuario());
-
-if ($nombreUsuarioSesion === '') {
-    $nombreUsuarioSesion = 'Usuario';
-}
-
-$zonaHorariaAlma = 'America/Bogota';
+// Oculta el widget de chat flotante en esta vista: la interfaz de voz de esta página YA ES
+// el asistente ALMA (mismo backend); mostrar ambos a la vez sería redundante. Ver
+// admin/include/gerenic_script.php.
+$ocultarWidgetIa = true;
 ?>
 
 <link href="assets/css/metas_plan_desarrollo_gob360_v2.css" rel="stylesheet">
-<link href="assets/css/gobia_voice_assistant_gob360.css" rel="stylesheet">
 <link href="assets/css/gobia_assistant.css" rel="stylesheet">
 
 <body class="gob360-development-goals gobia-voice-page">
@@ -82,8 +73,8 @@ $zonaHorariaAlma = 'America/Bogota';
 
               <article>
                 <small>Agente</small>
-                <strong>n8n + GOB360</strong>
-                <span>Sesión conversacional</span>
+                <strong>Claude + GOB360</strong>
+                <span>Sesión diaria por usuario</span>
               </article>
             </aside>
 
@@ -253,6 +244,14 @@ $zonaHorariaAlma = 'America/Bogota';
 
       <audio id="gobiaAudioPlayer" preload="auto" hidden></audio>
 
+      <!-- Panel de entrega de informe PDF: oculto hasta que ALMA genera uno en la conversación -->
+      <div id="almaPdfPanel" class="alma-pdf-panel" hidden>
+        <i data-feather="file-text"></i>
+        <span>Tu informe está listo.</span>
+        <a id="almaPdfLink" href="#" target="_blank" rel="noopener">Abrir PDF</a>
+        <button type="button" id="almaPdfCerrar" aria-label="Cerrar aviso de informe">&times;</button>
+      </div>
+
     </div>
   </div>
 
@@ -262,34 +261,9 @@ $zonaHorariaAlma = 'America/Bogota';
   <script src="assets/js/plugins/bootstrap.min.js"></script>
   <script src="assets/js/pcoded.min.js"></script>
 
-  <!--
-      Configuración de la vista entregada al JavaScript.
-      El nombre se obtiene directamente de la sesión de GOB360.
-  -->
   <script>
-    window.GOBIA_VOICE_CONFIG = Object.freeze({
-      userName: <?php
-        echo json_encode(
-          $nombreUsuarioSesion,
-          JSON_UNESCAPED_UNICODE
-          | JSON_UNESCAPED_SLASHES
-          | JSON_HEX_TAG
-          | JSON_HEX_APOS
-          | JSON_HEX_AMP
-          | JSON_HEX_QUOT
-        );
-      ?>,
+    window.ALMA_VOICE_CONFIG = Object.freeze({
       assistantName: 'ALMA',
-      timeZone: <?php
-        echo json_encode(
-          $zonaHorariaAlma,
-          JSON_UNESCAPED_SLASHES
-          | JSON_HEX_TAG
-          | JSON_HEX_APOS
-          | JSON_HEX_AMP
-          | JSON_HEX_QUOT
-        );
-      ?>
     });
   </script>
 

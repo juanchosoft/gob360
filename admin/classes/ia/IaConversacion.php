@@ -8,26 +8,59 @@ final class IaConversacion
 {
     /**
      * Crea una conversación nueva para el usuario en sesión.
+     * @param  string $canal 'widget' | 'voz_gobia'
      * @return int ID de la nueva conversación
      */
-    public static function crear(): int
+    public static function crear(string $canal = 'widget'): int
     {
         $usuarioId = (int) SessionData::getUserId();
         $db  = new DbConection();
         $pdo = $db->openConect();
 
         $st = $pdo->prepare(
-            "INSERT INTO tbl_ia_conversaciones (tbl_usuario_id, created_at, updated_at)
-             VALUES (:uid, :now, :now)"
+            "INSERT INTO tbl_ia_conversaciones (tbl_usuario_id, canal, created_at, updated_at)
+             VALUES (:uid, :canal, :now, :now)"
         );
-        $st->execute([':uid' => $usuarioId, ':now' => Util::date()]);
+        $st->execute([':uid' => $usuarioId, ':canal' => $canal, ':now' => Util::date()]);
         $id = (int) $pdo->lastInsertId();
         $db->closeConect();
         return $id;
     }
 
     /**
-     * Lista las conversaciones propias del usuario (máx. 30, ordenadas por reciente).
+     * Devuelve la conversación de HOY del usuario para el canal indicado, creándola si no
+     * existe. Usado por el canal 'voz_gobia': una sola sesión por usuario por día, para no
+     * acumular historial largo ni mezclarse con el historial del widget de chat.
+     *
+     * @param  string $canal 'voz_gobia' (u otro canal de sesión única diaria en el futuro)
+     * @return int ID de la conversación de hoy
+     */
+    public static function obtenerOCrearSesionDiaria(string $canal): int
+    {
+        $usuarioId = (int) SessionData::getUserId();
+        $db  = new DbConection();
+        $pdo = $db->openConect();
+
+        $st = $pdo->prepare(
+            "SELECT id FROM tbl_ia_conversaciones
+              WHERE tbl_usuario_id = :uid AND canal = :canal AND activa = 1
+                AND DATE(created_at) = CURDATE()
+              ORDER BY id DESC LIMIT 1"
+        );
+        $st->execute([':uid' => $usuarioId, ':canal' => $canal]);
+        $id = $st->fetchColumn();
+        $db->closeConect();
+
+        if ($id !== false) {
+            return (int) $id;
+        }
+
+        return self::crear($canal);
+    }
+
+    /**
+     * Lista las conversaciones propias del usuario en el widget de chat (máx. 30, ordenadas
+     * por reciente). Las sesiones de voz de gobia.php (canal 'voz_gobia') no se listan aquí.
      * @return array<int, array{id:int, titulo:string, updated_at:string}>
      */
     public static function listarPropias(): array
@@ -39,7 +72,7 @@ final class IaConversacion
         $st = $pdo->prepare(
             "SELECT id, COALESCE(titulo, 'Nueva conversación') AS titulo, updated_at
                FROM tbl_ia_conversaciones
-              WHERE tbl_usuario_id = :uid AND activa = 1
+              WHERE tbl_usuario_id = :uid AND activa = 1 AND canal = 'widget'
               ORDER BY updated_at DESC
               LIMIT 30"
         );

@@ -772,3 +772,57 @@ body.gobia-voice-page::after {
   padding: 0 !important;
   border: 0 !important;
 }
+
+/* ALMA: panel de entrega de informe PDF generado durante la conversación de voz */
+.alma-pdf-panel {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--gobia-panel-strong);
+  border: 1px solid var(--gobia-border-strong);
+  box-shadow: var(--gobia-soft-shadow);
+  color: var(--gobia-text);
+  font-size: 14px;
+  max-width: min(90vw, 360px);
+}
+
+.alma-pdf-panel[hidden] {
+  display: none;
+}
+
+.alma-pdf-panel i {
+  color: var(--gobia-green);
+  flex-shrink: 0;
+}
+
+.alma-pdf-panel a {
+  color: var(--gobia-cyan);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.alma-pdf-panel a:hover {
+  text-decoration: underline;
+}
+
+.alma-pdf-panel button {
+  margin-left: auto;
+  background: transparent;
+  border: 0;
+  color: var(--gobia-muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+.alma-pdf-panel button:hover {
+  color: var(--gobia-text);
+}
