@@ -143,46 +143,59 @@ try {
 
 // ── Canal voz_gobia: sesión diaria + streaming aviso/final ────────────────────
 if ($canal === 'voz_gobia') {
-    $conversacionId = IaConversacion::obtenerOCrearSesionDiaria('voz_gobia');
+    // Envuelve TODA la rama: si algo revienta de forma inesperada (ej. una migración de BD
+    // faltante, un error de configuración), el cliente recibe una línea 'error' legible en vez
+    // de que el stream se corte a medias con un fatal error de PHP sin ninguna línea 'final'
+    // (eso es lo que el cliente reporta como "ALMA no devolvió una respuesta" — mensaje
+    // genérico porque no hay forma de leer un fatal error como JSON línea por línea).
+    try {
+        $conversacionId = IaConversacion::obtenerOCrearSesionDiaria('voz_gobia');
 
-    $onAviso = static function (string $texto, int $mensajeId) use ($conversacionId): void {
+        $onAviso = static function (string $texto, int $mensajeId) use ($conversacionId): void {
+            echo json_encode([
+                'tipo'            => 'aviso',
+                'texto'           => $texto,
+                'mensaje_id'      => $mensajeId,
+                'conversacion_id' => $conversacionId,
+            ], JSON_UNESCAPED_UNICODE) . "\n";
+            @flush();
+        };
+
+        $asistente = new AsistenteIA();
+        $resultado = $asistente->chat($transcripcion, $conversacionId, 'voz', 'voz_gobia', $onAviso);
+
+        if (!($resultado['output']['valid'] ?? false)) {
+            echo json_encode([
+                'tipo'  => 'error',
+                'texto' => $resultado['output']['response'] ?? 'Error desconocido.',
+            ], JSON_UNESCAPED_UNICODE) . "\n";
+            exit;
+        }
+
+        $textoFinal = (string) $resultado['output']['response'];
+
+        // Si la respuesta incluye la URL de un informe PDF (tool generar_reporte_pdf), se
+        // extrae aparte para que el cliente pueda mostrar un panel/enlace sin parsear texto.
+        $pdfUrl = null;
+        if (preg_match('#https?://\S*ia_reporte_pdf\.php\?id=\d+#', $textoFinal, $m)) {
+            $pdfUrl = $m[0];
+        }
+
         echo json_encode([
-            'tipo'            => 'aviso',
-            'texto'           => $texto,
-            'mensaje_id'      => $mensajeId,
-            'conversacion_id' => $conversacionId,
+            'tipo'            => 'final',
+            'texto'           => $textoFinal,
+            'transcripcion'   => $transcripcion,
+            'conversacion_id' => $resultado['output']['conversacion_id'],
+            'mensaje_id'      => $resultado['output']['mensaje_id'] ?? 0,
+            'pdf_url'         => $pdfUrl,
         ], JSON_UNESCAPED_UNICODE) . "\n";
-        @flush();
-    };
-
-    $asistente = new AsistenteIA();
-    $resultado = $asistente->chat($transcripcion, $conversacionId, 'voz', 'voz_gobia', $onAviso);
-
-    if (!($resultado['output']['valid'] ?? false)) {
+    } catch (\Throwable $e) {
+        error_log('[ALMA voz_gobia] ' . get_class($e) . ': ' . $e->getMessage());
         echo json_encode([
             'tipo'  => 'error',
-            'texto' => $resultado['output']['response'] ?? 'Error desconocido.',
+            'texto' => 'Ocurrió un error inesperado en el servidor. Intenta de nuevo.',
         ], JSON_UNESCAPED_UNICODE) . "\n";
-        exit;
     }
-
-    $textoFinal = (string) $resultado['output']['response'];
-
-    // Si la respuesta incluye la URL de un informe PDF (tool generar_reporte_pdf), se extrae
-    // aparte para que el cliente pueda mostrar un panel/enlace sin tener que parsear el texto.
-    $pdfUrl = null;
-    if (preg_match('#https?://\S*ia_reporte_pdf\.php\?id=\d+#', $textoFinal, $m)) {
-        $pdfUrl = $m[0];
-    }
-
-    echo json_encode([
-        'tipo'            => 'final',
-        'texto'           => $textoFinal,
-        'transcripcion'   => $transcripcion,
-        'conversacion_id' => $resultado['output']['conversacion_id'],
-        'mensaje_id'      => $resultado['output']['mensaje_id'] ?? 0,
-        'pdf_url'         => $pdfUrl,
-    ], JSON_UNESCAPED_UNICODE) . "\n";
     exit;
 }
 

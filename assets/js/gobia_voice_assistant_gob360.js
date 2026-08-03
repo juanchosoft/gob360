@@ -580,6 +580,10 @@
           manejarRespuestaFinal(payload, querySequence);
         } else if (payload.tipo === 'error') {
           throw new Error(payload.texto || 'Error al procesar la respuesta.');
+        } else if (payload.output && payload.output.valid === false) {
+          // Formato antiguo de error (validaciones previas al canal voz_gobia: audio
+          // inválido, transcripción fallida, sesión expirada, etc. — no usan 'tipo').
+          throw new Error(payload.output.response || 'Error al procesar el audio.');
         }
       }
     }
