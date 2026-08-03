@@ -143,11 +143,8 @@ try {
 
 // ── Canal voz_gobia: sesión diaria + streaming aviso/final ────────────────────
 if ($canal === 'voz_gobia') {
-    // Envuelve TODA la rama: si algo revienta de forma inesperada (ej. una migración de BD
-    // faltante, un error de configuración), el cliente recibe una línea 'error' legible en vez
-    // de que el stream se corte a medias con un fatal error de PHP sin ninguna línea 'final'
-    // (eso es lo que el cliente reporta como "ALMA no devolvió una respuesta" — mensaje
-    // genérico porque no hay forma de leer un fatal error como JSON línea por línea).
+    // Envuelve toda la rama para que un error inesperado (BD, config, etc.) llegue como
+    // línea 'error' legible en vez de cortar el stream a medias con un fatal error de PHP.
     try {
         $conversacionId = IaConversacion::obtenerOCrearSesionDiaria('voz_gobia');
 

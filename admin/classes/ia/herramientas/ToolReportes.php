@@ -197,8 +197,9 @@ final class ToolReportes
         $scheme = $https ? 'https' : 'http';
         $host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
 
+        // Quita el script actual bajo admin/ajax/ (puede ser cualquiera de los que llaman esta tool)
         $script   = $_SERVER['SCRIPT_NAME'] ?? '/admin/ajax/ia_chat.php';
-        $basePath = preg_replace('#admin/ajax/ia_chat\.php$#', '', $script);
+        $basePath = preg_replace('#admin/ajax/[^/]+\.php$#', '', $script);
 
         return "{$scheme}://{$host}{$basePath}admin/ajax/ia_reporte_pdf.php?id={$id}";
     }
