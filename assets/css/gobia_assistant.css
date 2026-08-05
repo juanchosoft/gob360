@@ -87,3 +87,20 @@ body.gobia-voice-page .stark-rail--right article>span:after{content:"";position:
 @keyframes starkRailSweep{to{translate:100% 0}}@keyframes starkRadarBreath{50%{scale:.93;opacity:.42}}@keyframes starkTarget{0%{scale:.4;opacity:0}35%{opacity:1}100%{scale:2.1;opacity:0}}@keyframes starkTerminalScan{0%{top:30px}100%{top:calc(100% - 25px)}}@keyframes starkBinaryFlow{0%{translate:0 -45%}100%{translate:0 0}}@keyframes starkDiagnosticSweep{0%{left:-45%}100%{left:125%}}@keyframes starkIconRing{0%{scale:.65;opacity:.8}100%{scale:1.35;opacity:0}}
 @media(max-width:1200px){body.gobia-voice-page .stark-console__grid{grid-template-columns:235px minmax(500px,1fr) 205px!important}.stark-radar-station #gobiaRadarCanvas{min-height:225px!important}}
 @media(max-width:900px){body.gobia-voice-page .stark-console__grid{grid-template-columns:1fr!important}.stark-search-rail{grid-template-columns:1fr 1fr;grid-template-rows:28px 280px}.stark-search-rail>.stark-rail__caption{grid-column:1/-1}.stark-radar-station #gobiaRadarCanvas{min-height:230px!important}}
+
+/* Panel flotante de informe PDF generado por voz */
+.alma-pdf-panel{position:fixed;z-index:9999;right:22px;bottom:22px;display:flex;flex-direction:column;gap:12px;width:min(340px,calc(100vw - 28px));padding:16px;border:1px solid rgba(104,255,190,.35);border-radius:18px;background:linear-gradient(135deg,rgba(6,18,32,.97),rgba(7,29,39,.94));box-shadow:0 18px 50px rgba(0,0,0,.45),0 0 30px rgba(104,255,190,.12);color:var(--alma-text);animation:almaPdfIn .35s ease-out}
+.alma-pdf-panel[hidden]{display:none}
+.alma-pdf-panel__row{display:flex;align-items:center;gap:12px;padding-right:22px}
+.alma-pdf-panel__icon{display:grid;flex:0 0 42px;width:42px;height:42px;place-items:center;border-radius:13px;background:rgba(104,255,190,.14);border:1px solid rgba(104,255,190,.3);color:var(--alma-green);box-shadow:0 0 16px rgba(104,255,190,.15)}
+.alma-pdf-panel__icon svg{width:19px;height:19px}
+.alma-pdf-panel__body{display:flex;flex-direction:column;gap:2px;min-width:0}
+.alma-pdf-panel__body strong{font-size:14px;font-weight:700;color:#fff}
+.alma-pdf-panel__body span{font-size:12px;color:var(--alma-muted);line-height:1.35}
+.alma-pdf-panel__action{display:flex;align-items:center;justify-content:center;gap:7px;padding:10px 14px;border-radius:12px;background:var(--alma-green);color:#042034;font-size:13px;font-weight:700;text-decoration:none;transition:filter .15s,scale .15s}
+.alma-pdf-panel__action svg{width:15px;height:15px}
+.alma-pdf-panel__action:hover{filter:brightness(1.08);scale:1.015;color:#042034}
+.alma-pdf-panel__close{position:absolute;top:10px;right:10px;display:grid;width:24px;height:24px;place-items:center;border:none;border-radius:50%;background:rgba(255,255,255,.06);color:var(--alma-muted);font-size:16px;line-height:1;cursor:pointer;transition:background .15s,color .15s}
+.alma-pdf-panel__close:hover{background:rgba(255,105,125,.18);color:#ff9bad}
+@keyframes almaPdfIn{from{opacity:0;translate:0 14px}to{opacity:1;translate:0 0}}
+@media(max-width:600px){.alma-pdf-panel{right:14px;bottom:14px;left:14px;width:auto}}

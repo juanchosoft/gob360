@@ -32,6 +32,11 @@ if (!SessionData::hasPermission('asistente_ia.chat.use')) {
     exit;
 }
 
+// Libera el lock de sesión cuanto antes: con el manejador de sesiones por defecto, otra
+// petición con el mismo PHPSESSID (ej. ia_tts.php o ia_historial.php desde gobia.php) se
+// queda encolada hasta que este script termine si no se cierra la sesión aquí.
+session_write_close();
+
 // Solo POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);

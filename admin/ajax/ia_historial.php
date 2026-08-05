@@ -8,6 +8,8 @@
  * POST op=saludo_voz  → saludo inicial de la sesión diaria de voz de gobia.php: lo genera y
  *                       persiste el servidor (con hora de Colombia y nombre real de sesión)
  *                       para poder sintetizarlo con ia_tts.php como cualquier otro mensaje
+ * POST op=frase_espera → frase corta de espera para reproducir apenas termina la grabación,
+ *                        antes de que STT/Claude respondan (ver gobia_voice_assistant_gob360.js)
  */
 
 session_start();
@@ -27,6 +29,11 @@ if (!SessionData::hasPermission('asistente_ia.chat.use')) {
     echo json_encode(['output' => ['valid' => false, 'response' => 'Sin permiso para usar el asistente IA.']]);
     exit;
 }
+
+// Libera el lock de sesión cuanto antes para no encolarse detrás de ia_stt.php (ver
+// comentario equivalente ahí) — el saludo, la frase de espera y la de interrupción deben
+// poder generarse en paralelo con una transcripción/consulta en curso.
+session_write_close();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -126,6 +133,35 @@ switch ($op) {
         $conversacionId = IaConversacion::obtenerOCrearSesionDiaria('voz_gobia');
 
         $frases = ['Dime, te escucho.', 'Claro, adelante.', 'Perdón, continúa.', 'Te escucho.'];
+        $texto  = $frases[array_rand($frases)];
+
+        $mensajeId = IaConversacion::guardarMensaje(
+            conversacionId: $conversacionId,
+            rol: 'assistant',
+            contenido: $texto,
+            contenidoApi: [['type' => 'text', 'text' => $texto]],
+            tokensEntrada: 0,
+            tokensSalida: 0,
+            origen: 'voz'
+        );
+
+        echo json_encode([
+            'output' => [
+                'valid'           => true,
+                'response'        => $texto,
+                'conversacion_id' => $conversacionId,
+                'mensaje_id'      => $mensajeId,
+            ],
+        ], JSON_UNESCAPED_UNICODE);
+        break;
+
+    case 'frase_espera':
+        // Frase corta que ALMA dice apenas termina de escuchar, mientras la transcripción y
+        // la consulta real siguen en curso por detrás — igual que 'frase_interrupcion', se
+        // persiste para poder sintetizarla con ia_tts.php.
+        $conversacionId = IaConversacion::obtenerOCrearSesionDiaria('voz_gobia');
+
+        $frases = ['Dame un momento, ya lo reviso.', 'Un segundo, ya te ayudo.', 'Claro, dame un instante.', 'Ya te cuento, un momento.'];
         $texto  = $frases[array_rand($frases)];
 
         $mensajeId = IaConversacion::guardarMensaje(

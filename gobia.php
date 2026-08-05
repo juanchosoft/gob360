@@ -103,7 +103,17 @@ $ocultarWidgetIa = true;
 </section>
 </main>
 <audio id="gobiaAudioPlayer" preload="auto" hidden></audio>
-<div id="almaPdfPanel" class="alma-pdf-panel" hidden><i data-feather="file-text"></i><span>Tu informe está listo.</span><a id="almaPdfLink" href="#" target="_blank" rel="noopener">Abrir PDF</a><button type="button" id="almaPdfCerrar" aria-label="Cerrar aviso de informe">&times;</button></div>
+<div id="almaPdfPanel" class="alma-pdf-panel" hidden role="status" aria-live="polite">
+  <button type="button" id="almaPdfCerrar" class="alma-pdf-panel__close" aria-label="Cerrar aviso de informe">&times;</button>
+  <div class="alma-pdf-panel__row">
+    <div class="alma-pdf-panel__icon"><i data-feather="file-text"></i></div>
+    <div class="alma-pdf-panel__body">
+      <strong>Informe generado</strong>
+      <span>Tu PDF ya está listo para descargar.</span>
+    </div>
+  </div>
+  <a id="almaPdfLink" class="alma-pdf-panel__action" href="#" target="_blank" rel="noopener"><i data-feather="download"></i> Abrir PDF</a>
+</div>
 </div></div>
 <?php include 'admin/include/gerenic_script.php'; ?>
 <script src="assets/js/vendor-all.min.js"></script><script src="assets/js/plugins/bootstrap.min.js"></script><script src="assets/js/pcoded.min.js"></script>

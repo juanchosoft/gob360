@@ -5,10 +5,11 @@
  * Claude y devuelve texto + respuesta.
  *
  * Para canal=voz_gobia (interfaz de voz de gobia.php) la respuesta se entrega en streaming
- * como líneas NDJSON: una línea opcional {"tipo":"aviso",...} tan pronto Claude decide que la
- * operación va a tardar (antes de ejecutar la herramienta lenta), y una línea final
- * {"tipo":"final",...} al terminar. El widget de chat (canal=widget, valor por defecto) sigue
- * recibiendo un único objeto JSON, sin cambios de contrato.
+ * como líneas NDJSON: una línea final {"tipo":"final",...} (o {"tipo":"error",...}). La frase
+ * de espera que el usuario escucha apenas termina de hablar NO sale de aquí — la dispara el
+ * cliente en paralelo contra ia_historial.php/ia_tts.php, antes incluso de que este endpoint
+ * responda. El widget de chat (canal=widget, valor por defecto) sigue recibiendo un único
+ * objeto JSON, sin cambios de contrato.
  *
  * POST params (multipart/form-data):
  *   audio           file   Audio grabado (webm / mp4 / ogg / wav)
@@ -52,6 +53,13 @@ if (!SessionData::hasPermission('asistente_ia.voz.use')) {
     echo json_encode(['output' => ['valid' => false, 'response' => 'Sin permiso para el modo de voz.']]);
     exit;
 }
+
+// Libera el lock del archivo de sesión apenas termina de leerlo: con el manejador de
+// sesiones por defecto, session_start() bloquea cualquier otra petición con el mismo
+// PHPSESSID hasta que el script termina — y este puede tardar varios segundos en STT/Claude.
+// Sin este cierre, la frase de espera (ia_tts.php) y el saludo/aviso (ia_historial.php)
+// quedan esperando en fila detrás de esta petición en vez de sonar en paralelo.
+session_write_close();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -141,25 +149,15 @@ try {
 
 @unlink($tmpPath);
 
-// ── Canal voz_gobia: sesión diaria + streaming aviso/final ────────────────────
+// ── Canal voz_gobia: sesión diaria + streaming del resultado final ────────────
 if ($canal === 'voz_gobia') {
     // Envuelve toda la rama para que un error inesperado (BD, config, etc.) llegue como
     // línea 'error' legible en vez de cortar el stream a medias con un fatal error de PHP.
     try {
         $conversacionId = IaConversacion::obtenerOCrearSesionDiaria('voz_gobia');
 
-        $onAviso = static function (string $texto, int $mensajeId) use ($conversacionId): void {
-            echo json_encode([
-                'tipo'            => 'aviso',
-                'texto'           => $texto,
-                'mensaje_id'      => $mensajeId,
-                'conversacion_id' => $conversacionId,
-            ], JSON_UNESCAPED_UNICODE) . "\n";
-            @flush();
-        };
-
         $asistente = new AsistenteIA();
-        $resultado = $asistente->chat($transcripcion, $conversacionId, 'voz', 'voz_gobia', $onAviso);
+        $resultado = $asistente->chat($transcripcion, $conversacionId, 'voz', 'voz_gobia');
 
         if (!($resultado['output']['valid'] ?? false)) {
             echo json_encode([

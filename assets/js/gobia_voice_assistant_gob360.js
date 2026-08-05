@@ -434,6 +434,67 @@
     return payload.output;
   }
 
+  async function obtenerFraseEspera() {
+    const response = await fetch(CONFIG.saludoEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      credentials: 'same-origin',
+      body: new URLSearchParams({ op: 'frase_espera' }),
+    });
+
+    const payload = await readJsonResponse(response);
+
+    if (!response.ok || !payload.output || !payload.output.valid) {
+      return null;
+    }
+
+    return payload.output;
+  }
+
+  /**
+   * Dice una frase corta de espera apenas se corta la grabación, sin esperar a que STT/Claude
+   * respondan — corre en paralelo con enviarAudioAAlma. Usa el mismo mecanismo de
+   * pendingAnswerAfterNotice/delayNoticeFinished que el aviso que puede mandar el servidor más
+   * adelante, para que la respuesta final espere a que termine de sonar esta frase.
+   */
+  function dispararAckRapido(querySequence) {
+    delayNoticeFinished = false;
+
+    const liberarSiNoSuena = () => {
+      if (querySequence !== activeQuerySequence) {
+        return;
+      }
+      delayNoticeFinished = true;
+
+      if (pendingAnswerAfterNotice) {
+        const pendiente = pendingAnswerAfterNotice;
+        pendingAnswerAfterNotice = 0;
+        speakText(pendiente, 'answer').catch((error) => {
+          if (querySequence === activeQuerySequence) {
+            handleError(error, 'No fue posible reproducir la respuesta.');
+          }
+        });
+      }
+    };
+
+    obtenerFraseEspera()
+      .then((espera) => {
+        if (querySequence !== activeQuerySequence) {
+          return null;
+        }
+        if (!espera || !espera.mensaje_id) {
+          liberarSiNoSuena();
+          return null;
+        }
+        actualizarSessionDiagnostic(espera.conversacion_id);
+        return speakText(espera.mensaje_id, 'delay_notice').catch(liberarSiNoSuena);
+      })
+      .catch(liberarSiNoSuena);
+  }
+
   function stopListening(processAudio = true) {
     shouldContinue = processAudio;
 
@@ -499,6 +560,8 @@
       );
       setCaption('');
 
+      dispararAckRapido(querySequence);
+
       await enviarAudioAAlma(blob, querySequence);
     } catch (error) {
       if (querySequence === activeQuerySequence) {
@@ -509,10 +572,10 @@
 
   /**
    * Envía el audio a ia_stt.php (canal voz_gobia) y lee la respuesta en streaming NDJSON:
-   * una línea opcional {"tipo":"aviso",...} — se reproduce de inmediato, antes de que la
-   * herramienta lenta termine — y una línea final {"tipo":"final",...} con la respuesta
-   * definitiva. Reutiliza el mecanismo ya existente de pendingAnswerAfterNotice/
-   * delayNoticeFinished para encadenar aviso → respuesta sin pisarse.
+   * una línea final {"tipo":"final",...} con la respuesta definitiva (o {"tipo":"error",...}).
+   * La frase de espera ya la dijo dispararAckRapido() apenas se cortó la grabación; si todavía
+   * está sonando cuando llega esta respuesta, manejarRespuestaFinal() la deja en cola vía
+   * pendingAnswerAfterNotice/delayNoticeFinished en vez de interrumpirla.
    */
   async function enviarAudioAAlma(blob, querySequence) {
     const extension = blob.type.includes('mp4')
@@ -573,9 +636,7 @@
           continue;
         }
 
-        if (payload.tipo === 'aviso') {
-          manejarAviso(payload, querySequence);
-        } else if (payload.tipo === 'final') {
+        if (payload.tipo === 'final') {
           recibioFinal = true;
           manejarRespuestaFinal(payload, querySequence);
         } else if (payload.tipo === 'error') {
@@ -591,33 +652,6 @@
     if (!recibioFinal) {
       throw new Error(`${ASSISTANT_NAME} no devolvió una respuesta.`);
     }
-  }
-
-  function manejarAviso(payload, querySequence) {
-    const mensajeId = Number.parseInt(payload.mensaje_id, 10) || 0;
-    if (!mensajeId) {
-      return;
-    }
-
-    actualizarSessionDiagnostic(payload.conversacion_id);
-    delayNoticeFinished = false;
-
-    speakText(mensajeId, 'delay_notice').catch((error) => {
-      console.warn('[ALMA] No se pudo reproducir el aviso rápido.', error);
-      delayNoticeFinished = true;
-
-      // Si la respuesta final ya había llegado mientras el aviso fallaba, no debe quedar
-      // atrapada esperando un evento 'ended' que nunca ocurrirá (el audio nunca llegó a sonar).
-      if (pendingAnswerAfterNotice && querySequence === activeQuerySequence) {
-        const pendiente = pendingAnswerAfterNotice;
-        pendingAnswerAfterNotice = 0;
-        speakText(pendiente, 'answer').catch((err) => {
-          if (querySequence === activeQuerySequence) {
-            handleError(err, 'No fue posible reproducir la respuesta.');
-          }
-        });
-      }
-    });
   }
 
   function manejarRespuestaFinal(payload, querySequence) {

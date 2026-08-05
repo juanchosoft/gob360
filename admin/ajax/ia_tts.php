@@ -31,6 +31,10 @@ if (!SessionData::hasPermission('asistente_ia.voz.use')) {
     exit;
 }
 
+// Libera el lock de sesión cuanto antes para no encolarse detrás de ia_stt.php (ver
+// comentario equivalente ahí) — esta síntesis debe poder correr en paralelo.
+session_write_close();
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     header('Content-Type: application/json');

@@ -32,19 +32,14 @@ final class AsistenteIA
      * @param  string $textoUsuario  Mensaje del usuario
      * @param  int    $conversacionId  0 = crear nueva
      * @param  string $origen  'texto' | 'voz'
-     * @param  string $canal   'widget' | 'voz_gobia' — ajusta tono del prompt y habilita el
-     *                         aviso rápido antes de herramientas lentas (solo voz_gobia)
-     * @param  ?callable $onAviso  function(string $texto, int $mensajeId): void — se invoca
-     *                         UNA VEZ, antes de ejecutar herramientas, si Claude emitió un
-     *                         aviso hablado previo (solo relevante para canal voz_gobia)
+     * @param  string $canal   'widget' | 'voz_gobia' — ajusta el tono del prompt (modo voz)
      * @return array  Formato estándar ['output' => ['valid' => bool, 'response' => ...]]
      */
     public function chat(
         string $textoUsuario,
         int $conversacionId,
         string $origen = 'texto',
-        string $canal = 'widget',
-        ?callable $onAviso = null
+        string $canal = 'widget'
     ): array {
         $textoUsuario = trim($textoUsuario);
         if ($textoUsuario === '') {
@@ -81,52 +76,14 @@ final class AsistenteIA
         // System prompt
         $system = $this->construirSystem($canal);
 
-        // Historial de la BD → incluye el mensaje que acabamos de guardar. Se captura ANTES
-        // del aviso heurístico (más abajo) a propósito: si el aviso se persistiera primero,
-        // el turno enviado a Claude terminaría en un mensaje 'assistant' (el aviso) en vez de
-        // en el 'user' que acaba de escribir, y la API lo tomaría como un prefill a continuar
-        // en vez de generar una respuesta nueva.
+        // Historial de la BD, incluye el mensaje que acabamos de guardar
         $mensajes = IaConversacion::cargarContextoApi($conversacionId, limite: 30);
 
         // Tools disponibles para este usuario
         $tools = IaToolRegistry::paraUsuario();
 
-        // Aviso heurístico previo (solo canal voz): `web_search` es una tool de SERVIDOR —
-        // Anthropic la ejecuta DENTRO de la misma llamada bloqueante a la API, así que Claude
-        // nunca pausa con stop_reason=tool_use para ese caso concreto y el aviso "real" que
-        // arma toolLoop() (basado en el texto que Claude deja antes de un tool_use normal)
-        // no tiene ninguna oportunidad de dispararse — la búsqueda y la respuesta final llegan
-        // juntas, en una sola respuesta. Mientras no se migre esta llamada a streaming (que sí
-        // permitiría ver el texto de Claude en tiempo real, tool sea del tipo que sea), esta
-        // heurística por palabras clave es la única forma de dar una señal rápida en ese caso.
-        // Se persiste DESPUÉS de capturar $mensajes (ver nota arriba) para no formar parte del
-        // turno que se envía a la API — solo queda en el historial para turnos futuros.
-        $avisoHeuristicoEnviado = false;
-        if ($canal === 'voz_gobia' && $onAviso !== null && self::pareceRequerirBusquedaWeb($textoUsuario)) {
-            $avisoHeuristicoEnviado = true;
-            $textoAviso     = 'Dame un momento, voy a revisar eso.';
-            $avisoMensajeId = IaConversacion::guardarMensaje(
-                conversacionId: $conversacionId,
-                rol: 'assistant',
-                contenido: $textoAviso,
-                contenidoApi: [['type' => 'text', 'text' => $textoAviso]],
-                tokensEntrada: 0,
-                tokensSalida: 0,
-                origen: $origen
-            );
-            $onAviso($textoAviso, $avisoMensajeId);
-        }
-
-        // Loop de tool-use (si ya se envió el aviso heurístico, no se envía un segundo aviso)
         try {
-            [$respuestaTexto, $tokensIn, $tokensOut] = $this->toolLoop(
-                $system,
-                $mensajes,
-                $tools,
-                $conversacionId,
-                $origen,
-                ($canal === 'voz_gobia' && !$avisoHeuristicoEnviado) ? $onAviso : null
-            );
+            [$respuestaTexto, $tokensIn, $tokensOut] = $this->toolLoop($system, $mensajes, $tools);
         } catch (RuntimeException $e) {
             return $this->error($e->getMessage());
         }
@@ -164,23 +121,13 @@ final class AsistenteIA
     /**
      * Ejecuta el loop tool-use con máximo MAX_ITER iteraciones.
      *
-     * @param  int       $conversacionId  Necesario solo para persistir el aviso rápido
-     * @param  string    $origen          'texto' | 'voz' — se propaga al aviso persistido
-     * @param  ?callable $onAviso         function(string $texto, int $mensajeId): void
      * @return array [string $textoFinal, int $tokensIn, int $tokensOut]
      * @throws RuntimeException si Claude responde con un error API
      */
-    private function toolLoop(
-        array $system,
-        array $mensajes,
-        array $tools,
-        int $conversacionId = 0,
-        string $origen = 'texto',
-        ?callable $onAviso = null
-    ): array {
-        $tokensIn    = 0;
-        $tokensOut   = 0;
-        $avisoEnviado = false;
+    private function toolLoop(array $system, array $mensajes, array $tools): array
+    {
+        $tokensIn  = 0;
+        $tokensOut = 0;
 
         for ($iter = 0; $iter < self::MAX_ITER; $iter++) {
             $respuesta = $this->claude->crearMensaje($system, $mensajes, $tools);
@@ -211,37 +158,6 @@ final class AsistenteIA
                     $tokensIn,
                     $tokensOut,
                 ];
-            }
-
-            // Aviso rápido (solo canal voz): si Claude dejó un texto hablado ANTES del
-            // tool_use (ej. "Dame un momento, ya te preparo eso"), se persiste como mensaje
-            // propio y se entrega al llamador de inmediato — antes de ejecutar la/s tool/s,
-            // que pueden tardar varios segundos (ej. generar_reporte_pdf).
-            if (!$avisoEnviado && $onAviso !== null && $conversacionId > 0) {
-                $avisoEnviado = true;
-                $tieneTexto = false;
-                foreach ($respuesta->content as $bloque) {
-                    $tipo = is_array($bloque) ? ($bloque['type'] ?? '') : ($bloque->type ?? '');
-                    if ($tipo === 'text') {
-                        $tieneTexto = true;
-                        break;
-                    }
-                }
-                if ($tieneTexto) {
-                    $textoAviso = $this->extraerTexto($respuesta->content ?? []);
-                    if ($textoAviso !== '') {
-                        $avisoMensajeId = IaConversacion::guardarMensaje(
-                            conversacionId: $conversacionId,
-                            rol: 'assistant',
-                            contenido: $textoAviso,
-                            contenidoApi: [['type' => 'text', 'text' => $textoAviso]],
-                            tokensEntrada: 0,
-                            tokensSalida: 0,
-                            origen: $origen
-                        );
-                        $onAviso($textoAviso, $avisoMensajeId);
-                    }
-                }
             }
 
             // Procesar todas las tool_use blocks de esta respuesta
@@ -829,17 +745,12 @@ audio, no la lee en pantalla. Ajusta tu forma de responder:
   (ej. "factores de inestabilidad" sin decir de qué municipio), responde con el panorama
   general en 2-3 frases y pregunta si quiere que profundices en algo puntual, en vez de leer
   todos los registros. Ampliar solo si el usuario pide explícitamente más detalle.
-- Aviso antes de usar una herramienta: dilo PRIMERO, en una frase corta y natural ("Dame un
-  momento, ya reviso eso" / "Déjame consultarlo"), ANTES de usar la herramienta — SIEMPRE que
-  vayas a usar cualquier herramienta interna de consulta de datos (compromisos, proyectos,
-  visitas, factores, hacienda, PAE, plan de desarrollo, reportes, base de datos, etc.), excepto
-  búsquedas triviales e inmediatas como `buscar_municipio` o `listar_secretarias`. Esa frase se
-  reproduce de inmediato mientras trabajas, así que debe ir siempre como el primer bloque de
-  texto de tu respuesta, antes del bloque de uso de herramienta.
-- NUNCA agregues una frase de aviso antes de usar `web_search` específicamente: el sistema ya
-  avisa por fuera de tu respuesta cuando corresponde. Si igual la agregaras, quedaría pegada al
-  inicio de tu respuesta final (no se puede separar en ese caso), así que directamente no la
-  escribas — ve derecho a responder, breve y resumido, en cuanto tengas el resultado.
+- NUNCA digas frases de espera como "dame un momento", "ya reviso eso", "déjame consultarlo" o
+  similares, sea antes de usar una herramienta o en cualquier otro punto de tu respuesta: el
+  usuario ya escuchó un aviso de espera apenas terminó de hablar, antes de que tu respuesta
+  siquiera empezara a generarse. Repetirlo suena a que te quedaste pegado. Ve derecho a usar las
+  herramientas que necesites y entrega la respuesta final directamente, sin ningún texto previo
+  de espera, sin importar cuántas herramientas uses o cuánto tarden.
 - Cuando termines de generar un informe en PDF, anuncia en voz que ya está listo y que puede
   verlo en pantalla; nunca leas la URL en voz alta letra por letra.
 PROMPT;
@@ -924,36 +835,5 @@ PROMPT;
     private function error(string $mensaje): array
     {
         return ['output' => ['valid' => false, 'response' => $mensaje]];
-    }
-
-    /**
-     * Heurística por palabras clave: ¿esta pregunta probablemente necesita `web_search`
-     * (info externa/actual) en vez de datos internos de la plataforma? Ver nota en chat()
-     * sobre por qué esto es necesario mientras la llamada a Claude no sea streaming.
-     * Es deliberadamente conservadora (prefiere no avisar a avisar de más): falsos negativos
-     * solo cuestan el aviso, falsos positivos suenan raro si Claude termina respondiendo de
-     * su conocimiento general sin buscar nada.
-     */
-    private static function pareceRequerirBusquedaWeb(string $texto): bool
-    {
-        $texto = mb_strtolower($texto, 'UTF-8');
-
-        $palabrasClave = [
-            'noticia', 'noticias', 'actualidad', 'última hora', 'ultima hora',
-            'clima', 'pronóstico', 'pronostico', 'temperatura',
-            'partido', 'resultado', 'marcador', 'campeonato', 'mundial',
-            'precio del dólar', 'precio del dolar', 'cotización', 'cotizacion', 'trm',
-            'elecciones', 'quién ganó', 'quien gano',
-            'qué pasó', 'que paso', 'qué está pasando', 'que esta pasando',
-            'hoy en', 'esta semana', 'este fin de semana',
-        ];
-
-        foreach ($palabrasClave as $clave) {
-            if (str_contains($texto, $clave)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
